@@ -42,3 +42,27 @@ $string['enable'] = 'Habilitar';
 $string['disableajax_help'] = 'Deshabilitarlas le permite mover recursos entre pestañas de temas. Sólo se deshabilitan las acciones asíncronas en la sesión actual, no es permanente.';
 
 $string['subtopictoright'] = 'Mover a la derecha como pestaña hija';
+
+$string['duplicatesection'] = 'Duplicar tema actual';
+$string['duplicatesection_help'] = 'Usado para duplicar los recursos del tema actual en un nuevo tema.';
+$string['duplicate'] = 'Duplicar';
+$string['duplicating'] = 'Duplicando';
+$string['creating_section'] = 'Creando el nuevo tema';
+$string['rebuild_course_cache'] = 'Recreando el caché del curso';
+$string['duplicate_confirm'] = '¿Está seguro de que desea duplicar el tema actual? La tarea puede tardar un buen rato dependiendo de la cantidad de recursos.';
+$string['cantcreatesection'] = 'Error creando un nuevo tema';
+$string['progress_counter'] = 'Duplicando actividades ({$a->current}/{$a->size})';
+$string['progress_full'] = 'Duplicando el tema';
+$string['error_nosectioninfo'] = 'El tema indicado no contiene información.';
+
+$string['level'] = 'Nivel';
+$string['index'] = 'Inicio';
+$string['asprincipal'] = 'Normal, como una pestaña de primer nivel';
+$string['aschild'] = 'Hijo de la pestaña anterior';
+$string['level_help'] = 'Cambiar el nivel de la pestaña, para aparecer como un subnivel de pestañas.';
+$string['fontcolor'] = 'Color de fuente';
+$string['fontcolor_help'] = 'Utilizado para cambiar el color de la fuente en el nombre de la pestaña. El valor puede ser un color en cualquier representación válida para CSS como por ejemplo: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Nombre: green</li></ul>';
+$string['bgcolor'] = 'Color de fondo';
+$string['bgcolor_help'] = 'Utilizado para cambiar el color de fondo del texto en el nombre de la pestaña. El valor puede ser un color en cualquier representación válida para CSS como por ejemplo: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Nombre: green</li></ul>';
+$string['cssstyles'] = 'Propiedades CSS';
+$string['cssstyles_help'] = 'Sirve para cambiar las propiedades CSS de la pestaña. Utilice el formato tradicional del atributo <em>style</em> de una etiqueta html. Ejemplo: <br /><strong>font-weight: bold; font-size: 16px;</strong>';

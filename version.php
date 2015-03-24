@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2015011802;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version = 2015011804;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2014110400;        // Requires this Moodle version.
 $plugin->component = 'format_onetopic';    // Full name of the plugin (used for diagnostics)
 $plugin->maturity = MATURITY_BETA;

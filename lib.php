@@ -373,8 +373,74 @@ class format_onetopic extends format_base {
         }
         return $this->update_format_options($data);
     }
+
+    public function section_format_options($foreditform = false) {
+        static $sectionformatoptions = false;
+
+        if ($sectionformatoptions === false) {
+            $sectionformatoptions = array(
+                'level' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT
+                ),
+                'fontcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
+                ),
+                'bgcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
+                ),
+                'cssstyles' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
+                )
+            );
+        }
+
+        if ($foreditform) {
+            $sectionformatoptionsedit = array(
+                'level' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT,
+                    'label' => get_string('level', 'format_onetopic'),
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(
+                            0 => get_string('asprincipal', 'format_onetopic'),
+                            1 => get_string('aschild', 'format_onetopic')
+                        )
+                    ),
+                    'help' => 'level',
+                    'help_component' => 'format_onetopic',
+                ),
+                'fontcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('fontcolor', 'format_onetopic'),
+                    'help' => 'fontcolor',
+                    'help_component' => 'format_onetopic',
+                ),
+                'bgcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('bgcolor', 'format_onetopic'),
+                    'help' => 'bgcolor',
+                    'help_component' => 'format_onetopic',
+                ),
+                'cssstyles' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('cssstyles', 'format_onetopic'),
+                    'help' => 'cssstyles',
+                    'help_component' => 'format_onetopic',
+                )
+            );
+
+            $sectionformatoptions = $sectionformatoptionsedit; //array_merge_recursive($sectionformatoptions, $sectionformatoptionsedit);
+        }
+        return $sectionformatoptions;
+    }
+
 }
-
-
-
 

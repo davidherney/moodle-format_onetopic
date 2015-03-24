@@ -15,6 +15,14 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2015011804:
+This release was powered by Loyola Leadership School of Universidad Loyola Andalucia
+Added functionality: Duplicate current section
+Added functionality: Change tab properties: font color, background color and new field to change other CSS properties
+
+2015011803:
+Added functionality: Sub-tabs, in order to have tabs in two levels
+
 2015011802 (MATURITY BETA):
 Added functionality: Reduce and increment number of sections.
 

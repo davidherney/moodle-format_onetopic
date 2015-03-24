@@ -42,3 +42,28 @@ $string['enable'] = 'Enable';
 $string['disableajax_help'] = 'Use this action in order to move resources between topic tabs. It only disables the asynchronous actions in current session, it is not permanently.';
 
 $string['subtopictoright'] = 'Move to right as subtopic';
+
+$string['duplicatesection'] = 'Duplicate current topic';
+$string['duplicatesection_help'] = 'Used to duplicate the resources of current topic in a new topic';
+$string['duplicate'] = 'Duplicate';
+$string['duplicating'] = 'Duplicating';
+$string['creating_section'] = 'Creating new topic';
+$string['rebuild_course_cache'] = 'Rebuild course cache';
+$string['duplicate_confirm'] = 'Are you sure you want to duplicate the current topic? The task can take a while depending on the amount of resources.';
+$string['cantcreatesection'] = 'Error creating a new topic';
+$string['progress_counter'] = 'Duplicating activities ({$a->current}/{$a->size})';
+$string['progress_full'] = 'Duplicating topic';
+$string['error_nosectioninfo'] = 'The indicated topic have not information';
+
+$string['level'] = 'Level';
+$string['index'] = 'Index';
+$string['asprincipal'] = 'Normal, as a first level tab';
+$string['asbrother'] = 'Same level that the previous tab';
+$string['aschild'] = 'Child of previous tab';
+$string['level_help'] = 'Change the tab level.';
+$string['fontcolor'] = 'Font color';
+$string['fontcolor_help'] = 'Used to change the tab font color. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>';
+$string['bgcolor'] = 'Background color';
+$string['bgcolor_help'] = 'Used to change the tab background color. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>';
+$string['cssstyles'] = 'CSS properties';
+$string['cssstyles_help'] = 'Used to change CSS properties of the tab. Use a standard value to the attribute <em>style</em> in a html tag. Example: <br /><strong>font-weight: bold; font-size: 16px;</strong>';

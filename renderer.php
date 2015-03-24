@@ -173,7 +173,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * @param int $displaysection The section number in the course which is being displayed
      */
     public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
-        global $PAGE;
+        global $PAGE, $OUTPUT;;
 
         $real_course_display = $course->realcoursedisplay;
         $modinfo = get_fast_modinfo($course);
@@ -224,8 +224,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         $sectionmenu = array();
         $tabs = array();
-        $tab_level = 0;
-        $tabs_heap = array();
         $inactive_tabs = array();
 
         $default_topic = -1;
@@ -262,24 +260,33 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         }
                     }
 
+                    $format_options = course_get_format($course)->get_format_options($thissection);
+
                     $sectionname = get_section_name($course, $thissection);
-                    
-                    //ToDo: For new feature: subtabs. It is not implemented yet
-                    /*$current_level = $this->get_level($thissection);
-                    
-                    if($current_level > $tab_level) {
-                        $tabs_heap[] = $tabs;
-                        $tabs = new array();
-                    }
-                    else if($current_level < $tab_level) {
-                    
-                    }
-                    else {
-                    
-                    }*/
 
                     if ($displaysection != $section) {
                         $sectionmenu[$section] = $sectionname;
+                    }
+
+                    $custom_styles = '';
+                    $level = 0;
+                    if (is_array($format_options)) {
+
+                        if (!empty($format_options['fontcolor'])) {
+                            $custom_styles .= 'color: ' . $format_options['fontcolor'] . ';';
+                        }
+
+                        if (!empty($format_options['bgcolor'])) {
+                            $custom_styles .= 'background-color: ' . $format_options['bgcolor'] . ';';
+                        }
+
+                        if (!empty($format_options['cssstyles'])) {
+                            $custom_styles .= $format_options['cssstyles'] . ';';
+                        }
+                        
+                        if (isset($format_options['level'])) {
+			  $level = $format_options['level'];
+                        }
                     }
 
                     if ($section == 0) {
@@ -288,7 +295,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $url = course_get_url($course, $section);
                     }
 
-                    $special_style = '';
+                    $special_style = 'tab_position_' . $section . ' tab_level_' . $level;
                     if ($course->marker == $section) {
                         $special_style = ' marker '; 
                     }
@@ -302,8 +309,36 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     }
 
                     $new_tab = new tabobject("tab_topic_" . $section, $url,
-                    '<font style="white-space:nowrap" class="' . $special_style . '">' . s($sectionname) . "</font>", s($sectionname));
-                    $tabs[] = $new_tab;
+                    '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '">' . s($sectionname) . "</div>", s($sectionname));
+
+                    if (is_array($format_options) && isset($format_options['level'])) {
+
+                        if($format_options['level'] == 0 || count($tabs) == 0) {
+                            $tabs[] = $new_tab;
+                            $new_tab->level = 1;
+                        }
+                        else {
+                            $parent_index = count($tabs) - 1;
+                            if (!is_array($tabs[$parent_index]->subtree)) {
+                                $tabs[$parent_index]->subtree = array();
+                            }
+                            else if (count($tabs[$parent_index]->subtree) == 0) {
+                                $tabs[$parent_index]->subtree[0] = clone($tabs[$parent_index]);
+                                $tabs[$parent_index]->subtree[0]->id .= '_index';
+                                $tabs[$parent_index]->subtree[0]->text = '<div class="tab_content tab_initial">' . get_string('index', 'format_onetopic') . "</div>";
+                                $tabs[$parent_index]->subtree[0]->level = 2;
+
+                                if($displaysection == $section - 1) {
+                                    $tabs[$parent_index]->subtree[0]->selected = true;
+                                }
+                            }
+                            $new_tab->level = 2;
+                            $tabs[$parent_index]->subtree[] = $new_tab;
+                        }
+                    }
+                    else {
+                        $tabs[] = $new_tab;
+                    }
 
                     //Init move section list***************************************************************************
                     if ($can_move) {
@@ -330,12 +365,18 @@ class format_onetopic_renderer extends format_section_renderer_base {
                                 $move_list_html .= html_writer::tag('li', $subtopic_move . $sectionname);
                             }
                             */
-                            
+
+                            //Define class from sublevels in order to move a margen in the left. Not apply if it is the first element (condition !empty($move_list_html)) because the first element can't be a sublevel
+                            $li_class = '';
+                            if (is_array($format_options) && isset($format_options['level']) && $format_options['level'] > 0 && !empty($move_list_html)) {
+                                $li_class = 'sublevel';
+                            }
+
                             if ($displaysection != $section) {
-                                $move_list_html .= html_writer::tag('li', html_writer::link($url, $sectionname));
+                                $move_list_html .= html_writer::tag('li', html_writer::link($url, $sectionname), array('class' => $li_class));
                                }
                             else {
-                                $move_list_html .= html_writer::tag('li', $sectionname);
+                                $move_list_html .= html_writer::tag('li', $sectionname, array('class' => $li_class));
                             }
                         }
                     }
@@ -351,9 +392,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $sectiontitle = '';
 
 
-        if (!$course->hidetabsbar && count($tabs) > 0) {
+        if (!$course->hidetabsbar && count($tabs[0]) > 0) {
 
-            if ($PAGE->user_is_editing() and has_capability('moodle/course:update', $context)) {
+            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
                 // Increase number of sections.
                 $straddsection = get_string('increasesections', 'moodle');
                 $url = new moodle_url('/course/changenumsections.php',
@@ -375,7 +416,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 }
             }
 
-            $sectiontitle .= print_tabs(array($tabs), "tab_topic_" . $displaysection, $inactive_tabs, NULL, true);
+            $sectiontitle .= $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactive_tabs);//print_tabs($tabs, "tab_topic_" . $displaysection, $inactive_tabs, $active_tabs, true);
         }
 
         echo $sectiontitle;
@@ -417,7 +458,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // close single-section div.
         echo html_writer::end_tag('div');
         
-        if ($PAGE->user_is_editing()) {
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
             echo '<br class="utilities-separator" />';
             print_collapsible_region_start('move-list-box clearfix collapsible mform', 'course_format_onetopic_config_movesection', get_string('utilities', 'format_onetopic'), '', true);
@@ -442,8 +483,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $baseurl->param('sesskey', sesskey());
 
             $url = clone($baseurl);
-            
-            global $USER;
+
+            global $USER, $OUTPUT;
             if (isset($USER->onetopic_da[$course->id]) && $USER->onetopic_da[$course->id]) {
                 $url->param('onetopic_da', 0);
                 $text_button_disableajax = get_string('enable', 'format_onetopic');
@@ -464,7 +505,27 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     echo html_writer::tag('p', get_string('disableajax_help', 'format_onetopic'));
                 echo html_writer::end_div();
             echo html_writer::end_div();
-            
+
+            //Duplicate current section option
+            if (has_capability('moodle/course:manageactivities', $context)) {
+                $url_duplicate = new moodle_url('/course/format/onetopic/duplicate.php', array('courseid' => $course->id, 'section' => $displaysection, 'sesskey' => sesskey()));
+
+                $link = new action_link($url_duplicate, get_string('duplicate', 'format_onetopic'));
+                $link->add_action(new confirm_action(get_string('duplicate_confirm', 'format_onetopic'), null, get_string('duplicate', 'format_onetopic')));
+
+                echo html_writer::start_div("form-item clearfix");
+                    echo html_writer::start_div("form-label");
+                        echo html_writer::tag('label', get_string('duplicatesection', 'format_onetopic'));
+                    echo html_writer::end_div();
+                    echo html_writer::start_div("form-setting");
+                        echo $this->render($link);
+                    echo html_writer::end_div();
+                    echo html_writer::start_div("form-description");
+                        echo html_writer::tag('p', get_string('duplicatesection_help', 'format_onetopic'));
+                    echo html_writer::end_div();
+                echo html_writer::end_div();
+            }
+
             print_collapsible_region_end();
         }
     }
@@ -549,20 +610,4 @@ class format_onetopic_renderer extends format_section_renderer_base {
         return $o;
     }
 
-    protected function get_level ($section) {
-        if ((string)$section->name !== '') {
-            $section_name = (string)$section->name;
-
-            if($section_name[0] == '+') {
-                $parts = explode('|', $section_name);
-
-                if (count($parts) > 1) {
-                    return strlen($parts[0]);
-                }
-            }
-
-        }
-
-        return 0;
-    }
 }
