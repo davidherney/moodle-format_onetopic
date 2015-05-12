@@ -325,7 +325,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             else if (count($tabs[$parent_index]->subtree) == 0) {
                                 $tabs[$parent_index]->subtree[0] = clone($tabs[$parent_index]);
                                 $tabs[$parent_index]->subtree[0]->id .= '_index';
-                                $tabs[$parent_index]->subtree[0]->text = '<div class="tab_content tab_initial">' . get_string('index', 'format_onetopic') . "</div>";
+                                $parentsection = $sections[$section-1];
+                                $parentformat_options = course_get_format($course)->get_format_options($parentsection);
+                                if ($parentformat_options['firsttabtext']) {
+                                    $firsttabtext = $parentformat_options['firsttabtext'];
+                                } else {
+                                    $firsttabtext = get_string('index', 'format_onetopic');
+                                }
+                                $tabs[$parent_index]->subtree[0]->text = '<div class="tab_content tab_initial">' . $firsttabtext. "</div>";
                                 $tabs[$parent_index]->subtree[0]->level = 2;
 
                                 if($displaysection == $section - 1) {
