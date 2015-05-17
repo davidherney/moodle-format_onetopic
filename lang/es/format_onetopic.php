@@ -68,3 +68,8 @@ $string['cssstyles'] = 'Propiedades CSS';
 $string['cssstyles_help'] = 'Sirve para cambiar las propiedades CSS de la pestaña. Utilice el formato tradicional del atributo <em>style</em> de una etiqueta html. Ejemplo: <br /><strong>font-weight: bold; font-size: 16px;</strong>';
 $string['firsttabtext'] = 'Nombre de la primera pestaña (inicio) en el subnivel';
 $string['firsttabtext_help'] = 'Si la pestaña tiene un subnivel de pestañas, éste será el texto para la primera pestaña del subnivel.';
+
+$string['coursedisplay'] = 'Modo de visualización de la sección 0';
+$string['coursedisplay_help'] = 'Define como se muestra la sección 0: como la primera pestaña o como una sección encima de las demás pestañas.';
+$string['coursedisplay_single'] = 'Como pestaña';
+$string['coursedisplay_multi'] = 'Arriba de las pestañas';

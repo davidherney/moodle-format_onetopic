@@ -69,3 +69,8 @@ $string['cssstyles'] = 'CSS properties';
 $string['cssstyles_help'] = 'Used to change CSS properties of the tab. Use a standard value to the attribute <em>style</em> in a html tag. Example: <br /><strong>font-weight: bold; font-size: 16px;</strong>';
 $string['firsttabtext'] = 'Text of the first tab in sublevel';
 $string['firsttabtext_help'] = 'If this tab has sublevels, this will be the text of the first tab';
+
+$string['coursedisplay'] = 'Visualization mode of section 0';
+$string['coursedisplay_help'] = 'This define as display the section 0: as a first tab or as section before the tabs bar.';
+$string['coursedisplay_single'] = 'As tab';
+$string['coursedisplay_multi'] = 'Before the tabs';

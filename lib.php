@@ -61,32 +61,6 @@ class format_onetopic extends format_base {
         } else {
             return get_string('sectionname', 'format_onetopic') . ' ' . $section->section;
         }
-
-        //ToDo: For new feature: subtabs. It is not implemented yet
-        /*$section = $this->get_section($section);
-
-        if ((string)$section->name !== '') {
-            $section_name = (string)$section->name;
-
-            if($section_name[0] == '+') {
-                $parts = explode('|', $section_name);
-
-                if (count($parts) > 1) {
-                    if(empty($parts[1])) {
-                        $section_name = get_string('sectionname', 'format_onetopic') . ' ' . $section->section;
-                    }
-                    else {
-                        $section_name = $parts[1];
-                    }
-                }
-            }
-
-
-            return format_string($section_name, true,
-                    array('context' => context_course::instance($this->courseid)));
-        } else {
-            return get_string('sectionname', 'format_onetopic') . ' ' . $section->section;
-        }*/
     }
 
     /**
@@ -169,6 +143,19 @@ class format_onetopic extends format_base {
 
         // check if there are callbacks to extend course navigation
         parent::extend_course_navigation($navigation, $node);
+
+        // We want to remove the general section if it is empty.
+        $modinfo = get_fast_modinfo($this->get_course());
+        $sections = $modinfo->get_sections();
+        if (!isset($sections[0])) {
+            // The general section is empty to find the navigation node for it we need to get its ID.
+            $section = $modinfo->get_section_info(0);
+            $generalsection = $node->get($section->id, navigation_node::TYPE_SECTION);
+            if ($generalsection) {
+                // We found the node - now remove it.
+                $generalsection->remove();
+            }
+        }
     }
 
     /**
@@ -280,16 +267,16 @@ class format_onetopic extends format_base {
                     ),
                 ),
                 'coursedisplay' => array(
-                    'label' => new lang_string('coursedisplay'),
+                    'label' => new lang_string('coursedisplay', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(
-                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
-                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
+                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single', 'format_onetopic'),
+                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi', 'format_onetopic')
                         )
                     ),
                     'help' => 'coursedisplay',
-                    'help_component' => 'moodle',
+                    'help_component' => 'format_onetopic',
                 )
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -342,8 +329,8 @@ class format_onetopic extends format_base {
      */
     public function update_course_format_options($data, $oldcourse = null) {
         global $DB;
+        $data = (array)$data;
         if ($oldcourse !== null) {
-            $data = (array)$data;
             $oldcourse = (array)$oldcourse;
             $options = $this->course_format_options();
             foreach ($options as $key => $unused) {
@@ -369,7 +356,19 @@ class format_onetopic extends format_base {
                 }
             }
         }
-        return $this->update_format_options($data);
+        $changed = $this->update_format_options($data);
+        if ($changed && array_key_exists('numsections', $data)) {
+            // If the numsections was decreased, try to completely delete the orphaned sections (unless they are not empty).
+            $numsections = (int)$data['numsections'];
+            $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
+                        WHERE course = ?', array($this->courseid));
+            for ($sectionnum = $maxsection; $sectionnum > $numsections; $sectionnum--) {
+                if (!$this->delete_section($sectionnum, false)) {
+                    break;
+                }
+            }
+        }
+        return $changed;
     }
 
     public function section_format_options($foreditform = false) {
@@ -451,5 +450,17 @@ class format_onetopic extends format_base {
         return $sectionformatoptions;
     }
 
+
+    /**
+     * Whether this format allows to delete sections
+     *
+     * Do not call this function directly, instead use {@link course_can_delete_section()}
+     *
+     * @param int|stdClass|section_info $section
+     * @return bool
+     */
+    public function can_delete_section($section) {
+        return true;
+    }
 }
 
