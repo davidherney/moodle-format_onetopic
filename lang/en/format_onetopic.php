@@ -67,3 +67,5 @@ $string['bgcolor'] = 'Background color';
 $string['bgcolor_help'] = 'Used to change the tab background color. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>';
 $string['cssstyles'] = 'CSS properties';
 $string['cssstyles_help'] = 'Used to change CSS properties of the tab. Use a standard value to the attribute <em>style</em> in a html tag. Example: <br /><strong>font-weight: bold; font-size: 16px;</strong>';
+$string['firsttabtext'] = 'Text of the first tab in sublevel';
+$string['firsttabtext_help'] = 'If this tab has sublevels, this will be the text of the first tab';
