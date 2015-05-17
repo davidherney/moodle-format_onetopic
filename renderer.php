@@ -283,9 +283,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         if (!empty($format_options['cssstyles'])) {
                             $custom_styles .= $format_options['cssstyles'] . ';';
                         }
-                        
+
                         if (isset($format_options['level'])) {
-			  $level = $format_options['level'];
+                            $level = $format_options['level'];
                         }
                     }
 
