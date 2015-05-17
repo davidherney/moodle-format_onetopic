@@ -1,7 +1,7 @@
 COURSE FORMATS Onetopic
 ============================
 
-Package tested in: moodle 2.8+
+Package tested in: moodle 2.9+
 
 QUICK INSTALL
 ==============
@@ -15,6 +15,9 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2015051700:
+Compatibility with moodle 2.9
+
 2015011805:
 Added functionality: Adds a configuration option at section edit screen to allow people to change the text of the first tab of the sublevel tabs (By Daniel Neis Araujo).
 
