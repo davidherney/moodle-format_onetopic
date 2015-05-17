@@ -61,7 +61,7 @@ class format_onetopic extends format_base {
         } else {
             return get_string('sectionname', 'format_onetopic') . ' ' . $section->section;
         }
-        
+
         //ToDo: For new feature: subtabs. It is not implemented yet
         /*$section = $this->get_section($section);
 
@@ -137,16 +137,14 @@ class format_onetopic extends format_base {
      * @return stdClass
      */
     public function supports_ajax() {
-    
         global $course, $USER;
-        
-        
+
         if (!isset($USER->onetopic_da)) {
             $USER->onetopic_da = array();
         }
-    
+
         $disable_ajax = isset($USER->onetopic_da[$course->id]) ? $USER->onetopic_da[$course->id] : false;
-    
+
         $ajaxsupport = new stdClass();
         $ajaxsupport->capable = !$disable_ajax;
         return $ajaxsupport;
@@ -383,6 +381,10 @@ class format_onetopic extends format_base {
                     'default' => 0,
                     'type' => PARAM_INT
                 ),
+                'firsttabtext' => array(
+                    'default' => 0,
+                    'type' => PARAM_TEXT
+                ),
                 'fontcolor' => array(
                     'default' => '',
                     'type' => PARAM_RAW
@@ -412,6 +414,13 @@ class format_onetopic extends format_base {
                         )
                     ),
                     'help' => 'level',
+                    'help_component' => 'format_onetopic',
+                ),
+                'firsttabtext' => array(
+                    'default' => get_string('index', 'format_onetopic'),
+                    'type' => PARAM_TEXT,
+                    'label' => get_string('firsttabtext', 'format_onetopic'),
+                    'help' => 'firsttabtext',
                     'help_component' => 'format_onetopic',
                 ),
                 'fontcolor' => array(
