@@ -66,3 +66,5 @@ $string['bgcolor'] = 'Color de fondo';
 $string['bgcolor_help'] = 'Utilizado para cambiar el color de fondo del texto en el nombre de la pestaña. El valor puede ser un color en cualquier representación válida para CSS como por ejemplo: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Nombre: green</li></ul>';
 $string['cssstyles'] = 'Propiedades CSS';
 $string['cssstyles_help'] = 'Sirve para cambiar las propiedades CSS de la pestaña. Utilice el formato tradicional del atributo <em>style</em> de una etiqueta html. Ejemplo: <br /><strong>font-weight: bold; font-size: 16px;</strong>';
+$string['firsttabtext'] = 'Nombre de la primera pestaña (inicio) en el subnivel';
+$string['firsttabtext_help'] = 'Si la pestaña tiene un subnivel de pestañas, éste será el texto para la primera pestaña del subnivel.';

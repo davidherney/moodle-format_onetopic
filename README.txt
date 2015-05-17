@@ -15,6 +15,9 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2015011805:
+Added functionality: Adds a configuration option at section edit screen to allow people to change the text of the first tab of the sublevel tabs (By Daniel Neis Araujo).
+
 2015011804:
 This release was powered by Loyola Leadership School of Universidad Loyola Andalucia
 Added functionality: Duplicate current section
