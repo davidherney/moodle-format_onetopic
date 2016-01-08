@@ -610,9 +610,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
     protected function section_right_content($section, $course, $onsectionpage) {
         $o = $this->output->spacer();
     
-        $controls = $this->section_edit_controls($course, $section, $onsectionpage);
+        $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
         if (!empty($controls)) {
-            $o = implode('<br />', $controls);
+            $o .= $this->section_edit_control_menu($controls, $course, $section);
         }
     
         return $o;
