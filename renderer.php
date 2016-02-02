@@ -99,20 +99,19 @@ class format_onetopic_renderer extends format_section_renderer_base {
         if (!$isstealth && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
-                $controls[] = html_writer::link($url,
-                                    html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marked'),
-                                        'class' => 'icon ', 'alt' => get_string('markedthistopic'))),
-                                    array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
+                $controls['setactive']['url'] = $url;
+                $controls['setactive']['icon'] = 'i/marked';
+                $controls['setactive']['name'] = get_string('markedthistopic');
+                $controls['setactive']['attr']['class'] = 'icon';
             } else {
                 $url->param('marker', $section->section);
-                $controls[] = html_writer::link($url,
-                                html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marker'),
-                                    'class' => 'icon', 'alt' => get_string('markthistopic'))),
-                                array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
+                $controls['setactive']['url'] = $url;
+                $controls['setactive']['icon'] = 'i/marker';
+                $controls['setactive']['name'] = get_string('markthistopic');
+                $controls['setactive']['attr']['class'] = 'icon';
             }
         }
-
-        return array_merge($controls, parent::section_edit_control_items($course, $section, $onsectionpage));
+        return array_merge($controls, parent::section_edit_control_items($course, $section,$onsectionpage));
     }
 
     /**
