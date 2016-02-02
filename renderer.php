@@ -112,7 +112,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
             }
         }
 
-        return array_merge($controls, parent::section_edit_controls($course, $section, $onsectionpage));
+        return array_merge($controls, parent::section_edit_control_items($course, $section, $onsectionpage));
     }
 
     /**
@@ -610,7 +610,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
     protected function section_right_content($section, $course, $onsectionpage) {
         $o = $this->output->spacer();
     
-        $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
+        $controls = $this->section_edit_controls($course, $section, $onsectionpage);
         if (!empty($controls)) {
             $o .= $this->section_edit_control_menu($controls, $course, $section);
         }
