@@ -1,7 +1,7 @@
 COURSE FORMATS Onetopic
 ============================
 
-Package tested in: moodle 2.9+
+Package tested in: moodle 3.0+
 
 QUICK INSTALL
 ==============
@@ -15,6 +15,10 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2016020500:
+Compatibility with moodle 3.0
+Added section edit menu
+
 2015051700:
 Compatibility with moodle 2.9
 

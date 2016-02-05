@@ -71,51 +71,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
     }
 
     /**
-     * Generate the edit controls of a section
-     *
-     * @param stdClass $course The course entry from DB
-     * @param stdClass $section The course_section entry from DB
-     * @param bool $onsectionpage true if being printed on a section page
-     * @return array of links with edit controls
-     */
-    protected function section_edit_controls($course, $section, $onsectionpage = false) {
-        global $PAGE;
-
-        if (!$PAGE->user_is_editing()) {
-            return array();
-        }
-
-        $coursecontext = context_course::instance($course->id);
-
-        if ($onsectionpage) {
-            $url = course_get_url($course, $section->section);
-        } else {
-            $url = course_get_url($course);
-        }
-        $url->param('sesskey', sesskey());
-
-        $isstealth = $section->section > $course->numsections;
-        $controls = array();
-        if (!$isstealth && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
-            if ($course->marker == $section->section) {  // Show the "light globe" on/off.
-                $url->param('marker', 0);
-                $controls[] = html_writer::link($url,
-                                    html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marked'),
-                                        'class' => 'icon ', 'alt' => get_string('markedthistopic'))),
-                                    array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
-            } else {
-                $url->param('marker', $section->section);
-                $controls[] = html_writer::link($url,
-                                html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marker'),
-                                    'class' => 'icon', 'alt' => get_string('markthistopic'))),
-                                array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
-            }
-        }
-
-        return array_merge($controls, parent::section_edit_controls($course, $section, $onsectionpage));
-    }
-
-    /**
      * Generate next/previous section links for navigation
      *
      * @param stdClass $course The course entry from DB
@@ -577,45 +532,85 @@ class format_onetopic_renderer extends format_section_renderer_base {
     
         $classes = ' accesshide';
 
-        $o.= $this->output->heading($this->section_title($section, $course), 3, 'sectionname' . $classes);
-    
+        $sectionname = html_writer::tag('span', $this->section_title($section, $course));
+        $o.= $this->output->heading($sectionname, 3, 'sectionname' . $classes);
+
         $o.= html_writer::start_tag('div', array('class' => 'summary'));
         $o.= $this->format_summary_text($section);
-    
-        $context = context_course::instance($course->id);
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
-            $url = new moodle_url('/course/editsection.php', array('id'=>$section->id, 'sr'=>$sectionreturn));
-            $o.= html_writer::link($url,
-                html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/settings'),
-                    'class' => 'iconsmall edit', 'alt' => get_string('edit'))),
-                array('title' => get_string('editsummary')));
-        }
         $o.= html_writer::end_tag('div');
     
+        $context = context_course::instance($course->id);
         $o .= $this->section_availability_message($section,
             has_capability('moodle/course:viewhiddensections', $context));
-    
+
         return $o;
     }
 
     /**
-     * Generate the content to displayed on the right part of a section
-     * before course modules are included
+     * Generate the edit control items of a section
      *
-     * @param stdClass $section The course_section entry from DB
      * @param stdClass $course The course entry from DB
+     * @param stdClass $section The course_section entry from DB
      * @param bool $onsectionpage true if being printed on a section page
-     * @return string HTML to output.
+     * @return array of edit control items
      */
-    protected function section_right_content($section, $course, $onsectionpage) {
-        $o = $this->output->spacer();
-    
-        $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
-        if (!empty($controls)) {
-            $o .= $this->section_edit_control_menu($controls, $course, $section);
+    protected function section_edit_control_items($course, $section, $onsectionpage = false) {
+        global $PAGE;
+
+        if (!$PAGE->user_is_editing()) {
+            return array();
         }
-    
-        return $o;
+
+        $coursecontext = context_course::instance($course->id);
+
+        if ($onsectionpage) {
+            $url = course_get_url($course, $section->section);
+        } else {
+            $url = course_get_url($course);
+        }
+        $url->param('sesskey', sesskey());
+
+        $isstealth = $section->section > $course->numsections;
+        $controls = array();
+        if (!$isstealth && $section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
+            if ($course->marker == $section->section) {  // Show the "light globe" on/off.
+                $url->param('marker', 0);
+                $markedthistopic = get_string('markedthistopic');
+                $highlightoff = get_string('highlightoff');
+                $controls['highlight'] = array('url' => $url, "icon" => 'i/marked',
+                                               'name' => $highlightoff,
+                                               'pixattr' => array('class' => '', 'alt' => $markedthistopic),
+                                               'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic));
+            } else {
+                $url->param('marker', $section->section);
+                $markthistopic = get_string('markthistopic');
+                $highlight = get_string('highlight');
+                $controls['highlight'] = array('url' => $url, "icon" => 'i/marker',
+                                               'name' => $highlight,
+                                               'pixattr' => array('class' => '', 'alt' => $markthistopic),
+                                               'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic));
+            }
+        }
+
+        $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
+
+        // If the edit key exists, we are going to insert our controls after it.
+        if (array_key_exists("edit", $parentcontrols)) {
+            $merged = array();
+            // We can't use splice because we are using associative arrays.
+            // Step through the array and merge the arrays.
+            foreach ($parentcontrols as $key => $action) {
+                $merged[$key] = $action;
+                if ($key == "edit") {
+                    // If we have come to the edit key, merge these controls here.
+                    $merged = array_merge($merged, $controls);
+                }
+            }
+
+            return $merged;
+        } else {
+            return array_merge($controls, $parentcontrols);
+        }
     }
 
 }
