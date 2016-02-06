@@ -86,7 +86,8 @@ if ($disable_ajax !== -1) {
     }
 }
 
-$renderer->print_single_section_page($course, null, null, null, null, $displaysection);
+$renderer->print_single_section_page($course, null, $mods, $modnames, $modnamesused, $displaysection);
 
 // Include course format js module
 $PAGE->requires->js('/course/format/topics/format.js');
+$PAGE->requires->js('/course/format/onetopic/format.js');

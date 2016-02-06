@@ -36,6 +36,9 @@ require_once($CFG->dirroot. '/course/format/lib.php');
 
 class format_onetopic extends format_base {
 
+    const TEMPLATETOPIC_NOT = 0;
+    const TEMPLATETOPIC_SINGLE = 1;
+    const TEMPLATETOPIC_LIST = 2;
     /**
      * Returns true if this course format uses sections
      *
@@ -238,6 +241,14 @@ class format_onetopic extends format_base {
                     'default' => $courseconfig->coursedisplay,
                     'type' => PARAM_INT
                 ),
+                'templatetopic' => array(
+                    'default' => self::TEMPLATETOPIC_NOT,
+                    'type' => PARAM_INT
+                ),
+                'templatetopic_icons' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT
+                )
             );
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
@@ -291,6 +302,31 @@ class format_onetopic extends format_base {
                     ),
                     'help' => 'coursedisplay',
                     'help_component' => 'format_onetopic',
+                ),
+                'templatetopic' => array(
+                    'label' => new lang_string('templatetopic', 'format_onetopic'),
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(
+                            self::TEMPLATETOPIC_NOT => new lang_string('templetetopic_not', 'format_onetopic'),
+                            self::TEMPLATETOPIC_SINGLE => new lang_string('templetetopic_single', 'format_onetopic'),
+                            self::TEMPLATETOPIC_LIST => new lang_string('templetetopic_list', 'format_onetopic')
+                        )
+                    ),
+                    'help' => 'templatetopic',
+                    'help_component' => 'format_onetopic',
+                ),
+                'templatetopic_icons' => array(
+                    'label' => get_string('templatetopic_icons', 'format_onetopic'),
+                    'help' => 'templatetopic_icons',
+                    'help_component' => 'format_onetopic',
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(
+                            0 => new lang_string('no'),
+                            1 => new lang_string('yes')
+                        )
+                    ),
                 )
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -366,6 +402,10 @@ class format_onetopic extends format_base {
                         // and $data['hidetabsbar'] is not set,
                         // we fill it with the default option
                         $data['hidetabsbar'] = 0;
+                    } else if ($key === 'templatetopic') {
+                        $data['templatetopic'] = self::TEMPLATETOPIC_NOT;
+                    } else if ($key === 'templatetopic_icons') {
+                        $data['templatetopic_icons'] = 0;
                     }
                 }
             }
@@ -478,3 +518,51 @@ class format_onetopic extends format_base {
     }
 }
 
+class format_onetopic_replace_regularexpression {
+    public $_string_search;
+    public $_string_replace;
+
+    public $_tag_string = '{label_tag_replace}';
+
+    public function replace_tag_in_expresion ($match) {
+
+        $term = $match[0];
+        $term = str_replace("[[", '', $term);
+        $term = str_replace("]]", '', $term);
+
+        $text = strip_tags($term);
+
+        if (strpos($text, ':') > -1) {
+
+            $pattern = '/([^:])+:/i';
+            $text = preg_replace($pattern, '', $text);
+
+            //Change text for alternative text
+            $new_replace = str_replace($this->_string_search, $text, $this->_string_replace);
+
+            //posible html tags position
+            $pattern = '/([>][^<]*:[^<]*[<])+/i';
+            $term = preg_replace($pattern, '><:><', $term);
+
+            $pattern = '/([>][^<]*:[^<]*$)+/i';
+            $term = preg_replace($pattern, '><:>', $term);
+
+            $pattern = '/(^[^<]*:[^<]*[<])+/i';
+            $term = preg_replace($pattern, '<:><', $term);
+
+            $pattern = '/(^[^<]*:[^<]*$)/i';
+            $term = preg_replace($pattern, '<:>', $term);
+
+            $pattern = '/([>][^<^:]*[<])+/i';
+            $term = preg_replace($pattern, '><', $term);
+
+            $term = str_replace('<:>', $new_replace, $term);
+        }
+        else {
+            //Change tag for resource or mod name
+            $new_replace = str_replace($this->_tag_string, $this->_string_search, $this->_string_replace);
+            $term = str_replace($this->_string_search, $new_replace, $term);
+        }
+        return $term;
+    }
+}
