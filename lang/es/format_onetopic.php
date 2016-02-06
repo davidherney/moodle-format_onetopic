@@ -73,3 +73,11 @@ $string['coursedisplay'] = 'Modo de visualización de la sección 0';
 $string['coursedisplay_help'] = 'Define como se muestra la sección 0: como la primera pestaña o como una sección encima de las demás pestañas.';
 $string['coursedisplay_single'] = 'Como pestaña';
 $string['coursedisplay_multi'] = 'Arriba de las pestañas';
+
+$string['templatetopic'] = 'Usar resumen de tema como plantilla';
+$string['templatetopic_help'] = 'Permite usar el resumen del tema como una plantilla, de esa manera se pueden ubicar los recursos en cualquier parte del contenido, no necesariamente como listas secuenciales como se muestran tradicionalmente en Moodle. <br />Para ubicar un recurso, simplemente agrege en el resumen de la sección el nombre del recurso encerrado entre dobles corchetes, ejemplo: <strong>[[Foro de Novedades]]</strong>. Su comportamiento es similar al filtro por nombre de actividad con la diferencia de que se puede agregar el icono del recurso y además se puede elegir cuales recursos se muestran y cuales no.';
+$string['templetetopic_not'] = 'No, mostrar normal';
+$string['templetetopic_single'] = 'Si, usar el resumen como una plantilla';
+$string['templetetopic_list'] = 'Si, usar el resumen como plantilla y listar los recursos no referenciados';
+$string['templatetopic_icons'] = 'Mostrar icono en enlaces de recursos en el resumen';
+$string['templatetopic_icons_help'] = 'Esta opción define si se muestran o no los iconos de los recursos como parte del nombre, cuando el resumen del tema se utiliza como plantilla.';

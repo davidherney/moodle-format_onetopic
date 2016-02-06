@@ -31,3 +31,6 @@
 .format-onetopic .onetopic .nav-tabs > li > a { padding: 0; }
 
 .format-onetopic .onetopic .tab_content { padding: 8px 12px; }
+.format-onetopic .onetopic_hideicons .activityicon { display: none; }
+.format-onetopic .availability_info_box { display: inline; }
+.format-onetopic .summary img.activityicon { margin-right: 3px; vertical-align: text-bottom; }

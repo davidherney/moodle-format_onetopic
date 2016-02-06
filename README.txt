@@ -15,6 +15,9 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2016020501:
+Added functionality: Summary topic as template
+
 2016020500:
 Compatibility with moodle 3.0
 Added section edit menu
