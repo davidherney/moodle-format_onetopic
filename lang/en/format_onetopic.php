@@ -82,3 +82,6 @@ $string['templetetopic_single'] = 'Yes, use the summary as template';
 $string['templetetopic_list'] = 'Yes, use the summary as template, list the resources that are not referenced';
 $string['templatetopic_icons'] = 'Show icon in resource links in summary';
 $string['templatetopic_icons_help'] = 'This option defines if the icons are displayed in the summary when it is a template.';
+
+$string['icontext'] = 'Full icon class text';
+$string['icontext_help'] = 'Add font awesome, glyphicon, or anyother icon class. Insert the full class identifier ex. "fa fa-user" to fontawesome icons.';
