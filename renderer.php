@@ -32,8 +32,8 @@ require_once($CFG->dirroot.'/course/format/renderer.php');
  */
 class format_onetopic_renderer extends format_section_renderer_base {
 
-    private $_format_data;
-    private $_course;
+    protected $_format_data;
+    protected $_course;
 
     /**
      * Constructor method, calls the parent constructor
@@ -137,7 +137,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $real_course_display = $course->realcoursedisplay;
         $modinfo = get_fast_modinfo($course);
         $course = course_get_format($course)->get_course();
-        $course->realcoursedisplay = $real_course_display; 
+        $course->realcoursedisplay = $real_course_display;
         $sections = $modinfo->get_section_info_all();
 
         // Can we view the section in question?
@@ -259,6 +259,11 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         if (isset($format_options['level'])) {
                             $level = $format_options['level'];
                         }
+
+                        $icon = '';
+                        if (isset($format_options['icon']) && $format_options['icon'] != '') {
+                            $icon = "<i class='{$format_options['icon']}'></i> ";
+                        }
                     }
 
                     if ($section == 0) {
@@ -269,7 +274,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                     $special_style = 'tab_position_' . $section . ' tab_level_' . $level;
                     if ($course->marker == $section) {
-                        $special_style = ' marker '; 
+                        $special_style = ' marker ';
                     }
 
                     if (!$thissection->visible || !$thissection->available) {
@@ -280,8 +285,13 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         }
                     }
 
-                    $new_tab = new tabobject("tab_topic_" . $section, $url,
-                    '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '">' . s($sectionname) . "</div>", s($sectionname));
+                    if ($icon) {
+                        $new_tab = new tabobject("tab_topic_" . $section, $url,
+                        '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '"><span class="icon-tab">' . $icon . s($sectionname) . "</span></div>", s($sectionname));
+                    } else {
+                      $new_tab = new tabobject("tab_topic_" . $section, $url,
+                        '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '">' . s($sectionname) . "</div>", s($sectionname));
+                    }
 
                     if (is_array($format_options) && isset($format_options['level'])) {
 
@@ -359,7 +369,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             }
                         }
                     }
-                    //End move section list***************************************************************************                
+                    //End move section list***************************************************************************
                 }
             }
 
@@ -441,12 +451,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         // close single-section div.
         echo html_writer::end_tag('div');
-        
+
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
             echo '<br class="utilities-separator" />';
             print_collapsible_region_start('move-list-box clearfix collapsible mform', 'course_format_onetopic_config_movesection', get_string('utilities', 'format_onetopic'), '', true);
-            
+
 
             //Move controls
             if ($can_move && !empty($move_list_html)) {
@@ -462,7 +472,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     echo html_writer::end_div();
                 echo html_writer::end_div();
             }
-        
+
             $baseurl = course_get_url($course, $displaysection);
             $baseurl->param('sesskey', sesskey());
 
@@ -526,11 +536,11 @@ class format_onetopic_renderer extends format_section_renderer_base {
      */
     protected function section_header($section, $course, $onsectionpage, $sectionreturn=null) {
         global $PAGE;
-    
+
         $o = '';
         $currenttext = '';
         $sectionstyle = '';
-    
+
         if ($section->section != 0) {
             // Only in the non-general sections.
             if (!$section->visible) {
@@ -539,18 +549,18 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 $sectionstyle = ' current';
             }
         }
-    
+
         $o.= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
                 'class' => 'section main clearfix'.$sectionstyle, 'role'=>'region',
                 'aria-label'=> get_section_name($course, $section)));
-    
+
         $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
         $o.= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
-    
+
         $rightcontent = $this->section_right_content($section, $course, $onsectionpage);
         $o.= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
         $o.= html_writer::start_tag('div', array('class' => 'content'));
-    
+
         $classes = ' accesshide';
 
         $sectionname = html_writer::tag('span', $this->section_title($section, $course));
@@ -559,7 +569,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $o.= html_writer::start_tag('div', array('class' => 'summary'));
         $o.= $this->format_summary_text($section);
         $o.= html_writer::end_tag('div');
-    
+
         $context = context_course::instance($course->id);
         $o .= $this->section_availability_message($section,
             has_capability('moodle/course:viewhiddensections', $context));
@@ -744,7 +754,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 $obj_replace->_string_replace = $html_resource;
                 $obj_replace->_string_search = $instancename;
 
-                $new_summary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($obj_replace->_string_search, '/') . ")(:?))([^\]]*)\]\]/i", array($obj_replace, "replace_tag_in_expresion"), $summary); 
+                $new_summary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($obj_replace->_string_search, '/') . ")(:?))([^\]]*)\]\]/i", array($obj_replace, "replace_tag_in_expresion"), $summary);
 
                 if ($new_summary != $summary) {
                     unset($this->_format_data->mods[$modnumber]);

@@ -61,7 +61,7 @@ $section = optional_param('section', -1, PARAM_INT);
 if (isset($section) && $section >= 0 && $course->numsections >= $section) {
      $USER->display[$course->id] = $section;
      $displaysection = $section;
-} 
+}
 else {
     if (isset($USER->display[$course->id]) && $course->numsections >= $USER->display[$course->id]) {
         $displaysection = $USER->display[$course->id];
@@ -90,4 +90,3 @@ $renderer->print_single_section_page($course, null, $mods, $modnames, $modnamesu
 
 // Include course format js module
 $PAGE->requires->js('/course/format/topics/format.js');
-$PAGE->requires->js('/course/format/onetopic/format.js');
