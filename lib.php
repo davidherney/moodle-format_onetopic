@@ -39,6 +39,34 @@ class format_onetopic extends format_base {
     const TEMPLATETOPIC_NOT = 0;
     const TEMPLATETOPIC_SINGLE = 1;
     const TEMPLATETOPIC_LIST = 2;
+
+    /**
+     * Creates a new instance of class
+     *
+     * Please use {@link course_get_format($courseorid)} to get an instance of the format class
+     *
+     * @param string $format
+     * @param int $courseid
+     * @return format_base
+     */
+    protected function __construct($format, $courseid) {
+        parent::__construct($format, $courseid);
+
+        //Hack for section number, when not is like a param in the url
+        global $section, $PAGE, $USER, $urlparams;
+
+        if (empty($section)) {
+            if (isset($USER->display[$courseid]) && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')
+                    && isset($urlparams) && is_array($urlparams)) {
+
+                $section = $USER->display[$courseid];
+                $urlparams['section'] = $USER->display[$courseid];
+                $PAGE->set_url('/course/view.php', $urlparams);
+
+            }
+        }
+    }
+
     /**
      * Returns true if this course format uses sections
      *
@@ -148,13 +176,20 @@ class format_onetopic extends format_base {
      * @param navigation_node $node The course node within the navigation
      */
     public function extend_course_navigation($navigation, navigation_node $node) {
-        global $PAGE;
+        global $PAGE, $COURSE, $USER;
+
         // if section is specified in course/view.php, make sure it is expanded in navigation
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
-            if ($selectedsection !== null && (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
+            if ((!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
                     $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
-                $navigation->includesectionnum = $selectedsection;
+
+                if ($selectedsection !== null) {
+                    $navigation->includesectionnum = $selectedsection;
+                }
+                else if (isset($USER->display[$COURSE->id])) {
+                    $navigation->includesectionnum = $USER->display[$COURSE->id];
+                }
             }
         }
 
@@ -516,6 +551,11 @@ class format_onetopic extends format_base {
     public function can_delete_section($section) {
         return true;
     }
+
+    //ToDo: feature #45
+    /*public function course_content_header() {
+        return new format_onetopic_header();
+    }*/
 }
 
 class format_onetopic_replace_regularexpression {
@@ -566,3 +606,5 @@ class format_onetopic_replace_regularexpression {
         return $term;
     }
 }
+
+class format_onetopic_header implements renderable {}
