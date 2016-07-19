@@ -162,7 +162,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // General section if non-empty and course_display is multiple.
         if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
             $thissection = $sections[0];
-            if ((($thissection->visible && $thissection->available) || $canviewhidden) && ($thissection->summary || $thissection->sequence || $PAGE->user_is_editing())) {
+            if ((($thissection->visible && $thissection->available) || $canviewhidden) && 
+                    ($thissection->summary || $thissection->sequence || $PAGE->user_is_editing() || (string)$thissection->name !== '')) {
                 echo $this->start_section_list();
                 echo $this->section_header($thissection, $course, true);
 
@@ -281,7 +282,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     }
 
                     $new_tab = new tabobject("tab_topic_" . $section, $url,
-                    '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '">' . s($sectionname) . "</div>", s($sectionname));
+                    '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '"><span>' . s($sectionname) . "</span></div>", s($sectionname));
 
                     if (is_array($format_options) && isset($format_options['level'])) {
 
@@ -550,10 +551,18 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $rightcontent = $this->section_right_content($section, $course, $onsectionpage);
         $o.= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
         $o.= html_writer::start_tag('div', array('class' => 'content'));
-    
-        $classes = ' accesshide';
 
-        $sectionname = html_writer::tag('span', $this->section_title($section, $course));
+        $title = $this->section_title($section, $course);
+
+        if ($section->section != 0 || $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || (string)$section->name == '') {
+            $classes = ' accesshide';
+            $sectionname = html_writer::tag('span', $this->section_title($section, $course));
+        }
+        else {
+            $classes = '';
+            $sectionname = html_writer::tag('span', get_section_name($course, $section));
+        }
+
         $o.= $this->output->heading($sectionname, 3, 'sectionname' . $classes);
 
         $o.= html_writer::start_tag('div', array('class' => 'summary'));
@@ -674,7 +683,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $initialised = true;
         }
 
-        $labelformatoptions = new object();
+        $labelformatoptions = new stdclass();
         $labelformatoptions->noclean = true;
 
         /// Casting $course->modinfo to string prevents one notice when the field is null
@@ -848,4 +857,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
         return $output;
     }
 
+    //ToDo: feature #45
+    /*protected function render_format_onetopic_header (format_onetopic_header $header) {
+        return html_writer::tag('div', 'This is the header');
+    }*/
 }
+

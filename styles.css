@@ -1,3 +1,5 @@
+/**Styles included in topics course format*/
+/*
 .course-content ul.topics {margin:0;}
 .course-content ul.topics li.section {list-style: none;margin:0 0 5px 0;padding:0;}
 .course-content ul.topics li.section .content {margin:0 40px;}
@@ -10,12 +12,13 @@
 .course-content ul.topics li.section .left .section-handle img.icon { padding:0; vertical-align: baseline; }
 .course-content ul.topics li.section .section_action_menu .textmenu,
 .course-content ul.topics li.section .section_action_menu .menu-action-text { white-space: nowrap; }
+*/
 
-.jumpmenu {text-align:center;}
-.course-content div.single-section .tabtree .tabrow0 li {line-height: 28px; display: inline-block; }
+.format-onetopic .jumpmenu {text-align:center;}
+.format-onetopic .course-content div.single-section .tabtree .tabrow0 li {line-height: 28px; display: inline-block; }
 /*.course-content div.single-section .tabtree .tabrow0 li {line-height: 26px; }*/
-.course-content div.single-section .tabtree .tabrow0 li.here .empty { bottom: 3px; display: block; height: 1px; left: 0; right: 0;  }
-.course-content div.single-section .tabtree { margin-bottom: 0px; }
+.format-onetopic .course-content div.single-section .tabtree .tabrow0 li.here .empty { bottom: 3px; display: block; height: 1px; left: 0; right: 0;  }
+.format-onetopic .course-content div.single-section .tabtree { margin-bottom: 0px; }
 
 .format-onetopic .tab_content { white-space: nowrap; }
 .format-onetopic .tab_content.marker { font-style: italic; }
