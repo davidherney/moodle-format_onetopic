@@ -32,8 +32,8 @@ require_once($CFG->dirroot.'/course/format/renderer.php');
  */
 class format_onetopic_renderer extends format_section_renderer_base {
 
-    private $_format_data;
-    private $_course;
+    protected $_format_data;
+    protected $_course;
 
     /**
      * Constructor method, calls the parent constructor
