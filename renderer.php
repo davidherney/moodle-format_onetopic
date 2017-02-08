@@ -182,7 +182,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
 
         // Start single-section div
-        echo html_writer::start_tag('div', array('class' => 'single-section onetopic'));
+        echo html_writer::start_tag('div');
 
         //Move controls
         $can_move = false;
@@ -268,6 +268,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $url = course_get_url($course, $section);
                     }
 
+                    /*
                     $special_style = 'tab_position_' . $section . ' tab_level_' . $level;
                     if ($course->marker == $section) {
                         $special_style = ' marker '; 
@@ -280,9 +281,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             $inactive_tabs[] = "tab_topic_" . $section;
                         }
                     }
+                     * 
+                     */
 
-                    $new_tab = new tabobject("tab_topic_" . $section, $url,
-                    '<div style="' . $custom_styles . '" class="tab_content ' . $special_style . '"><span>' . s($sectionname) . "</span></div>", s($sectionname));
+                    $new_tab = new tabobject("tab_topic_" . $section, $url, s($sectionname), s($sectionname));
 
                     if (is_array($format_options) && isset($format_options['level'])) {
 
@@ -435,8 +437,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Display section bottom navigation.
         $sectionbottomnav = '';
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
-        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'pull-left'));
+        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'pull-right'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
 
