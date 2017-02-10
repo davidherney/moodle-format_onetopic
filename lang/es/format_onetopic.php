@@ -81,3 +81,6 @@ $string['templetetopic_single'] = 'Si, usar el resumen como una plantilla';
 $string['templetetopic_list'] = 'Si, usar el resumen como plantilla y listar los recursos no referenciados';
 $string['templatetopic_icons'] = 'Mostrar icono en enlaces de recursos en el resumen';
 $string['templatetopic_icons_help'] = 'Esta opción define si se muestran o no los iconos de los recursos como parte del nombre, cuando el resumen del tema se utiliza como plantilla.';
+
+$string['icontext'] = 'Nombre completo de la classe del icono';
+$string['icontext_help'] = 'Add font awesome, glyphicon ou otra clase del icono.';
