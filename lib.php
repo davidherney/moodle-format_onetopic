@@ -1,11 +1,12 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
 //
-// You can redistribute it and/or modify
+// Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// It is distributed in the hope that it will be useful,
+// Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -29,15 +30,19 @@ require_once($CFG->dirroot. '/course/format/lib.php');
  * Main class for the Onetopic course format
  *
  * @since 2.0
- * @package contribution
+ * @package format_onetopic
  * @copyright 2012 David Herney Bernal - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class format_onetopic extends format_base {
 
+    /** @var int The summary is not a template */
     const TEMPLATETOPIC_NOT = 0;
+
+    /** @var int The summary is a single template */
     const TEMPLATETOPIC_SINGLE = 1;
+
+    /** @var int The summary is a template, list the resources that are not referenced */
     const TEMPLATETOPIC_LIST = 2;
 
     /**
@@ -52,12 +57,13 @@ class format_onetopic extends format_base {
     protected function __construct($format, $courseid) {
         parent::__construct($format, $courseid);
 
-        //Hack for section number, when not is like a param in the url
+        // Hack for section number, when not is like a param in the url.
         global $section, $PAGE, $USER, $urlparams;
 
         if (empty($section)) {
+            $course = format_base::get_course();
             if (isset($USER->display[$courseid]) && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')
-                    && isset($urlparams) && is_array($urlparams)) {
+                    && isset($urlparams) && is_array($urlparams) && $course->numsections >= $USER->display[$course->id]) {
 
                 $section = $USER->display[$courseid];
                 $urlparams['section'] = $USER->display[$courseid];
@@ -162,10 +168,10 @@ class format_onetopic extends format_base {
             $USER->onetopic_da = array();
         }
 
-        $disable_ajax = isset($USER->onetopic_da[$course->id]) ? $USER->onetopic_da[$course->id] : false;
+        $disableajax = isset($USER->onetopic_da[$course->id]) ? $USER->onetopic_da[$course->id] : false;
 
         $ajaxsupport = new stdClass();
-        $ajaxsupport->capable = !$disable_ajax;
+        $ajaxsupport->capable = !$disableajax;
         return $ajaxsupport;
     }
 
@@ -178,7 +184,7 @@ class format_onetopic extends format_base {
     public function extend_course_navigation($navigation, navigation_node $node) {
         global $PAGE, $COURSE, $USER;
 
-        // if section is specified in course/view.php, make sure it is expanded in navigation
+        // If section is specified in course/view.php, make sure it is expanded in navigation.
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
             if ((!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
@@ -186,14 +192,13 @@ class format_onetopic extends format_base {
 
                 if ($selectedsection !== null) {
                     $navigation->includesectionnum = $selectedsection;
-                }
-                else if (isset($USER->display[$COURSE->id])) {
+                } else if (isset($USER->display[$COURSE->id])) {
                     $navigation->includesectionnum = $USER->display[$COURSE->id];
                 }
             }
         }
 
-        // check if there are callbacks to extend course navigation
+        // Check if there are callbacks to extend course navigation.
         parent::extend_course_navigation($navigation, $node);
 
         // We want to remove the general section if it is empty.
@@ -217,7 +222,7 @@ class format_onetopic extends format_base {
      *
      * @return array This will be passed in ajax respose
      */
-    function ajax_section_move() {
+    public function ajax_section_move() {
         global $PAGE;
         $titles = array();
         $course = $this->get_course();
@@ -392,7 +397,7 @@ class format_onetopic extends format_base {
             $numsections = $numsections[0];
             if ($numsections > $maxsections) {
                 $element = $mform->getElement('numsections');
-                for ($i = $maxsections+1; $i <= $numsections; $i++) {
+                for ($i = $maxsections + 1; $i <= $numsections; $i++) {
                     $element->addOption("$i", $i);
                 }
             }
@@ -423,19 +428,18 @@ class format_onetopic extends format_base {
                     if (array_key_exists($key, $oldcourse)) {
                         $data[$key] = $oldcourse[$key];
                     } else if ($key === 'numsections') {
-                        // If previous format does not have the field 'numsections'
-                        // and $data['numsections'] is not set,
-                        // we fill it with the maximum section number from the DB
-                        $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
-                            WHERE course = ?', array($this->courseid));
+                        // If previous format does not have the field 'numsections' and $data['numsections'] is not set,
+                        // we fill it with the maximum section number from the DB.
+                        $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections} WHERE course = ?',
+                            array($this->courseid));
                         if ($maxsection) {
-                            // If there are no sections, or just default 0-section, 'numsections' will be set to default
+                            // If there are no sections, or just default 0-section, 'numsections' will be set to default.
                             $data['numsections'] = $maxsection;
                         }
                     } else if ($key === 'hidetabsbar') {
                         // If previous format does not have the field 'hidetabsbar'
                         // and $data['hidetabsbar'] is not set,
-                        // we fill it with the default option
+                        // we fill it with the default option.
                         $data['hidetabsbar'] = 0;
                     } else if ($key === 'templatetopic') {
                         $data['templatetopic'] = self::TEMPLATETOPIC_NOT;
@@ -449,8 +453,8 @@ class format_onetopic extends format_base {
         if ($changed && array_key_exists('numsections', $data)) {
             // If the numsections was decreased, try to completely delete the orphaned sections (unless they are not empty).
             $numsections = (int)$data['numsections'];
-            $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
-                        WHERE course = ?', array($this->courseid));
+            $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections} WHERE course = ?',
+                array($this->courseid));
             for ($sectionnum = $maxsection; $sectionnum > $numsections; $sectionnum--) {
                 if (!$this->delete_section($sectionnum, false)) {
                     break;
@@ -460,6 +464,31 @@ class format_onetopic extends format_base {
         return $changed;
     }
 
+    /**
+     * Definitions of the additional options that this course format uses for section
+     *
+     * See {@link format_base::course_format_options()} for return array definition.
+     *
+     * Additionally section format options may have property 'cache' set to true
+     * if this option needs to be cached in {@link get_fast_modinfo()}. The 'cache' property
+     * is recommended to be set only for fields used in {@link format_base::get_section_name()},
+     * {@link format_base::extend_course_navigation()} and {@link format_base::get_view_url()}
+     *
+     * For better performance cached options are recommended to have 'cachedefault' property
+     * Unlike 'default', 'cachedefault' should be static and not access get_config().
+     *
+     * Regardless of value of 'cache' all options are accessed in the code as
+     * $sectioninfo->OPTIONNAME
+     * where $sectioninfo is instance of section_info, returned by
+     * get_fast_modinfo($course)->get_section_info($sectionnum)
+     * or get_fast_modinfo($course)->get_section_info_all()
+     *
+     * All format options for particular section are returned by calling:
+     * $this->get_format_options($section);
+     *
+     * @param bool $foreditform
+     * @return array
+     */
     public function section_format_options($foreditform = false) {
         static $sectionformatoptions = false;
 
@@ -534,7 +563,7 @@ class format_onetopic extends format_base {
                 )
             );
 
-            $sectionformatoptions = $sectionformatoptionsedit; //array_merge_recursive($sectionformatoptions, $sectionformatoptionsedit);
+            $sectionformatoptions = $sectionformatoptionsedit;
         }
         return $sectionformatoptions;
     }
@@ -552,18 +581,33 @@ class format_onetopic extends format_base {
         return true;
     }
 
-    //ToDo: feature #45
-    /*public function course_content_header() {
-        return new format_onetopic_header();
-    }*/
 }
 
+/**
+ * Class used in order to replace tags into text. It is a part of templates functionality.
+ * Called by preg_replace_callback in renderer.php.
+ *
+ * @since 2.0
+ * @package format_onetopic
+ * @copyright 2012 David Herney Bernal - cirano
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class format_onetopic_replace_regularexpression {
+    /** @var string Text to search */
     public $_string_search;
+
+    /** @var string Text to replace */
     public $_string_replace;
 
+    /** @var string Temporal key */
     public $_tag_string = '{label_tag_replace}';
 
+    /**
+     * Replace a tag into a text.
+     *
+     * @param array $match
+     * @return array
+     */
     public function replace_tag_in_expresion ($match) {
 
         $term = $match[0];
@@ -577,10 +621,10 @@ class format_onetopic_replace_regularexpression {
             $pattern = '/([^:])+:/i';
             $text = preg_replace($pattern, '', $text);
 
-            //Change text for alternative text
-            $new_replace = str_replace($this->_string_search, $text, $this->_string_replace);
+            // Change text for alternative text.
+            $newreplace = str_replace($this->_string_search, $text, $this->_string_replace);
 
-            //posible html tags position
+            // Posible html tags position.
             $pattern = '/([>][^<]*:[^<]*[<])+/i';
             $term = preg_replace($pattern, '><:><', $term);
 
@@ -596,15 +640,12 @@ class format_onetopic_replace_regularexpression {
             $pattern = '/([>][^<^:]*[<])+/i';
             $term = preg_replace($pattern, '><', $term);
 
-            $term = str_replace('<:>', $new_replace, $term);
-        }
-        else {
-            //Change tag for resource or mod name
-            $new_replace = str_replace($this->_tag_string, $this->_string_search, $this->_string_replace);
-            $term = str_replace($this->_string_search, $new_replace, $term);
+            $term = str_replace('<:>', $newreplace, $term);
+        } else {
+            // Change tag for resource or mod name.
+            $newreplace = str_replace($this->_tag_string, $this->_string_search, $this->_string_replace);
+            $term = str_replace($this->_string_search, $newreplace, $term);
         }
         return $term;
     }
 }
-
-class format_onetopic_header implements renderable {}
