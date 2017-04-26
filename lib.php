@@ -56,8 +56,9 @@ class format_onetopic extends format_base {
         global $section, $PAGE, $USER, $urlparams;
 
         if (empty($section)) {
+            $course = format_base::get_course();
             if (isset($USER->display[$courseid]) && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')
-                    && isset($urlparams) && is_array($urlparams)) {
+                    && isset($urlparams) && is_array($urlparams) && $course->numsections >= $USER->display[$course->id]) {
 
                 $section = $USER->display[$courseid];
                 $urlparams['section'] = $USER->display[$courseid];
