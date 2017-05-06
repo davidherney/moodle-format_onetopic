@@ -1,7 +1,7 @@
 COURSE FORMATS Onetopic
 ============================
 
-Package tested in: moodle 3.1+
+Package tested in: moodle 3.1+ and moodle 3.2+
 
 QUICK INSTALL
 ==============
@@ -15,9 +15,13 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2016071402:
+Course format supports the creation of a news forum.
+
 2016071401:
 Fixed: Error code: sectionnotexist
 Apply Moodle coding style
+Compatibility with moodle 3.2
 
 2016071400:
 Compatibility with moodle 3.1

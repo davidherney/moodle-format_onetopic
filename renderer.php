@@ -97,8 +97,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $links = array('previous' => '', 'next' => '');
         $back = $sectionno - 1;
 
-        while ((($back > 0 && $course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) || ($back >= 0 && $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE)) &&
-                empty($links['previous'])) {
+        while ((($back > 0 && $course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ||
+                ($back >= 0 && $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE)) && empty($links['previous'])) {
             if ($canviewhidden || $sections[$back]->uservisible) {
                 $params = array();
                 if (!$sections[$back]->visible) {
@@ -288,7 +288,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                     $newtab = new tabobject("tab_topic_" . $section, $url,
                     '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
-                    '<span>' . s($sectionname) . "</span></div>", s($sectionname));
+                    '<span>' . $sectionname . "</span></div>", $sectionname);
 
                     if (is_array($formatoptions) && isset($formatoptions['level'])) {
 
