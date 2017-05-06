@@ -16,7 +16,7 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 IN VERSION
 =============
 2016071402:
-
+Course format supports the creation of a news forum.
 
 2016071401:
 Fixed: Error code: sectionnotexist
