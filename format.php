@@ -16,6 +16,7 @@
 
 /**
  * Display the whole course as "tabs".
+ *
  * It is based of the "topics" format.
  *
  * @since 2.0

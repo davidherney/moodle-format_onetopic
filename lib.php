@@ -437,8 +437,7 @@ class format_onetopic extends format_base {
                             $data['numsections'] = $maxsection;
                         }
                     } else if ($key === 'hidetabsbar') {
-                        // If previous format does not have the field 'hidetabsbar'
-                        // and $data['hidetabsbar'] is not set,
+                        // If previous format does not have the field 'hidetabsbar' and $data['hidetabsbar'] is not set,
                         // we fill it with the default option.
                         $data['hidetabsbar'] = 0;
                     } else if ($key === 'templatetopic') {
@@ -581,10 +580,20 @@ class format_onetopic extends format_base {
         return true;
     }
 
+
+    /**
+     * Indicates whether the course format supports the creation of a news forum.
+     *
+     * @return bool
+     */
+    public function supports_news() {
+        return true;
+    }
 }
 
 /**
  * Class used in order to replace tags into text. It is a part of templates functionality.
+ *
  * Called by preg_replace_callback in renderer.php.
  *
  * @since 2.0
