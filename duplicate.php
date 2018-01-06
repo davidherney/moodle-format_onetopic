@@ -23,6 +23,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+define('NO_OUTPUT_BUFFERING', true);
+
 require_once('../../../config.php');
 require_once($CFG->dirroot.'/course/lib.php');
 
@@ -62,11 +64,6 @@ if (!empty($sectioninfo)) {
     $lastsectionnum = $DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
 
     $numnewsection = $lastsectionnum + 1;
-
-    if (!$courseformat->update_course_format_options(array('numsections' => $numnewsection))) {
-        print_error('cantcreatesection', 'error', null, $course->fullname);
-        return;
-    }
 
     $pbar->update_full(5, get_string('creating_section', 'format_onetopic'));
 

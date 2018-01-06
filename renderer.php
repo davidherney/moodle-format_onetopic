@@ -42,6 +42,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
     protected $_course;
 
     /**
+     * Course sections length.
+     * @var int numsections
+     */
+    public $numsections;
+
+    /**
      * Constructor method, calls the parent constructor
      *
      * @param moodle_page $page
@@ -81,6 +87,28 @@ class format_onetopic_renderer extends format_section_renderer_base {
     }
 
     /**
+     * Generate the section title, wraps it in a link to the section page if page is to be displayed on a separate page
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @return string HTML to output.
+     */
+    public function section_title($section, $course) {
+        return $this->render(course_get_format($course)->inplace_editable_render_section_name($section));
+    }
+
+    /**
+     * Generate the section title to be displayed on the section page, without a link
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @return string HTML to output.
+     */
+    public function section_title_without_link($section, $course) {
+        return $this->render(course_get_format($course)->inplace_editable_render_section_name($section, false));
+    }
+
+    /**
      * Generate next/previous section links for navigation
      *
      * @param stdClass $course The course entry from DB
@@ -112,7 +140,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
 
         $forward = $sectionno + 1;
-        while ($forward <= $course->numsections and empty($links['next'])) {
+        while ($forward <= $this->numsections && empty($links['next'])) {
             if ($canviewhidden || $sections[$forward]->uservisible) {
                 $params = array();
                 if (!$sections[$forward]->visible) {
@@ -207,7 +235,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         $defaulttopic = -1;
 
-        while ($section <= $course->numsections) {
+        while ($section <= $this->numsections) {
 
             if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $section == 0) {
                 $section++;
@@ -349,6 +377,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             } else {
                                 $movelisthtml .= html_writer::tag('li', $sectionname, array('class' => $liclass));
                             }
+                        } else {
+                            $movelisthtml .= html_writer::tag('li', $sectionname);
                         }
                     }
                     // End move section list.
@@ -365,25 +395,17 @@ class format_onetopic_renderer extends format_section_renderer_base {
         if (!$course->hidetabsbar && count($tabs[0]) > 0) {
 
             if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+
                 // Increase number of sections.
                 $straddsection = get_string('increasesections', 'moodle');
                 $url = new moodle_url('/course/changenumsections.php',
                     array('courseid' => $course->id,
                         'increase' => true,
-                        'sesskey' => sesskey()));
+                        'sesskey' => sesskey(),
+                        'insertsection' => 0));
                 $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
                 $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
 
-                if ($course->numsections > 0) {
-                    // Reduce number of sections.
-                    $strremovesection = get_string('reducesections', 'moodle');
-                    $url = new moodle_url('/course/changenumsections.php',
-                        array('courseid' => $course->id,
-                            'increase' => false,
-                            'sesskey' => sesskey()));
-                    $icon = $this->output->pix_icon('t/switch_minus', $strremovesection);
-                    $tabs[] = new tabobject("tab_topic_remove", $url, $icon, s($strremovesection));
-                }
             }
 
             $sectiontitle .= $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
@@ -496,6 +518,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 echo html_writer::end_div();
             }
 
+            echo html_writer::start_div("form-item clearfix form-group row fitem");
+                echo $this->change_number_sections($course, 0);
+            echo html_writer::end_div();
+
             print_collapsible_region_end();
         }
     }
@@ -536,8 +562,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $rightcontent = $this->section_right_content($section, $course, $onsectionpage);
         $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
         $o .= html_writer::start_tag('div', array('class' => 'content'));
-
-        $title = $this->section_title($section, $course);
 
         if ($section->section != 0 || $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || (string)$section->name == '') {
             $classes = ' accesshide';
@@ -584,7 +608,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
         $url->param('sesskey', sesskey());
 
-        $isstealth = $section->section > $course->numsections;
+        $isstealth = $section->section > $this->numsections;
         $controls = array();
         if (!$isstealth && $section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
@@ -594,7 +618,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 $controls['highlight'] = array('url' => $url, "icon" => 'i/marked',
                                                'name' => $highlightoff,
                                                'pixattr' => array('class' => '', 'alt' => $markedthistopic),
-                                               'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic));
+                                               'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic,
+                                                   'data-action' => 'removemarker'));
             } else {
                 $url->param('marker', $section->section);
                 $markthistopic = get_string('markthistopic');
@@ -602,7 +627,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 $controls['highlight'] = array('url' => $url, "icon" => 'i/marker',
                                                'name' => $highlight,
                                                'pixattr' => array('class' => '', 'alt' => $markthistopic),
-                                               'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic));
+                                               'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic,
+                                                   'data-action' => 'setmarker'));
             }
         }
 

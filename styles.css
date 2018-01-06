@@ -1,7 +1,7 @@
 /** Styles included in topics course format */
 
 .format-onetopic .jumpmenu {
-    text-align:center;
+    text-align: center;
 }
 
 .format-onetopic .course-content div.single-section .tabtree .tabrow0 li {
@@ -66,4 +66,26 @@
 .format-onetopic .summary img.activityicon {
     margin-right: 3px;
     vertical-align: text-bottom;
+}
+
+.format-onetopic #course_format_onetopic_config_movesection .form-item {
+    border-bottom: 1px solid #999;
+    padding: 10px;
+}
+
+.format-onetopic #course_format_onetopic_config_movesection .form-label {
+    font-weight: bold;
+}
+
+.format-onetopic #course_format_onetopic_config_movesection .form-setting {
+    padding-left: 20px;
+}
+
+.format-onetopic #course_format_onetopic_config_movesection .form-description {
+    padding-left: 50px;
+    font-style: italic;
+}
+
+.format-onetopic #course_format_onetopic_config_movesection #changenumsections {
+    text-align: left;
 }
