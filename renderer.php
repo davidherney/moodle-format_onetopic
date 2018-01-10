@@ -772,7 +772,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if (!empty($availabilitytext)) {
                     $uniqueid = 'format_onetopic_winfo_' . time() . '-' . rand(0, 1000);
-                    $htmlresource .= '<span class="iconhelp" data-infoid="' . $uniqueid . '">' . $this->output->pix_icon('a/help', get_string('help')) . '</span>';
+                    $htmlresource .= '<span class="iconhelp" data-infoid="' . $uniqueid . '">' .
+                                        $this->output->pix_icon('a/help', get_string('help')) .
+                                     '</span>';
 
                     $htmlmore .= '<div id="' . $uniqueid . '" class="availability_info_box" style="display: none;">' .
                         $availabilitytext . '</div>';
