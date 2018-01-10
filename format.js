@@ -19,3 +19,19 @@ M.course.format.showInfo = function(id) {
     Y.Node.one('#' + id).show();
 
 };
+
+M.course.format.dialogueinitloaded = false;
+
+M.course.format.dialogueinit = function() {
+
+    if (M.course.format.dialogueinitloaded) {
+        return;
+    }
+
+    M.course.format.dialogueinitloaded = true;
+    var infolist = Y.all('[data-infoid]').each(function(node) {
+        node.on('click', function() {
+            M.course.format.showInfo(node.getAttribute('data-infoid'));
+        })
+    });
+};

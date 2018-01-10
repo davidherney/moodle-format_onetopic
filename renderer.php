@@ -635,6 +635,16 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
 
         // If the edit key exists, we are going to insert our controls after it.
+        if (array_key_exists("delete", $parentcontrols)) {
+            $url = new moodle_url('/course/editsection.php', array(
+                    'id' => $section->id,
+                    'sr' => $section->section - 1,
+                    'delete' => 1,
+                    'sesskey' => sesskey()));
+            $parentcontrols['delete']['url'] = $url;
+        }
+
+        // If the edit key exists, we are going to insert our controls after it.
         if (array_key_exists("edit", $parentcontrols)) {
             $merged = array();
             // We can't use splice because we are using associative arrays.
@@ -676,7 +686,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      */
     private function replace_resources ($section) {
 
-        global $CFG, $USER;
+        global $CFG, $USER, $PAGE;
 
         static $initialised;
 
@@ -715,6 +725,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $objreplace = new format_onetopic_replace_regularexpression();
 
+            $showyuidialogue = false;
             foreach ($sectionmods as $modnumber) {
 
                 if (empty($this->_format_data->mods[$modnumber])) {
@@ -752,6 +763,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 if (!empty($url)) {
                     // If there is content AND a link, then display the content here
                     // (AFTER any icons). Otherwise it was displayed before.
+                    $contentpart = str_replace('<div ', '<span ', $contentpart);
+                    $contentpart = str_replace('</div>', '</span>', $contentpart);
                     $htmlresource .= $contentpart;
                 }
 
@@ -759,11 +772,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if (!empty($availabilitytext)) {
                     $uniqueid = 'format_onetopic_winfo_' . time() . '-' . rand(0, 1000);
-                    $htmlresource .= '<img src="' . $this->output->pix_url('a/help') . '" class="iconhelp" alt="" ' .
-                        ' onclick="M.course.format.showInfo(\'' . $uniqueid . '\')" />';
+                    $htmlresource .= '<span class="iconhelp" data-infoid="' . $uniqueid . '">' . $this->output->pix_icon('a/help', get_string('help')) . '</span>';
 
                     $htmlmore .= '<div id="' . $uniqueid . '" class="availability_info_box" style="display: none;">' .
                         $availabilitytext . '</div>';
+
+                    $showyuidialogue = true;
                 }
 
                 // Replace the link in pattern: [[resource name]].
@@ -778,6 +792,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 }
 
                 $summary = $newsummary;
+            }
+
+            if ($showyuidialogue) {
+                $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
             }
 
         }

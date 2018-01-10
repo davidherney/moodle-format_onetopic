@@ -89,3 +89,11 @@
 .format-onetopic #course_format_onetopic_config_movesection #changenumsections {
     text-align: left;
 }
+
+.format-onetopic .onetopic .content > .summary .quickeditlink {
+    display: none;
+}
+
+.format-onetopic .onetopic .content > .summary .iconhelp {
+    cursor: pointer;
+}
