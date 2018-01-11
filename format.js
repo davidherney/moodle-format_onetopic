@@ -29,9 +29,9 @@ M.course.format.dialogueinit = function() {
     }
 
     M.course.format.dialogueinitloaded = true;
-    var infolist = Y.all('[data-infoid]').each(function(node) {
+    Y.all('[data-infoid]').each(function(node) {
         node.on('click', function() {
             M.course.format.showInfo(node.getAttribute('data-infoid'));
-        })
+        });
     });
 };

@@ -64,7 +64,8 @@ class format_onetopic extends format_base {
             $numsections = $DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
             if (empty($section)) {
                 $course = format_base::get_course();
-                if (isset($USER->display[$courseid]) && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')
+                if (isset($USER->display[$courseid])
+                        && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')
                         && isset($urlparams) && is_array($urlparams) && $numsections >= $USER->display[$course->id]) {
 
                     $section = $USER->display[$courseid];
@@ -594,6 +595,19 @@ class format_onetopic extends format_base {
         return !$section->section || $section->visible;
     }
 
+    /**
+     * Callback used in WS core_course_edit_section when teacher performs an AJAX action on a section (show/hide)
+     *
+     * Access to the course is already validated in the WS but the callback has to make sure
+     * that particular action is allowed by checking capabilities
+     *
+     * Course formats should register
+     *
+     * @param stdClass|section_info $section
+     * @param string $action
+     * @param int $sr
+     * @return null|array|stdClass any data for the Javascript post-processor (must be json-encodeable)
+     */
     public function section_action($section, $action, $sr) {
         global $PAGE;
 
