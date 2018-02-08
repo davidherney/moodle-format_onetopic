@@ -15,6 +15,10 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2018010602:
+Seted the marked section as the default section
+Fixed: error duplicating the last section
+
 2018010600:
 Compatibility with moodle 3.3
 Supports "stealth" activities mode
