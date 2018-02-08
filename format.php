@@ -67,6 +67,9 @@ if (isset($section) && $section >= 0 && $renderer->numsections >= $section) {
 } else {
     if (isset($USER->display[$course->id]) && $renderer->numsections >= $USER->display[$course->id]) {
         $displaysection = $USER->display[$course->id];
+    } else if ($course->marker && $course->marker > 0) {
+        $USER->display[$course->id] = $course->marker;
+        $displaysection = $course->marker;
     } else {
         $USER->display[$course->id] = 0;
         $displaysection = 0;

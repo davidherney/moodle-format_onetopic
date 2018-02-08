@@ -174,13 +174,17 @@ class format_onetopic extends format_base {
      * @return stdClass
      */
     public function supports_ajax() {
-        global $course, $USER;
+        global $COURSE, $USER;
 
         if (!isset($USER->onetopic_da)) {
             $USER->onetopic_da = array();
         }
 
-        $disableajax = isset($USER->onetopic_da[$course->id]) ? $USER->onetopic_da[$course->id] : false;
+        if (empty($COURSE)) {
+            $disableajax = false;
+        } else {
+            $disableajax = isset($USER->onetopic_da[$COURSE->id]) ? $USER->onetopic_da[$COURSE->id] : false;
+        }
 
         $ajaxsupport = new stdClass();
         $ajaxsupport->capable = !$disableajax;

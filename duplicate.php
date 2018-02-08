@@ -101,6 +101,9 @@ if (!empty($sectioninfo)) {
         );
     $event->trigger();
 
+    $course = course_get_format($course)->get_course();
+    $modinfo = get_fast_modinfo($course);
+
     $pbar->update_full(10, get_string('rebuild_course_cache', 'format_onetopic'));
     $newsectioninfo = $modinfo->get_section_info($numnewsection);
 
