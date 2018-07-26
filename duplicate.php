@@ -79,6 +79,26 @@ if (!empty($sectioninfo)) {
 
     $newsectionid = $DB->insert_record('course_sections', $data, true);
 
+    try {
+        $fs = get_file_storage();
+        $files = $fs->get_area_files($context->id, 'course', 'section', $sectioninfo->id);
+
+        if ($files && is_array($files)) {
+            foreach ($files as $f) {
+
+                $fileinfo = array(
+                    'contextid' => $context->id,
+                    'component' => 'course',
+                    'filearea' => 'section',
+                    'itemid' => $newsectionid);
+
+                $fs->create_file_from_storedfile($fileinfo, $f);
+            }
+        }
+    } catch (Exception $e) {
+        // Do nothing.
+    }
+
     $moved = move_section_to($course, $numnewsection, $section + 1);
     if ($moved) {
         $numnewsection = $section + 1;

@@ -181,8 +181,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         if (!isset($sections[$displaysection])) {
             // This section doesn't exist.
-            print_error('unknowncoursesection', 'error', null, $course->fullname);
-            return;
+            print_error('unknowncoursesection', 'error', course_get_url($course),
+                format_string($course->fullname));
         }
 
         // Copy activity clipboard..
