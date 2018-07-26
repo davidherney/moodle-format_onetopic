@@ -1,7 +1,7 @@
 COURSE FORMATS Onetopic
 ============================
 
-Package tested in: moodle 3.3+ y moodle 3.4+
+Package tested in: moodle 3.3+, moodle 3.4+ and moodle 3.5+
 
 QUICK INSTALL
 ==============
@@ -15,6 +15,9 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2018010604:
+Compatibility with moodle 3.5
+
 2018010603:
 Compatibility with moodle 3.4 checked
 Fix: Summary images copy when a tab is duplicated.
