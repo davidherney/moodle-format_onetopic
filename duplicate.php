@@ -95,8 +95,7 @@ if (!empty($sectioninfo)) {
                 $fs->create_file_from_storedfile($fileinfo, $f);
             }
         }
-    }
-    catch(Exception $e) {
+    } catch (Exception $e) {
         // Do nothing.
     }
 
