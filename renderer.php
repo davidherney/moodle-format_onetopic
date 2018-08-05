@@ -121,12 +121,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $course = course_get_format($course)->get_course();
         $canviewhidden = has_capability('moodle/course:viewhiddensections', context_course::instance($course->id))
             or !$course->hiddensections;
+        $first_section = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
         $links = array('previous' => '', 'next' => '');
         $back = $sectionno - 1;
 
-        while ((($back > 0 && $course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ||
-                ($back >= 0 && $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE)) && empty($links['previous'])) {
+        while (($back >= $first_section) && empty($links['previous'])) {
             if ($canviewhidden || $sections[$back]->uservisible) {
                 $params = array();
                 if (!$sections[$back]->visible) {
@@ -174,6 +174,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $course = course_get_format($course)->get_course();
         $course->realcoursedisplay = $realcoursedisplay;
         $sections = $modinfo->get_section_info_all();
+        $first_section = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
         // Can we view the section in question?
         $context = context_course::instance($course->id);
@@ -195,7 +196,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $this->_format_data = $formatdata;
 
         // General section if non-empty and course_display is multiple.
-        if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
+        if ($first_section > 0) {
             $thissection = $sections[0];
             if ((($thissection->visible && $thissection->available) || $canviewhidden) &&
                     ($thissection->summary || $thissection->sequence || $PAGE->user_is_editing() ||
@@ -227,7 +228,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $movelisthtml = '';
 
         // Init custom tabs.
-        $section = 0;
+        $section = $first_section;
 
         $sectionmenu = array();
         $tabs = array();
@@ -236,11 +237,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $defaulttopic = -1;
 
         while ($section <= $this->numsections) {
-
-            if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $section == 0) {
-                $section++;
-                continue;
-            }
 
             $thissection = $sections[$section];
 
@@ -415,7 +411,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 
-            if ($course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || $displaysection !== 0) {
+            if ($displaysection >= $first_section) {
                 // Now the list of sections.
                 echo $this->start_section_list();
 
@@ -542,6 +538,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $o = '';
         $currenttext = '';
         $sectionstyle = '';
+        $first_section = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
         if ($section->section != 0) {
             // Only in the non-general sections.
@@ -563,7 +560,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
         $o .= html_writer::start_tag('div', array('class' => 'content'));
 
-        if ($section->section != 0 || $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || (string)$section->name == '') {
+        if ($section->section >= $first_section || (string)$section->name == '') {
             $classes = ' accesshide';
             $sectionname = html_writer::tag('span', $this->section_title($section, $course));
         } else {
