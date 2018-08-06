@@ -234,8 +234,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $tabs = array();
         $inactivetabs = array();
 
-        $defaulttopic = -1;
-
         while ($section <= $this->numsections) {
 
             $thissection = $sections[$section];
@@ -254,12 +252,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
             if (isset($displaysection)) {
                 if ($showsection) {
 
-                    if ($defaulttopic < 0) {
-                        $defaulttopic = $section;
-
-                        if ($displaysection == 0) {
-                            $displaysection = $defaulttopic;
-                        }
+                    if ($displaysection < $first_section)  {
+                        $displaysection = $section;
                     }
 
                     $formatoptions = course_get_format($course)->get_format_options($thissection);
