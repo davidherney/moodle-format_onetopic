@@ -220,16 +220,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
         echo html_writer::start_tag('div', array('class' => 'single-section onetopic'));
 
         // Move controls.
-        $canmove = false;
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:movesections', $context) && $displaysection > 0) {
-            $canmove = true;
-        }
+        $canmove = $PAGE->user_is_editing() && has_capability('moodle/course:movesections', $context) && $displaysection > 0;
         $movelisthtml = '';
 
         // Init custom tabs.
         $section = 0;
 
-        $sectionmenu = array();
         $tabs = array();
         $inactivetabs = array();
 
@@ -244,18 +240,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $thissection = $sections[$section];
 
-            $showsection = true;
-            if (!$thissection->visible || !$thissection->available) {
-                $showsection = false;
-            } else if ($section == 0 && !($thissection->summary || $thissection->sequence || $PAGE->user_is_editing())) {
+            $showsection = $thissection->visible && $thissection->available;
+            if ($section == 0 && !($thissection->summary || $thissection->sequence || $PAGE->user_is_editing())) {
                 $showsection = false;
             }
-
-            if (!$showsection) {
-                $showsection = $canviewhidden || !$course->hiddensections;
+            if ($canviewhidden || !$course->hiddensections) {
+                $showsection = true;
             }
 
-            if (isset($displaysection)) {
                 if ($showsection) {
 
                     if ($defaulttopic < 0) {
@@ -269,10 +261,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     $formatoptions = course_get_format($course)->get_format_options($thissection);
 
                     $sectionname = get_section_name($course, $thissection);
-
-                    if ($displaysection != $section) {
-                        $sectionmenu[$section] = $sectionname;
-                    }
 
                     $customstyles = '';
                     $level = 0;
@@ -318,9 +306,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
                     '<span>' . $sectionname . "</span></div>", $sectionname);
 
-                    if (is_array($formatoptions) && isset($formatoptions['level'])) {
-
-                        if ($formatoptions['level'] == 0 || count($tabs) == 0) {
+                        if ($level == 0 || count($tabs) == 0) {
                             $tabs[] = $newtab;
                             $newtab->level = 1;
                         } else {
@@ -348,13 +334,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             $newtab->level = 2;
                             $tabs[$parentindex]->subtree[] = $newtab;
                         }
-                    } else {
-                        $tabs[] = $newtab;
-                    }
 
                     // Init move section list.
                     if ($canmove) {
-                        if ($section > 0) { // Move section.
+                            // Move section.
                             $baseurl = course_get_url($course, $displaysection);
                             $baseurl->param('sesskey', sesskey());
 
@@ -366,24 +349,19 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             // Not apply if it is the first element (condition !empty($movelisthtml))
                             // because the first element can't be a sublevel.
                             $liclass = '';
-                            if (is_array($formatoptions) && isset($formatoptions['level']) && $formatoptions['level'] > 0 &&
-                                    !empty($movelisthtml)) {
+                            if ($level > 0 && !empty($movelisthtml)) {
                                 $liclass = 'sublevel';
                             }
 
-                            if ($displaysection != $section) {
+                            if ($section > 0 && $displaysection != $section) {
                                 $movelisthtml .= html_writer::tag('li', html_writer::link($url, $sectionname),
                                                 array('class' => $liclass));
                             } else {
                                 $movelisthtml .= html_writer::tag('li', $sectionname, array('class' => $liclass));
                             }
-                        } else {
-                            $movelisthtml .= html_writer::tag('li', $sectionname);
-                        }
                     }
                     // End move section list.
                 }
-            }
 
             $section++;
         }
