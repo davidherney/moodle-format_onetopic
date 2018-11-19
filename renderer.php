@@ -314,9 +314,18 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         }
                     }
 
+
+	                if ($this->section_activity_summary($thissection, $course, null)){
+	                	$topiccomplete = 'topiccomplete';
+                        $topiccompleteicon = ' <i class="fa fa-check-circle"></i>';
+	                } else {
+	                	$topiccomplete = '';
+                        $topiccompleteicon = '';
+	                }
+
                     $newtab = new tabobject("tab_topic_" . $section, $url,
-                    '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
-                    '<span>' . $sectionname . "</span></div>", $sectionname);
+                    '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . ' ' . $topiccomplete . '">' .
+                    '<span>' . $sectionname . "</span>" . $topiccompleteicon . "</div>", $sectionname);
 
                     if (is_array($formatoptions) && isset($formatoptions['level'])) {
 
@@ -337,8 +346,15 @@ class format_onetopic_renderer extends format_section_renderer_base {
                                 } else {
                                     $firsttabtext = get_string('index', 'format_onetopic');
                                 }
-                                $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial">' .
-                                                                        $firsttabtext . "</div>";
+                                if ($this->section_activity_summary($parentsection, $course, null)){
+                                    $topiccomplete = 'topiccomplete';
+                                    $topiccompleteicon = ' <i class="fa fa-check-circle"></i>';
+                                } else {
+                                    $topiccomplete = '';
+                                    $topiccompleteicon = '';
+                                }
+                                $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial ' . $topiccomplete . '">' .
+                                                                        $firsttabtext . "" . $topiccompleteicon . "</div>";
                                 $tabs[$parentindex]->subtree[0]->level = 2;
 
                                 if ($displaysection == $section - 1) {
@@ -431,7 +447,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 } else if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
                     echo $this->custom_course_section_cm_list($course, $thissection, $displaysection);
                 }
-
                 echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);
                 echo $this->section_footer();
                 echo $this->end_section_list();
@@ -441,8 +456,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Display section bottom navigation.
         $sectionbottomnav = '';
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
-        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'float-left btn btn-secondary'));
+        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'float-right btn btn-secondary'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
 
@@ -525,6 +540,80 @@ class format_onetopic_renderer extends format_section_renderer_base {
             print_collapsible_region_end();
         }
     }
+
+
+    /**
+     * Generate a summary of the activites in a section
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course the course record from DB
+     * @param array    $mods (argument not used)
+     * @return string HTML to output.
+     */
+    protected function section_activity_summary($thissection, $course, $mods) {
+        global $PAGE;
+        $modinfo = get_fast_modinfo($course);
+        if (empty($modinfo->sections[$thissection->section])) {
+            return '';
+        }
+        // Generate array with count of activities in this section.
+        $sectionmods = array();
+        $total = 0;
+        $complete = 0;
+        $cancomplete = isloggedin() && !isguestuser();
+        $completioninfo = new completion_info($course);
+        foreach ($modinfo->sections[$thissection->section] as $cmid) {
+            $thismod = $modinfo->cms[$cmid];
+
+            if ($thismod->modname == 'label') {
+                // Labels are special (not interesting for students)!
+                continue;
+            }
+
+            if ($thismod->uservisible) {
+                if (isset($sectionmods[$thismod->modname])) {
+                    $sectionmods[$thismod->modname]['name'] = $thismod->modplural;
+                    $sectionmods[$thismod->modname]['count']++;
+                }
+                else {
+                    $sectionmods[$thismod->modname]['name'] = $thismod->modfullname;
+                    $sectionmods[$thismod->modname]['count'] = 1;
+                }
+                if ($cancomplete && $completioninfo->is_enabled($thismod) != COMPLETION_TRACKING_NONE) {
+                    $total++;
+                    $completiondata = $completioninfo->get_data($thismod, true);
+                    if ($completiondata->completionstate == COMPLETION_COMPLETE || $completiondata->completionstate == COMPLETION_COMPLETE_PASS) {
+                        $complete++;
+                    }
+                }
+            }
+        }
+
+        if (empty($sectionmods)) {
+            // No sections.
+            return '';
+        }
+
+        
+        if ($total > 0) {
+            $completion = new stdClass;
+            $completion->complete = $complete;
+            $completion->total = $total;
+
+            $percent = 0;
+            if ($complete > 0) {
+                $percent = (int)(($complete / $total) * 100);
+            }
+
+            if($percent == 100) {
+            	return true;
+            }
+
+        }
+
+        return false;
+    }
+
 
     /**
      * Generate the display of the header part of a section before
