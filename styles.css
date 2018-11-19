@@ -97,3 +97,7 @@
 .format-onetopic .onetopic .content > .summary .iconhelp {
     cursor: pointer;
 }
+
+.format-onetopic .onetopic .topiccomplete {
+    background-color: #3dff44;
+}
