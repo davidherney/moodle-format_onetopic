@@ -67,12 +67,16 @@ if (isset($section) && $section >= 0 && $renderer->numsections >= $section) {
 } else {
     if (isset($USER->display[$course->id]) && $renderer->numsections >= $USER->display[$course->id]) {
         $displaysection = $USER->display[$course->id];
-    } else if ($course->marker && $course->marker > 0 && $course->marker < $renderer->numsections) {
-        $USER->display[$course->id] = $course->marker;
-        $displaysection = $course->marker;
     } else {
-        $USER->display[$course->id] = 0;
-        $displaysection = 0;
+        $currentsection = course_get_format($course)->get_section($course->marker);
+        if ($course->marker && $course->marker > 0 && $course->marker < $renderer->numsections &&
+            ($currentsection->visible || (!$currentsection->visible && has_capability('moodle/course:viewhiddensections', $context))) ) {
+            $USER->display[$course->id] = $course->marker;
+            $displaysection = $course->marker;
+        } else {
+            $USER->display[$course->id] = 0;
+            $displaysection = 0;
+        }
     }
 }
 
