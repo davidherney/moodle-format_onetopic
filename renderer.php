@@ -173,7 +173,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $modinfo = get_fast_modinfo($course);
         $course = course_get_format($course)->get_course();
         $course->realcoursedisplay = $realcoursedisplay;
-        $sections = $modinfo->get_section_info_all();
+
+        if (!$sections) {
+            $sections = $modinfo->get_section_info_all();
+        }
 
         // Can we view the section in question?
         $context = context_course::instance($course->id);
