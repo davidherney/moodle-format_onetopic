@@ -45,7 +45,11 @@ class format_onetopic extends format_base {
     /** @var int The summary is a template, list the resources that are not referenced */
     const TEMPLATETOPIC_LIST = 2;
 
+    /** @var bool If the class was previously instanced, in one execution cycle */
     private static $_LOADED = false;
+
+    /** @var string Temporal message when tried to charge a hidden tab */
+    private static $_BY_HIDDEN_MSG = null;
 
     /**
      * Creates a new instance of class
@@ -60,20 +64,28 @@ class format_onetopic extends format_base {
         parent::__construct($format, $courseid);
 
         // Hack for section number, when not is like a param in the url or section is not available.
-        global $section, $PAGE, $USER, $urlparams, $DB, $context, $course;
+        global $section, $sectionid, $PAGE, $USER, $urlparams, $DB, $context;
 
-        if (!self::$_LOADED && $courseid && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
+        $course = $this->get_course();
+
+        if (!self::$_LOADED && isset($section) && $courseid &&
+                ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
             self::$_LOADED = true;
 
-            $numsections = $DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
+            if ($sectionid <= 0) {
+                $section = optional_param('section', -1, PARAM_INT);
 
-            if (isset($section) && $section >= 0 && $numsections >= $section) {
+            }
+
+            $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
+
+            if ($section >= 0 && $numsections >= $section) {
                 $realsection = $section;
             } else {
                 if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
                     $realsection = $USER->display[$course->id];
                 } else if ($course->marker && $course->marker > 0) {
-                    $realsection = $course->marker;
+                    $realsection = (int)$course->marker;
                 } else {
                     $realsection = 0;
                 }
@@ -99,11 +111,14 @@ class format_onetopic extends format_base {
             // Check if the display section is available.
             if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
 
+                self::$_BY_HIDDEN_MSG = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+
                 $valid = false;
                 $k = COURSE_DISPLAY_MULTIPAGE ? 1 : 0;
 
                 do {
-                    if (($sections[$k]->available && $sections[$k]->uservisible) || $canviewhidden) {
+                    $formatoptions = $this->get_format_options($k);
+                    if ($formatoptions['level'] == 0 && ($sections[$k]->available && $sections[$k]->uservisible) || $canviewhidden) {
                         $valid = true;
                         break;
                     }
@@ -686,6 +701,16 @@ class format_onetopic extends format_base {
         // Return everything (nothing to hide).
         return $this->get_format_options();
     }
+
+    /**
+     * Return the message when it is tried to load a hidden tab.
+     *
+     * @return string
+     */
+    public function get_hidden_message() {
+        return self::$_BY_HIDDEN_MSG;
+    }
+
 }
 
 /**

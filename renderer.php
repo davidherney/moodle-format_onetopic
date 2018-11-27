@@ -236,8 +236,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $tabs = array();
         $inactivetabs = array();
 
-        $defaulttopic = -1;
-
         while ($section <= $this->numsections) {
 
             if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $section == 0) {
@@ -260,14 +258,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             if (isset($displaysection)) {
                 if ($showsection) {
-
-                    if ($defaulttopic < 0) {
-                        $defaulttopic = $section;
-
-                        if ($displaysection == 0) {
-                            $displaysection = $defaulttopic;
-                        }
-                    }
 
                     $formatoptions = course_get_format($course)->get_format_options($thissection);
 
@@ -393,28 +383,30 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
-        $sectiontitle = '';
 
-        if (!$course->hidetabsbar && count($tabs[0]) > 0) {
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
-            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+            // Increase number of sections.
+            $straddsection = get_string('increasesections', 'moodle');
+            $url = new moodle_url('/course/changenumsections.php',
+                array('courseid' => $course->id,
+                    'increase' => true,
+                    'sesskey' => sesskey(),
+                    'insertsection' => 0));
+            $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
+            $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
 
-                // Increase number of sections.
-                $straddsection = get_string('increasesections', 'moodle');
-                $url = new moodle_url('/course/changenumsections.php',
-                    array('courseid' => $course->id,
-                        'increase' => true,
-                        'sesskey' => sesskey(),
-                        'insertsection' => 0));
-                $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
-                $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
-
-            }
-
-            $sectiontitle .= $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
 
-        echo $sectiontitle;
+        $hiddenmsg = course_get_format($course)->get_hidden_message();
+        if (!empty($hiddenmsg)) {
+            echo $OUTPUT->notification($hiddenmsg);
+        }
+
+        if ($PAGE->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
+            echo $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
+        }
+
 
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 

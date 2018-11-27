@@ -48,9 +48,6 @@ if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context
     course_set_marker($course->id, $marker);
 }
 
-// Make sure section 0 is created.
-course_create_sections_if_missing($course, 0);
-
 // Onetopic format is always multipage.
 $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE : false;
 $course->coursedisplay = COURSE_DISPLAY_MULTIPAGE;
