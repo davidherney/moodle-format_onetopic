@@ -83,3 +83,7 @@ $string['templetetopic_single'] = 'Yes, use the summary as template';
 $string['templetetopic_list'] = 'Yes, use the summary as template, list the resources that are not referenced';
 $string['templatetopic_icons'] = 'Show icon in resource links in summary';
 $string['templatetopic_icons_help'] = 'This option defines if the icons are displayed in the summary when it is a template.';
+/*
+* GDPR compliant
+*/
+$string['privacy:no_data_reason'] = "The OneTopic plugin doesn't store any personal data on Moodle.";
