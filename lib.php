@@ -96,7 +96,7 @@ class format_onetopic extends format_base {
             }
 
             // Onetopic format is always multipage.
-            $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE : false;
+            $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
 
             if ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $realsection === 0 && $numsections >= 1) {
                 $realsection = 1;
@@ -114,7 +114,7 @@ class format_onetopic extends format_base {
                 self::$_BY_HIDDEN_MSG = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
 
                 $valid = false;
-                $k = COURSE_DISPLAY_MULTIPAGE ? 1 : 0;
+                $k = $realcoursedisplay ? 1 : 0;
 
                 do {
                     $formatoptions = $this->get_format_options($k);
