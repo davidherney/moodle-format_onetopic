@@ -423,7 +423,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_NOT) {
                     echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
-                } else if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
+                } else if ($PAGE->user_is_editing() || $this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
                     echo $this->custom_course_section_cm_list($course, $thissection, $displaysection);
                 }
 
@@ -721,6 +721,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $objreplace = new format_onetopic_replace_regularexpression();
 
             $showyuidialogue = false;
+            $completioninfo = new completion_info($course);
+
             foreach ($sectionmods as $modnumber) {
 
                 if (empty($this->_format_data->mods[$modnumber])) {
@@ -761,6 +763,21 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     $contentpart = str_replace('<div ', '<span ', $contentpart);
                     $contentpart = str_replace('</div>', '</span>', $contentpart);
                     $htmlresource .= $contentpart;
+                }
+
+                if ($completioninfo->is_enabled($mod) !== COMPLETION_TRACKING_NONE) {
+                    $completion = $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod);
+
+                    if (strpos($completion, 'completion-manual-y') !== false ||
+                            strpos($completion, 'completion-auto-y') !== false ||
+                            strpos($completion, 'completion-auto-pass') !== false) {
+
+                        $completed = 'complete';
+                    } else {
+                        $completed = 'incomplete';
+                    }
+
+                    $htmlresource = '<completion class="' . $completed . '">' . $completion . $htmlresource . '</completion>';
                 }
 
                 $availabilitytext = trim($this->courserenderer->course_section_cm_availability($mod));
