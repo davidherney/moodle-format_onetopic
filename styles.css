@@ -97,3 +97,18 @@
 .format-onetopic .onetopic .content > .summary .iconhelp {
     cursor: pointer;
 }
+
+.format-onetopic .onetopic completion > form,
+.format-onetopic .onetopic completion > form > div {
+    display: inline;
+}
+
+.format-onetopic .onetopic completion > form > div button {
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+}
+
+.format-onetopic .onetopic completion img.icon {
+    margin: 0 3px 0 5px;
+}
