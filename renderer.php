@@ -173,7 +173,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $modinfo = get_fast_modinfo($course);
         $course = course_get_format($course)->get_course();
         $course->realcoursedisplay = $realcoursedisplay;
-        $sections = $modinfo->get_section_info_all();
+
+        if (!$sections) {
+            $sections = $modinfo->get_section_info_all();
+        }
 
         // Can we view the section in question?
         $context = context_course::instance($course->id);
@@ -233,8 +236,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $tabs = array();
         $inactivetabs = array();
 
-        $defaulttopic = -1;
-
         while ($section <= $this->numsections) {
 
             if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $section == 0) {
@@ -257,14 +258,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             if (isset($displaysection)) {
                 if ($showsection) {
-
-                    if ($defaulttopic < 0) {
-                        $defaulttopic = $section;
-
-                        if ($displaysection == 0) {
-                            $displaysection = $defaulttopic;
-                        }
-                    }
 
                     $formatoptions = course_get_format($course)->get_format_options($thissection);
 
@@ -390,28 +383,30 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
-        $sectiontitle = '';
 
-        if (!$course->hidetabsbar && count($tabs[0]) > 0) {
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
-            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+            // Increase number of sections.
+            $straddsection = get_string('increasesections', 'moodle');
+            $url = new moodle_url('/course/changenumsections.php',
+                array('courseid' => $course->id,
+                    'increase' => true,
+                    'sesskey' => sesskey(),
+                    'insertsection' => 0));
+            $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
+            $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
 
-                // Increase number of sections.
-                $straddsection = get_string('increasesections', 'moodle');
-                $url = new moodle_url('/course/changenumsections.php',
-                    array('courseid' => $course->id,
-                        'increase' => true,
-                        'sesskey' => sesskey(),
-                        'insertsection' => 0));
-                $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
-                $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
-
-            }
-
-            $sectiontitle .= $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
 
-        echo $sectiontitle;
+        $hiddenmsg = course_get_format($course)->get_hidden_message();
+        if (!empty($hiddenmsg)) {
+            echo $OUTPUT->notification($hiddenmsg);
+        }
+
+        if ($PAGE->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
+            echo $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
+        }
+
 
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 
@@ -428,7 +423,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_NOT) {
                     echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
-                } else if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
+                } else if ($PAGE->user_is_editing() || $this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
                     echo $this->custom_course_section_cm_list($course, $thissection, $displaysection);
                 }
 
@@ -726,6 +721,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $objreplace = new format_onetopic_replace_regularexpression();
 
             $showyuidialogue = false;
+            $completioninfo = new completion_info($course);
+
             foreach ($sectionmods as $modnumber) {
 
                 if (empty($this->_format_data->mods[$modnumber])) {
@@ -766,6 +763,21 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     $contentpart = str_replace('<div ', '<span ', $contentpart);
                     $contentpart = str_replace('</div>', '</span>', $contentpart);
                     $htmlresource .= $contentpart;
+                }
+
+                if ($completioninfo->is_enabled($mod) !== COMPLETION_TRACKING_NONE) {
+                    $completion = $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod);
+
+                    if (strpos($completion, 'completion-manual-y') !== false ||
+                            strpos($completion, 'completion-auto-y') !== false ||
+                            strpos($completion, 'completion-auto-pass') !== false) {
+
+                        $completed = 'complete';
+                    } else {
+                        $completed = 'incomplete';
+                    }
+
+                    $htmlresource = '<completion class="' . $completed . '">' . $completion . $htmlresource . '</completion>';
                 }
 
                 $availabilitytext = trim($this->courserenderer->course_section_cm_availability($mod));

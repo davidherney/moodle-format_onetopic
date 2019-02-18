@@ -82,3 +82,4 @@ $string['templetetopic_single'] = 'Si, usar el resumen como una plantilla';
 $string['templetetopic_list'] = 'Si, usar el resumen como plantilla y listar los recursos no referenciados';
 $string['templatetopic_icons'] = 'Mostrar icono en enlaces de recursos en el resumen';
 $string['templatetopic_icons_help'] = 'Esta opción define si se muestran o no los iconos de los recursos como parte del nombre, cuando el resumen del tema se utiliza como plantilla.';
+$string['hidden_message'] = 'El tema <em>{$a}</em> no está disponible en este momento.';

@@ -48,33 +48,15 @@ if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context
     course_set_marker($course->id, $marker);
 }
 
-// Make sure section 0 is created.
-course_create_sections_if_missing($course, 0);
-
 // Onetopic format is always multipage.
 $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE : false;
 $course->coursedisplay = COURSE_DISPLAY_MULTIPAGE;
 
 $renderer = $PAGE->get_renderer('format_onetopic');
 
-$section = optional_param('section', -1, PARAM_INT);
+$section = $displaysection;
 
 $renderer->numsections = course_get_format($course)->get_last_section_number();
-
-if (isset($section) && $section >= 0 && $renderer->numsections >= $section) {
-     $USER->display[$course->id] = $section;
-     $displaysection = $section;
-} else {
-    if (isset($USER->display[$course->id]) && $renderer->numsections >= $USER->display[$course->id]) {
-        $displaysection = $USER->display[$course->id];
-    } else if ($course->marker && $course->marker > 0 && $course->marker < $renderer->numsections) {
-        $USER->display[$course->id] = $course->marker;
-        $displaysection = $course->marker;
-    } else {
-        $USER->display[$course->id] = 0;
-        $displaysection = 0;
-    }
-}
 
 $disableajax = optional_param('onetopic_da', -1, PARAM_INT);
 
@@ -90,7 +72,7 @@ if ($disableajax !== -1) {
     }
 }
 
-$renderer->print_single_section_page($course, null, $mods, $modnames, $modnamesused, $displaysection);
+$renderer->print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
 
 // Include course format js module.
 $PAGE->requires->js('/course/format/topics/format.js');
