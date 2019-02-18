@@ -15,6 +15,9 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2018010605:
+Selected visible tab according to the different tabs properties (available, visible, highlighted) and the course options
+
 2018010604:
 Compatibility with moodle 3.5
 
