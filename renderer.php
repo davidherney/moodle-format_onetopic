@@ -232,7 +232,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Init custom tabs.
         $section = 0;
 
-        $sectionmenu = array();
         $tabs = array();
         $inactivetabs = array();
 
@@ -256,127 +255,122 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 $showsection = $canviewhidden || !$course->hiddensections;
             }
 
-            if (isset($displaysection)) {
-                if ($showsection) {
+            if ($showsection) {
 
-                    $formatoptions = course_get_format($course)->get_format_options($thissection);
+                $formatoptions = course_get_format($course)->get_format_options($thissection);
 
-                    $sectionname = get_section_name($course, $thissection);
+                $sectionname = get_section_name($course, $thissection);
 
-                    if ($displaysection != $section) {
-                        $sectionmenu[$section] = $sectionname;
+                $customstyles = '';
+                $level = 0;
+                if (is_array($formatoptions)) {
+
+                    if (!empty($formatoptions['fontcolor'])) {
+                        $customstyles .= 'color: ' . $formatoptions['fontcolor'] . ';';
                     }
 
-                    $customstyles = '';
-                    $level = 0;
-                    if (is_array($formatoptions)) {
-
-                        if (!empty($formatoptions['fontcolor'])) {
-                            $customstyles .= 'color: ' . $formatoptions['fontcolor'] . ';';
-                        }
-
-                        if (!empty($formatoptions['bgcolor'])) {
-                            $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . ';';
-                        }
-
-                        if (!empty($formatoptions['cssstyles'])) {
-                            $customstyles .= $formatoptions['cssstyles'] . ';';
-                        }
-
-                        if (isset($formatoptions['level'])) {
-                            $level = $formatoptions['level'];
-                        }
+                    if (!empty($formatoptions['bgcolor'])) {
+                        $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . ';';
                     }
 
-                    if ($section == 0) {
-                        $url = new moodle_url('/course/view.php', array('id' => $course->id, 'section' => 0));
-                    } else {
-                        $url = course_get_url($course, $section);
+                    if (!empty($formatoptions['cssstyles'])) {
+                        $customstyles .= $formatoptions['cssstyles'] . ';';
                     }
 
-                    $specialstyle = 'tab_position_' . $section . ' tab_level_' . $level;
-                    if ($course->marker == $section) {
-                        $specialstyle = ' marker ';
+                    if (isset($formatoptions['level'])) {
+                        $level = $formatoptions['level'];
                     }
-
-                    if (!$thissection->visible || !$thissection->available) {
-                        $specialstyle .= ' dimmed ';
-
-                        if (!$canviewhidden) {
-                            $inactivetabs[] = "tab_topic_" . $section;
-                        }
-                    }
-
-                    $newtab = new tabobject("tab_topic_" . $section, $url,
-                    '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
-                    '<span>' . $sectionname . "</span></div>", $sectionname);
-
-                    if (is_array($formatoptions) && isset($formatoptions['level'])) {
-
-                        if ($formatoptions['level'] == 0 || count($tabs) == 0) {
-                            $tabs[] = $newtab;
-                            $newtab->level = 1;
-                        } else {
-                            $parentindex = count($tabs) - 1;
-                            if (!is_array($tabs[$parentindex]->subtree)) {
-                                $tabs[$parentindex]->subtree = array();
-                            } else if (count($tabs[$parentindex]->subtree) == 0) {
-                                $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
-                                $tabs[$parentindex]->subtree[0]->id .= '_index';
-                                $parentsection = $sections[$section - 1];
-                                $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
-                                if ($parentformatoptions['firsttabtext']) {
-                                    $firsttabtext = $parentformatoptions['firsttabtext'];
-                                } else {
-                                    $firsttabtext = get_string('index', 'format_onetopic');
-                                }
-                                $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial">' .
-                                                                        $firsttabtext . "</div>";
-                                $tabs[$parentindex]->subtree[0]->level = 2;
-
-                                if ($displaysection == $section - 1) {
-                                    $tabs[$parentindex]->subtree[0]->selected = true;
-                                }
-                            }
-                            $newtab->level = 2;
-                            $tabs[$parentindex]->subtree[] = $newtab;
-                        }
-                    } else {
-                        $tabs[] = $newtab;
-                    }
-
-                    // Init move section list.
-                    if ($canmove) {
-                        if ($section > 0) { // Move section.
-                            $baseurl = course_get_url($course, $displaysection);
-                            $baseurl->param('sesskey', sesskey());
-
-                            $url = clone($baseurl);
-
-                            $url->param('move', $section - $displaysection);
-
-                            // Define class from sublevels in order to move a margen in the left.
-                            // Not apply if it is the first element (condition !empty($movelisthtml))
-                            // because the first element can't be a sublevel.
-                            $liclass = '';
-                            if (is_array($formatoptions) && isset($formatoptions['level']) && $formatoptions['level'] > 0 &&
-                                    !empty($movelisthtml)) {
-                                $liclass = 'sublevel';
-                            }
-
-                            if ($displaysection != $section) {
-                                $movelisthtml .= html_writer::tag('li', html_writer::link($url, $sectionname),
-                                                array('class' => $liclass));
-                            } else {
-                                $movelisthtml .= html_writer::tag('li', $sectionname, array('class' => $liclass));
-                            }
-                        } else {
-                            $movelisthtml .= html_writer::tag('li', $sectionname);
-                        }
-                    }
-                    // End move section list.
                 }
+
+                if ($section == 0) {
+                    $url = new moodle_url('/course/view.php', array('id' => $course->id, 'section' => 0));
+                } else {
+                    $url = course_get_url($course, $section);
+                }
+
+                $specialstyle = 'tab_position_' . $section . ' tab_level_' . $level;
+                if ($course->marker == $section) {
+                    $specialstyle = ' marker ';
+                }
+
+                if (!$thissection->visible || !$thissection->available) {
+                    $specialstyle .= ' dimmed ';
+
+                    if (!$canviewhidden) {
+                        $inactivetabs[] = "tab_topic_" . $section;
+                    }
+                }
+
+                $newtab = new tabobject("tab_topic_" . $section, $url,
+                '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
+                '<span>' . $sectionname . "</span></div>", $sectionname);
+
+                if (is_array($formatoptions) && isset($formatoptions['level'])) {
+
+                    if ($formatoptions['level'] == 0 || count($tabs) == 0) {
+                        $tabs[] = $newtab;
+                        $newtab->level = 1;
+                    } else {
+                        $parentindex = count($tabs) - 1;
+                        if (!is_array($tabs[$parentindex]->subtree)) {
+                            $tabs[$parentindex]->subtree = array();
+                        } else if (count($tabs[$parentindex]->subtree) == 0) {
+                            $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
+                            $tabs[$parentindex]->subtree[0]->id .= '_index';
+                            $parentsection = $sections[$section - 1];
+                            $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+                            if ($parentformatoptions['firsttabtext']) {
+                                $firsttabtext = $parentformatoptions['firsttabtext'];
+                            } else {
+                                $firsttabtext = get_string('index', 'format_onetopic');
+                            }
+                            $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial">' .
+                                                                    $firsttabtext . "</div>";
+                            $tabs[$parentindex]->subtree[0]->level = 2;
+
+                            if ($displaysection == $section - 1) {
+                                $tabs[$parentindex]->subtree[0]->selected = true;
+                            }
+                        }
+                        $newtab->level = 2;
+                        $tabs[$parentindex]->subtree[] = $newtab;
+                    }
+                } else {
+                    $tabs[] = $newtab;
+                }
+
+                // Init move section list.
+                if ($canmove) {
+                    if ($section > 0) { // Move section.
+                        $baseurl = course_get_url($course, $displaysection);
+                        $baseurl->param('sesskey', sesskey());
+
+                        $url = clone($baseurl);
+
+                        $url->param('move', $section - $displaysection);
+
+                        // Define class from sublevels in order to move a margen in the left.
+                        // Not apply if it is the first element (condition !empty($movelisthtml))
+                        // because the first element can't be a sublevel.
+                        $liclass = '';
+                        if (is_array($formatoptions) && isset($formatoptions['level']) && $formatoptions['level'] > 0 &&
+                                !empty($movelisthtml)) {
+                            $liclass = 'sublevel';
+                        }
+
+                        if ($displaysection != $section) {
+                            $movelisthtml .= html_writer::tag('li', html_writer::link($url, $sectionname),
+                                            array('class' => $liclass));
+                        } else {
+                            $movelisthtml .= html_writer::tag('li', $sectionname, array('class' => $liclass));
+                        }
+                    } else {
+                        $movelisthtml .= html_writer::tag('li', $sectionname);
+                    }
+                }
+                // End move section list.
             }
+
 
             $section++;
         }

@@ -1,7 +1,7 @@
 COURSE FORMATS Onetopic
 ============================
 
-Package tested in: moodle 3.3+, moodle 3.4+ and moodle 3.5+
+Package tested in: moodle 3.3+, moodle 3.4+, moodle 3.5+ and moodle 3.6+
 
 QUICK INSTALL
 ==============
@@ -15,6 +15,11 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2018010606:
+Compatibility with moodle 3.6.
+Added privacy provider.
+Included inner completion check into summary templates.
+
 2018010605:
 Selected visible tab according to the different tabs properties (available, visible, highlighted) and the course options
 
