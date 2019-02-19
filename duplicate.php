@@ -96,7 +96,7 @@ if (!empty($sectioninfo)) {
             }
         }
     } catch (Exception $e) {
-        // Do nothing.
+        debugging('Error copying section files.' . $e->getMessage(), DEBUG_DEVELOPER);
     }
 
     $moved = move_section_to($course, $numnewsection, $section + 1);
