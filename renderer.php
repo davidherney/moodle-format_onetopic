@@ -769,7 +769,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $completed = 'incomplete';
                     }
 
-                    $htmlresource = '<completion class="completiontag ' . $completed . '">' . $completion . $htmlresource . '</completion>';
+                    $htmlresource = '<completion class="completiontag ' . $completed . '">' .
+                                        $completion . $htmlresource .
+                                    '</completion>';
                 }
 
                 $availabilitytext = trim($this->courserenderer->course_section_cm_availability($mod));
