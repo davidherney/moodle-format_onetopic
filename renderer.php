@@ -371,7 +371,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 // End move section list.
             }
 
-
             $section++;
         }
 
@@ -400,7 +399,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
         if ($PAGE->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
             echo $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
-
 
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 
@@ -771,7 +769,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $completed = 'incomplete';
                     }
 
-                    $htmlresource = '<completion class="' . $completed . '">' . $completion . $htmlresource . '</completion>';
+                    $htmlresource = '<completion class="completiontag ' . $completed . '">' . $completion . $htmlresource . '</completion>';
                 }
 
                 $availabilitytext = trim($this->courserenderer->course_section_cm_availability($mod));

@@ -98,17 +98,17 @@
     cursor: pointer;
 }
 
-.format-onetopic .onetopic completion > form,
-.format-onetopic .onetopic completion > form > div {
+.format-onetopic .onetopic .completiontag > form,
+.format-onetopic .onetopic .completiontag > form > div {
     display: inline;
 }
 
-.format-onetopic .onetopic completion > form > div button {
+.format-onetopic .onetopic .completiontag > form > div button {
     padding: 0;
     margin: 0;
     line-height: 0;
 }
 
-.format-onetopic .onetopic completion img.icon {
+.format-onetopic .onetopic .completiontag img.icon {
     margin: 0 3px 0 5px;
 }

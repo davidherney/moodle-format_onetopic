@@ -46,10 +46,10 @@ class format_onetopic extends format_base {
     const TEMPLATETOPIC_LIST = 2;
 
     /** @var bool If the class was previously instanced, in one execution cycle */
-    private static $_LOADED = false;
+    private static $loaded = false;
 
     /** @var string Temporal message when tried to charge a hidden tab */
-    private static $_BY_HIDDEN_MSG = null;
+    private static $byhiddenmsg = null;
 
     /**
      * Creates a new instance of class
@@ -68,9 +68,9 @@ class format_onetopic extends format_base {
 
         $course = $this->get_course();
 
-        if (!self::$_LOADED && isset($section) && $courseid &&
+        if (!self::$loaded && isset($section) && $courseid &&
                 ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
-            self::$_LOADED = true;
+            self::$loaded = true;
 
             if ($sectionid <= 0) {
                 $section = optional_param('section', -1, PARAM_INT);
@@ -111,14 +111,16 @@ class format_onetopic extends format_base {
             // Check if the display section is available.
             if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
 
-                self::$_BY_HIDDEN_MSG = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+                self::$byhiddenmsg = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
 
                 $valid = false;
                 $k = $realcoursedisplay ? 1 : 0;
 
                 do {
                     $formatoptions = $this->get_format_options($k);
-                    if ($formatoptions['level'] == 0 && ($sections[$k]->available && $sections[$k]->uservisible) || $canviewhidden) {
+                    if ($formatoptions['level'] == 0
+                            && ($sections[$k]->available && $sections[$k]->uservisible)
+                            || $canviewhidden) {
                         $valid = true;
                         break;
                     }
@@ -708,7 +710,7 @@ class format_onetopic extends format_base {
      * @return string
      */
     public function get_hidden_message() {
-        return self::$_BY_HIDDEN_MSG;
+        return self::$byhiddenmsg;
     }
 
 }
