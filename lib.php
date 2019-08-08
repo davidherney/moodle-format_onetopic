@@ -609,7 +609,7 @@ class format_onetopic extends format_base {
                     'default' => '',
                     'type' => PARAM_RAW,
                     'label' => get_string('firsttabcssstyles', 'format_onetopic'),
-                    'help' => 'cssstyles',
+                    'help' => 'firsttabcssstyles',
                     'help_component' => 'format_onetopic',
                 ),
                 'fontcolor' => array(
