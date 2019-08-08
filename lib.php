@@ -541,6 +541,18 @@ class format_onetopic extends format_base {
                     'default' => 0,
                     'type' => PARAM_TEXT
                 ),
+                'firsttabfontcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
+                ),
+                'firsttabbgcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
+                ),
+                'firsttabcssstyles' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
+                ),
                 'fontcolor' => array(
                     'default' => '',
                     'type' => PARAM_RAW
@@ -577,6 +589,27 @@ class format_onetopic extends format_base {
                     'type' => PARAM_TEXT,
                     'label' => get_string('firsttabtext', 'format_onetopic'),
                     'help' => 'firsttabtext',
+                    'help_component' => 'format_onetopic',
+                ),
+                'firsttabfontcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('firsttabfontcolor', 'format_onetopic'),
+                    'help' => 'firsttabfontcolor',
+                    'help_component' => 'format_onetopic',
+                ),
+                'firsttabbgcolor' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('firsttabbgcolor', 'format_onetopic'),
+                    'help' => 'firsttabbgcolor',
+                    'help_component' => 'format_onetopic',
+                ),
+                'firsttabcssstyles' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('firsttabcssstyles', 'format_onetopic'),
+                    'help' => 'cssstyles',
                     'help_component' => 'format_onetopic',
                 ),
                 'fontcolor' => array(

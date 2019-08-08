@@ -71,6 +71,13 @@ $string['cssstyles_help'] = 'Used to change CSS properties of the tab. Use a sta
 $string['firsttabtext'] = 'Text of the first tab in sublevel';
 $string['firsttabtext_help'] = 'If this tab has sublevels, this will be the text of the first tab';
 
+$string['firsttabfontcolor'] = 'Font color of the first tab in sublevel';
+$string['firsttabfontcolor_help'] = 'Used to change the font color of the first tab in sublevel. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>';
+$string['firsttabbgcolor'] = 'Background color of the first tab in sublevel';
+$string['firsttabbgcolor_help'] = 'Used to change the background color of the first tab in sublevel. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>';
+$string['firsttabcssstyles'] = 'CSS properties of the first tab in sublevel';
+$string['firsttabcssstyles_help'] = 'Used to change CSS properties of the first tab in sublevel. Use a standard value to the attribute <em>style</em> in a html tag. Example: <br /><strong>font-weight: bold; font-size: 16px;</strong>';
+
 $string['coursedisplay'] = 'Visualization mode of section 0';
 $string['coursedisplay_help'] = 'This define as display the section 0: as a first tab or as section before the tabs bar.';
 $string['coursedisplay_single'] = 'As tab';
