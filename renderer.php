@@ -244,13 +244,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $thissection = $sections[$section];
 
-            if ($section == 0) {
-                $showsection = $thissection->summary || !empty($modinfo->sections[0]) || $PAGE->user_is_editing();
-            } else {
-                $showsection = $thissection->uservisible ||
-                                ($thissection->visible || !$course->hiddensections)
-                                && ($thissection->available || !empty($thissection->availableinfo));
-            }
+            $showsection = (section == 0) || $thissection->uservisible ||
+                            ($thissection->visible || !$course->hiddensections)
+                            && ($thissection->available || !empty($thissection->availableinfo));
 
             if ($showsection) {
 
