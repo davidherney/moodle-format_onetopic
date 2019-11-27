@@ -244,15 +244,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $thissection = $sections[$section];
 
-            $showsection = true;
-            if (!$thissection->visible || !$thissection->available) {
-                $showsection = false;
-            } else if ($section == 0 && !($thissection->summary || $thissection->sequence || $PAGE->user_is_editing())) {
-                $showsection = false;
-            }
-
-            if (!$showsection) {
-                $showsection = $canviewhidden || !$course->hiddensections;
+            if ($section == 0) {
+                $showsection = $thissection->summary || !empty($modinfo->sections[0]) || $PAGE->user_is_editing();
+            } else {
+                $showsection = $thissection->uservisible ||
+                                ($thissection->visible || !$course->hiddensections)
+                                && ($thissection->available || !empty($thissection->availableinfo));
             }
 
             if ($showsection) {
