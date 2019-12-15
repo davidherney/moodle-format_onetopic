@@ -376,7 +376,8 @@ class format_onetopic extends format_base {
                     'element_attributes' => array(
                         array(
                             0 => new lang_string('hiddensectionscollapsed'),
-                            1 => new lang_string('hiddensectionsinvisible')
+                            1 => new lang_string('hiddensectionsinvisible'),
+                            2 => new lang_string('hiddensectionshelp', 'format_onetopic')
                         )
                     ),
                 ),

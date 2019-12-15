@@ -74,6 +74,11 @@ if ($disableajax !== -1) {
 
 $renderer->print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
 
+if ($renderer->showyuidialogue) {
+    $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
+}
+
+
 // Include course format js module.
 $PAGE->requires->js('/course/format/topics/format.js');
 $PAGE->requires->js('/course/format/onetopic/format.js');

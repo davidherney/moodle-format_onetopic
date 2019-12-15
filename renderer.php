@@ -48,6 +48,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
     public $numsections;
 
     /**
+     * Define if js dialogue is required.
+     * @var bool showyuidialogue
+     */
+    public $showyuidialogue = false;
+
+    /**
      * Constructor method, calls the parent constructor
      *
      * @param moodle_page $page
@@ -120,7 +126,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // FIXME: This is really evil and should by using the navigation API.
         $course = course_get_format($course)->get_course();
         $canviewhidden = has_capability('moodle/course:viewhiddensections', context_course::instance($course->id))
-            or !$course->hiddensections;
+                            || !($course->hiddensections == 1);
 
         $links = array('previous' => '', 'next' => '');
         $back = $sectionno - 1;
@@ -246,13 +252,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $showsection = true;
             if (!$thissection->visible || !$thissection->available) {
-                $showsection = false;
-            } else if ($section == 0 && !($thissection->summary || $thissection->sequence || $PAGE->user_is_editing())) {
-                $showsection = false;
-            }
-
-            if (!$showsection) {
-                $showsection = $canviewhidden || !$course->hiddensections;
+                $showsection = $canviewhidden || !($course->hiddensections == 1);
             }
 
             if ($showsection) {
@@ -301,9 +301,28 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     }
                 }
 
+                // Check if display available message is required.
+                $availablemessage = '';
+                if ($course->hiddensections == 2) {
+                    $availabilitytext = $this->section_availability_message($thissection,
+                        has_capability('moodle/course:viewhiddensections', $context));
+
+                    if (!empty($availabilitytext)) {
+                        $uniqueid = 'format_onetopic_winfo_' . time() . '-' . rand(0, 1000);
+                        $availablemessage = '<span class="iconhelp" data-infoid="' . $uniqueid . '">' .
+                                            $this->output->pix_icon('e/help', get_string('info')) .
+                                        '</span>';
+
+                        $availablemessage .= '<div id="' . $uniqueid . '" class="availability_info_box" style="display: none;">' .
+                            $availabilitytext . '</div>';
+
+                        $this->showyuidialogue = true;
+                    }
+                }
+
                 $newtab = new tabobject("tab_topic_" . $section, $url,
                 '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
-                '<span>' . $sectionname . "</span></div>", $sectionname);
+                '<span class="sectionname">' . $sectionname . "</span>" . $availablemessage . "</div>", $sectionname);
 
                 if (is_array($formatoptions) && isset($formatoptions['level'])) {
 
@@ -712,7 +731,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $objreplace = new format_onetopic_replace_regularexpression();
 
-            $showyuidialogue = false;
             $completioninfo = new completion_info($course);
 
             foreach ($sectionmods as $modnumber) {
@@ -779,13 +797,13 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 if (!empty($availabilitytext)) {
                     $uniqueid = 'format_onetopic_winfo_' . time() . '-' . rand(0, 1000);
                     $htmlresource .= '<span class="iconhelp" data-infoid="' . $uniqueid . '">' .
-                                        $this->output->pix_icon('a/help', get_string('help')) .
+                                        $this->output->pix_icon('e/help', get_string('help')) .
                                      '</span>';
 
                     $htmlmore .= '<div id="' . $uniqueid . '" class="availability_info_box" style="display: none;">' .
                         $availabilitytext . '</div>';
 
-                    $showyuidialogue = true;
+                    $this->showyuidialogue = true;
                 }
 
                 // Replace the link in pattern: [[resource name]].
@@ -800,10 +818,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 }
 
                 $summary = $newsummary;
-            }
-
-            if ($showyuidialogue) {
-                $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
             }
 
         }

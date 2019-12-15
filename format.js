@@ -30,7 +30,8 @@ M.course.format.dialogueinit = function() {
 
     M.course.format.dialogueinitloaded = true;
     Y.all('[data-infoid]').each(function(node) {
-        node.on('click', function() {
+        node.on('click', function(e) {
+            e.preventDefault();
             M.course.format.showInfo(node.getAttribute('data-infoid'));
         });
     });
