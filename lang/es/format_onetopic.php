@@ -84,3 +84,4 @@ $string['templatetopic_icons'] = 'Mostrar icono en enlaces de recursos en el res
 $string['templatetopic_icons_help'] = 'Esta opción define si se muestran o no los iconos de los recursos como parte del nombre, cuando el resumen del tema se utiliza como plantilla.';
 $string['hidden_message'] = 'El tema <em>{$a}</em> no está disponible en este momento.';
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
+$string['hiddensectionshelp'] = 'Las secciones ocultas se muestran en forma colapsada con mensaje de disponibilidad';

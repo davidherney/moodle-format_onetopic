@@ -34,9 +34,18 @@
     margin-top: 15px;
 }
 
-.format-onetopic ul.nav-tabs li a .tab_content.dimmed {
+.format-onetopic ul.nav-tabs li a .tab_content.dimmed .sectionname {
     color: #999;
     opacity: 0.5;
+}
+
+.format-onetopic ul.nav-tabs li a .tab_content.dimmed .iconhelp {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.format-onetopic ul.nav-tabs li a .tab_content.dimmed .iconhelp i {
+    margin: 0;
 }
 
 .format-onetopic .subtopic-increase-sections {
@@ -96,6 +105,11 @@
 
 .format-onetopic .onetopic .content > .summary .iconhelp {
     cursor: pointer;
+    margin-left: 2px;
+}
+
+.format-onetopic .onetopic .content > .summary .iconhelp i {
+    margin: 0;
 }
 
 .format-onetopic .onetopic .completiontag > form,
