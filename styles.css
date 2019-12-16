@@ -39,12 +39,13 @@
     opacity: 0.5;
 }
 
-.format-onetopic ul.nav-tabs li a .tab_content.dimmed .iconhelp {
+.format-onetopic ul.nav-tabs li a .tab_content .iconhelp {
     cursor: pointer;
     margin-left: 5px;
+    pointer-events: auto;
 }
 
-.format-onetopic ul.nav-tabs li a .tab_content.dimmed .iconhelp i {
+.format-onetopic ul.nav-tabs li a .tab_content .iconhelp i {
     margin: 0;
 }
 
