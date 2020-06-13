@@ -45,6 +45,9 @@ matrix:
   # Moodle Master
   - php: 7.4 # 7.2-7.4
     env: MOODLE_BRANCH=master NODE_VERSION=14.4 DB=mysqli # Node 14.0-14.4
+  # Moodle Master, PostgreSQL (requires PostgreSQL 9.5)
+  #- php: 7.4 # 7.2-7.4
+  #  env: MOODLE_BRANCH=master NODE_VERSION=14.4 DB=pgsql # Node 14.0-14.4
 
 before_install:
   - phpenv config-rm xdebug.ini
