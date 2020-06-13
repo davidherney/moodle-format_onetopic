@@ -1,7 +1,7 @@
 language: php
 
 addons:
-  postgresql: "9.4" # Moodle 3.9 requires PostgreSQL 9.5
+  postgresql: "9.4" # Moodle 3.3: 9.3 / Moodle 3.6: 9.4 / Moodle 3.9: 9.5
 
 services:
   - mysql
@@ -42,9 +42,9 @@ matrix:
   # Moodle 3.8, PostgreSQL
   - php: 7.4 # 7.1-7.4
     env: MOODLE_BRANCH=MOODLE_38_STABLE NODE_VERSION=14.4 DB=pgsql # Node 14.0-14.4
-  # Moodle Master (Behat failing to turn editing on)
-  #- php: 7.4 # 7.2-7.4
-  #  env: MOODLE_BRANCH=master NODE_VERSION=14.4 DB=mysqli # Node 14.0-14.4
+  # Moodle Master
+  - php: 7.4 # 7.2-7.4
+    env: MOODLE_BRANCH=master NODE_VERSION=14.4 DB=mysqli # Node 14.0-14.4
 
 before_install:
   - phpenv config-rm xdebug.ini
