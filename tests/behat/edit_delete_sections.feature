@@ -67,6 +67,8 @@ Feature: Sections can be edited and deleted in Onetopic format
     And I delete section "4"
     And I press "Delete"
     Then I should not see "Topic 5"
+    And I should see "Topic 3" in the "li#section-3" "css_element"
+    And I click on "Topic 4" "link" in the "ul.nav.nav-tabs" "css_element"
     And I should not see "Test chat name"
     And I should see "Test choice name" in the "li#section-4" "css_element"
     And I should see "Topic 4"
@@ -74,10 +76,10 @@ Feature: Sections can be edited and deleted in Onetopic format
   @javascript
   Scenario: Adding sections in Onetopic format
     When I follow "Increase the number of sections"
-    And I should see "Topic 6" in the "li#section-6" "css_element"
+    And I should see "Topic 6"
     And "li#section-7" "css_element" should not exist
     And I should not see "Topic 7"
     And I follow "Increase the number of sections"
-    And I should see "Topic 7" in the "li#section-7" "css_element"
+    And I should see "Topic 7"
     And "li#section-8" "css_element" should not exist
     And I should not see "Topic 8"
