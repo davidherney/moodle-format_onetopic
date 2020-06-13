@@ -1,0 +1,72 @@
+language: php
+
+addons:
+  postgresql: "9.4" # Moodle 3.9 requires PostgreSQL 9.5
+
+services:
+  - mysql
+  - postgresql
+  - docker
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.npm
+
+matrix:
+ include:
+  # Moodle 3.3
+  - php: 5.6 # 5.6.5-7.1
+    env: MOODLE_BRANCH=MOODLE_33_STABLE NODE_VERSION=8.9 DB=mysqli # Node 8.9-8.17
+  # Moodle 3.3, PostgreSQL
+  - php: 5.6 # 5.6.5-7.1
+    env: MOODLE_BRANCH=MOODLE_33_STABLE NODE_VERSION=8.9 DB=pgsql # Node 8.9-8.17
+  # Moodle 3.4
+  - php: 7.0 # 7.0-7.2
+    env: MOODLE_BRANCH=MOODLE_34_STABLE NODE_VERSION=8.10 DB=mysqli # Node 8.9-8.17
+  # Moodle 3.5
+  - php: 7.0 # 7.0-7.2
+    env: MOODLE_BRANCH=MOODLE_35_STABLE NODE_VERSION=14.0 DB=mysqli # Node 14.0-14.4
+  # Moodle 3.5, PostgreSQL
+  - php: 7.0 # 7.0-7.2
+    env: MOODLE_BRANCH=MOODLE_35_STABLE NODE_VERSION=14.0 DB=pgsql # Node 14.0-14.4
+  # Moodle 3.6
+  - php: 7.1 # 7.0-7.3
+    env: MOODLE_BRANCH=MOODLE_36_STABLE NODE_VERSION=8.17 DB=mysqli # Node 8.9-8.17
+  # Moodle 3.7
+  - php: 7.2 # 7.1-7.3
+    env: MOODLE_BRANCH=MOODLE_37_STABLE NODE_VERSION=14.1 DB=mysqli # Node 14.0-14.4
+  # Moodle 3.8
+  - php: 7.3 # 7.1-7.4
+    env: MOODLE_BRANCH=MOODLE_38_STABLE NODE_VERSION=14.2 DB=mysqli # Node 14.0-14.4
+  # Moodle 3.8, PostgreSQL
+  - php: 7.4 # 7.1-7.4
+    env: MOODLE_BRANCH=MOODLE_38_STABLE NODE_VERSION=14.4 DB=pgsql # Node 14.0-14.4
+  # Moodle Master (Behat failing to turn editing on)
+  #- php: 7.4 # 7.2-7.4
+  #  env: MOODLE_BRANCH=master NODE_VERSION=14.4 DB=mysqli # Node 14.0-14.4
+
+before_install:
+  - phpenv config-rm xdebug.ini
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
+  - cd ../..
+  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+  - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
+  - docker run -d -p 127.0.0.1:4444:4444 --net=host -v /dev/shm:/dev/shm selenium/standalone-firefox:2.53.1
+
+install:
+  - moodle-plugin-ci install
+
+script:
+  - moodle-plugin-ci phplint
+  - moodle-plugin-ci phpcpd
+  - moodle-plugin-ci phpmd
+  - moodle-plugin-ci codechecker
+  - moodle-plugin-ci validate
+  - moodle-plugin-ci savepoints
+  - moodle-plugin-ci mustache
+  - moodle-plugin-ci grunt
+  - moodle-plugin-ci phpdoc
+  - moodle-plugin-ci phpunit
+  - moodle-plugin-ci behat
