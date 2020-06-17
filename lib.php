@@ -264,6 +264,9 @@ class format_onetopic extends format_base {
     public function extend_course_navigation($navigation, navigation_node $node) {
         global $PAGE, $COURSE, $USER;
 
+        // Set the section number for the course node.
+        $node->action->param('section', 0);
+
         // If section is specified in course/view.php, make sure it is expanded in navigation.
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
