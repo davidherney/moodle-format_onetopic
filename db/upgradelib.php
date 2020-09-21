@@ -24,12 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot. '/course/format/topics/db/upgradelib.php');
-
 /**
  * This method finds all courses in 'onetopic' format that have actual number of sections
  * bigger than their 'numsections' course format option.
- * For each such course we call {@link format_topics_upgrade_hide_extra_sections()} and
+ * For each such course we call {@link format_onetopic_upgrade_hide_extra_sections()} and
  * either delete or hide "orphaned" sections.
  *
  * This method is based of the "topics" format.
@@ -71,9 +69,52 @@ function format_onetopic_upgrade_remove_numsections() {
     unset($numsections);
 
     foreach ($needfixing as $courseid => $numsections) {
-        format_topics_upgrade_hide_extra_sections($courseid, $numsections);
+        format_onetopic_upgrade_hide_extra_sections($courseid, $numsections);
     }
 
     $DB->delete_records('course_format_options', ['format' => 'onetopic', 'sectionid' => 0, 'name' => 'numsections']);
 }
 
+/**
+ * Find all sections in the course with sectionnum bigger than numsections.
+ * Either delete these sections or hide them
+ *
+ * We will only delete a section if it is completely empty and all sections below
+ * it are also empty
+ *
+ * @param int $courseid
+ * @param int $numsections
+ */
+function format_onetopic_upgrade_hide_extra_sections($courseid, $numsections) {
+    global $DB;
+    $sections = $DB->get_records_sql('SELECT id, name, summary, sequence, visible
+        FROM {course_sections}
+        WHERE course = ? AND section > ?
+        ORDER BY section DESC', [$courseid, $numsections]);
+    $candelete = true;
+    $tohide = [];
+    $todelete = [];
+    foreach ($sections as $section) {
+        if ($candelete && (!empty($section->summary) || !empty($section->sequence) || !empty($section->name))) {
+            $candelete = false;
+        }
+        if ($candelete) {
+            $todelete[] = $section->id;
+        } else if ($section->visible) {
+            $tohide[] = $section->id;
+        }
+    }
+    if ($todelete) {
+        // Delete empty sections in the end.
+        // This is an upgrade script - no events or cache resets are needed.
+        // We also know that these sections do not have any modules so it is safe to just delete records in the table.
+        $DB->delete_records_list('course_sections', 'id', $todelete);
+    }
+    if ($tohide) {
+        // Hide other orphaned sections.
+        // This is different from what set_section_visible() does but we want to preserve actual
+        // module visibility in this case.
+        list($sql, $params) = $DB->get_in_or_equal($tohide);
+        $DB->execute("UPDATE {course_sections} SET visible = 0 WHERE id " . $sql, $params);
+    }
+}
