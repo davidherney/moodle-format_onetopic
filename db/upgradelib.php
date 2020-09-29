@@ -24,7 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot. '/course/format/topics/db/upgradelib.php');
+if (file_exists($CFG->dirroot. '/course/format/topics/db/upgradelib.php')) {
+    require_once($CFG->dirroot. '/course/format/topics/db/upgradelib.php');
+}
 
 /**
  * This method finds all courses in 'onetopic' format that have actual number of sections
