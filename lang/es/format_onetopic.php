@@ -85,3 +85,6 @@ $string['templatetopic_icons_help'] = 'Esta opción define si se muestran o no l
 $string['hidden_message'] = 'El tema <em>{$a}</em> no está disponible en este momento.';
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
 $string['hiddensectionshelp'] = 'Las secciones ocultas se muestran en forma colapsada con mensaje de disponibilidad';
+
+$string['icontext'] = 'Nombre completo de la classe del icono';
+$string['icontext_help'] = 'Add nomdre de la clase del como icono font awesome, glyphicon ou otra. Tenga cuidado de que su tema sea compatible con esto (use scripts, css ...). Inserte el identificador de clase completo, ej. "fa fa-user" ';

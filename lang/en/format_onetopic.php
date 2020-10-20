@@ -86,3 +86,6 @@ $string['templatetopic_icons_help'] = 'This option defines if the icons are disp
 $string['hidden_message'] = 'The section <em>{$a}</em> is not currently available.';
 $string['privacy:metadata'] = 'The Onetopic format plugin does not store any personal data.';
 $string['hiddensectionshelp'] = 'Hidden sections are shown in collapsed form with available message';
+
+$string['icontext'] = 'Full icon class text';
+$string['icontext_help'] = 'Add icon class like font awesome, glyphicon, or anyother. Be careful your theme has to support this (use scripts, css...). Insert the full class identifier, ex. "fa fa-user" to fontawesome icons.';

@@ -280,6 +280,11 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     if (isset($formatoptions['level'])) {
                         $level = $formatoptions['level'];
                     }
+
+                    $icon = '';
+                    if (isset($formatoptions['icon']) && $formatoptions['icon'] != '') {
+                        $icon = "<i class='{$formatoptions['icon']}'></i> ";
+                    }
                 }
 
                 if ($section == 0) {
@@ -320,9 +325,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     }
                 }
 
-                $newtab = new tabobject("tab_topic_" . $section, $url,
-                '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
-                '<span class="sectionname">' . $sectionname . "</span>" . $availablemessage . "</div>", $sectionname);
+                if ($icon) {
+                    $newtab = new tabobject("tab_topic_" . $section, $url,
+                        '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '"><span class="icon-tab sectionname">' . $icon . s($sectionname) . "</span>" . $availablemessage . "</div>", s($sectionname));
+                }
+                else {
+                    $newtab = new tabobject("tab_topic_" . $section, $url,
+                        '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '"><span class="sectionname">' . s($sectionname) . "</span>" . $availablemessage . "</div>", s($sectionname));
+                }
 
                 if (is_array($formatoptions) && isset($formatoptions['level'])) {
 
