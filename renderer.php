@@ -343,7 +343,19 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             } else {
                                 $firsttabtext = get_string('index', 'format_onetopic');
                             }
-                            $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial">' .
+                            // Get custom styles for the first tab.
+                            $styles = '';
+                            if (!empty($parentformatoptions['firsttabfontcolor'])) {
+                                $styles .= 'color: ' . $parentformatoptions['firsttabfontcolor'] . ';';
+                            }
+                            if (!empty($parentformatoptions['firsttabbgcolor'])) {
+                                $styles .= 'background-color: ' . $parentformatoptions['firsttabbgcolor'] . ';';
+                            }
+                            if (!empty($parentformatoptions['firsttabcssstyles'])) {
+                                $styles .= $parentformatoptions['firsttabcssstyles'] . ';';
+                            }
+
+                            $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial" style="' .$styles. '">' .
                                                                     $firsttabtext . "</div>";
                             $tabs[$parentindex]->subtree[0]->level = 2;
 
