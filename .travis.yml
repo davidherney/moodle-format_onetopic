@@ -26,10 +26,10 @@ matrix:
   #  env: MOODLE_BRANCH=MOODLE_33_STABLE NODE_VERSION=8.9 DB=pgsql # Node 8.9-8.17
   # Moodle 3.4
   - php: 7.0 # 7.0-7.2
-    env: MOODLE_BRANCH=MOODLE_34_STABLE NODE_VERSION=8.10 DB=mysqli # Node 8.9-8.17
+    env: MOODLE_BRANCH=MOODLE_34_STABLE NODE_VERSION=8.9 DB=mysqli # Node 8.9-8.17
   # Moodle 3.4, PostgreSQL
   - php: 7.0 # 7.0-7.2
-    env: MOODLE_BRANCH=MOODLE_34_STABLE NODE_VERSION=8.10 DB=pgsql # Node 8.9-8.17
+    env: MOODLE_BRANCH=MOODLE_34_STABLE NODE_VERSION=8.9 DB=pgsql # Node 8.9-8.17
   # Moodle 3.5
   - php: 7.0 # 7.0-7.2
     env: MOODLE_BRANCH=MOODLE_35_STABLE NODE_VERSION=14.15 DB=mysqli
