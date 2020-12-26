@@ -29,7 +29,7 @@ require_once($CFG->dirroot. '/course/format/topics/db/upgradelib.php');
 /**
  * This method finds all courses in 'onetopic' format that have actual number of sections
  * bigger than their 'numsections' course format option.
- * For each such course we call {@link format_topics_upgrade_hide_extra_sections()} and
+ * For each such course we call {@see format_topics_upgrade_hide_extra_sections()} and
  * either delete or hide "orphaned" sections.
  *
  * This method is based of the "topics" format.
