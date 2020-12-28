@@ -146,7 +146,7 @@ if (!empty($sectioninfo)) {
                 $cm  = get_coursemodule_from_id('', $mod->id, 0, true, MUST_EXIST);
 
                 $modcontext = context_module::instance($cm->id);
-                if (has_capability('moodle/course:manageactivities', $modcontext)) {
+                if (has_capability('moodle/course:manageactivities', $modcontext) && !$cm->deletioninprogress) {
                     // Duplicate the module.
                     $newcm = duplicate_module($course, $cm);
 
