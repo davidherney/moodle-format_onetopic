@@ -33,18 +33,5 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_format_onetopic_upgrade($oldversion) {
     global $CFG, $DB;
 
-    require_once($CFG->dirroot . '/course/format/onetopic/db/upgradelib.php');
-
-    if ($oldversion < 2018010601) {
-
-        // Remove 'numsections' option and hide or delete orphaned sections.
-        format_onetopic_upgrade_remove_numsections();
-
-        upgrade_plugin_savepoint(true, 2018010601, 'format', 'onetopic');
-    }
-
-    // Automatically generated Moodle v3.3.0 release upgrade line.
-    // Put any upgrade step following this.
-
     return true;
 }
