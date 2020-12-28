@@ -842,7 +842,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * Renders HTML to display a list of course modules in a course section
      * Also displays "move here" controls in Javascript-disabled mode
      *
-     * This function calls {@link core_course_renderer::course_section_cm()}
+     * This function calls {@see core_course_renderer::course_section_cm()}
      *
      * @param stdClass $course course object
      * @param int|stdClass|section_info $section relative section number or section object
