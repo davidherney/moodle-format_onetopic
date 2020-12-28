@@ -538,7 +538,7 @@ class format_onetopic extends format_base {
                     'type' => PARAM_INT
                 ),
                 'firsttabtext' => array(
-                    'default' => 0,
+                    'default' => get_string('index', 'format_onetopic'),
                     'type' => PARAM_TEXT
                 ),
                 'fontcolor' => array(
