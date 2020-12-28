@@ -1,7 +1,7 @@
 COURSE FORMAT Onetopic
 ============================
 
-Package tested in: moodle 3.9+.
+Package tested in: moodle 3.9+ and 3.10+.
 
 QUICK INSTALL
 ==============
@@ -16,7 +16,7 @@ Powered by: https://bambuco.co/
 IN VERSION
 =============
 2020122700:
-Compatibility with moodle 3.9.
+Compatibility with moodle 3.9 and 3.10.
 When duplicating sections, exclude deleted recources/activities (by james-cnz)
 Added anchor #tabs-tree-start to tabs links in order to change the page position between page loads.
 
