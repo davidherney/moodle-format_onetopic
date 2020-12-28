@@ -15,6 +15,10 @@ Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.
 
 IN VERSION
 =============
+2020122700:
+Compatibility with moodle 3.9.
+When duplicating sections, exclude deleted recources/activities (by james-cnz)
+
 2018010607:
 Compatibility with moodle 3.7 and 3.8.
 Added hiddensectionshelp option used to show a help icon with available section message, if it apply.

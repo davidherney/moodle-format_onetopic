@@ -608,7 +608,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      */
     protected function section_edit_control_items($course, $section, $onsectionpage = false) {
 
-      if (!$this->page->user_is_editing()) {
+        if (!$this->page->user_is_editing()) {
             return array();
         }
 

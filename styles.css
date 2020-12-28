@@ -57,6 +57,15 @@
     padding-left: 20px;
 }
 
+.format-onetopic .onetopic .nav-tabs > li > a {
+    padding: 0;
+}
+
+.format-onetopic .onetopic .tab_content {
+    padding: 8px 12px;
+    display: inline-block;
+}
+
 .format-onetopic .onetopic_hideicons .activityicon {
     display: none;
 }
