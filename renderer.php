@@ -173,7 +173,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * @param int $displaysection The section number in the course which is being displayed
      */
     public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
-        global $PAGE, $OUTPUT;;
 
         $realcoursedisplay = $course->realcoursedisplay;
         $modinfo = get_fast_modinfo($course);
@@ -207,7 +206,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
             $thissection = $sections[0];
             if ((($thissection->visible && $thissection->available) || $canviewhidden) &&
-                    ($thissection->summary || $thissection->sequence || $PAGE->user_is_editing() ||
+                    ($thissection->summary || $thissection->sequence || $this->page->user_is_editing() ||
                     (string)$thissection->name !== '')) {
                 echo $this->start_section_list();
                 echo $this->section_header($thissection, $course, true);
@@ -230,7 +229,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         // Move controls.
         $canmove = false;
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:movesections', $context) && $displaysection > 0) {
+        if ($this->page->user_is_editing() && has_capability('moodle/course:movesections', $context) && $displaysection > 0) {
             $canmove = true;
         }
         $movelisthtml = '';
@@ -396,7 +395,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
 
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+        if ($this->page->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
             // Increase number of sections.
             $straddsection = get_string('increasesections', 'moodle');
@@ -412,12 +411,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         $hiddenmsg = course_get_format($course)->get_hidden_message();
         if (!empty($hiddenmsg)) {
-            echo $OUTPUT->notification($hiddenmsg);
+            echo $this->output->notification($hiddenmsg);
         }
 
-        if ($PAGE->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
+        if ($this->page->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
             echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
-            echo $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
+            echo $this->output->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
 
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
@@ -435,7 +434,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_NOT) {
                     echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
-                } else if ($PAGE->user_is_editing() || $this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
+                } else if ($this->page->user_is_editing() || $this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
                     echo $this->custom_course_section_cm_list($course, $thissection, $displaysection);
                 }
 
@@ -456,7 +455,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Close single-section div.
         echo html_writer::end_tag('div');
 
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+        if ($this->page->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
             echo '<br class="utilities-separator" />';
             print_collapsible_region_start('move-list-box clearfix collapsible mform', 'course_format_onetopic_config_movesection',
@@ -482,7 +481,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $url = clone($baseurl);
 
-            global $USER, $OUTPUT;
+            global $USER;
             if (isset($USER->onetopic_da[$course->id]) && $USER->onetopic_da[$course->id]) {
                 $url->param('onetopic_da', 0);
                 $textbuttondisableajax = get_string('enable', 'format_onetopic');
@@ -608,7 +607,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * @return array of edit control items
      */
     protected function section_edit_control_items($course, $section, $onsectionpage = false) {
-        if (!$this->page->user_is_editing()) {
+
+      if (!$this->page->user_is_editing()) {
             return array();
         }
 
@@ -699,7 +699,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      */
     private function replace_resources ($section) {
 
-        global $CFG, $USER, $PAGE;
+        global $CFG, $USER;
 
         static $initialised;
 
