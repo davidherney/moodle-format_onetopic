@@ -1,7 +1,7 @@
-COURSE FORMATS Onetopic
+COURSE FORMAT Onetopic
 ============================
 
-Package tested in: moodle 3.3+, moodle 3.4+, moodle 3.5+, moodle 3.6+, moodle 3.7+ and moodle 3.8+.
+Package tested in: moodle 3.9+.
 
 QUICK INSTALL
 ==============
@@ -9,15 +9,16 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ABOUT
 =============
-Developed by: David Herney Bernal García - davidherney at gmail dot com
+Developed by: David Herney - davidherney at gmail dot com
 GIT: https://github.com/davidherney/moodle-format_onetopic
-Information in: http://aprendeenlinea.udea.edu.co/lms/investigacion/course/view.php?id=50&topic=2
+Powered by: https://bambuco.co/
 
 IN VERSION
 =============
 2020122700:
 Compatibility with moodle 3.9.
 When duplicating sections, exclude deleted recources/activities (by james-cnz)
+Added anchor #tabs-tree-start to tabs links in order to change the page position between page loads.
 
 2018010607:
 Compatibility with moodle 3.7 and 3.8.
