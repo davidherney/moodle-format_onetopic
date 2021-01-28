@@ -1,0 +1,59 @@
+# Based on https://github.com/moodlehq/moodle-plugin-ci/blob/master/.travis.dist.yml
+# Plus matrix from https://github.com/catalyst/moodle-auth_saml2/blob/master/.travis.yml
+
+language: php
+
+addons:
+  postgresql: "9.6" # Moodle 3.3: 9.3 / Moodle 3.6: 9.4 / Moodle 3.9: 9.5 / Moodle 3.10: 9.6
+
+services:
+  - mysql
+  - postgresql
+  - docker
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.npm
+
+matrix:
+ include:
+  # Moodle 3.9
+  - php: 7.2 # 7.2-7.4
+    env: MOODLE_BRANCH=MOODLE_39_STABLE NODE_VERSION=14.15 DB=mysqli
+  # Moodle 3.10
+  - php: 7.2 # 7.2-7.4
+    env: MOODLE_BRANCH=MOODLE_310_STABLE NODE_VERSION=14.15 DB=mysqli
+  # Moodle 3.11
+  - php: 7.3 # 7.2-7.4
+    env: MOODLE_BRANCH=MOODLE_311_STABLE NODE_VERSION=14.15 DB=mysqli
+  # Moodle Master
+  - php: 7.4 # 7.2-7.4
+    env: MOODLE_BRANCH=master NODE_VERSION=14.15 DB=mysqli
+  # Moodle Master, PostgreSQL
+  - php: 7.4 # 7.2-7.4
+    env: MOODLE_BRANCH=master NODE_VERSION=14.15 DB=pgsql
+
+before_install:
+  - phpenv config-rm xdebug.ini
+  - cd ../..
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
+  - composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
+  - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
+
+install:
+  - moodle-plugin-ci install
+
+script:
+  - moodle-plugin-ci phplint
+  - moodle-plugin-ci phpcpd
+  - moodle-plugin-ci phpmd
+  - moodle-plugin-ci codechecker
+  - moodle-plugin-ci validate
+  - moodle-plugin-ci savepoints
+  - moodle-plugin-ci mustache
+  - moodle-plugin-ci grunt
+  - moodle-plugin-ci phpdoc
+  - moodle-plugin-ci phpunit
+  #- moodle-plugin-ci behat

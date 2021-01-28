@@ -173,7 +173,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * @param int $displaysection The section number in the course which is being displayed
      */
     public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
-        global $PAGE, $OUTPUT;;
 
         $realcoursedisplay = $course->realcoursedisplay;
         $modinfo = get_fast_modinfo($course);
@@ -207,7 +206,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
             $thissection = $sections[0];
             if ((($thissection->visible && $thissection->available) || $canviewhidden) &&
-                    ($thissection->summary || $thissection->sequence || $PAGE->user_is_editing() ||
+                    ($thissection->summary || $thissection->sequence || $this->page->user_is_editing() ||
                     (string)$thissection->name !== '')) {
                 echo $this->start_section_list();
                 echo $this->section_header($thissection, $course, true);
@@ -230,7 +229,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         // Move controls.
         $canmove = false;
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:movesections', $context) && $displaysection > 0) {
+        if ($this->page->user_is_editing() && has_capability('moodle/course:movesections', $context) && $displaysection > 0) {
             $canmove = true;
         }
         $movelisthtml = '';
@@ -353,8 +352,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             } else {
                                 $firsttabtext = get_string('index', 'format_onetopic');
                             }
-                            $tabs[$parentindex]->subtree[0]->text = '<div class="tab_content tab_initial">' .
-                                                                    $firsttabtext . "</div>";
+                            $tabs[$parentindex]->subtree[0]->text = '<innertab class="tab_content tab_initial">' .
+                                                                    $firsttabtext . "</innertab>";
                             $tabs[$parentindex]->subtree[0]->level = 2;
 
                             if ($displaysection == $section - 1) {
@@ -406,7 +405,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
 
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+        if ($this->page->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
             // Increase number of sections.
             $straddsection = get_string('increasesections', 'moodle');
@@ -422,11 +421,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         $hiddenmsg = course_get_format($course)->get_hidden_message();
         if (!empty($hiddenmsg)) {
-            echo $OUTPUT->notification($hiddenmsg);
+            echo $this->output->notification($hiddenmsg);
         }
 
-        if ($PAGE->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
-            echo $OUTPUT->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
+        if ($this->page->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
+            echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
+            echo $this->output->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
 
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
@@ -444,7 +444,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if ($this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_NOT) {
                     echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
-                } else if ($PAGE->user_is_editing() || $this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
+                } else if ($this->page->user_is_editing() || $this->_course->templatetopic == format_onetopic::TEMPLATETOPIC_LIST) {
                     echo $this->custom_course_section_cm_list($course, $thissection, $displaysection);
                 }
 
@@ -465,7 +465,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Close single-section div.
         echo html_writer::end_tag('div');
 
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+        if ($this->page->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
             echo '<br class="utilities-separator" />';
             print_collapsible_region_start('move-list-box clearfix collapsible mform', 'course_format_onetopic_config_movesection',
@@ -491,7 +491,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             $url = clone($baseurl);
 
-            global $USER, $OUTPUT;
+            global $USER;
             if (isset($USER->onetopic_da[$course->id]) && $USER->onetopic_da[$course->id]) {
                 $url->param('onetopic_da', 0);
                 $textbuttondisableajax = get_string('enable', 'format_onetopic');
@@ -553,7 +553,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     protected function section_header($section, $course, $onsectionpage, $sectionreturn=null) {
-        global $PAGE;
 
         $o = '';
         $currenttext = '';
@@ -563,14 +562,20 @@ class format_onetopic_renderer extends format_section_renderer_base {
             // Only in the non-general sections.
             if (!$section->visible) {
                 $sectionstyle = ' hidden';
-            } else if (course_get_format($course)->is_section_current($section)) {
+            }
+            if (course_get_format($course)->is_section_current($section)) {
                 $sectionstyle = ' current';
             }
         }
 
-        $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
-                'class' => 'section main clearfix'.$sectionstyle, 'role' => 'region',
-                'aria-label' => get_section_name($course, $section)));
+        $o .= html_writer::start_tag('li', [
+            'id' => 'section-'.$section->section,
+            'class' => 'section main clearfix'.$sectionstyle,
+            'role' => 'region',
+            'aria-labelledby' => "sectionid-{$section->id}-title",
+            'data-sectionid' => $section->section,
+            'data-sectionreturnid' => $sectionreturn
+        ]);
 
         $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
         $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
@@ -587,15 +592,18 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $sectionname = html_writer::tag('span', get_section_name($course, $section));
         }
 
-        $o .= $this->output->heading($sectionname, 3, 'sectionname' . $classes);
+        $o .= $this->output->heading($sectionname, 3, 'sectionname' . $classes, "sectionid-{$section->id}-title");
+
+        $o .= $this->section_availability($section);
 
         $o .= html_writer::start_tag('div', array('class' => 'summary'));
-        $o .= $this->format_summary_text($section);
+        if ($section->uservisible || $section->visible) {
+            // Show summary if section is available or has availability restriction information.
+            // Do not show summary if section is hidden but we still display it because of course setting
+            // "Hidden sections are shown in collapsed form".
+            $o .= $this->format_summary_text($section);
+        }
         $o .= html_writer::end_tag('div');
-
-        $context = context_course::instance($course->id);
-        $o .= $this->section_availability_message($section,
-            has_capability('moodle/course:viewhiddensections', $context));
 
         return $o;
     }
@@ -609,9 +617,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * @return array of edit control items
      */
     protected function section_edit_control_items($course, $section, $onsectionpage = false) {
-        global $PAGE;
 
-        if (!$PAGE->user_is_editing()) {
+        if (!$this->page->user_is_editing()) {
             return array();
         }
 
@@ -650,7 +657,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
 
-        // If the edit key exists, we are going to insert our controls after it.
+        // If the delete key exists, we are going to insert our controls after it.
         if (array_key_exists("delete", $parentcontrols)) {
             $url = new moodle_url('/course/editsection.php', array(
                     'id' => $section->id,
@@ -702,7 +709,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      */
     private function replace_resources ($section) {
 
-        global $CFG, $USER, $PAGE;
+        global $CFG, $USER;
 
         static $initialised;
 
@@ -845,7 +852,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      * Renders HTML to display a list of course modules in a course section
      * Also displays "move here" controls in Javascript-disabled mode
      *
-     * This function calls {@link core_course_renderer::course_section_cm()}
+     * This function calls {@see core_course_renderer::course_section_cm()}
      *
      * @param stdClass $course course object
      * @param int|stdClass|section_info $section relative section number or section object
