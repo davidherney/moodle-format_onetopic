@@ -335,8 +335,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         } else if (count($tabs[$parentindex]->subtree) == 0) {
                             $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
                             $tabs[$parentindex]->subtree[0]->id .= '_index';
-                            $parentsection = $sections[$section - 1];
-                            $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+
+                            $prevsectionindex = $section - 1;
+                            do {
+                                $parentsection = $sections[$prevsectionindex];
+                                $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+                                $prevsectionindex--;
+                            } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= 0);
+
                             if ($parentformatoptions['firsttabtext']) {
                                 $firsttabtext = $parentformatoptions['firsttabtext'];
                             } else {
