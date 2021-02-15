@@ -324,36 +324,36 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 '<innertab style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
                 '<span class="sectionname">' . $sectionname . "</span>" . $availablemessage . "</innertab>", $sectionname);
 
-                    if ($level == 0) {
-                        $tabs[] = $newtab;
-                        $newtab->level = 1;
-                        $parentsection = $thissection;
-                    } else {
-                        $parentindex = count($tabs) - 1;
-                        if (!is_array($tabs[$parentindex]->subtree)) {
-                            $tabs[$parentindex]->subtree = array();
-                        } else if (count($tabs[$parentindex]->subtree) == 0) {
-                            $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
-                            $tabs[$parentindex]->subtree[0]->id .= '_index';
+                if ($level == 0) {
+                    $tabs[] = $newtab;
+                    $newtab->level = 1;
+                    $parentsection = $thissection;
+                } else {
+                    $parentindex = count($tabs) - 1;
+                    if (!is_array($tabs[$parentindex]->subtree)) {
+                        $tabs[$parentindex]->subtree = array();
+                    } else if (count($tabs[$parentindex]->subtree) == 0) {
+                        $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
+                        $tabs[$parentindex]->subtree[0]->id .= '_index';
 
-                                $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+                        $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
 
-                            if ($parentformatoptions['firsttabtext']) {
-                                $firsttabtext = $parentformatoptions['firsttabtext'];
-                            } else {
-                                $firsttabtext = get_string('index', 'format_onetopic');
-                            }
-                            $tabs[$parentindex]->subtree[0]->text = '<innertab class="tab_content tab_initial">' .
-                                                                    $firsttabtext . "</innertab>";
-                            $tabs[$parentindex]->subtree[0]->level = 2;
-
-                            if ($displaysection == $parentsection->section) {
-                                $tabs[$parentindex]->subtree[0]->selected = true;
-                            }
+                        if ($parentformatoptions['firsttabtext']) {
+                            $firsttabtext = $parentformatoptions['firsttabtext'];
+                        } else {
+                            $firsttabtext = get_string('index', 'format_onetopic');
                         }
-                        $newtab->level = 2;
-                        $tabs[$parentindex]->subtree[] = $newtab;
+                        $tabs[$parentindex]->subtree[0]->text = '<innertab class="tab_content tab_initial">' .
+                                                                $firsttabtext . "</innertab>";
+                        $tabs[$parentindex]->subtree[0]->level = 2;
+
+                        if ($displaysection == $parentsection->section) {
+                            $tabs[$parentindex]->subtree[0]->selected = true;
+                        }
                     }
+                    $newtab->level = 2;
+                    $tabs[$parentindex]->subtree[] = $newtab;
+                }
 
                 // Init move section list.
                 if ($canmove) {
