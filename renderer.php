@@ -126,37 +126,44 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // FIXME: This is really evil and should by using the navigation API.
         $course = course_get_format($course)->get_course();
         $canviewhidden = has_capability('moodle/course:viewhiddensections', context_course::instance($course->id))
-                            || !($course->hiddensections == 1);
+            || ($course->hiddensections != 1/*invisible*/);
+        $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
         $links = array('previous' => '', 'next' => '');
-        $back = $sectionno - 1;
 
-        while ((($back > 0 && $course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ||
-                ($back >= 0 && $course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE)) && empty($links['previous'])) {
-            if ($canviewhidden || $sections[$back]->uservisible) {
+        $level0uservisible = true;
+        $level0visible = true;
+        foreach ($sections as $section => $thissection) {
+            if ($section < $firstsection) {
+                continue;
+            }
+            $formatoptions = course_get_format($course)->get_format_options($thissection);
+            $level = ($section > $firstsection) ? $formatoptions['level'] : 0;
+            if ($level <= 0) {
+                $level0uservisible = $thissection->uservisible || ($section == 0);
+                $level0visible = $thissection->visible || ($section == 0);
+            }
+            $uservisible = $level0uservisible && $thissection->uservisible || ($section == 0);
+            $visible = $level0visible && $thissection->visible || ($section == 0);
+            if ($section < $sectionno && ($canviewhidden || $uservisible)) {
                 $params = array();
-                if (!$sections[$back]->visible) {
+                if (!$visible) {
                     $params = array('class' => 'dimmed_text');
                 }
                 $previouslink = html_writer::tag('span', $this->output->larrow(), array('class' => 'larrow'));
-                $previouslink .= get_section_name($course, $sections[$back]);
-                $links['previous'] = html_writer::link(course_get_url($course, $back), $previouslink, $params);
+                $previouslink .= get_section_name($course, $thissection);
+                $links['previous'] = html_writer::link(course_get_url($course, $section), $previouslink, $params);
             }
-            $back--;
-        }
-
-        $forward = $sectionno + 1;
-        while ($forward <= $this->numsections && empty($links['next'])) {
-            if ($canviewhidden || $sections[$forward]->uservisible) {
+            if ($section > $sectionno && empty($links['next']) && ($canviewhidden || $uservisible)) {
                 $params = array();
-                if (!$sections[$forward]->visible) {
+                if (!$visible) {
                     $params = array('class' => 'dimmed_text');
                 }
-                $nextlink = get_section_name($course, $sections[$forward]);
+                $nextlink = get_section_name($course, $thissection);
                 $nextlink .= html_writer::tag('span', $this->output->rarrow(), array('class' => 'rarrow'));
-                $links['next'] = html_writer::link(course_get_url($course, $forward), $nextlink, $params);
+                $links['next'] = html_writer::link(course_get_url($course, $section), $nextlink, $params);
+                break;
             }
-            $forward++;
         }
 
         return $links;
@@ -178,6 +185,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $modinfo = get_fast_modinfo($course);
         $course = course_get_format($course)->get_course();
         $course->realcoursedisplay = $realcoursedisplay;
+        $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
         if (!$sections) {
             $sections = $modinfo->get_section_info_all();
@@ -235,33 +243,33 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $movelisthtml = '';
 
         // Init custom tabs.
-        $section = 0;
+        $level0section = $sections[0];
+        $level0visible = true;
 
         $tabs = array();
         $inactivetabs = array();
 
-        while ($section <= $this->numsections) {
+        foreach ($sections as $section => $thissection) {
 
-            if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $section == 0) {
-                $section++;
+            if ($section < $firstsection) {
                 continue;
             }
 
-            $thissection = $sections[$section];
-
-            $showsection = true;
-            if (!$thissection->visible || !$thissection->available) {
-                $showsection = $canviewhidden || !($course->hiddensections == 1);
+            $formatoptions = course_get_format($course)->get_format_options($thissection);
+            $level = (is_array($formatoptions) && isset($formatoptions['level']) && ($section > $firstsection)) ?
+                        $formatoptions['level'] : 0;
+            if ($level <= 0) {
+                $level0section = $thissection;
+                $level0visible = $level0section->visible && $level0section->available || ($section == 0);
             }
+            $showsection = $level0visible && $thissection->visible && $thissection->available
+                    || $canviewhidden || ($course->hiddensections != 1/*invisible*/) || ($section == 0);
 
             if ($showsection) {
-
-                $formatoptions = course_get_format($course)->get_format_options($thissection);
 
                 $sectionname = get_section_name($course, $thissection);
 
                 $customstyles = '';
-                $level = 0;
                 if (is_array($formatoptions)) {
 
                     if (!empty($formatoptions['fontcolor'])) {
@@ -276,9 +284,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $customstyles .= $formatoptions['cssstyles'] . ';';
                     }
 
-                    if (isset($formatoptions['level'])) {
-                        $level = $formatoptions['level'];
-                    }
                 }
 
                 if ($section == 0) {
@@ -292,7 +297,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     $specialstyle = ' marker ';
                 }
 
-                if (!$thissection->visible || !$thissection->available) {
+                if (!($level0visible && $thissection->visible && $thissection->available || $section == 0)) {
                     $specialstyle .= ' dimmed ';
 
                     if (!$canviewhidden) {
@@ -323,9 +328,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 '<innertab style="' . $customstyles . '" class="tab_content ' . $specialstyle . '">' .
                 '<span class="sectionname">' . $sectionname . "</span>" . $availablemessage . "</innertab>", $sectionname);
 
-                if (is_array($formatoptions) && isset($formatoptions['level'])) {
-
-                    if ($formatoptions['level'] == 0 || count($tabs) == 0) {
+                    if ($level <= 0) {
                         $tabs[] = $newtab;
                         $newtab->level = 1;
                     } else {
@@ -336,12 +339,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
                             $tabs[$parentindex]->subtree[0]->id .= '_index';
 
-                            $prevsectionindex = $section - 1;
-                            do {
-                                $parentsection = $sections[$prevsectionindex];
-                                $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
-                                $prevsectionindex--;
-                            } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= 0);
+                                $parentformatoptions = course_get_format($course)->get_format_options($level0section);
 
                             if ($parentformatoptions['firsttabtext']) {
                                 $firsttabtext = $parentformatoptions['firsttabtext'];
@@ -352,16 +350,13 @@ class format_onetopic_renderer extends format_section_renderer_base {
                                                                     $firsttabtext . "</innertab>";
                             $tabs[$parentindex]->subtree[0]->level = 2;
 
-                            if ($displaysection == $section - 1) {
+                            if ($displaysection == $level0section->section) {
                                 $tabs[$parentindex]->subtree[0]->selected = true;
                             }
                         }
                         $newtab->level = 2;
                         $tabs[$parentindex]->subtree[] = $newtab;
                     }
-                } else {
-                    $tabs[] = $newtab;
-                }
 
                 // Init move section list.
                 if ($canmove) {
@@ -377,8 +372,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         // Not apply if it is the first element (condition !empty($movelisthtml))
                         // because the first element can't be a sublevel.
                         $liclass = '';
-                        if (is_array($formatoptions) && isset($formatoptions['level']) && $formatoptions['level'] > 0 &&
-                                !empty($movelisthtml)) {
+                        if ($level > 0) {
                             $liclass = 'sublevel';
                         }
 
@@ -395,7 +389,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 // End move section list.
             }
 
-            $section++;
         }
 
         // Title with section navigation links.
