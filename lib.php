@@ -81,14 +81,13 @@ class format_onetopic extends format_base {
 
             if ($section >= 0 && $numsections >= $section) {
                 $displaysection = $section;
-            } else
-                if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
-                    $displaysection = $USER->display[$course->id];
-                } else if ($course->marker && $course->marker > 0) {
-                    $displaysection = (int)$course->marker;
-                } else {
-                    $displaysection = null;
-                }
+            } else if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
+                $displaysection = $USER->display[$course->id];
+            } else if ($course->marker && $course->marker > 0) {
+                $displaysection = (int)$course->marker;
+            } else {
+                $displaysection = null;
+            }
 
             // Onetopic format is always multipage.
             $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
