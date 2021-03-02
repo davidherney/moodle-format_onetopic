@@ -80,61 +80,54 @@ class format_onetopic extends format_base {
             $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
 
             if ($section >= 0 && $numsections >= $section) {
-                $realsection = $section;
+                $displaysection = $section;
+            } else if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
+                $displaysection = $USER->display[$course->id];
+            } else if ($course->marker && $course->marker > 0) {
+                $displaysection = (int)$course->marker;
             } else {
-                if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
-                    $realsection = $USER->display[$course->id];
-                } else if ($course->marker && $course->marker > 0) {
-                    $realsection = (int)$course->marker;
-                } else {
-                    $realsection = 0;
-                }
-            }
-
-            if ($realsection < 0 || $realsection > $numsections) {
-                $realsection = 0;
+                $displaysection = null;
             }
 
             // Onetopic format is always multipage.
             $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+            $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
-            if ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $realsection === 0 && $numsections >= 1) {
-                $realsection = 1;
+            if (!isset($displaysection) || $displaysection < $firstsection || $displaysection > $numsections) {
+                $displaysection = null;
             }
-
-            // Can view the hidden sections in current course?
-            $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
 
             $modinfo = get_fast_modinfo($course);
             $sections = $modinfo->get_section_info_all();
 
             // Check if the display section is available.
-            if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
+            $firstuservisiblesection = null;
+            $level0uservisible = true;
 
-                self::$byhiddenmsg = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
-
-                $valid = false;
-                $k = $realcoursedisplay ? 1 : 0;
-
-                do {
-                    $formatoptions = $this->get_format_options($k);
-                    if ($formatoptions['level'] == 0
-                            && ($sections[$k]->available && $sections[$k]->uservisible)
-                            || $canviewhidden) {
-                        $valid = true;
-                        break;
-                    }
-
-                    $k++;
-
-                } while (!$valid && $k <= $numsections);
-
-                $realsection = $valid ? $k : 0;
+            foreach ($sections as $k => $thissection) {
+                if ($k < $firstsection) {
+                    continue;
+                }
+                $formatoptions = $this->get_format_options($k);
+                $level = ($k > $firstsection) ? $formatoptions['level'] : 0;
+                if ($level <= 0) {
+                    $level0uservisible = $thissection->uservisible || ($k == 0);
+                }
+                $uservisible = $level0uservisible && $thissection->uservisible || ($k == 0);
+                if ($k === $displaysection && !$uservisible) {
+                    self::$byhiddenmsg = get_string('hidden_message', 'format_onetopic', $this->get_section_name($displaysection));
+                    $displaysection = null;
+                }
+                if ($uservisible && $firstuservisiblesection === null) {
+                    $firstuservisiblesection = $k;
+                }
             }
 
-            $section = $realsection;
-            $USER->display[$course->id] = $realsection;
-            $urlparams['section'] = $realsection;
+            $displaysection = $displaysection ?? $firstuservisiblesection ?? 0;
+
+            $section = $displaysection;
+            $USER->display[$course->id] = $displaysection;
+            $urlparams['section'] = $displaysection;
             $PAGE->set_url('/course/view.php', $urlparams);
 
         }
@@ -281,18 +274,29 @@ class format_onetopic extends format_base {
         // Check if there are callbacks to extend course navigation.
         parent::extend_course_navigation($navigation, $node);
 
-        // We want to remove the general section if it is empty.
-        $modinfo = get_fast_modinfo($this->get_course());
-        $sections = $modinfo->get_sections();
-        if (!isset($sections[0])) {
-            // The general section is empty to find the navigation node for it we need to get its ID.
-            $section = $modinfo->get_section_info(0);
-            $generalsection = $node->get($section->id, navigation_node::TYPE_SECTION);
-            if ($generalsection) {
-                // We found the node - now remove it.
-                $generalsection->remove();
+        // We want to remove hidden sections.
+        $course = $this->get_course();
+        $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+        $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+        $modinfo = get_fast_modinfo($course);
+        $sections = $modinfo->get_section_info_all();
+        $level0uservisible = true;
+        foreach ($sections as $section => $thissection) {
+            $formatoptions = $this->get_format_options($section);
+            $level = ($section > $firstsection) ? $formatoptions['level'] : 0;
+            if ($level <= 0) {
+                $level0uservisible = $thissection->uservisible || ($section == 0);
+            }
+            $uservisible = $level0uservisible && $thissection->uservisible || ($section == 0);
+            if ($section < $firstsection || !$uservisible) {
+                $sectionnode = $node->get($thissection->id, navigation_node::TYPE_SECTION);
+                if ($sectionnode) {
+                    // We found the node - now remove it.
+                    $sectionnode->remove();
+                }
             }
         }
+
     }
 
     /**
