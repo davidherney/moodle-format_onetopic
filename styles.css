@@ -128,3 +128,7 @@
 .format-onetopic .onetopic .completiontag img.icon {
     margin: 0 3px 0 5px;
 }
+
+.format-onetopic.path-mod.pagelayout-incourse #page #page-content .activity-navigation {
+    display: none;
+}
