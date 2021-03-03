@@ -552,6 +552,10 @@ class format_onetopic extends format_base {
                 'cssstyles' => array(
                     'default' => '',
                     'type' => PARAM_RAW
+                ),
+                'icon' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW
                 )
             );
         }
@@ -598,6 +602,13 @@ class format_onetopic extends format_base {
                     'type' => PARAM_RAW,
                     'label' => get_string('cssstyles', 'format_onetopic'),
                     'help' => 'cssstyles',
+                    'help_component' => 'format_onetopic',
+                ),
+                'icon' => array(
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => get_string('icontext', 'format_onetopic'),
+                    'help' => 'icontext',
                     'help_component' => 'format_onetopic',
                 )
             );
