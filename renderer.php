@@ -189,7 +189,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         if (!isset($sections[$displaysection])) {
             // This section doesn't exist.
-            print_error('unknowncoursesection', 'error', course_get_url($course),
+            throw new moodle_exception('unknowncoursesection', 'error', course_get_url($course),
                 format_string($course->fullname));
         }
 
