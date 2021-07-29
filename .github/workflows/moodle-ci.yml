@@ -43,11 +43,11 @@ jobs:
             moodle-branch: 'MOODLE_310_STABLE'
             database: mariadb
           # Moodle 3.11
-          - php: '7.4' # 7.2-7.4
+          - php: '7.4' # 7.3-7.4
             moodle-branch: 'MOODLE_311_STABLE'
             database: mariadb
-          # Moodle 3.11, PHP 8.0 (not ready for production)
-          - php: '8.0' # 7.2-7.4
+          # Moodle 3.11, PHP 8.0 (not ready for production, see MDL-70745)
+          - php: '8.0' # 7.3-7.4
             moodle-branch: 'MOODLE_311_STABLE'
             database: mariadb
 
