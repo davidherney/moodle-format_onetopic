@@ -225,7 +225,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
 
         // Start single-section div.
-        echo html_writer::start_tag('div', array('class' => 'single-section onetopic'));
+        $cssclass = 'single-section onetopic';
+        $cssclass .= $this->_course->tabsview == format_onetopic::TABSVIEW_VERTICAL ? ' verticaltabs' : '';
+        echo html_writer::start_tag('div', array('class' => $cssclass));
 
         // Move controls.
         $canmove = false;
@@ -425,6 +427,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
             echo $this->output->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
 
+        // Start content div.
+        echo html_writer::start_tag('div', array('class' => 'content-section'));
+
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 
             if ($course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || $displaysection !== 0) {
@@ -457,6 +462,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
+
+        // Close content-section div.
+        echo html_writer::end_tag('div');
 
         // Close single-section div.
         echo html_writer::end_tag('div');

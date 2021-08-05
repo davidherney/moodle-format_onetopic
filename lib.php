@@ -45,6 +45,12 @@ class format_onetopic extends format_base {
     /** @var int The summary is a template, list the resources that are not referenced */
     const TEMPLATETOPIC_LIST = 2;
 
+    /** @var int Default tabs view */
+    const TABSVIEW_DEFAULT = 0;
+
+    /** @var int Vertical view */
+    const TABSVIEW_VERTICAL = 1;
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -363,6 +369,10 @@ class format_onetopic extends format_base {
                 'templatetopic_icons' => array(
                     'default' => 0,
                     'type' => PARAM_INT
+                ),
+                'tabsview' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT
                 )
             );
         }
@@ -429,6 +439,18 @@ class format_onetopic extends format_base {
                             1 => new lang_string('yes')
                         )
                     ),
+                ),
+                'tabsview' => array(
+                    'label' => new lang_string('tabsview', 'format_onetopic'),
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(
+                            self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
+                            self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic')
+                        )
+                    ),
+                    'help' => 'tabsview',
+                    'help_component' => 'format_onetopic',
                 )
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -496,8 +518,10 @@ class format_onetopic extends format_base {
                         $data['templatetopic'] = self::TEMPLATETOPIC_NOT;
                     } else if ($key === 'templatetopic_icons') {
                         $data['templatetopic_icons'] = 0;
+                    } else if ($key === 'tabsview') {
+                        $data['tabsview'] = self::TABSVIEW_DEFAULT;
                     }
-                }
+            }
             }
         }
         return $this->update_format_options($data);
