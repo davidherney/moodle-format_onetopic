@@ -142,7 +142,7 @@
     display: grid;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
     .format-onetopic .onetopic.verticaltabs > .content-section {
         clear: both;
         margin-left: inherit;

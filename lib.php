@@ -521,7 +521,7 @@ class format_onetopic extends format_base {
                     } else if ($key === 'tabsview') {
                         $data['tabsview'] = self::TABSVIEW_DEFAULT;
                     }
-            }
+                }
             }
         }
         return $this->update_format_options($data);
