@@ -414,7 +414,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $section++;
         }
 
-
         // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
         $showsubtabs = false;
         if (isset($subtabs[$selectedpatent])) {
