@@ -85,3 +85,5 @@ $string['templatetopic_icons_help'] = 'Esta opción define si se muestran o no l
 $string['hidden_message'] = 'El tema <em>{$a}</em> no está disponible en este momento.';
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
 $string['hiddensectionshelp'] = 'Las secciones ocultas se muestran en forma colapsada con mensaje de disponibilidad';
+
+$string['increasesections'] = 'Adicionar una nueva sección después de la sección actual';

@@ -431,14 +431,30 @@ class format_onetopic_renderer extends format_section_renderer_base {
             // Only can add sections if it does not exceed the maximum amount.
             if (count($sections) < $maxsections) {
 
-                // Increase number of sections.
-                $straddsection = get_string('increasesections', 'moodle');
-                $url = new moodle_url('/course/changenumsections.php',
-                    array('courseid' => $course->id,
-                        'increase' => true,
-                        'sesskey' => sesskey(),
-                        'insertsection' => 0));
+                $straddsection = get_string('increasesections', 'format_onetopic');
                 $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
+                $insertposition = $displaysection + 1;
+
+                $paramstotabs = array('courseid' => $course->id,
+                                    'increase' => true,
+                                    'sesskey' => sesskey(),
+                                    'insertsection' => $insertposition);
+
+                if ($showsubtabs) {
+                    // Increase number of sections in child tabs.
+                    $paramstotabs['aschild'] = 1;
+                    $url = new moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                    $subtabs[$selectedpatent][] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
+
+                    // The new tab is inserted after the last child because it is a parent tab.
+                    // -2 = add subtab button and index subtab.
+                    // +1 = because the selectedparent start in 0.
+                    $insertposition = $selectedpatent + count($subtabs[$selectedpatent]) - 2 + 1;
+                }
+
+                $paramstotabs['aschild'] = 0;
+                $paramstotabs['insertsection'] = $insertposition;
+                $url = new moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                 $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
 
             }

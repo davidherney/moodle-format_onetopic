@@ -91,3 +91,5 @@ $string['tabsview'] = 'Tabs view';
 $string['tabsview_help'] = '';
 $string['tabsview_default'] = 'By default';
 $string['tabsview_vertical'] = 'Vertically';
+
+$string['increasesections'] = 'Add a section after the currently selected section';
