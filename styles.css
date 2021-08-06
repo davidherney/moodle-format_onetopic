@@ -142,6 +142,10 @@
     display: grid;
 }
 
+.format-onetopic .onetopic-subtabs_body {
+    padding: 0 15px;
+}
+
 @media (max-width: 600px) {
     .format-onetopic .onetopic.verticaltabs > .content-section {
         clear: both;

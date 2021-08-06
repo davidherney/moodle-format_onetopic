@@ -176,7 +176,8 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         $realcoursedisplay = $course->realcoursedisplay;
         $modinfo = get_fast_modinfo($course);
-        $course = course_get_format($course)->get_course();
+        $courseformat = course_get_format($course);
+        $course = $courseformat->get_course();
         $course->realcoursedisplay = $realcoursedisplay;
 
         if (!$sections) {
@@ -240,7 +241,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $section = 0;
 
         $tabs = array();
+        $subtabs = array();
         $inactivetabs = array();
+        $inactivesubtabs = array();
+        $selectedpatent = null;
 
         while ($section <= $this->numsections) {
 
@@ -331,12 +335,16 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $tabs[] = $newtab;
                         $newtab->level = 1;
                     } else {
+
+                        // Load subtabs.
+
                         $parentindex = count($tabs) - 1;
-                        if (!is_array($tabs[$parentindex]->subtree)) {
-                            $tabs[$parentindex]->subtree = array();
-                        } else if (count($tabs[$parentindex]->subtree) == 0) {
-                            $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
-                            $tabs[$parentindex]->subtree[0]->id .= '_index';
+
+                        if (!isset($subtabs[$parentindex])) {
+                            $subtabs[$parentindex] = array();
+
+                            $subtabs[$parentindex][0] = clone($tabs[$parentindex]);
+                            $subtabs[$parentindex][0]->id .= '_index';
 
                             $prevsectionindex = $section - 1;
                             do {
@@ -350,16 +358,22 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             } else {
                                 $firsttabtext = get_string('index', 'format_onetopic');
                             }
-                            $tabs[$parentindex]->subtree[0]->text = '<innertab class="tab_content tab_initial">' .
+                            $subtabs[$parentindex][0]->text = '<innertab class="tab_content tab_initial">' .
                                                                     $firsttabtext . "</innertab>";
-                            $tabs[$parentindex]->subtree[0]->level = 2;
+                            $subtabs[$parentindex][0]->level = 1;
 
                             if ($displaysection == $section - 1) {
-                                $tabs[$parentindex]->subtree[0]->selected = true;
+                                $subtabs[$parentindex][0]->selected = true;
+                                $selectedpatent = $parentindex;
                             }
                         }
-                        $newtab->level = 2;
-                        $tabs[$parentindex]->subtree[] = $newtab;
+
+                        $newtab->level = 1;
+                        $subtabs[$parentindex][] = $newtab;
+
+                        if ($displaysection == $section) {
+                            $selectedpatent = $parentindex;
+                        }
                     }
                 } else {
                     $tabs[] = $newtab;
@@ -400,21 +414,34 @@ class format_onetopic_renderer extends format_section_renderer_base {
             $section++;
         }
 
+
+        // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
+        $showsubtabs = false;
+        if (isset($subtabs[$selectedpatent])) {
+            $showsubtabs = true;
+        }
+
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
 
         if ($this->page->user_is_editing() && has_capability('moodle/course:update', $context)) {
 
-            // Increase number of sections.
-            $straddsection = get_string('increasesections', 'moodle');
-            $url = new moodle_url('/course/changenumsections.php',
-                array('courseid' => $course->id,
-                    'increase' => true,
-                    'sesskey' => sesskey(),
-                    'insertsection' => 0));
-            $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
-            $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
+            $maxsections = $courseformat->get_max_sections();
 
+            // Only can add sections if it does not exceed the maximum amount.
+            if (count($sections) < $maxsections) {
+
+                // Increase number of sections.
+                $straddsection = get_string('increasesections', 'moodle');
+                $url = new moodle_url('/course/changenumsections.php',
+                    array('courseid' => $course->id,
+                        'increase' => true,
+                        'sesskey' => sesskey(),
+                        'insertsection' => 0));
+                $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
+                $tabs[] = new tabobject("tab_topic_add", $url, $icon, s($straddsection));
+
+            }
         }
 
         $hiddenmsg = course_get_format($course)->get_hidden_message();
@@ -424,7 +451,13 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         if ($this->page->user_is_editing() || (!$course->hidetabsbar && count($tabs) > 0)) {
             echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
-            echo $this->output->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
+
+            if ($showsubtabs) {
+                echo $this->output->tabtree($tabs, $tabs[$parentindex]->id, $inactivetabs);
+            } else {
+                echo $this->output->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
+            }
+
         }
 
         // Start content div.
@@ -433,6 +466,12 @@ class format_onetopic_renderer extends format_section_renderer_base {
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 
             if ($course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || $displaysection !== 0) {
+
+                if ($showsubtabs) {
+                    echo html_writer::start_tag('div', array('class' => 'onetopic-subtabs_body'));
+                    echo $this->output->tabtree($subtabs[$selectedpatent], "tab_topic_" . $displaysection, $inactivetabs);
+                }
+
                 // Now the list of sections.
                 echo $this->start_section_list();
 
@@ -452,6 +491,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);
                 echo $this->section_footer();
                 echo $this->end_section_list();
+
+                if ($showsubtabs) {
+                    echo html_writer::end_tag('div');
+                }
             }
         }
 
