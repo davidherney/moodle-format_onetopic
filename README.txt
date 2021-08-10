@@ -19,7 +19,7 @@ IN VERSION
 Changed the add new tab feature, now the tabs is inserted to the rigth of current selected tab.
 New buttom (+) to add new subtabs (powered by USC Cali Colombia - https://www.usc.edu.co/).
 New 'tabsview' option, with special views:
- - Vertical tabs: print tabs in vertical direction. Tabs on the left and content on the right.
+ - Vertical tabs: show tabs in vertical direction. Tabs on the left and content on the right.
  - One single line: all tabs are displayed in a single line with horizontal scroll. Useful if
     too many tabs are used (powered by USC Cali Colombia - https://www.usc.edu.co/).
 Drop deprecated print_error (by james-cnz).
