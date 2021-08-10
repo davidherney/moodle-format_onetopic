@@ -78,7 +78,15 @@ if ($renderer->showyuidialogue) {
     $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
 }
 
-
 // Include course format js module.
 $PAGE->requires->js('/course/format/topics/format.js');
 $PAGE->requires->js('/course/format/onetopic/format.js');
+
+$params = array(
+    'formattype' => $course->tabsview,
+    'icons' => [
+        'left' => $OUTPUT->pix_icon('t/collapsed_rtl', 'left'),
+        'right' => $OUTPUT->pix_icon('t/collapsed', 'right'),
+    ]
+);
+$PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);

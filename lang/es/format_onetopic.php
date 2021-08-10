@@ -86,4 +86,10 @@ $string['hidden_message'] = 'El tema <em>{$a}</em> no está disponible en este m
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
 $string['hiddensectionshelp'] = 'Las secciones ocultas se muestran en forma colapsada con mensaje de disponibilidad';
 
+$string['tabsview'] = 'Vista de pestañas';
+$string['tabsview_help'] = '';
+$string['tabsview_default'] = 'Por defecto';
+$string['tabsview_vertical'] = 'Verticalmente';
+$string['tabsview_oneline'] = 'Una sola línea';
+
 $string['increasesections'] = 'Adicionar una nueva sección después de la sección actual';
