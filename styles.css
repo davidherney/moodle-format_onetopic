@@ -23,6 +23,7 @@
 
 .format-onetopic .tab_content {
     white-space: nowrap;
+    width: 100%;
 }
 
 .format-onetopic .tab_content.marker {
@@ -127,4 +128,28 @@
 
 .format-onetopic .onetopic .completiontag img.icon {
     margin: 0 3px 0 5px;
+}
+
+.format-onetopic .onetopic.verticaltabs > .nav.nav-tabs:nth-of-type(1) {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+.format-onetopic .onetopic.verticaltabs > .content-section {
+    margin-left: 260px;
+    display: grid;
+}
+
+@media (max-width: 600px) {
+    .format-onetopic .onetopic.verticaltabs > .content-section {
+        clear: both;
+        margin-left: inherit;
+    }
+
+    .format-onetopic .onetopic.verticaltabs > .nav.nav-tabs:nth-of-type(1) {
+        width: auto;
+        flex-direction: inherit;
+    }
 }

@@ -189,7 +189,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
         if (!isset($sections[$displaysection])) {
             // This section doesn't exist.
-            print_error('unknowncoursesection', 'error', course_get_url($course),
+            throw new moodle_exception('unknowncoursesection', 'error', course_get_url($course),
                 format_string($course->fullname));
         }
 
@@ -225,7 +225,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
 
         // Start single-section div.
-        echo html_writer::start_tag('div', array('class' => 'single-section onetopic'));
+        $cssclass = 'single-section onetopic';
+        $cssclass .= $this->_course->tabsview == format_onetopic::TABSVIEW_VERTICAL ? ' verticaltabs' : '';
+        echo html_writer::start_tag('div', array('class' => $cssclass));
 
         // Move controls.
         $canmove = false;
@@ -345,8 +347,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         } else if (count($tabs[$parentindex]->subtree) == 0) {
                             $tabs[$parentindex]->subtree[0] = clone($tabs[$parentindex]);
                             $tabs[$parentindex]->subtree[0]->id .= '_index';
-                            $parentsection = $sections[$section - 1];
-                            $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+
+                            $prevsectionindex = $section - 1;
+                            do {
+                                $parentsection = $sections[$prevsectionindex];
+                                $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+                                $prevsectionindex--;
+                            } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= 0);
+
                             if ($parentformatoptions['firsttabtext']) {
                                 $firsttabtext = $parentformatoptions['firsttabtext'];
                             } else {
@@ -429,6 +437,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
             echo $this->output->tabtree($tabs, "tab_topic_" . $displaysection, $inactivetabs);
         }
 
+        // Start content div.
+        echo html_writer::start_tag('div', array('class' => 'content-section'));
+
         if ($sections[$displaysection]->uservisible || $canviewhidden) {
 
             if ($course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || $displaysection !== 0) {
@@ -461,6 +472,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
+
+        // Close content-section div.
+        echo html_writer::end_tag('div');
 
         // Close single-section div.
         echo html_writer::end_tag('div');
