@@ -473,7 +473,10 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
 
         if ($this->page->user_is_editing() || (!$course->hidetabsbar && $tabs->has_tabs())) {
-            echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
+
+            if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
+                echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
+            }
 
             $this->print_tabs_structure($tabs);
 

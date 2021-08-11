@@ -85,8 +85,8 @@ $PAGE->requires->js('/course/format/onetopic/format.js');
 $params = array(
     'formattype' => $course->tabsview,
     'icons' => [
-        'left' => $OUTPUT->pix_icon('t/collapsed_rtl', 'left'),
-        'right' => $OUTPUT->pix_icon('t/collapsed', 'right'),
+        'left' => $OUTPUT->pix_icon('t/collapsed_rtl', ''),
+        'right' => $OUTPUT->pix_icon('t/collapsed', ''),
     ]
 );
 $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);

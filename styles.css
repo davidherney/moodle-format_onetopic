@@ -130,16 +130,35 @@
     margin: 0 3px 0 5px;
 }
 
+.format-onetopic .onetopic.verticaltabs > a[name="tabs-tree-start"] {
+    padding-top: 20px;
+    display: block;
+}
+
 .format-onetopic .onetopic.verticaltabs > .nav.nav-tabs:nth-of-type(1) {
     float: left;
     display: flex;
     flex-direction: column;
     width: 250px;
+    border-right: 1px solid #dee2e6;
+    border-bottom: none;
+}
+
+.format-onetopic .onetopic.verticaltabs > .nav.nav-tabs:nth-of-type(1) .nav-item {
+    margin-right: -1px;
+    margin-bottom: 0;
 }
 
 .format-onetopic .onetopic.verticaltabs > .content-section {
     margin-left: 260px;
     display: grid;
+}
+
+.format-onetopic .onetopic.verticaltabs > .nav-tabs .nav-link:hover,
+.format-onetopic .onetopic.verticaltabs > .nav-tabs .nav-link:focus,
+.format-onetopic .onetopic.verticaltabs > .nav-tabs .nav-link.active,
+.format-onetopic .onetopic.verticaltabs > .nav-tabs .nav-item.show .nav-link {
+    border-color: #dee2e6 #fff #dee2e6 #dee2e6;
 }
 
 .format-onetopic .onetopic-subtabs_body {
@@ -150,17 +169,18 @@
     position: relative;
     max-width: 100%;
     height: 40px;
-    margin: 1em auto;
+    margin: 0 auto 20px;
     overflow-x: hidden;
     overflow-y: hidden;
 }
 
 .format-onetopic .tabs-wrapper.hasscroll {
     padding: 0 20px;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .format-onetopic .tabs-wrapper .nav.nav-tabs {
-    height: 50px;
+    height: 60px;
     box-sizing: border-box;
     white-space: nowrap;
     overflow-x: auto;
@@ -191,6 +211,28 @@
 }
 .format-onetopic .nav-item .subtopic {
     font-size: 90%;
+}
+
+/* Fixing specific themes */
+.format-onetopic.theme_adaptable .tabs-wrapper {
+    height: 50px;
+}
+
+.format-onetopic.theme_adaptable .tabs-wrapper .nav.nav-tabs {
+    height: 65px;
+}
+
+.format-onetopic.theme_adaptable .tabs-wrapper .nav-item {
+    margin-top: 0;
+}
+
+/* Moove or other fontawesome based icons */
+.format-onetopic .tabs-wrapper .right-arrow .fa-plus-square:before {
+    content: "";
+}
+
+.format-onetopic .tabs-wrapper .left-arrow .fa-plus-square:before {
+    content: "";
 }
 
 @media (max-width: 600px) {
