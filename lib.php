@@ -675,9 +675,14 @@ class format_onetopic extends format_base {
      */
     public function section_get_available_hook(section_info $section, &$available, &$availableinfo) {
         $parentnum = $this->fot_get_sections_extra()[$section->section]->parentnum;
-        if (isset($parentnum) && !$this->get_section($parentnum)->uservisible) {
-            $available = false;
-            $availableinfo = '';
+        if (isset($parentnum)) {
+            $parent = $this->get_section($parentnum);
+            if (!($parent->visible && $parent->available)) {
+                $available = false;
+                if (!$parent->uservisible) {
+                    $availableinfo = '';
+                }
+            }
         }
     }
 
