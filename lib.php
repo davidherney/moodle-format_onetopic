@@ -57,6 +57,9 @@ class format_onetopic extends format_base {
     /** @var string Temporal message when tried to charge a hidden tab */
     private static $byhiddenmsg = null;
 
+    /** @var stdClass Onetopic-specific extra section information */
+    private $fotsectionsextra = null;
+
     /**
      * Creates a new instance of class
      *
@@ -154,6 +157,35 @@ class format_onetopic extends format_base {
      */
     public function uses_sections() {
         return true;
+    }
+
+    /**
+     * Return Onetopic-specific extra section information.
+     */
+    public function fot_get_sections_extra() {
+        if (isset($this->fotsectionsextra)) {
+            return $this->fotsectionsextra;
+        }
+        $course = $this->get_course();
+        $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+        $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+        $sections = $this->get_sections();
+        $fotsectionsextra = [];
+        $level0section = null;
+        foreach ($sections as $section) {
+            $parent = null;
+            if ($section->section < $firstsection) {
+                $parent = null;
+            } else if ($section->level <= 0 || $level0section == null) {
+                $parent = null;
+                $level0section = $section;
+            } else {
+                $parent = $level0section;
+            }
+            $fotsectionsextra[$section->section] = (object) [ 'parentnum' => $parent ? $parent->section : null ];
+        }
+        $this->fotsectionsextra = $fotsectionsextra;
+        return $fotsectionsextra;
     }
 
     /**
@@ -634,6 +666,20 @@ class format_onetopic extends format_base {
         return $sectionformatoptions;
     }
 
+    /**
+     * Allows to specify for modinfo that section is not available even when it is visible and conditionally available.
+     *
+     * @param section_info $section
+     * @param bool $available the 'available' propery of the section_info as it was evaluated by conditional availability.
+     * @param string $availableinfo the 'availableinfo' propery of the section_info as it was evaluated by conditional availability.
+     */
+    public function section_get_available_hook(section_info $section, &$available, &$availableinfo) {
+        $parentnum = $this->fot_get_sections_extra()[$section->section]->parentnum;
+        if (isset($parentnum) && !$this->get_section($parentnum)->uservisible) {
+            $available = false;
+            $availableinfo = '';
+        }
+    }
 
     /**
      * Whether this format allows to delete sections
