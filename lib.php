@@ -173,10 +173,7 @@ class format_onetopic extends format_base {
         $fotsectionsextra = [];
         $level0section = null;
         foreach ($sections as $section) {
-            $parent = null;
-            if ($section->section < $firstsection) {
-                $parent = null;
-            } else if ($section->level <= 0 || $level0section == null) {
+            if ($section->section <= $firstsection || $section->level <= 0) {
                 $parent = null;
                 $level0section = $section;
             } else {
