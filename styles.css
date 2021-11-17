@@ -133,7 +133,7 @@
 }
 
 .format-onetopic .onetopic.verticaltabs > a[name="tabs-tree-start"] {
-    padding-top: 20px;
+    padding-bottom: 20px;
     display: block;
 }
 

@@ -57,7 +57,7 @@ class tabs {
     /**
      * Add a new tab to the tabs list.
      *
-     * @param \format_onetopic\singletabs $tab The new instanced tab.
+     * @param \format_onetopic\singletab $tab The new instanced tab.
      */
     public function add(singletab $tab) {
         $tab->index = count($this->tabslist);

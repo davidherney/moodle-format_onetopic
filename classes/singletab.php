@@ -91,12 +91,12 @@ class singletab {
      * Constructor.
      *
      * @param int $section Section index.
-     * @param string @content HTML tab content.
-     * @param string @url Tab link.
-     * @param string @title Tab title.
-     * @param string @availablemessage Available message, in html format, if exist.
-     * @param string @customstyles Custom CSS styles.
-     * @param string @specialclass Custom extra CSS classes.
+     * @param string $content HTML tab content.
+     * @param string $url Tab link.
+     * @param string $title Tab title.
+     * @param string $availablemessage Available message, in html format, if exist.
+     * @param string $customstyles Custom CSS styles.
+     * @param string $specialclass Custom extra CSS classes.
      */
     public function __construct($section, $content, $url, $title, $availablemessage = '', $customstyles = '', $specialclass = '') {
 
