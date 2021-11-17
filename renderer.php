@@ -453,9 +453,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     $selectedsubtabs->add_child($newtab);
 
                     // The new tab is inserted after the last child because it is a parent tab.
-                    // -2 = add subtab button and index subtab.
-                    // +1 = because the selectedparent start in 0.
-                    $insertposition = $selectedparent + $selectedsubtabs->count_childs() - 2 + 1;
+                    // -1 = When section 0 is the first.
+                    $insertposition = $selectedparent + $selectedsubtabs->count_childs() - ($course->realcoursedisplay ? 0 : 1);
+
                 }
 
                 $paramstotabs['aschild'] = 0;

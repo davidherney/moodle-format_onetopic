@@ -83,7 +83,6 @@ class format_onetopic extends format_base {
 
             if ($sectionid <= 0) {
                 $section = optional_param('section', -1, PARAM_INT);
-
             }
 
             $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
