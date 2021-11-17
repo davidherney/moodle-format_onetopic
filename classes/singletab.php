@@ -33,57 +33,57 @@ defined('MOODLE_INTERNAL') || die();
 class singletab {
 
     /**
-     * var int Tab index.
+     * @var int Tab index.
      */
     public $index;
 
     /**
-     * var int Section index.
+     * @var int Section index.
      */
     public $section;
 
     /**
-     * var string Tab HTML content.
+     * @var string Tab HTML content.
      */
     public $content;
 
     /**
-     * var string Tab link.
+     * @var string Tab link.
      */
     public $url;
 
     /**
-     * var string Tab title.
+     * @var string Tab title.
      */
     public $title;
 
     /**
-     * var string Available message, in html format, if exist.
+     * @var string Available message, in html format, if exist.
      */
     public $availablemessage;
 
     /**
-     * var string Custom CSS styles.
+     * @var string Custom CSS styles.
      */
     public $customstyles;
 
     /**
-     * var string Custom extra CSS classes.
+     * @var string Custom extra CSS classes.
      */
     public $specialclass;
 
     /**
-     * var boolean If tab is selected.
+     * @var boolean If tab is selected.
      */
     public $selected = false;
 
     /**
-     * var boolean If tab is active.
+     * @var boolean If tab is active.
      */
     public $active = true;
 
     /**
-     * var \format_onetopic\tabs Tabs childs list.
+     * @var \format_onetopic\tabs Tabs childs list.
      */
     private $childs;
 

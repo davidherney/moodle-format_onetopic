@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
 class tabs {
 
     /**
-     * var array Tabs list.
+     * @var array Tabs list.
      */
     private $tabslist;
 
@@ -54,6 +54,11 @@ class tabs {
         return isset($this->tabslist[$index]) ? $this->tabslist[$index] : null;
     }
 
+    /**
+     * Add a new tab to the tabs list.
+     *
+     * @param \format_onetopic\singletabs $tab The new instanced tab.
+     */
     public function add(singletab $tab) {
         $tab->index = count($this->tabslist);
         $this->tabslist[] = $tab;

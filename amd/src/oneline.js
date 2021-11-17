@@ -60,7 +60,6 @@ import $ from 'jquery';
 
         // Get wrapper width.
         var getMenuWrapperSize = function() {
-//            var $padd = $container.outerWidth() - $container.width();
             return $container.width();
         };
 
@@ -142,21 +141,21 @@ import $ from 'jquery';
         $rightarrow.on('click', function(event) {
             event.preventDefault();
             var newX = getMenuPosition() + (menuWrapperSize * 0.8);
-            $menu.animate( { scrollLeft: newX }, scrollDuration);
+            $menu.animate({scrollLeft: newX}, scrollDuration);
         });
 
         // Scroll to right.
         $leftarrow.on('click', function(event) {
             event.preventDefault();
             var newX = getMenuPosition() - (menuWrapperSize * 0.8);
-            $menu.animate( { scrollLeft: newX }, scrollDuration);
+            $menu.animate({scrollLeft: newX}, scrollDuration);
         });
 
         // Change position to see the active tab.
         var $active = $container.find('.nav-link.active');
         if ($active.length > 0) {
             var newX = $active.position().left - (wrapPadding / 2);
-            $menu.animate( { scrollLeft: newX }, scrollDuration);
+            $menu.animate({scrollLeft: newX}, scrollDuration);
         }
 
         calcArrowVisible();

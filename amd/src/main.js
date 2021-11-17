@@ -18,7 +18,6 @@
  * @copyright 2021 David Herney Bernal - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-//import $ from 'jquery';
 import * as OneLine from 'format_onetopic/oneline';
 
 /**
