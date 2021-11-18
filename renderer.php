@@ -368,7 +368,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             if ($displaysection == $section - 1) {
                                 $indextab->selected = true;
                                 $parenttab->selected = true;
-                                $selectedparent = $parenttab->index;
+                                $selectedparent = $parenttab;
                             }
 
                             $parenttab->add_child($indextab);
@@ -378,7 +378,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                         $parenttab->add_child($newtab);
 
                         if ($displaysection == $section) {
-                            $selectedparent = $parenttab->index;
+                            $selectedparent = $parenttab;
                             $parenttab->selected = true;
                         }
                     }
@@ -423,7 +423,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         }
 
         // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
-        $selectedsubtabs = $tabs->get_tab($selectedparent);
+        $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
         $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
 
         // Title with section navigation links.
@@ -453,9 +453,9 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     $selectedsubtabs->add_child($newtab);
 
                     // The new tab is inserted after the last child because it is a parent tab.
-                    // -1 = When section 0 is the first.
-                    $insertposition = $selectedparent + $selectedsubtabs->count_childs() - ($course->realcoursedisplay ? 0 : 1);
-
+                    // -2 = add subtab button and index subtab.
+                    // +1 = because the selectedparent section start in 0.
+                    $insertposition = $selectedparent->section + $selectedsubtabs->count_childs() - 2 + 1;
                 }
 
                 $paramstotabs['aschild'] = 0;
