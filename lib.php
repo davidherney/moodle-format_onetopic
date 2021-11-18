@@ -51,6 +51,9 @@ class format_onetopic extends format_base {
     /** @var int Vertical view */
     const TABSVIEW_VERTICAL = 1;
 
+    /** @var int One line view */
+    const TABSVIEW_ONELINE = 2;
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -80,7 +83,6 @@ class format_onetopic extends format_base {
 
             if ($sectionid <= 0) {
                 $section = optional_param('section', -1, PARAM_INT);
-
             }
 
             $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
@@ -449,7 +451,8 @@ class format_onetopic extends format_base {
                     'element_attributes' => array(
                         array(
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
-                            self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic')
+                            self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
+                            self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic')
                         )
                     ),
                     'help' => 'tabsview',
