@@ -23,6 +23,7 @@ New 'tabsview' option, with special views:
  - One single line: all tabs are displayed in a single line with horizontal scroll. Useful if
     too many tabs are used (powered by USC Cali Colombia - https://www.usc.edu.co/).
 Drop deprecated print_error (by james-cnz).
+Child tabs inherit parent tabs visibility (by james-cnz).
 
 2020122700:
 Compatibility with moodle 3.9 and 3.10.

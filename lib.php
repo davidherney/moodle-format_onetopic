@@ -60,6 +60,9 @@ class format_onetopic extends format_base {
     /** @var string Temporal message when tried to charge a hidden tab */
     private static $byhiddenmsg = null;
 
+    /** @var stdClass Onetopic-specific extra section information */
+    private $parentsections = null;
+
     /**
      * Creates a new instance of class
      *
@@ -744,6 +747,63 @@ class format_onetopic extends format_base {
         return self::$byhiddenmsg;
     }
 
+     /**
+     * Return Onetopic-specific extra section information.
+     *
+     * @return bool
+     */
+    public function fot_get_sections_extra() {
+
+        if (isset($this->parentsections)) {
+            return $this->parentsections;
+        }
+
+        $course = $this->get_course();
+        $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+        $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+        $sections = $this->get_sections();
+        $parentsections = [];
+        $level0section = null;
+        foreach ($sections as $section) {
+
+            if ($section->section <= $firstsection || $section->level <= 0) {
+                $parent = null;
+                $level0section = $section;
+            } else {
+                $parent = $level0section;
+            }
+            $parentsections[$section->section] = $parent;
+        }
+        $this->parentsections = $parentsections;
+        return $parentsections;
+    }
+
+    /**
+     * Allows to specify for modinfo that section is not available even when it is visible and conditionally available.
+     *
+     * @param section_info $section
+     * @param bool $available the 'available' propery of the section_info as it was evaluated by conditional availability.
+     * @param string $availableinfo the 'availableinfo' propery of the section_info as it was evaluated by conditional availability.
+     */
+    public function section_get_available_hook(section_info $section, &$available, &$availableinfo) {
+
+        // Only check childs tabs visibility.
+        if ($section->level == 0) {
+            return;
+        }
+
+        // The tab visibility depend of parent visibility.
+        $parentsections = $this->fot_get_sections_extra();
+        $parent = $parentsections[$section->section];
+        if ($parent) {
+            if (!($parent->visible && $parent->available)) {
+                $available = false;
+                if (!$parent->uservisible) {
+                    $availableinfo = '';
+                }
+            }
+        }
+    }
 }
 
 /**

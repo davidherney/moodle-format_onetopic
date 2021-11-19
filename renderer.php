@@ -467,19 +467,17 @@ class format_onetopic_renderer extends format_section_renderer_base {
             }
         }
 
+        if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
+            echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
+        }
+
         $hiddenmsg = course_get_format($course)->get_hidden_message();
         if (!empty($hiddenmsg)) {
             echo $this->output->notification($hiddenmsg);
         }
 
         if ($this->page->user_is_editing() || (!$course->hidetabsbar && $tabs->has_tabs())) {
-
-            if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-                echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
-            }
-
             $this->print_tabs_structure($tabs);
-
         }
 
         // Start content div.
