@@ -342,13 +342,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     } else {
 
                         if (!$parenttab->has_childs()) {
+                            $specialclasstmp = str_replace('tab_level_0', 'tab_level_1', $parenttab->specialclass);
                             $indextab = new singletab($parenttab->section,
                                                     $parenttab->content,
                                                     $parenttab->url,
                                                     $parenttab->title,
                                                     $parenttab->availablemessage,
                                                     $parenttab->customstyles,
-                                                    $parenttab->specialclass);
+                                                    $specialclasstmp);
 
                             $prevsectionindex = $section - 1;
                             do {
