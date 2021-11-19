@@ -747,7 +747,7 @@ class format_onetopic extends format_base {
         return self::$byhiddenmsg;
     }
 
-     /**
+    /**
      * Return Onetopic-specific extra section information.
      *
      * @return bool
