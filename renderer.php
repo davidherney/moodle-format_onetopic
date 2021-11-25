@@ -342,13 +342,14 @@ class format_onetopic_renderer extends format_section_renderer_base {
                     } else {
 
                         if (!$parenttab->has_childs()) {
+                            $specialclasstmp = str_replace('tab_level_0', 'tab_level_1', $parenttab->specialclass);
                             $indextab = new singletab($parenttab->section,
                                                     $parenttab->content,
                                                     $parenttab->url,
                                                     $parenttab->title,
                                                     $parenttab->availablemessage,
                                                     $parenttab->customstyles,
-                                                    $parenttab->specialclass);
+                                                    $specialclasstmp);
 
                             $prevsectionindex = $section - 1;
                             do {
@@ -467,19 +468,17 @@ class format_onetopic_renderer extends format_section_renderer_base {
             }
         }
 
+        if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
+            echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
+        }
+
         $hiddenmsg = course_get_format($course)->get_hidden_message();
         if (!empty($hiddenmsg)) {
             echo $this->output->notification($hiddenmsg);
         }
 
         if ($this->page->user_is_editing() || (!$course->hidetabsbar && $tabs->has_tabs())) {
-
-            if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-                echo html_writer::tag('a', '', array('name' => 'tabs-tree-start'));
-            }
-
             $this->print_tabs_structure($tabs);
-
         }
 
         // Start content div.
