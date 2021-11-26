@@ -15,7 +15,7 @@ Powered by: https://bambuco.co/
 
 IN VERSION
 =============
-2020122702 (MATURITY BETA):
+2020122703:
 Changed the add new tab feature, now the tabs is inserted to the rigth of current selected tab.
 New buttom (+) to add new subtabs (powered by USC Cali Colombia - https://www.usc.edu.co/).
 New 'tabsview' option, with special views:
