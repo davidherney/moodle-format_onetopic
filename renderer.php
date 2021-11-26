@@ -245,6 +245,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         $subtabs = new \format_onetopic\tabs();
         $selectedparent = null;
         $parenttab = null;
+        $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
 
         while ($section <= $this->numsections) {
             $inactivetab = false;
@@ -356,7 +357,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                                 $parentsection = $sections[$prevsectionindex];
                                 $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
                                 $prevsectionindex--;
-                            } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= 0);
+                            } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= $firstsection);
 
                             if ($parentformatoptions['firsttabtext']) {
                                 $indextab->content = $parentformatoptions['firsttabtext'];
@@ -366,7 +367,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
                             $indextab->title = $indextab->content;
                             $indextab->specialclass .= ' tab_initial ';
 
-                            if ($displaysection == $section - 1) {
+                            if ($displaysection == $parentsection->section) {
                                 $indextab->selected = true;
                                 $parenttab->selected = true;
                                 $selectedparent = $parenttab;
