@@ -489,7 +489,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
             if ($course->realcoursedisplay != COURSE_DISPLAY_MULTIPAGE || $displaysection !== 0) {
 
-                if ($showsubtabs) {
+                if ($showsubtabs && (!$course->hidetabsbar || $this->page->user_is_editing())) {
                     echo html_writer::start_tag('div', array('class' => 'onetopic-subtabs_body'));
                     echo $this->print_tabs_structure($selectedsubtabs->get_childs(), true);
                 }
