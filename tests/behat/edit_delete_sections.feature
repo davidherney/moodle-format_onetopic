@@ -73,13 +73,12 @@ Feature: Sections can be edited and deleted in Onetopic format
     And I should see "Test choice name" in the "li#section-4" "css_element"
     And I should see "Topic 4"
 
-  @javascript
   Scenario: Adding sections in Onetopic format
-    When I follow "Increase the number of sections"
+    When I follow "Add a section after the currently selected section"
     And I should see "Topic 6"
     And "li#section-7" "css_element" should not exist
     And I should not see "Topic 7"
-    And I follow "Increase the number of sections"
+    And I follow "Add a section after the currently selected section"
     And I should see "Topic 7"
     And "li#section-8" "css_element" should not exist
     And I should not see "Topic 8"

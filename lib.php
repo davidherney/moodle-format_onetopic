@@ -51,11 +51,17 @@ class format_onetopic extends format_base {
     /** @var int Vertical view */
     const TABSVIEW_VERTICAL = 1;
 
+    /** @var int One line view */
+    const TABSVIEW_ONELINE = 2;
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
     /** @var string Temporal message when tried to charge a hidden tab */
     private static $byhiddenmsg = null;
+
+    /** @var stdClass Onetopic-specific extra section information */
+    private $parentsections = null;
 
     /**
      * Creates a new instance of class
@@ -80,7 +86,6 @@ class format_onetopic extends format_base {
 
             if ($sectionid <= 0) {
                 $section = optional_param('section', -1, PARAM_INT);
-
             }
 
             $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
@@ -449,7 +454,8 @@ class format_onetopic extends format_base {
                     'element_attributes' => array(
                         array(
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
-                            self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic')
+                            self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
+                            self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic')
                         )
                     ),
                     'help' => 'tabsview',
@@ -752,6 +758,63 @@ class format_onetopic extends format_base {
         return self::$byhiddenmsg;
     }
 
+    /**
+     * Return Onetopic-specific extra section information.
+     *
+     * @return bool
+     */
+    public function fot_get_sections_extra() {
+
+        if (isset($this->parentsections)) {
+            return $this->parentsections;
+        }
+
+        $course = $this->get_course();
+        $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+        $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+        $sections = $this->get_sections();
+        $parentsections = [];
+        $level0section = null;
+        foreach ($sections as $section) {
+
+            if ($section->section <= $firstsection || $section->level <= 0) {
+                $parent = null;
+                $level0section = $section;
+            } else {
+                $parent = $level0section;
+            }
+            $parentsections[$section->section] = $parent;
+        }
+        $this->parentsections = $parentsections;
+        return $parentsections;
+    }
+
+    /**
+     * Allows to specify for modinfo that section is not available even when it is visible and conditionally available.
+     *
+     * @param section_info $section
+     * @param bool $available the 'available' propery of the section_info as it was evaluated by conditional availability.
+     * @param string $availableinfo the 'availableinfo' propery of the section_info as it was evaluated by conditional availability.
+     */
+    public function section_get_available_hook(section_info $section, &$available, &$availableinfo) {
+
+        // Only check childs tabs visibility.
+        if ($section->level == 0) {
+            return;
+        }
+
+        // The tab visibility depend of parent visibility.
+        $parentsections = $this->fot_get_sections_extra();
+        $parent = $parentsections[$section->section];
+        if ($parent) {
+            if (!($parent->visible && $parent->available)) {
+                $available = false;
+                if (!$parent->uservisible) {
+                    $availableinfo = '';
+                }
+            }
+        }
+    }
 }
 
 /**

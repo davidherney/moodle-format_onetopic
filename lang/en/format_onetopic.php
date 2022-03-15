@@ -88,9 +88,14 @@ $string['privacy:metadata'] = 'The Onetopic format plugin does not store any per
 $string['hiddensectionshelp'] = 'Hidden sections are shown in collapsed form with available message';
 
 $string['tabsview'] = 'Tabs view';
-$string['tabsview_help'] = '';
+$string['tabsview_help'] = 'By default: is the traditional view.<br />
+Vertically: show tabs in vertical direction. Tabs on the left and content on the right.<br />
+One single line: all tabs are displayed in a single line with horizontal scroll. Useful if too many tabs are used.';
 $string['tabsview_default'] = 'By default';
 $string['tabsview_vertical'] = 'Vertically';
+$string['tabsview_oneline'] = 'Only one line';
+
+$string['increasesections'] = 'Add a section after the currently selected section';
 
 $string['icontext'] = 'Full icon class text';
 $string['icontext_help'] = 'Add icon class like font awesome, glyphicon, or anyother. Be careful your theme has to support this (use scripts, css...). Insert the full class identifier, ex. "fa fa-user" to fontawesome icons.';

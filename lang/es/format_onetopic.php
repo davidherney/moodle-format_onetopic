@@ -86,5 +86,15 @@ $string['hidden_message'] = 'El tema <em>{$a}</em> no está disponible en este m
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
 $string['hiddensectionshelp'] = 'Las secciones ocultas se muestran en forma colapsada con mensaje de disponibilidad';
 
+$string['tabsview'] = 'Vista de pestañas';
+$string['tabsview_help'] = 'Por defecto: es la vista tradicional de pestañas.<br />
+Verticalmente: se muestran las pestañas al lado izquierdo de manera vertical. El contenido queda a la derecha del menú.<br />
+Una sola línea: todas las pestañas son mostradas en una sola línea, con desplazamiento horizontal si es necesario. Es útil sobre todo cuando hay demasiadas pestañas.';
+$string['tabsview_default'] = 'Por defecto';
+$string['tabsview_vertical'] = 'Verticalmente';
+$string['tabsview_oneline'] = 'Una sola línea';
+
+$string['increasesections'] = 'Adicionar una nueva sección después de la sección actual';
+
 $string['icontext'] = 'Nombre completo de la classe del icono';
 $string['icontext_help'] = 'Add nomdre de la clase del como icono font awesome, glyphicon ou otra. Tenga cuidado de que su tema sea compatible con esto (use scripts, css ...). Inserte el identificador de clase completo, ej. "fa fa-user" ';
