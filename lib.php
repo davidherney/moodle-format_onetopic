@@ -162,6 +162,15 @@ class format_onetopic extends format_base {
     }
 
     /**
+     * Returns true if this course format uses course index
+     *
+     * @return bool
+     */
+    public function uses_course_index() {
+        return true;
+    }
+
+    /**
      * Returns the display name of the given section that the course prefers.
      *
      * Use section name is specified by user. Otherwise use default ("Topic #")
