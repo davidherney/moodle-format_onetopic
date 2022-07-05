@@ -725,6 +725,13 @@ class format_onetopic_renderer extends core_courseformat\output\section_renderer
         }
 
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
+
+        // This disables the JavaScript handling of the items in the menu.
+        // Only needed as long as there is no full compatibility with moodle 4.0.
+        foreach ($parentcontrols as $k => $v) {
+            unset($parentcontrols[$k]['attr']['data-action']);
+        }
+
         // If the delete key exists, we are going to insert our controls after it.
         if (array_key_exists("delete", $parentcontrols)) {
             $url = new moodle_url('/course/editsection.php', array(
@@ -733,7 +740,6 @@ class format_onetopic_renderer extends core_courseformat\output\section_renderer
                     'delete' => 1,
                     'sesskey' => sesskey()));
             $parentcontrols['delete']['url'] = $url;
-            unset($parentcontrols['delete']['attr']['data-action']);
         }
 
         // If the edit key exists, we are going to insert our controls after it.
