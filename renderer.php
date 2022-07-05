@@ -33,7 +33,7 @@ require_once($CFG->dirroot.'/course/format/renderer.php');
  * @copyright 2012 David Herney Bernal - cirano
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_onetopic_renderer extends format_section_renderer_base {
+class format_onetopic_renderer extends core_courseformat\output\section_renderer {
 
 
     /** @var stdClass Local format data */
