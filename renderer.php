@@ -427,6 +427,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
         $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
         $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
+        $showsubtabs = $showsubtabs && (!$course->hidetabsbar || $this->page->user_is_editing());
 
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
