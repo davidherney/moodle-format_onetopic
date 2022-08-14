@@ -132,6 +132,34 @@
     margin: 0 3px 0 5px;
 }
 
+.format-onetopic .onetopic .completiontag .showcompletionconditions {
+    position: absolute;
+}
+
+.format-onetopic .onetopic .completiontag.hascompletionconditions {
+    padding-right: 24px;
+}
+
+.format-onetopic .onetopic .completiontag .showcompletionconditions:hover {
+    z-index: 2;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.format-onetopic .onetopic .completiontag .showcompletionconditions .activity-information {
+    display: none;
+}
+
+.format-onetopic .onetopic .completiontag .showcompletionconditions:hover .activity-information {
+    display: block;
+}
+
+.format-onetopic .onetopic .completiontag .showcompletionconditions:hover > img {
+    display: none;
+}
+
 .format-onetopic .onetopic.verticaltabs > a[name="tabs-tree-start"] {
     padding-bottom: 20px;
     display: block;
