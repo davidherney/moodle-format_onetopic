@@ -864,6 +864,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if ($completioninfo->is_enabled($mod) !== COMPLETION_TRACKING_NONE) {
                     $completion = $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod);
+                    \core_renderer::activity_information(
 
                     if (strpos($completion, 'completion-manual-y') !== false ||
                             strpos($completion, 'completion-auto-y') !== false ||
@@ -963,7 +964,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 $mod = $modinfo->cms[$modnumber];
 
-                if ($ismoving and $mod->id == $USER->activitycopy) {
+                if ($ismoving && $mod->id == $USER->activitycopy) {
                     // Do not display moving mod.
                     continue;
                 }
