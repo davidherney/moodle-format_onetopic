@@ -864,7 +864,6 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 if ($completioninfo->is_enabled($mod) !== COMPLETION_TRACKING_NONE) {
                     $completion = $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod);
-                    \core_renderer::activity_information(
 
                     if (strpos($completion, 'completion-manual-y') !== false ||
                             strpos($completion, 'completion-auto-y') !== false ||
