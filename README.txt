@@ -1,7 +1,7 @@
 COURSE FORMAT Onetopic
 ============================
 
-Package tested in: moodle 3.9+ and 3.10+.
+Package tested in: moodle 3.11+.
 
 QUICK INSTALL
 ==============
