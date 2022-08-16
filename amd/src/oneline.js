@@ -160,5 +160,4 @@ import $ from 'jquery';
 
         calcArrowVisible();
     });
-
 };

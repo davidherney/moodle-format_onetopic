@@ -427,6 +427,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
         // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
         $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
         $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
+        $showsubtabs = $showsubtabs && (!$course->hidetabsbar || $this->page->user_is_editing());
 
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
@@ -778,7 +779,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
      */
     private function replace_resources ($section) {
 
-        global $CFG, $USER;
+        global $CFG, $USER, $DB;
 
         static $initialised;
 
@@ -862,20 +863,45 @@ class format_onetopic_renderer extends format_section_renderer_base {
                 }
 
                 if ($completioninfo->is_enabled($mod) !== COMPLETION_TRACKING_NONE) {
-                    $completion = $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod);
+                    $completion = $DB->get_record('course_modules_completion',
+                                                array('coursemoduleid' => $mod->id, 'userid' => $USER->id, 'completionstate' => 1));
 
-                    if (strpos($completion, 'completion-manual-y') !== false ||
-                            strpos($completion, 'completion-auto-y') !== false ||
-                            strpos($completion, 'completion-auto-pass') !== false) {
+                    $showcompletionconditions = $course->showcompletionconditions == COMPLETION_SHOW_CONDITIONS;
 
-                        $completed = 'complete';
+                    if ($completion) {
+                        $completedclass = 'complete';
                     } else {
-                        $completed = 'incomplete';
+                        $completedclass = 'incomplete';
                     }
 
-                    $htmlresource = '<completion class="completiontag ' . $completed . '">' .
-                                        $completion . $htmlresource .
-                                    '</completion>';
+                    if ($showcompletionconditions) {
+                        $completedclass .= ' hascompletionconditions';
+                    }
+
+                    $htmlresource = '<completion class="completiontag ' . $completedclass . '">' . $htmlresource;
+
+                    if ($showcompletionconditions) {
+
+                        // Fetch activity dates.
+                        $activitydates = [];
+                        if ($course->showactivitydates) {
+                            $activitydates = \core\activity_dates::get_dates_for_module($mod, $USER->id);
+                        }
+
+                        // Fetch completion details.
+                        $completiondetails = \core_completion\cm_completion_details::get_instance($mod,
+                                                                                                    $USER->id,
+                                                                                                    $showcompletionconditions);
+
+                        $completionhtml = $this->output->activity_information($mod, $completiondetails, $activitydates);
+
+                        $htmlresource .= '<span class="showcompletionconditions">';
+                        $htmlresource .= $this->output->image_icon('i/info', '');
+                        $htmlresource .= $completionhtml;
+                        $htmlresource .= '</span>';
+                    }
+
+                    $htmlresource .= '</completion>';
                 }
 
                 $availabilitytext = trim($this->courserenderer->course_section_cm_availability($mod));
@@ -962,7 +988,7 @@ class format_onetopic_renderer extends format_section_renderer_base {
 
                 $mod = $modinfo->cms[$modnumber];
 
-                if ($ismoving and $mod->id == $USER->activitycopy) {
+                if ($ismoving && $mod->id == $USER->activitycopy) {
                     // Do not display moving mod.
                     continue;
                 }
