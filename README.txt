@@ -15,6 +15,11 @@ Powered by: https://bambuco.co/
 
 IN VERSION
 =============
+2020122704:
+Hide subtabs according to the hidetabsbar configuration param
+Replaced deprecated method course_section_cm_completion
+Changed release name structure
+
 2020122703:
 Changed the add new tab feature, now the tabs is inserted to the rigth of current selected tab.
 New buttom (+) to add new subtabs (powered by USC Cali Colombia - https://www.usc.edu.co/).
