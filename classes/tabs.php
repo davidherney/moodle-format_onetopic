@@ -73,7 +73,7 @@ class tabs {
         $tabstree = [];
         $selected = null;
 
-        $assubtabs = false; //ToDo: hacer
+        $assubtabs = false; // ToDo: hacer.
 
         foreach ($this->tabslist as $tab) {
 

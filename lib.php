@@ -59,8 +59,8 @@ class format_onetopic extends core_courseformat\base {
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
-    /** @var string Temporal message when tried to charge a hidden tab */
-    private static $byhiddenmsg = null;
+    /** @var array Messages to display */
+    public static $formatmsgs = [];
 
     /** @var stdClass Onetopic-specific extra section information */
     private $parentsections = null;
@@ -124,7 +124,7 @@ class format_onetopic extends core_courseformat\base {
             // Check if the display section is available.
             if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
 
-                self::$byhiddenmsg = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+                self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
 
                 $valid = false;
                 $k = $realcoursedisplay ? 1 : 0;
@@ -295,6 +295,16 @@ class format_onetopic extends core_courseformat\base {
         return $ajaxsupport;
     }
 
+    /**
+     * Returns true if this course format is compatible with content components.
+     *
+     * Using components means the content elements can watch the frontend course state and
+     * react to the changes. Formats with component compatibility can have more interactions
+     * without refreshing the page, like having drag and drop from the course index to reorder
+     * sections and activities.
+     *
+     * @return bool if the format is compatible with components.
+     */
     public function supports_components() {
         return true;
     }
@@ -779,15 +789,6 @@ class format_onetopic extends core_courseformat\base {
     public function get_config_for_external() {
         // Return everything (nothing to hide).
         return $this->get_format_options();
-    }
-
-    /**
-     * Return the message when it is tried to load a hidden tab.
-     *
-     * @return string
-     */
-    public function get_hidden_message() {
-        return self::$byhiddenmsg;
     }
 
     /**

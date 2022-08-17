@@ -29,10 +29,11 @@ Feature: Sections can be edited and deleted in Onetopic format
     And the field "New value for Section name" matches value "General"
 
   Scenario: Edit the default name of the general section in Onetopic format
+    Given I should see "General" in the "General" "section"
     When I edit the section "0" and I fill the form with:
       | Custom | 1                     |
       | New value for Section name      | This is the general section |
-    Then I should see "This is the general section" in the "li#section-0" "css_element"
+    Then I should see "This is the general section" in the "This is the general section" "section"
 
   Scenario: View the default name of the second section in Onetopic format
     When I click on "Topic 2" "link" in the "ul.nav.nav-tabs" "css_element"

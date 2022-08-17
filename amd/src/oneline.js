@@ -31,7 +31,6 @@ import $ from 'jquery';
     $('.format-onetopic .onelinetabs .tabs-wrapper').each(function() {
 
         var $container = $(this);
-        console.log($container);
 
         var $menu = $container.find('> ul.nav.nav-tabs');
 

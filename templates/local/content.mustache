@@ -22,29 +22,28 @@
     Example context (json):
     {
         "initialsection": {
-                "num": 0,
-                "id": 34,
-                "cmlist": {
-                    "cms": [
-                        {
-                            "cmitem": {
-                                "cmformat": {
-                                    "cmname": "<a class=\"aalink\" href=\"#\"><span class=\"instancename\">Forum example</span></a>",
-                                    "hasname": "true"
-                                },
-                                "id": 3,
-                                "module": "forum",
-                                "extraclasses": "newmessages"
-                            }
+            "num": 0,
+            "id": 34,
+            "cmlist": {
+                "cms": [
+                    {
+                        "cmitem": {
+                            "cmformat": {
+                                "cmname": "<a class=\"aalink\" href=\"#\"><span class=\"instancename\">Forum example</span></a>",
+                                "hasname": "true"
+                            },
+                            "id": 3,
+                            "module": "forum",
+                            "extraclasses": "newmessages"
                         }
-                    ],
-                    "hascms": true
-                },
-                "iscurrent": true,
-                "summary": {
-                    "summarytext": "Summary text!"
-                }
+                    }
+                ],
+                "hascms": true
             },
+            "iscurrent": true,
+            "summary": {
+                "summarytext": "Summary text!"
+            }
         },
         "format": "onetopic",
         "title": "Course title example",
@@ -106,6 +105,12 @@
     {{{completionhelp}}}
 
     <a name="tabs-tree-start"></a>
+
+    {{#hasformatmsgs}}
+        {{#formatmsgs}}
+            {{>core/notification_info}}
+        {{/formatmsgs}}
+    {{/hasformatmsgs}}
 
     {{#initialsection}}
     <div class="single-section general-section">

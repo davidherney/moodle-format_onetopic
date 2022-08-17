@@ -17,7 +17,7 @@
 /**
  * Contains the default section controls output class.
  *
- * @package   format_onetopics
+ * @package   format_onetopic
  * @copyright 2022 David Herney Bernal - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,7 +31,7 @@ use stdClass;
 /**
  * Base class to render a course section.
  *
- * @package   format_onetopics
+ * @package   format_onetopic
  * @copyright 2022 David Herney Bernal - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -17,7 +17,7 @@
 /**
  * Contains the default content output class.
  *
- * @package   format_onetopics
+ * @package   format_onetopic
  * @copyright 2022 David Herney Bernal - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,7 +33,7 @@ use renderable;
 /**
  * Base class to render a course content.
  *
- * @package   format_onetopics
+ * @package   format_onetopic
  * @copyright 2022 David Herney Bernal - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -79,6 +79,12 @@ class content extends content_base {
         $tabsview = $course->tabsview == \format_onetopic::TABSVIEW_VERTICAL ? 'verticaltabs' :
                         ($course->tabsview == \format_onetopic::TABSVIEW_ONELINE ? 'onelinetabs' : 'defaulttabs');
 
+        foreach (\format_onetopic::$formatmsgs as $key => $msg) {
+            if (is_string($msg)) {
+                \format_onetopic::$formatmsgs[$key] = (object)['message' => $msg];
+            }
+        }
+
         $data = (object)[
             'title' => $format->page_title(), // This method should be in the course_format class.
             'initialsection' => $initialsection,
@@ -87,7 +93,9 @@ class content extends content_base {
             'sectionreturn' => 0,
             'hastopictabs' => true,
             'tabs' => $tabs->get_list(),
-            'tabsviewclass' => $tabsview
+            'tabsviewclass' => $tabsview,
+            'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
+            'formatmsgs' => \format_onetopic::$formatmsgs
         ];
 
         // The single section format has extra navigation.
@@ -133,7 +141,7 @@ class content extends content_base {
             // The course/view.php check the section existence but the output can be called
             // from other parts so we need to check it.
             if (!$thissection) {
-                print_error('unknowncoursesection', 'error', course_get_url($course), format_string($course->fullname));
+                throw new \moodle_exception('unknowncoursesection', 'error', course_get_url($course), s($course->fullname));
             }
 
             $section = new $this->sectionclass($format, $thissection);
