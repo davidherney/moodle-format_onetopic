@@ -28,9 +28,11 @@ import $ from 'jquery';
  */
  export const load = (icons) => {
 
-    $('.onetopic .tabs-wrapper').each(function() {
+    $('.format-onetopic .onelinetabs .tabs-wrapper').each(function() {
 
         var $container = $(this);
+        console.log($container);
+
         var $menu = $container.find('> ul.nav.nav-tabs');
 
         var itemsLength = $menu.find('> li.nav-item').length;

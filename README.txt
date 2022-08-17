@@ -1,7 +1,7 @@
 COURSE FORMAT Onetopic
 ============================
 
-Package tested in: moodle 3.11+.
+Package tested in: moodle 4.0+.
 
 QUICK INSTALL
 ==============
@@ -15,6 +15,9 @@ Powered by: https://bambuco.co/
 
 IN VERSION
 =============
+2022081602:
+Compatibility with moodle 4.0.
+
 2020122704:
 Hide subtabs according to the hidetabsbar configuration param
 Replaced deprecated method course_section_cm_completion

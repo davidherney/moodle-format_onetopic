@@ -69,7 +69,33 @@ class tabs {
      * @return array of \format_onetopic\singletab.
      */
     public function get_list() {
-        return $this->tabslist;
+
+        $tabstree = [];
+        $selected = null;
+
+        $assubtabs = false; //ToDo: hacer
+
+        foreach ($this->tabslist as $tab) {
+
+            if ($assubtabs) {
+                $tab->specialclass .= ' subtopic ';
+            }
+
+            $newtab = new \stdClass();
+            $newtab->link = $tab->link . '#tabs-tree-start';
+            $newtab->title = $tab->title;
+            $newtab->text = $tab->title;
+            $newtab->active = $tab->selected;
+            $newtab->inactive = !$tab->active;
+            $newtab->styles = $tab->customstyles;
+            $newtab->specialclass = $tab->specialclass;
+            $newtab->availablemessage = $tab->availablemessage;
+            $newtab->uniqueid = 'tab-' . time() . '-' . rand(0, 1000);
+
+            $tabstree[] = $newtab;
+        }
+
+        return $tabstree;
     }
 
     /**

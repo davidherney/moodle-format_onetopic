@@ -49,7 +49,7 @@ class singletab {
     /**
      * @var string Tab link.
      */
-    public $url;
+    public $link;
 
     /**
      * @var string Tab title.
@@ -91,18 +91,18 @@ class singletab {
      *
      * @param int $section Section index.
      * @param string $content HTML tab content.
-     * @param string $url Tab link.
+     * @param string $link Tab link.
      * @param string $title Tab title.
      * @param string $availablemessage Available message, in html format, if exist.
      * @param string $customstyles Custom CSS styles.
      * @param string $specialclass Custom extra CSS classes.
      */
-    public function __construct($section, $content, $url, $title, $availablemessage = '', $customstyles = '', $specialclass = '') {
+    public function __construct($section, $content, $link, $title, $availablemessage = null, $customstyles = '', $specialclass = '') {
 
         $this->index = 0;
         $this->section = $section;
         $this->content = $content;
-        $this->url = $url;
+        $this->link = $link;
         $this->title = $title;
         $this->availablemessage = $availablemessage;
         $this->customstyles = $customstyles;
