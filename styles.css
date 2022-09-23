@@ -162,11 +162,6 @@
     display: none;
 }
 
-.format-onetopic .verticaltabs > a[name="tabs-tree-start"] {
-    padding-bottom: 20px;
-    display: block;
-}
-
 .format-onetopic .verticaltabs > .format_onetopic-tabs {
     float: left;
     display: flex;
@@ -182,7 +177,7 @@
     max-width: 100%;
 }
 
-.format-onetopic .verticaltabs > .single-section {
+.format-onetopic .verticaltabs.hassecondrow > .single-section {
     margin-left: 260px;
     display: grid;
 }

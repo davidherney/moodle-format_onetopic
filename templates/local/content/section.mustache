@@ -101,8 +101,39 @@
         data-id="{{id}}"
         data-number="{{num}}"
     >
-        {{$ format_onetopic/local/content/section/content }}
-            {{> format_onetopic/local/content/section/content }}
-        {{/ format_onetopic/local/content/section/content }}
+        {{#restrictionlock}}
+            <div class="align-self-center ml-2">
+                {{#pix}}t/unlock, core{{/pix}}
+            </div>
+        {{/restrictionlock}}
+        <div data-region="sectionbadges" class="sectionbadges d-flex align-items-center">
+            {{$ core_courseformat/local/content/section/badges }}
+                {{> core_courseformat/local/content/section/badges }}
+            {{/ core_courseformat/local/content/section/badges }}
+        </div>
+        {{#collapsemenu}}
+        <div class="flex-fill d-flex justify-content-end mr-2 align-self-start mt-2">
+            <a
+                id="collapsesections"
+                class="section-collapsemenu"
+                href="#"
+                aria-expanded="true"
+                role="button"
+                data-toggle="toggleall"
+            >
+                <span class="collapseall text-nowrap">{{#str}}collapseall{{/str}}</span>
+                <span class="expandall text-nowrap">{{#str}}expandall{{/str}}</span>
+            </a>
+        </div>
+        {{/collapsemenu}}
+        {{#controlmenu}}
+            {{$ core_courseformat/local/content/section/controlmenu }}
+                {{> core_courseformat/local/content/section/controlmenu }}
+            {{/ core_courseformat/local/content/section/controlmenu }}
+        {{/controlmenu}}
     </div>
+
+    {{$ format_onetopic/local/content/section/content }}
+        {{> format_onetopic/local/content/section/content }}
+    {{/ format_onetopic/local/content/section/content }}
 </li>

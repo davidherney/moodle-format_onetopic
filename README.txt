@@ -17,7 +17,7 @@ COMING SOON
 =============
 - Duplicate section feature.
 - Fix: the topics bar is not refresh when delete a section.
-- Show "Availability information" in summary template mode
+- Show "Availability information" in summary template mode.
 
 IN VERSION
 =============

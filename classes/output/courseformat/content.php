@@ -79,7 +79,7 @@ class content extends content_base {
         }
 
         $tabslist = [];
-        $secondtabslist = [];
+        $secondtabslist = null;
         if ($format->show_editor() || !$course->hidetabsbar) {
             $tabs = $this->get_tabs($this->format->get_modinfo(), $output);
             $tabslist = $tabs->get_list();
@@ -95,6 +95,8 @@ class content extends content_base {
             }
         }
 
+        $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
+
         $data = (object)[
             'title' => $format->page_title(), // This method should be in the course_format class.
             'initialsection' => $initialsection,
@@ -103,6 +105,7 @@ class content extends content_base {
             'sectionreturn' => 0,
             'hastopictabs' => count($tabslist) > 0,
             'tabs' => $tabslist,
+            'hassecondrow' => $hassecondrow,
             'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
@@ -215,7 +218,6 @@ class content extends content_base {
         $sections = $modinfo->get_section_info_all();
         $numsections = count($sections);
         $displaysection = $this->format->get_section_number();
-        $showsubtabs = false; // ToDo: implementar.
 
         // Can we view the section in question?
         $context = \context_course::instance($course->id);

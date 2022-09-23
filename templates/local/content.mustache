@@ -104,8 +104,6 @@
     <h2 class="accesshide">{{{title}}}</h2>
     {{{completionhelp}}}
 
-    <a name="tabs-tree-start"></a>
-
     {{#hasformatmsgs}}
         {{#formatmsgs}}
             {{>core/notification_info}}
@@ -122,14 +120,16 @@
     </div>
     {{/initialsection}}
 
-    <div class="{{tabsviewclass}}">
+    <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
         {{#hastopictabs}}
             <div class="tabs-wrapper">
-                {{>format_onetopic/local/tabtree}}
+                {{>format_onetopic/courseformat/tabtree}}
             </div>
-            {{#secondrow}}
-                {{>format_onetopic/local/tabtree}}
-            {{/secondrow}}
+            {{#hassecondrow}}
+                {{#secondrow}}
+                    {{>format_onetopic/courseformat/tabtree}}
+                {{/secondrow}}
+            {{/hassecondrow}}
 
         {{/hastopictabs}}
 
