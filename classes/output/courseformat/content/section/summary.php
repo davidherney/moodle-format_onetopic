@@ -183,7 +183,6 @@ class summary extends summary_base {
 
                 // Display the link to the module (or do nothing if module has no url).
                 $cmdata = $cm->export_for_template($this->output);
-                $cmdata->tplmode = true;
                 $cmdata->modinline = true;
                 $cmdata->hideicons = $course->templatetopic_icons == 0;
 
