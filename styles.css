@@ -69,8 +69,10 @@
     display: inline-block;
 }
 
-.format-onetopic .onetopic_hideicons .activityicon {
-    display: none;
+.format-onetopic .onetopic .cmnameinline .activityiconcontainer {
+    width: auto;
+    height: auto;
+    padding: 0.2rem;
 }
 
 .format-onetopic .availability_info_box {

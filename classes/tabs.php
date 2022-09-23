@@ -66,14 +66,12 @@ class tabs {
     /**
      * To get the tabs list.
      *
-     * @return array of \format_onetopic\singletab.
+     * @param bool It's a subtabs list.
+     * @return array of object.
      */
-    public function get_list() {
+    public function get_list(bool $assubtabs = false) : array {
 
         $tabstree = [];
-        $selected = null;
-
-        $assubtabs = false; // ToDo: hacer.
 
         foreach ($this->tabslist as $tab) {
 
@@ -84,13 +82,17 @@ class tabs {
             $newtab = new \stdClass();
             $newtab->link = $tab->link . '#tabs-tree-start';
             $newtab->title = $tab->title;
-            $newtab->text = $tab->title;
+            $newtab->text = $tab->content;
             $newtab->active = $tab->selected;
             $newtab->inactive = !$tab->active;
             $newtab->styles = $tab->customstyles;
             $newtab->specialclass = $tab->specialclass;
             $newtab->availablemessage = $tab->availablemessage;
             $newtab->uniqueid = 'tab-' . time() . '-' . rand(0, 1000);
+
+            if ($tab->has_childs()) {
+                $newtab->secondrow = $tab->get_childs()->get_list(true);
+            }
 
             $tabstree[] = $newtab;
         }
@@ -114,6 +116,24 @@ class tabs {
      */
     public function count_tabs() {
         return count($this->tabslist);
+    }
+
+    /**
+     * To get the second tabs list according the selected tab.
+     *
+     * @return object With list of tabs in a tabs attribute.
+     */
+    public function get_secondlist() : object {
+
+        $tabstree = new \stdClass();
+
+        foreach ($this->tabslist as $tab) {
+            if ($tab->selected) {
+                $tabstree->tabs = $tab->get_childs()->get_list(true);
+            }
+        }
+
+        return $tabstree;
     }
 
 }

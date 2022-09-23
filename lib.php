@@ -65,6 +65,9 @@ class format_onetopic extends core_courseformat\base {
     /** @var stdClass Onetopic-specific extra section information */
     private $parentsections = null;
 
+    /** @var array Modules used in template */
+    public $tplcmsused = [];
+
     /**
      * Creates a new instance of class
      *

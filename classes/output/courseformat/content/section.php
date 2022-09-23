@@ -41,16 +41,32 @@ class section extends section_base {
     protected $format;
 
     public function export_for_template(\renderer_base $output): stdClass {
+        global $USER, $PAGE;
+
         $format = $this->format;
+        $course = $format->get_course();
+        $section = $this->section;
 
-        $data = parent::export_for_template($output);
+        $summary = new $this->summaryclass($format, $section);
 
-        if (!$this->format->get_section_number()) {
-            $addsectionclass = $format->get_output_classname('content\\addsection');
-            $addsection = new $addsectionclass($format);
-            $data->numsections = $addsection->export_for_template($output);
-            $data->insertafter = true;
-        }
+        $data = (object)[
+            'num' => $section->section ?? '0',
+            'id' => $section->id,
+            'sectionreturnid' => $format->get_section_number(),
+            'insertafter' => false,
+            'summary' => $summary->export_for_template($output),
+            'highlightedlabel' => $format->get_section_highlighted_name(),
+            'sitehome' => $course->id == SITEID,
+            'editing' => $PAGE->user_is_editing()
+        ];
+
+        $haspartials = [];
+        $haspartials['availability'] = $this->add_availability_data($data, $output);
+        $haspartials['visibility'] = $this->add_visibility_data($data, $output);
+        $haspartials['editor'] = $this->add_editor_data($data, $output);
+        $haspartials['header'] = $this->add_header_data($data, $output);
+        $haspartials['cm'] = $this->add_cm_data($data, $output);
+        $this->add_format_data($data, $haspartials, $output);
 
         return $data;
     }

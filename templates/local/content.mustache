@@ -115,9 +115,9 @@
     {{#initialsection}}
     <div class="single-section general-section">
         <ul class="{{format}}">
-            {{$ core_courseformat/local/content/section }}
-                {{> core_courseformat/local/content/section }}
-            {{/ core_courseformat/local/content/section }}
+            {{$ format_onetopic/local/content/section }}
+                {{> format_onetopic/local/content/section }}
+            {{/ format_onetopic/local/content/section }}
         </ul>
     </div>
     {{/initialsection}}
@@ -127,6 +127,10 @@
             <div class="tabs-wrapper">
                 {{>format_onetopic/local/tabtree}}
             </div>
+            {{#secondrow}}
+                {{>format_onetopic/local/tabtree}}
+            {{/secondrow}}
+
         {{/hastopictabs}}
 
         <div class="single-section">
@@ -138,9 +142,9 @@
             {{/sectionnavigation}}
             <ul class="{{format}}">
             {{#singlesection}}
-                {{$ core_courseformat/local/content/section }}
-                    {{> core_courseformat/local/content/section }}
-                {{/ core_courseformat/local/content/section }}
+                {{$ format_onetopic/local/content/section }}
+                    {{> format_onetopic/local/content/section }}
+                {{/ format_onetopic/local/content/section }}
             {{/singlesection}}
             </ul>
             {{#sectionselector}}

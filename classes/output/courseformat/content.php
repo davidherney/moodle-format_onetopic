@@ -66,6 +66,7 @@ class content extends content_base {
         $format = $this->format;
         $course = $format->get_course();
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+        $currentsection = $this->format->get_section_number();
 
         // If format use the section 0 as a separate section so remove from the list.
         $sections = $this->export_sections($output);
@@ -74,7 +75,13 @@ class content extends content_base {
             $initialsection = array_shift($sections);
         }
 
-        $tabs = $this->get_tabs($this->format->get_modinfo(), $output);
+        $tabslist = [];
+        $secondtabslist = [];
+        if ($format->show_editor() || !$course->hidetabsbar) {
+            $tabs = $this->get_tabs($this->format->get_modinfo(), $output);
+            $tabslist = $tabs->get_list();
+            $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
+        }
 
         $tabsview = $course->tabsview == \format_onetopic::TABSVIEW_VERTICAL ? 'verticaltabs' :
                         ($course->tabsview == \format_onetopic::TABSVIEW_ONELINE ? 'onelinetabs' : 'defaulttabs');
@@ -91,24 +98,24 @@ class content extends content_base {
             'sections' => $sections,
             'format' => $format->get_format(),
             'sectionreturn' => 0,
-            'hastopictabs' => true,
-            'tabs' => $tabs->get_list(),
+            'hastopictabs' => count($tabslist) > 0,
+            'tabs' => $tabslist,
+            'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
             'formatmsgs' => \format_onetopic::$formatmsgs
         ];
 
-        // The single section format has extra navigation.
-        $singlesection = $this->format->get_section_number();
-        if ($singlesection || $singlesection === 0) {
+        // The current section format has extra navigation.
+        if ($currentsection || $currentsection === 0) {
             if (!$PAGE->theme->usescourseindex) {
-                $sectionnavigation = new $this->sectionnavigationclass($format, $singlesection);
+                $sectionnavigation = new $this->sectionnavigationclass($format, $currentsection);
                 $data->sectionnavigation = $sectionnavigation->export_for_template($output);
 
                 $sectionselector = new $this->sectionselectorclass($format, $sectionnavigation);
                 $data->sectionselector = $sectionselector->export_for_template($output);
             }
-            $data->sectionreturn = $singlesection;
+            $data->sectionreturn = $currentsection;
         }
 
         $data->singlesection = array_shift($data->sections);
@@ -199,10 +206,13 @@ class content extends content_base {
      */
     private function get_tabs(course_modinfo $modinfo, \renderer_base $output): \format_onetopic\tabs {
 
+        global $PAGE;
+
         $course = $this->format->get_course();
         $sections = $modinfo->get_section_info_all();
         $numsections = count($sections);
         $displaysection = $this->format->get_section_number();
+        $showsubtabs = false; // ToDo: implementar.
 
         // Can we view the section in question?
         $context = \context_course::instance($course->id);
@@ -242,15 +252,15 @@ class content extends content_base {
                 if (is_array($formatoptions)) {
 
                     if (!empty($formatoptions['fontcolor'])) {
-                        $customstyles .= 'color: ' . $formatoptions['fontcolor'] . ';';
+                        $customstyles .= 'color: ' . $formatoptions['fontcolor'] . '; ';
                     }
 
                     if (!empty($formatoptions['bgcolor'])) {
-                        $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . ';';
+                        $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . '; ';
                     }
 
                     if (!empty($formatoptions['cssstyles'])) {
-                        $customstyles .= $formatoptions['cssstyles'] . ';';
+                        $customstyles .= $formatoptions['cssstyles'] . '; ';
                     }
 
                     if (isset($formatoptions['level'])) {
@@ -309,7 +319,7 @@ class content extends content_base {
                             $specialclasstmp = str_replace('tab_level_0', 'tab_level_1', $parenttab->specialclass);
                             $indextab = new \format_onetopic\singletab($parenttab->section,
                                                     $parenttab->content,
-                                                    $parenttab->url,
+                                                    $parenttab->link,
                                                     $parenttab->title,
                                                     $parenttab->availablemessage,
                                                     $parenttab->customstyles,
@@ -355,6 +365,48 @@ class content extends content_base {
             }
 
             $section++;
+        }
+
+        if ($this->format->show_editor()) {
+
+            $maxsections = $this->format->get_max_sections();
+
+            // Only can add sections if it does not exceed the maximum amount.
+            if (count($sections) < $maxsections) {
+
+                $straddsection = get_string('increasesections', 'format_onetopic');
+                $icon = $output->pix_icon('t/switch_plus', s($straddsection));
+                $insertposition = $displaysection + 1;
+
+                $paramstotabs = array('courseid' => $course->id,
+                                    'increase' => true,
+                                    'sesskey' => sesskey(),
+                                    'insertsection' => $insertposition);
+
+                // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
+                $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
+                $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
+
+                if ($showsubtabs) {
+                    // Increase number of sections in child tabs.
+                    $paramstotabs['aschild'] = 1;
+                    $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                    $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
+                    $selectedsubtabs->add_child($newtab);
+
+                    // The new tab is inserted after the last child because it is a parent tab.
+                    // -2 = add subtab button and index subtab.
+                    // +1 = because the selectedparent section start in 0.
+                    $insertposition = $selectedparent->section + $selectedsubtabs->count_childs() - 2 + 1;
+                }
+
+                $paramstotabs['aschild'] = 0;
+                $paramstotabs['insertsection'] = $insertposition;
+                $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
+                $tabs->add($newtab);
+
+            }
         }
 
         return $tabs;
