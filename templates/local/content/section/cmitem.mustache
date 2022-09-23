@@ -38,19 +38,8 @@
     }
 }}
 {{^tplmode}}
-    <li
-        class="activity activity-wrapper {{module}} modtype_{{module}} {{extraclasses}} {{#hasinfo}}hasinfo{{/hasinfo}}"
-        id="{{anchor}}"
-        data-for="cmitem"
-        data-id="{{id}}"
-    >
-    {{#cmformat}}
-        {{$ core_courseformat/local/content/cm}}
-            {{> core_courseformat/local/content/cm}}
-        {{/ core_courseformat/local/content/cm}}
-    {{/cmformat}}
-    </li>
+    {{> core_courseformat/local/content/section/cmitem}}
 {{/tplmode}}
 {{#tplmode}}
-    {{> core_courseformat/local/content/cm}}
+    {{> format_onetopic/local/content/cm}}
 {{/tplmode}}

@@ -251,6 +251,12 @@
     font-size: 90%;
 }
 
+.format-onetopic .activityinsummarytpl,
+.format-onetopic .activityinsummarytpl .activity-basis {
+    display: inline;
+    position: relative;
+}
+
 /* Fixing specific themes */
 .format-onetopic.theme_adaptable .onelinetabs .tabs-wrapper {
     height: 50px;

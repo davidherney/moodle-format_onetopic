@@ -50,6 +50,9 @@ class content extends content_base {
      * Returns the output class template path.
      *
      * This method redirects the default template when the course content is rendered.
+     *
+     * @param renderer_base $renderer typically, the renderer that's calling this function
+     * @return string format template name
      */
     public function get_template_name(\renderer_base $renderer): string {
         return 'format_onetopic/local/content';

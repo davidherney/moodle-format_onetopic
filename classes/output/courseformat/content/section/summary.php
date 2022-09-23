@@ -55,13 +55,13 @@ class summary extends summary_base {
     private $output;
 
     /** @var string Text to search */
-    public $tpl_string_search;
+    public $tplstringsearch;
 
     /** @var string Text to replace */
-    public $tpl_string_replace;
+    public $tplstringreplace;
 
     /** @var string Temporal key */
-    public $tpl_tag_string = '{label_tag_replace}';
+    public $tpltagstring = '{label_tag_replace}';
 
     /**
      * Constructor.
@@ -241,25 +241,11 @@ class summary extends summary_base {
                     $htmlresource .= '</completion>';
                 }
 
-                /*$availabilitytext = trim($this->courserenderer->course_section_cm_availability($mod));
-
-                if (!empty($availabilitytext)) {
-                    $uniqueid = 'format_onetopic_winfo_' . time() . '-' . rand(0, 1000);
-                    $htmlresource .= '<span class="iconhelp" data-infoid="' . $uniqueid . '">' .
-                                        $this->output->pix_icon('e/help', get_string('help')) .
-                                     '</span>';
-
-                    $htmlmore .= '<div id="' . $uniqueid . '" class="availability_info_box" style="display: none;">' .
-                        $availabilitytext . '</div>';
-
-                    $this->showyuidialogue = true;
-                }*/
-
                 // Replace the link in pattern: [[resource name]].
-                $this->tpl_string_replace = $htmlresource;
-                $this->tpl_string_search = $instancename;
+                $this->tplstringreplace = $htmlresource;
+                $this->tplstringsearch = $instancename;
 
-                $newsummary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tpl_string_search, '/') .
+                $newsummary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tplstringsearch, '/') .
                     ")(:?))([^\]]*)\]\]/i", array($this, "replace_tag_in_expresion"), $summary);
 
                 if ($newsummary != $summary) {
@@ -295,7 +281,7 @@ class summary extends summary_base {
             $text = preg_replace($pattern, '', $text);
 
             // Change text for alternative text.
-            $newreplace = str_replace($this->tpl_string_search, $text, $this->tpl_string_replace);
+            $newreplace = str_replace($this->tplstringsearch, $text, $this->tplstringreplace);
 
             // Posible html tags position.
             $pattern = '/([>][^<]*:[^<]*[<])+/i';
@@ -316,8 +302,8 @@ class summary extends summary_base {
             $term = str_replace('<:>', $newreplace, $term);
         } else {
             // Change tag for resource or mod name.
-            $newreplace = str_replace($this->tpl_tag_string, $this->tpl_string_search, $this->tpl_string_replace);
-            $term = str_replace($this->tpl_string_search, $newreplace, $term);
+            $newreplace = str_replace($this->tpltagstring, $this->tplstringsearch, $this->tplstringreplace);
+            $term = str_replace($this->tplstringsearch, $newreplace, $term);
         }
         return $term;
     }

@@ -40,6 +40,12 @@ class section extends section_base {
     /** @var course_format the course format */
     protected $format;
 
+    /**
+     * Export this data so it can be used as the context for a mustache template.
+     *
+     * @param renderer_base $output typically, the renderer that's calling this function
+     * @return array data context for a mustache template
+     */
     public function export_for_template(\renderer_base $output): stdClass {
         global $USER, $PAGE;
 

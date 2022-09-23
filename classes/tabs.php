@@ -66,7 +66,7 @@ class tabs {
     /**
      * To get the tabs list.
      *
-     * @param bool It's a subtabs list.
+     * @param bool $assubtabs It's a subtabs list.
      * @return array of object.
      */
     public function get_list(bool $assubtabs = false) : array {
