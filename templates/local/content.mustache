@@ -120,11 +120,14 @@
     </div>
     {{/initialsection}}
 
-    <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
+    <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hastopictabs}}hastopictabs{{/hastopictabs}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
         {{#hastopictabs}}
             <div class="tabs-wrapper">
                 {{>format_onetopic/courseformat/tabtree}}
             </div>
+
+            <div class="onetopic-tab-body">
+
             {{#hassecondrow}}
                 {{#secondrow}}
                     {{>format_onetopic/courseformat/tabtree}}
@@ -153,6 +156,10 @@
                 {{/ core_courseformat/local/content/sectionselector }}
             {{/sectionselector}}
         </div>
+        {{#hastopictabs}}
+            {{! End of onetopic-tab-body box. }}
+            </div>
+        {{/hastopictabs}}
     </div>
 
     {{#numsections}}

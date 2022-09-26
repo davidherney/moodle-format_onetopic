@@ -16,10 +16,14 @@ Powered by: https://bambuco.co/
 COMING SOON
 =============
 - Duplicate section feature.
-- Fix: the topics bar is not refresh when delete a section.
+- Fix: the topics bar is not refresh when change a section (delete or move).
 - Show "Availability information" in summary template mode.
+- Navegation options: Next/previous section.
 
 IN VERSION
 =============
+2022081603:
+Stabilization
+
 2022081602:
 Compatibility with moodle 4.0.

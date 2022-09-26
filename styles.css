@@ -162,34 +162,38 @@
     display: none;
 }
 
-.format-onetopic .verticaltabs > .format_onetopic-tabs {
-    float: left;
+.format-onetopic .verticaltabs.hastopictabs {
     display: flex;
-    flex-direction: column;
+}
+
+.format-onetopic .verticaltabs > .tabs-wrapper {
     width: 250px;
     border-right: 1px solid #dee2e6;
     border-bottom: none;
 }
 
-.format-onetopic .verticaltabs > .format_onetopic-tabs .nav-item {
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs {
+    display: block;
+}
+
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-item {
     margin-right: -1px;
     margin-bottom: 0;
     max-width: 100%;
 }
 
-.format-onetopic .verticaltabs.hassecondrow > .single-section {
-    margin-left: 260px;
-    display: grid;
-}
-
-.format-onetopic .verticaltabs > .nav-tabs .nav-link {
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-item .nav-link {
     border-radius: 0.5rem 0 0 0.5rem;
 }
 
-.format-onetopic .verticaltabs > .nav-tabs .nav-link:hover,
-.format-onetopic .verticaltabs > .nav-tabs .nav-link:focus,
-.format-onetopic .verticaltabs > .nav-tabs .nav-link.active,
-.format-onetopic .verticaltabs > .nav-tabs .nav-item.show .nav-link {
+.format-onetopic .verticaltabs .onetopic-tab-body {
+    width: calc(100% - 250px);
+}
+
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-link:hover,
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-link:focus,
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-link.active,
+.format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-item.show .nav-link {
     border-color: #dee2e6 #fff #dee2e6 #dee2e6;
     margin-right: -1px;
 }
@@ -275,13 +279,11 @@
 }
 
 @media (max-width: 600px) {
-    .format-onetopic .verticaltabs > .single-section {
-        clear: both;
-        margin-left: inherit;
+    .format-onetopic .verticaltabs.hastopictabs {
+        display: block;
     }
 
-    .format-onetopic .verticaltabs > .format_onetopic-tabs {
+    .format-onetopic .verticaltabs .onetopic-tab-body {
         width: auto;
-        flex-direction: inherit;
     }
 }
