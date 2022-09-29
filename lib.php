@@ -34,7 +34,7 @@ require_once($CFG->dirroot. '/course/format/lib.php');
  * @copyright 2012 David Herney Bernal - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_onetopic extends core_courseformat\base {
+class format_onetopic extends format_base {
 
     /** @var int The summary is not a template */
     const TEMPLATETOPIC_NOT = 0;
