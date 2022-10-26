@@ -140,28 +140,28 @@ class controlmenu extends controlmenu_base {
         $parentcontrols = parent::section_control_items();
 
         // If the edit key exists, we are going to insert our controls after it.
-            $merged = [];
-            $editcontrolexists = array_key_exists("edit", $parentcontrols);
-            $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
-            if (!$editcontrolexists) {
+        $merged = [];
+        $editcontrolexists = array_key_exists("edit", $parentcontrols);
+        $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
+        if (!$editcontrolexists) {
+            $merged = array_merge($merged, $markercontrols);
+        }
+        if (!$editcontrolexists && !$visibilitycontrolexists) {
+            $merged = array_merge($merged, $movecontrols);
+        }
+        // We can't use splice because we are using associative arrays.
+        // Step through the array and merge the arrays.
+        foreach ($parentcontrols as $key => $action) {
+            $merged[$key] = $action;
+            if ($key == "edit") {
+                // If we have come to the edit key, merge these controls here.
                 $merged = array_merge($merged, $markercontrols);
             }
-            if (!$editcontrolexists && !$visibilitycontrolexists) {
+            if ($key == "edit" && !$visibilitycontrolexists || $key == "visibility") {
                 $merged = array_merge($merged, $movecontrols);
             }
-            // We can't use splice because we are using associative arrays.
-            // Step through the array and merge the arrays.
-            foreach ($parentcontrols as $key => $action) {
-                $merged[$key] = $action;
-                if ($key == "edit") {
-                    // If we have come to the edit key, merge these controls here.
-                    $merged = array_merge($merged, $markercontrols);
-                }
-                if ($key == "edit" && !$visibilitycontrolexists || $key == "visibility") {
-                    $merged = array_merge($merged, $movecontrols);
-                }
-            }
+        }
 
-            return $merged;
+        return $merged;
     }
 }
