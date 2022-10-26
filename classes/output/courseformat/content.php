@@ -284,10 +284,10 @@ class content extends content_base {
                     $specialclass .= ' marker ';
                 }
 
-                if (!$thissection->visible || !$thissection->available) {
+                if (!$thissection->visible || !$thissection->available || $course->hidetabsbar) {
                     $specialclass .= ' dimmed disabled ';
 
-                    if (!$canviewhidden) {
+                    if (!$thissection->uservisible) {
                         $inactivetab = true;
                     }
                 }
