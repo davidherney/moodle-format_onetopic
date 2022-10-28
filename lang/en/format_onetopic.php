@@ -96,3 +96,6 @@ $string['tabsview_vertical'] = 'Vertically';
 $string['tabsview_oneline'] = 'Only one line';
 
 $string['increasesections'] = 'Add a section after the currently selected section';
+
+$string['icontext'] = 'Full icon class text';
+$string['icontext_help'] = 'Add icon class like font awesome, glyphicon, or anyother. Be careful your theme has to support this (use scripts, css...). Insert the full class identifier, ex. "fa fa-user" to fontawesome icons.';

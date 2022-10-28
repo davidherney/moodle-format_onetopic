@@ -287,6 +287,11 @@ class format_onetopic_renderer extends core_courseformat\output\section_renderer
                     if (isset($formatoptions['level'])) {
                         $level = $formatoptions['level'];
                     }
+
+                    $icon = '';
+                    if (isset($formatoptions['icon']) && $formatoptions['icon'] != '') {
+                        $icon = "<i class='{$formatoptions['icon']}'></i> ";
+                    }
                 }
 
                 if ($section == 0) {
@@ -327,6 +332,13 @@ class format_onetopic_renderer extends core_courseformat\output\section_renderer
                     }
                 }
 
+//                if ($icon) {
+//                    $newtab = new tabobject("tab_topic_" . $section, $url,
+//                        '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '"><span class="icon-tab sectionname">' . $icon . s($sectionname) . "</span>" . $availablemessage . "</div>", s($sectionname));
+//                }
+//                else {
+//                    $newtab = new tabobject("tab_topic_" . $section, $url,
+//                        '<div style="' . $customstyles . '" class="tab_content ' . $specialstyle . '"><span class="sectionname">' . s($sectionname) . "</span>" . $availablemessage . "</div>", s($sectionname));
                 $newtab = new singletab($section, $sectionname, $url, $sectionname,
                                         $availablemessage, $customstyles, $specialclass);
                 $newtab->active = !$inactivetab;

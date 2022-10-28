@@ -95,3 +95,6 @@ $string['tabsview_vertical'] = 'Verticalmente';
 $string['tabsview_oneline'] = 'Una sola línea';
 
 $string['increasesections'] = 'Adicionar una nueva sección después de la sección actual';
+
+$string['icontext'] = 'Nombre completo de la classe del icono';
+$string['icontext_help'] = 'Add nomdre de la clase del como icono font awesome, glyphicon ou otra. Tenga cuidado de que su tema sea compatible con esto (use scripts, css ...). Inserte el identificador de clase completo, ej. "fa fa-user" ';
