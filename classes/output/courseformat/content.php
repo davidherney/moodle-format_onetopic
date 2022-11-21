@@ -268,7 +268,7 @@ class content extends content_base {
                         $customstyles .= $formatoptions['cssstyles'] . '; ';
                     }
 
-                    if (isset($formatoptions['level'])) {
+                    if (isset($formatoptions['level']) && $section > $firstsection) {
                         $level = $formatoptions['level'];
                     }
                 }
