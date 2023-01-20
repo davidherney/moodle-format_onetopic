@@ -50,13 +50,17 @@ class controlmenu extends controlmenu_base {
      * @return array of edit control items
      */
     public function section_control_items() {
+        global $USER;
 
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
         $sectionreturn = $format->get_section_number();
+        $user = $USER;
 
         $coursecontext = context_course::instance($course->id);
+        $numsections = $format->get_last_section_number();
+        $isstealth = $section->section > $numsections;
 
         if ($sectionreturn) {
             $url = course_get_url($course, $section->section);
@@ -65,12 +69,12 @@ class controlmenu extends controlmenu_base {
         }
         $url->param('sesskey', sesskey());
 
-        $controls = [];
+        $markercontrols = [];
         if ($section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
                 $highlightoff = get_string('highlightoff');
-                $controls['highlight'] = [
+                $markercontrols['highlight'] = [
                     'url' => $url,
                     'icon' => 'i/marked',
                     'name' => $highlightoff,
@@ -83,7 +87,7 @@ class controlmenu extends controlmenu_base {
             } else {
                 $url->param('marker', $section->section);
                 $highlight = get_string('highlight');
-                $controls['highlight'] = [
+                $markercontrols['highlight'] = [
                     'url' => $url,
                     'icon' => 'i/marker',
                     'name' => $highlight,
@@ -96,24 +100,68 @@ class controlmenu extends controlmenu_base {
             }
         }
 
+        $movecontrols = [];
+        if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $user)) {
+            $baseurl = course_get_url($course);
+            $baseurl->param('sesskey', sesskey());
+            $horizontal = !$course->hidetabsbar && $course->tabsview != \format_onetopic::TABSVIEW_VERTICAL;
+            $rtl = right_to_left();
+
+            // Legacy move up and down links.
+            $url = clone($baseurl);
+            if ($section->section > 1) { // Add a arrow to move section up.
+                $url->param('section', $section->section);
+                $url->param('move', -1);
+                $strmoveup = $horizontal ? get_string('moveleft') : get_string('moveup');
+                $movecontrols['moveup'] = [
+                    'url' => $url,
+                    'icon' => $horizontal ? ($rtl ? 't/right' : 't/left') : 'i/up',
+                    'name' => $strmoveup,
+                    'pixattr' => ['class' => ''],
+                    'attr' => ['class' => 'icon' . ($horizontal ? '' : ' moveup')],
+                ];
+            }
+
+            $url = clone($baseurl);
+            if ($section->section < $numsections) { // Add a arrow to move section down.
+                $url->param('section', $section->section);
+                $url->param('move', 1);
+                $strmovedown = $horizontal ? get_string('moveright') : get_string('movedown');
+                $movecontrols['movedown'] = [
+                    'url' => $url,
+                    'icon' => $horizontal ? ($rtl ? 't/left' : 't/right') : 'i/down',
+                    'name' => $strmovedown,
+                    'pixattr' => ['class' => ''],
+                    'attr' => ['class' => 'icon' . ($horizontal ? '' : ' movedown')],
+                ];
+            }
+        }
+
         $parentcontrols = parent::section_control_items();
 
         // If the edit key exists, we are going to insert our controls after it.
-        if (array_key_exists("edit", $parentcontrols)) {
-            $merged = [];
-            // We can't use splice because we are using associative arrays.
-            // Step through the array and merge the arrays.
-            foreach ($parentcontrols as $key => $action) {
-                $merged[$key] = $action;
-                if ($key == "edit") {
-                    // If we have come to the edit key, merge these controls here.
-                    $merged = array_merge($merged, $controls);
-                }
-            }
-
-            return $merged;
-        } else {
-            return array_merge($controls, $parentcontrols);
+        $merged = [];
+        $editcontrolexists = array_key_exists("edit", $parentcontrols);
+        $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
+        if (!$editcontrolexists) {
+            $merged = array_merge($merged, $markercontrols);
         }
+        if (!$editcontrolexists && !$visibilitycontrolexists) {
+            $merged = array_merge($merged, $movecontrols);
+        }
+        // We can't use splice because we are using associative arrays.
+        // Step through the array and merge the arrays.
+        foreach ($parentcontrols as $key => $action) {
+            $merged[$key] = $action;
+            if ($key == "edit") {
+                // If we have come to the edit key, merge these controls here.
+                $merged = array_merge($merged, $markercontrols);
+            }
+            if ($key == "edit" && !$visibilitycontrolexists || $key == "visibility") {
+                $merged = array_merge($merged, $movecontrols);
+            }
+        }
+
+        return $merged;
     }
 }
