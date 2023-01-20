@@ -6,11 +6,11 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:10 # Moodle 3.9: >=9.5 / Moodle 3.10-3.11: >=9.6
+        image: postgres:12 # Moodle 4.0: >= 10
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -18,10 +18,12 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
       mariadb:
-        image: mariadb:10.5 # Moodle 3.9-3.11 >=10.2.29 / 10.6 breaks Moodle, see MDL-72131
+        image: mariadb:10.5 # Moodle 4.0 >=10.2.29
         env:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          MYSQL_CHARACTER_SET_SERVER: "utf8mb4"
+          MYSQL_COLLATION_SERVER: "utf8mb4_unicode_ci"
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
@@ -29,27 +31,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # Moodle 3.9
-          - php: '7.2' # 7.2-7.4
-            moodle-branch: 'MOODLE_39_STABLE'
-            database: mariadb
-          # Moodle 3.9, PostgreSQL
-          - php: '7.2' # 7.2-7.4
-            moodle-branch: 'MOODLE_39_STABLE'
-            database: pgsql
-          # Moodle 3.10
-          - php: '7.3' # 7.2-7.4
-            moodle-branch: 'MOODLE_310_STABLE'
-            database: mariadb
-          # Moodle 3.11
-          - php: '7.4' # 7.3-7.4
-            moodle-branch: 'MOODLE_311_STABLE'
-            database: mariadb
-          # Moodle 3.11, PHP 8.0 (not ready for production, see MDL-70745)
-          - php: '8.0' # 7.3-7.4
-            moodle-branch: 'MOODLE_311_STABLE'
-            database: mariadb
+        php: ['7.3', '7.4', '8.0']
+        moodle-branch: ['MOODLE_400_STABLE']
+        database: [pgsql, mariadb]
 
     steps:
       - name: Check out repository code
@@ -110,9 +94,10 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci savepoints
 
-      - name: Mustache Lint
-        if: ${{ always() }}
-        run: moodle-plugin-ci mustache
+# Not mustache validation because moodle core template errors.
+#      - name: Mustache Lint
+#        if: ${{ always() }}
+#        run: moodle-plugin-ci mustache
 
       - name: Grunt
         if: ${{ always() }}
@@ -120,7 +105,7 @@ jobs:
 
       - name: PHPUnit tests
         if: ${{ always() }}
-        run: moodle-plugin-ci phpunit
+        run: moodle-plugin-ci phpunit --fail-on-warning
 
       - name: Behat features
         if: ${{ always() }}
