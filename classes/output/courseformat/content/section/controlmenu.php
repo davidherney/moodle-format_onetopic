@@ -56,7 +56,6 @@ class controlmenu extends controlmenu_base {
         $section = $this->section;
         $course = $format->get_course();
         $sectionreturn = $format->get_section_number();
-        $user = $USER;
 
         $coursecontext = context_course::instance($course->id);
         $numsections = $format->get_last_section_number();
@@ -101,7 +100,7 @@ class controlmenu extends controlmenu_base {
         }
 
         $movecontrols = [];
-        if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $user)) {
+        if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
             $baseurl = course_get_url($course);
             $baseurl->param('sesskey', sesskey());
             $horizontal = !$course->hidetabsbar && $course->tabsview != \format_onetopic::TABSVIEW_VERTICAL;
@@ -143,12 +142,15 @@ class controlmenu extends controlmenu_base {
         $merged = [];
         $editcontrolexists = array_key_exists("edit", $parentcontrols);
         $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
+
         if (!$editcontrolexists) {
             $merged = array_merge($merged, $markercontrols);
+
+            if (!$visibilitycontrolexists) {
+                $merged = array_merge($merged, $movecontrols);
+            }
         }
-        if (!$editcontrolexists && !$visibilitycontrolexists) {
-            $merged = array_merge($merged, $movecontrols);
-        }
+
         // We can't use splice because we are using associative arrays.
         // Step through the array and merge the arrays.
         foreach ($parentcontrols as $key => $action) {
@@ -157,7 +159,8 @@ class controlmenu extends controlmenu_base {
                 // If we have come to the edit key, merge these controls here.
                 $merged = array_merge($merged, $markercontrols);
             }
-            if ($key == "edit" && !$visibilitycontrolexists || $key == "visibility") {
+
+            if (($key == "edit" && !$visibilitycontrolexists) || $key == "visibility") {
                 $merged = array_merge($merged, $movecontrols);
             }
         }
