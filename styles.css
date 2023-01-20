@@ -256,6 +256,11 @@
     position: relative;
 }
 
+.format-onetopic .format_onetopic-tabs.hiddentabsbar {
+    border: 1px dashed #888;
+    padding: 5px 0 1px;
+}
+
 /* Fixing specific themes */
 .format-onetopic.theme_adaptable .onelinetabs .tabs-wrapper {
     height: 50px;
