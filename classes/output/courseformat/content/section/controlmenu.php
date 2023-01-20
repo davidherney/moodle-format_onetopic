@@ -138,12 +138,13 @@ class controlmenu extends controlmenu_base {
 
         $parentcontrols = parent::section_control_items();
 
+        // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
         if (array_key_exists("delete", $parentcontrols)) {
-            $url = new \moodle_url('/course/editsection.php', array(
+            $url = new \moodle_url('/course/editsection.php', [
                 'id' => $section->id,
                 'sr' => $section->section - 1,
                 'delete' => 1,
-                'sesskey' => sesskey()));
+                'sesskey' => sesskey()]);
             $parentcontrols['delete']['url'] = $url;
             unset($parentcontrols['delete']['attr']['data-action']);
         }
