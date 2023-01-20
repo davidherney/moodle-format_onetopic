@@ -138,6 +138,16 @@ class controlmenu extends controlmenu_base {
 
         $parentcontrols = parent::section_control_items();
 
+        if (array_key_exists("delete", $parentcontrols)) {
+            $url = new \moodle_url('/course/editsection.php', array(
+                'id' => $section->id,
+                'sr' => $section->section - 1,
+                'delete' => 1,
+                'sesskey' => sesskey()));
+            $parentcontrols['delete']['url'] = $url;
+            unset($parentcontrols['delete']['attr']['data-action']);
+        }
+
         // If the edit key exists, we are going to insert our controls after it.
         $merged = [];
         $editcontrolexists = array_key_exists("edit", $parentcontrols);
