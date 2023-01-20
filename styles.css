@@ -28,7 +28,7 @@
     text-overflow: ellipsis;
 }
 
-.format-onetopic .tab_content.marker {
+.format-onetopic .course-content ul.nav-tabs li.marker a {
     font-weight: bold;
 }
 
@@ -37,7 +37,7 @@
     margin-top: 15px;
 }
 
-.format-onetopic ul.nav-tabs li a .tab_content.dimmed .sectionname {
+.format-onetopic .course-content ul.nav-tabs li.dimmed a {
     color: #999;
     opacity: 0.5;
 }
@@ -254,6 +254,11 @@
 .format-onetopic .activityinsummarytpl .activity-basis {
     display: inline;
     position: relative;
+}
+
+.format-onetopic .format_onetopic-tabs.hiddentabsbar {
+    border: 1px dashed #888;
+    padding: 5px 0 1px;
 }
 
 /* Fixing specific themes */

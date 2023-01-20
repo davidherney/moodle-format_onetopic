@@ -95,3 +95,5 @@ $string['tabsview_vertical'] = 'Verticalmente';
 $string['tabsview_oneline'] = 'Una sola línea';
 
 $string['increasesections'] = 'Adicionar una nueva sección después de la sección actual';
+
+$string['hiddentabsbar'] = 'Las pestañas están configuradas para estar ocultas. No se verán cuando no esté en modo de edición.';

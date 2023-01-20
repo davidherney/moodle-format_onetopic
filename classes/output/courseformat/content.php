@@ -109,7 +109,8 @@ class content extends content_base {
             'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
-            'formatmsgs' => \format_onetopic::$formatmsgs
+            'formatmsgs' => \format_onetopic::$formatmsgs,
+            'hidetabsbar' => ($course->hidetabsbar == 1 && $format->show_editor())
         ];
 
         // The current section format has extra navigation.
@@ -268,7 +269,7 @@ class content extends content_base {
                         $customstyles .= $formatoptions['cssstyles'] . '; ';
                     }
 
-                    if (isset($formatoptions['level'])) {
+                    if (isset($formatoptions['level']) && $section > $firstsection) {
                         $level = $formatoptions['level'];
                     }
                 }

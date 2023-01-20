@@ -96,3 +96,5 @@ $string['tabsview_vertical'] = 'Vertically';
 $string['tabsview_oneline'] = 'Only one line';
 
 $string['increasesections'] = 'Add a section after the currently selected section';
+
+$string['hiddentabsbar'] = 'The tabs are set to be hidden. They will not be seen when not in edit mode.';
