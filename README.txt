@@ -1,7 +1,7 @@
 COURSE FORMAT Onetopic
 ============================
 
-Package tested in: moodle 4.0+.
+Package tested in: moodle 4.0+, 4.1+.
 
 QUICK INSTALL
 ==============
@@ -16,14 +16,19 @@ Powered by: https://bambuco.co/
 COMING SOON
 =============
 - Duplicate section feature.
-- Fix: the topics bar is not refresh when change a section (delete or move).
+- Fix: the topics bar is not refresh when change a section (move a section in boost sections bar).
 - Show "Availability information" in summary template mode.
 - Navegation options: Next/previous section.
 
 IN VERSION
 =============
+2022081605:
+Check compatibility with moodle 4.1
+Add section move controls
+Notice in the tab bar when a course is being edited and the tabs are hidden from students
+
 2022081604:
 Stabilization
 
 2022081602:
-Compatibility with moodle 4.0.
+Compatibility with moodle 4.0
