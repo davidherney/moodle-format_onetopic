@@ -68,12 +68,12 @@ class controlmenu extends controlmenu_base {
         }
         $url->param('sesskey', sesskey());
 
-        $markercontrols = [];
+        $othercontrols = [];
         if ($section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
                 $highlightoff = get_string('highlightoff');
-                $markercontrols['highlight'] = [
+                $othercontrols['highlight'] = [
                     'url' => $url,
                     'icon' => 'i/marked',
                     'name' => $highlightoff,
@@ -86,7 +86,7 @@ class controlmenu extends controlmenu_base {
             } else {
                 $url->param('marker', $section->section);
                 $highlight = get_string('highlight');
-                $markercontrols['highlight'] = [
+                $othercontrols['highlight'] = [
                     'url' => $url,
                     'icon' => 'i/marker',
                     'name' => $highlight,
@@ -136,6 +136,22 @@ class controlmenu extends controlmenu_base {
             }
         }
 
+        // Duplicate current section option.
+        if ($section->section && has_capability('moodle/course:manageactivities', $coursecontext)) {
+            $urlduplicate = new \moodle_url('/course/format/onetopic/duplicate.php',
+                            ['courseid' => $course->id, 'section' => $section->section, 'sesskey' => sesskey()]);
+
+            $othercontrols['duplicate'] = [
+                'url' => $urlduplicate,
+                'icon' => 'i/reload',
+                'name' => get_string('duplicate', 'format_onetopic'),
+                'pixattr' => ['class' => ''],
+                'attr' => [
+                    'class' => 'editing_duplicate'
+                ],
+            ];
+        }
+
         $parentcontrols = parent::section_control_items();
 
         // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
@@ -155,7 +171,7 @@ class controlmenu extends controlmenu_base {
         $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
 
         if (!$editcontrolexists) {
-            $merged = array_merge($merged, $markercontrols);
+            $merged = array_merge($merged, $othercontrols);
 
             if (!$visibilitycontrolexists) {
                 $merged = array_merge($merged, $movecontrols);
@@ -168,7 +184,7 @@ class controlmenu extends controlmenu_base {
             $merged[$key] = $action;
             if ($key == "edit") {
                 // If we have come to the edit key, merge these controls here.
-                $merged = array_merge($merged, $markercontrols);
+                $merged = array_merge($merged, $othercontrols);
             }
 
             if (($key == "edit" && !$visibilitycontrolexists) || $key == "visibility") {
