@@ -92,6 +92,7 @@ class tabs {
 
             if ($tab->has_childs()) {
                 $newtab->secondrow = $tab->get_childs()->get_list(true);
+                $newtab->haschilds = true;
             }
 
             $tabstree[] = $newtab;

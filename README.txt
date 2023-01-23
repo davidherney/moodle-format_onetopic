@@ -23,15 +23,17 @@ COMING SOON
 IN VERSION
 =============
 2022081606:
-Enable/disable custom styles in site level
+- Enable/disable custom styles in site level
+- Chevron icon for tabs with child's
+- New CSS class for tabs with child's: haschilds
 
 2022081605:
-Check compatibility with moodle 4.1
-Add section move controls
-Notice in the tab bar when a course is being edited and the tabs are hidden from students
+- Check compatibility with moodle 4.1
+- Add section move controls
+- Notice in the tab bar when a course is being edited and the tabs are hidden from students
 
 2022081604:
-Stabilization
+- Stabilization
 
 2022081602:
-Compatibility with moodle 4.0
+- Compatibility with moodle 4.0

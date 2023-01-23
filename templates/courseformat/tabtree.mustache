@@ -40,9 +40,9 @@
 {{/hidetabsbar}}
 <ul class="nav nav-tabs mb-3 format_onetopic-tabs {{#hidetabsbar}}hiddentabsbar{{/hidetabsbar}}">
   {{#tabs}}
-    <li class="nav-item {{specialclass}}">
+    <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}">
       <a class="nav-link{{#active}} active{{/active}}{{#inactive}} disabled{{/inactive}}" {{#link}}href="{{{link}}}"{{/link}} title="{{title}}" style="{{styles}}">
-        {{{text}}}
+        {{#haschilds}}{{#pix}} t/expandedchevron {{/pix}}{{/haschilds}}{{{text}}}
 
         {{#availablemessage}}
           <span class="iconhelp" data-infoid="format_onetopic_winfo_{{uniqueid}}">

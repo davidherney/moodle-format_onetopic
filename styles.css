@@ -261,6 +261,10 @@
     padding: 5px 0 1px;
 }
 
+.format-onetopic .format_onetopic-tabs .haschilds a .icon.fa-chevron-down {
+    font-size: 80%;
+}
+
 /* Fixing specific themes */
 .format-onetopic.theme_adaptable .onelinetabs .tabs-wrapper {
     height: 50px;
