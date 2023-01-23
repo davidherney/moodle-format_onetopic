@@ -15,13 +15,15 @@ Powered by: https://bambuco.co/
 
 COMING SOON
 =============
-- Duplicate section feature.
 - Fix: the topics bar is not refresh when change a section (move a section in boost sections bar).
 - Show "Availability information" in summary template mode.
 - Navegation options: Next/previous section.
 
 IN VERSION
 =============
+2022081607:
+- Duplicate section feature.
+
 2022081606:
 - Enable/disable custom styles in site level
 - Chevron icon for tabs with child's
