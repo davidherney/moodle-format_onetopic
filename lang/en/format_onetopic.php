@@ -98,3 +98,5 @@ $string['tabsview_oneline'] = 'Only one line';
 $string['increasesections'] = 'Add a section after the currently selected section';
 
 $string['hiddentabsbar'] = 'The tabs are set to be hidden. They will not be seen when not in edit mode.';
+$string['enablecustomstyles'] = 'Enable custom styles';
+$string['enablecustomstyles_help'] = 'Enable font color, background color and other custom tab styles in the sections configuration.';

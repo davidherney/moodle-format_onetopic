@@ -219,6 +219,7 @@ class content extends content_base {
         $sections = $modinfo->get_section_info_all();
         $numsections = count($sections);
         $displaysection = $this->format->get_section_number();
+        $enablecustomstyles = get_config('format_onetopic', 'enablecustomstyles');
 
         // Can we view the section in question?
         $context = \context_course::instance($course->id);
@@ -257,16 +258,18 @@ class content extends content_base {
                 $level = 0;
                 if (is_array($formatoptions)) {
 
-                    if (!empty($formatoptions['fontcolor'])) {
-                        $customstyles .= 'color: ' . $formatoptions['fontcolor'] . '; ';
-                    }
+                    if ($enablecustomstyles) {
+                        if (!empty($formatoptions['fontcolor'])) {
+                            $customstyles .= 'color: ' . $formatoptions['fontcolor'] . '; ';
+                        }
 
-                    if (!empty($formatoptions['bgcolor'])) {
-                        $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . '; ';
-                    }
+                        if (!empty($formatoptions['bgcolor'])) {
+                            $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . '; ';
+                        }
 
-                    if (!empty($formatoptions['cssstyles'])) {
-                        $customstyles .= $formatoptions['cssstyles'] . '; ';
+                        if (!empty($formatoptions['cssstyles'])) {
+                            $customstyles .= $formatoptions['cssstyles'] . '; ';
+                        }
                     }
 
                     if (isset($formatoptions['level']) && $section > $firstsection) {

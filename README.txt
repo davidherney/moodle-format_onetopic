@@ -22,6 +22,9 @@ COMING SOON
 
 IN VERSION
 =============
+2022081606:
+Enable/disable custom styles in site level
+
 2022081605:
 Check compatibility with moodle 4.1
 Add section move controls
