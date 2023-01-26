@@ -253,6 +253,11 @@ class content extends content_base {
                 $formatoptions = course_get_format($course)->get_format_options($thissection);
 
                 $sectionname = get_section_name($course, $thissection);
+                $title = $sectionname;
+
+                if (!$thissection->visible || !$thissection->available) {
+                    $title .= ': '. get_string('hiddenfromstudents');
+                }
 
                 $customstyles = '';
                 $level = 0;
@@ -309,7 +314,7 @@ class content extends content_base {
                     }
                 }
 
-                $newtab = new \format_onetopic\singletab($section, $sectionname, $url, $sectionname,
+                $newtab = new \format_onetopic\singletab($section, $sectionname, $url, $title,
                                         $availablemessage, $customstyles, $specialclass);
                 $newtab->active = !$inactivetab;
 
