@@ -127,6 +127,7 @@ class tabs {
     public function get_secondlist() : object {
 
         $tabstree = new \stdClass();
+        $tabstree->tabs = [];
 
         foreach ($this->tabslist as $tab) {
             if ($tab->selected) {
