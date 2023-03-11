@@ -139,7 +139,7 @@ class summary extends summary_base {
         $completioninfo = new \completion_info($course);
 
         if (!isset($initialised)) {
-            $groupbuttons     = ($course->groupmode || (!$course->groupmodeforce));
+            $groupbuttons = ($course->groupmode || (!$course->groupmodeforce));
             $groupbuttonslink = (!$course->groupmodeforce);
             include_once($CFG->dirroot . '/mod/forum/lib.php');
             if ($usetracking = forum_tp_can_track_forums()) {
@@ -157,7 +157,7 @@ class summary extends summary_base {
         $summary = $section->summary;
 
         $htmlresource = '';
-        $htmlmore     = '';
+        $htmlmore = '';
 
         if (!empty($section->sequence)) {
             $sectionmods = explode(",", $section->sequence);
