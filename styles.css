@@ -287,6 +287,75 @@
     content: "";
 }
 
+.format-onetopic .single-section .nextsection span {
+    float: right;
+}
+
+/* The slide navigation is only available to wide screens */
+@media (min-width: 600px) {
+
+    .format-onetopic .sectionsnavigation-slides {
+        position: relative;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides .nextsection a,
+    .format-onetopic .single-section.sectionsnavigation-slides .prevsection a {
+        display: none;
+        font-size: 0;
+        position: absolute;
+        top: calc(50% - 40px);
+        background-color: #fff;
+        border-radius: 25px;
+        border: 1px solid #dee2e6;
+        width: 50px;
+        height: 50px;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.3;
+        box-shadow: 2px 2px 4px 1px #ccc;
+        text-decoration: none;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides:hover .nextsection a,
+    .format-onetopic .single-section.sectionsnavigation-slides:hover .prevsection a {
+        display: flex;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides:hover .nextsection a {
+        right: -30px;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides:hover .prevsection a {
+        left: -20px;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides .nextsection span,
+    .format-onetopic .single-section.sectionsnavigation-slides .prevsection span {
+        font-size: 40px;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides .nextsection a:hover,
+    .format-onetopic .single-section.sectionsnavigation-slides .prevsection a:hover {
+        opacity: 1;
+        cursor: pointer;
+        width: auto;
+        font-size: inherit;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides .prevsection a:hover {
+        text-align: left;
+        justify-content: left;
+        padding-right: 10px;
+    }
+
+    .format-onetopic .single-section.sectionsnavigation-slides .nextsection a:hover {
+        text-align: right;
+        justify-content: right;
+        padding-left: 10px;
+        flex-direction: row-reverse;
+    }
+}
+
 @media (max-width: 600px) {
     .format-onetopic .verticaltabs.hastopictabs {
         display: block;

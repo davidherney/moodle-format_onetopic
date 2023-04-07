@@ -109,6 +109,11 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
     }
 }
 
+$anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
+
+if ($anchortotabstree) {
+    $returnurl->set_anchor('tabs-tree-start');
+}
+
 // Redirect to where we were..
-$returnurl->set_anchor('tabs-tree-start');
 redirect($returnurl);
