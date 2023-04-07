@@ -187,7 +187,14 @@ class format_onetopic extends core_courseformat\base {
      * @return bool
      */
     public function uses_course_index() {
-        return true;
+
+        if ($this->show_editor()) {
+            return true;
+        }
+
+        $course = $this->get_course();
+
+        return isset($course->usescourseindex) ? $course->usescourseindex : true;
     }
 
     /**
@@ -447,6 +454,10 @@ class format_onetopic extends core_courseformat\base {
                 'usessectionsnavigation' => [
                     'default' => 0,
                     'type' => PARAM_INT
+                ],
+                'usescourseindex' => [
+                    'default' => 1,
+                    'type' => PARAM_INT
                 ]
             ];
         }
@@ -543,6 +554,18 @@ class format_onetopic extends core_courseformat\base {
                     ],
                     'help' => 'usessectionsnavigation',
                     'help_component' => 'format_onetopic',
+                ],
+                'usescourseindex' => [
+                    'label' => get_string('usescourseindex', 'format_onetopic'),
+                    'help' => 'usescourseindex',
+                    'help_component' => 'format_onetopic',
+                    'element_type' => 'select',
+                    'element_attributes' => [
+                        [
+                            0 => new lang_string('no'),
+                            1 => new lang_string('yes')
+                        ]
+                    ],
                 ]
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -615,6 +638,8 @@ class format_onetopic extends core_courseformat\base {
                         $data['tabsview'] = self::TABSVIEW_DEFAULT;
                     } else if ($key === 'usessectionsnavigation') {
                         $data['usessectionsnavigation'] = 0;
+                    } else if ($key === 'usescourseindex') {
+                        $data['usescourseindex'] = 1;
                     }
                 }
             }

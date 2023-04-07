@@ -103,6 +103,7 @@ $string['enablecustomstyles_help'] = 'Enable font color, background color and ot
 
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
+$string['sectionsnavigation_sitelevel'] = 'Use the default site value';
 $string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
 $string['sectionsnavigation_not'] = 'Not use';
 $string['sectionsnavigation_bottom'] = 'Only at the bottom';
@@ -112,4 +113,5 @@ $string['enableanchorposition'] = 'Enable anchor position';
 $string['enableanchorposition_help'] = 'Use an anchor to navigate to the top of tabs when click in a tab.';
 $string['defaultsectionsnavigation'] = 'Default value to sections navigation';
 $string['defaultsectionsnavigation_help'] = 'Default value used in courses to define the "Uses sections navigation" feature. This can be overwrite for each course.';
-$string['sectionsnavigation_sitelevel'] = 'Use the default site value';
+$string['usescourseindex'] = 'Uses course index';
+$string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
