@@ -100,3 +100,16 @@ $string['increasesections'] = 'Add a section after the currently selected sectio
 $string['hiddentabsbar'] = 'The tabs are set to be hidden. They will not be seen when not in edit mode.';
 $string['enablecustomstyles'] = 'Enable custom styles';
 $string['enablecustomstyles_help'] = 'Enable font color, background color and other custom tab styles in the sections configuration.';
+
+$string['usessectionsnavigation'] = 'Uses sections navigation';
+$string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
+$string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
+$string['sectionsnavigation_not'] = 'Not use';
+$string['sectionsnavigation_bottom'] = 'Only at the bottom';
+$string['sectionsnavigation_both'] = 'At top and bottom section';
+$string['sectionsnavigation_slides'] = 'Like slides';
+$string['enableanchorposition'] = 'Enable anchor position';
+$string['enableanchorposition_help'] = 'Use an anchor to navigate to the top of tabs when click in a tab.';
+$string['defaultsectionsnavigation'] = 'Default value to sections navigation';
+$string['defaultsectionsnavigation_help'] = 'Default value used in courses to define the "Uses sections navigation" feature. This can be overwrite for each course.';
+$string['sectionsnavigation_sitelevel'] = 'Use the default site value';

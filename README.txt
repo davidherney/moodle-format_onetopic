@@ -17,10 +17,13 @@ COMING SOON
 =============
 - Fix: the topics bar is not refresh when change a section (move a section in boost sections bar).
 - Show "Availability information" in summary template mode.
-- Navegation options: Next/previous section.
 
 IN VERSION
 =============
+2022081608:
+- Navigation options: Next/previous section, with different display options.
+- A site setting option to define if use an anchor to navigate to the top of tabs when click in a tab.
+
 2022081607:
 - Duplicate section feature.
 

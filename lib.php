@@ -56,6 +56,21 @@ class format_onetopic extends core_courseformat\base {
     /** @var int One line view */
     const TABSVIEW_ONELINE = 2;
 
+    /** @var int Only if theme not support "usescourseindex" */
+    const SECTIONSNAVIGATION_SUPPORT = 1;
+
+    /** @var int Not use */
+    const SECTIONSNAVIGATION_NOT = 2;
+
+    /** @var int Only at the bottom */
+    const SECTIONSNAVIGATION_BOTTOM = 3;
+
+    /** @var int Only at the bottom */
+    const SECTIONSNAVIGATION_BOTH = 4;
+
+    /** @var int Like slides */
+    const SECTIONSNAVIGATION_SLIDES = 5;
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -428,6 +443,10 @@ class format_onetopic extends core_courseformat\base {
                 'tabsview' => [
                     'default' => 0,
                     'type' => PARAM_INT
+                ],
+                'usessectionsnavigation' => [
+                    'default' => 0,
+                    'type' => PARAM_INT
                 ]
             ];
         }
@@ -508,6 +527,22 @@ class format_onetopic extends core_courseformat\base {
                     ],
                     'help' => 'tabsview',
                     'help_component' => 'format_onetopic',
+                ],
+                'usessectionsnavigation' => [
+                    'label' => new lang_string('usessectionsnavigation', 'format_onetopic'),
+                    'element_type' => 'select',
+                    'element_attributes' => [
+                        [
+                            '' => new lang_string('sectionsnavigation_sitelevel', 'format_onetopic'),
+                            self::SECTIONSNAVIGATION_SUPPORT => new lang_string('sectionsnavigation_support', 'format_onetopic'),
+                            self::SECTIONSNAVIGATION_NOT => new lang_string('sectionsnavigation_not', 'format_onetopic'),
+                            self::SECTIONSNAVIGATION_BOTTOM => new lang_string('sectionsnavigation_bottom', 'format_onetopic'),
+                            self::SECTIONSNAVIGATION_BOTH => new lang_string('sectionsnavigation_both', 'format_onetopic'),
+                            self::SECTIONSNAVIGATION_SLIDES => new lang_string('sectionsnavigation_slides', 'format_onetopic'),
+                        ]
+                    ],
+                    'help' => 'usessectionsnavigation',
+                    'help_component' => 'format_onetopic',
                 ]
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -563,6 +598,7 @@ class format_onetopic extends core_courseformat\base {
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
             $options = $this->course_format_options();
+
             foreach ($options as $key => $unused) {
                 if (!array_key_exists($key, $data)) {
                     if (array_key_exists($key, $oldcourse)) {
@@ -577,6 +613,8 @@ class format_onetopic extends core_courseformat\base {
                         $data['templatetopic_icons'] = 0;
                     } else if ($key === 'tabsview') {
                         $data['tabsview'] = self::TABSVIEW_DEFAULT;
+                    } else if ($key === 'usessectionsnavigation') {
+                        $data['usessectionsnavigation'] = 0;
                     }
                 }
             }

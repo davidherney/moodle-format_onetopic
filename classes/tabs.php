@@ -73,6 +73,8 @@ class tabs {
 
         $tabstree = [];
 
+        $anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
+
         foreach ($this->tabslist as $tab) {
 
             if ($assubtabs) {
@@ -80,7 +82,7 @@ class tabs {
             }
 
             $newtab = new \stdClass();
-            $newtab->link = $tab->link . '#tabs-tree-start';
+            $newtab->link = $tab->link . ($anchortotabstree ? '#tabs-tree-start' : '');
             $newtab->title = $tab->title;
             $newtab->text = $tab->content;
             $newtab->active = $tab->selected;

@@ -110,18 +110,38 @@ class content extends content_base {
             'tabsviewclass' => $tabsview,
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
             'formatmsgs' => \format_onetopic::$formatmsgs,
-            'hidetabsbar' => ($course->hidetabsbar == 1 && $format->show_editor())
+            'hidetabsbar' => ($course->hidetabsbar == 1 && $format->show_editor()),
+            'sectionclasses' => ''
         ];
 
         // The current section format has extra navigation.
         if ($currentsection || $currentsection === 0) {
-            if (!$PAGE->theme->usescourseindex) {
-                $sectionnavigation = new $this->sectionnavigationclass($format, $currentsection);
-                $data->sectionnavigation = $sectionnavigation->export_for_template($output);
 
-                $sectionselector = new $this->sectionselectorclass($format, $sectionnavigation);
-                $data->sectionselector = $sectionselector->export_for_template($output);
+            $usessectionsnavigation = isset($course->usessectionsnavigation) ? $course->usessectionsnavigation : null;
+            if (empty($usessectionsnavigation)) {
+                $usessectionsnavigation = get_config('format_onetopic', 'defaultsectionsnavigation');
             }
+
+            if ($usessectionsnavigation != \format_onetopic::SECTIONSNAVIGATION_NOT) {
+                if ($usessectionsnavigation != \format_onetopic::SECTIONSNAVIGATION_SUPPORT ||
+                        !$PAGE->theme->usescourseindex) {
+
+                    $sectionnavigation = new $this->sectionnavigationclass($format, $currentsection);
+
+                    // Not show navigation in top section if is not both.
+                    if ($usessectionsnavigation == \format_onetopic::SECTIONSNAVIGATION_BOTH) {
+                        $data->sectionnavigation = $sectionnavigation->export_for_template($output);
+                    }
+
+                    $sectionselector = new $this->sectionselectorclass($format, $sectionnavigation);
+                    $data->sectionselector = $sectionselector->export_for_template($output);
+
+                    if ($usessectionsnavigation == \format_onetopic::SECTIONSNAVIGATION_SLIDES) {
+                        $data->sectionclasses .= ' sectionsnavigation-slides';
+                    }
+                }
+            }
+
             $data->sectionreturn = $currentsection;
         }
 
