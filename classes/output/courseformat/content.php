@@ -65,7 +65,7 @@ class content extends content_base {
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output) {
-        global $PAGE;
+        global $CFG, $PAGE;
         $format = $this->format;
         $course = $format->get_course();
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
@@ -150,6 +150,11 @@ class content extends content_base {
         if ($this->hasaddsection) {
             $addsection = new $this->addsectionclass($format);
             $data->numsections = $addsection->export_for_template($output);
+        }
+
+        if ($CFG->version >= 2023020300.01 && $format->show_editor()) {
+            $bulkedittools = new $this->bulkedittoolsclass($format);
+            $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
 
         return $data;
