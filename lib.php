@@ -77,8 +77,11 @@ class format_onetopic extends core_courseformat\base {
     /** @var array Messages to display */
     public static $formatmsgs = [];
 
-    /** @var stdClass Onetopic-specific extra section information */
-    private $parentsections = null;
+    /** @var array Onetopic-specific extra section information */
+    private $parentsections = [];
+
+    /** @var course_modinfo|null Mod info used to calculate parent sections */
+    private $parentsectionsmodinfo = null;
 
     /** @var array Modules used in template */
     public $tplcmsused = [];
@@ -876,14 +879,16 @@ class format_onetopic extends core_courseformat\base {
      */
     public function fot_get_sections_extra() {
 
-        if (isset($this->parentsections)) {
+        $modinfo = $this->courseid ? $this->get_modinfo() : null;
+
+        if ($this->parentsectionsmodinfo == $modinfo) {
             return $this->parentsections;
         }
 
         $course = $this->get_course();
         $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
         $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
-        $sections = $this->get_sections();
+        $sections = $modinfo->get_section_info_all();
         $parentsections = [];
         $level0section = null;
         foreach ($sections as $section) {
@@ -897,6 +902,7 @@ class format_onetopic extends core_courseformat\base {
             $parentsections[$section->section] = $parent;
         }
         $this->parentsections = $parentsections;
+        $this->parentsectionsmodinfo = $modinfo;
         return $parentsections;
     }
 
