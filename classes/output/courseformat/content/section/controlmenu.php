@@ -68,12 +68,15 @@ class controlmenu extends controlmenu_base {
         }
         $url->param('sesskey', sesskey());
 
-        $othercontrols = [];
+        $parentcontrols = parent::section_control_items();
+
+        $additionalcontrols = [];
+
         if ($section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
                 $highlightoff = get_string('highlightoff');
-                $othercontrols['highlight'] = [
+                $additionalcontrols['highlight'] = [
                     'url' => $url,
                     'icon' => 'i/marked',
                     'name' => $highlightoff,
@@ -86,7 +89,7 @@ class controlmenu extends controlmenu_base {
             } else {
                 $url->param('marker', $section->section);
                 $highlight = get_string('highlight');
-                $othercontrols['highlight'] = [
+                $additionalcontrols['highlight'] = [
                     'url' => $url,
                     'icon' => 'i/marker',
                     'name' => $highlight,
@@ -99,7 +102,20 @@ class controlmenu extends controlmenu_base {
             }
         }
 
-        $movecontrols = [];
+        // Duplicate current section option.
+        if ($section->section && has_capability('moodle/course:manageactivities', $coursecontext)) {
+            $duplicatesectionurl = new \moodle_url('/course/format/onetopic/duplicate.php',
+                            ['courseid' => $course->id, 'section' => $section->section, 'sesskey' => sesskey()]);
+
+            $additionalcontrols['duplicate'] = [
+                'url' => $duplicatesectionurl,
+                'icon' => 't/copy',
+                'name' => get_string('duplicate', 'format_onetopic'),
+                'pixattr' => ['class' => ''],
+                'attr' => ['class' => 'editing_duplicate'],
+            ];
+        }
+
         if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
             $baseurl = course_get_url($course);
             $baseurl->param('sesskey', sesskey());
@@ -112,7 +128,7 @@ class controlmenu extends controlmenu_base {
                 $url->param('section', $section->section);
                 $url->param('move', -1);
                 $strmoveup = $horizontal ? get_string('moveleft') : get_string('moveup');
-                $movecontrols['moveup'] = [
+                $additionalcontrols['moveup'] = [
                     'url' => $url,
                     'icon' => $horizontal ? ($rtl ? 't/right' : 't/left') : 'i/up',
                     'name' => $strmoveup,
@@ -126,7 +142,7 @@ class controlmenu extends controlmenu_base {
                 $url->param('section', $section->section);
                 $url->param('move', 1);
                 $strmovedown = $horizontal ? get_string('moveright') : get_string('movedown');
-                $movecontrols['movedown'] = [
+                $additionalcontrols['movedown'] = [
                     'url' => $url,
                     'icon' => $horizontal ? ($rtl ? 't/left' : 't/right') : 'i/down',
                     'name' => $strmovedown,
@@ -135,24 +151,6 @@ class controlmenu extends controlmenu_base {
                 ];
             }
         }
-
-        // Duplicate current section option.
-        if ($section->section && has_capability('moodle/course:manageactivities', $coursecontext)) {
-            $urlduplicate = new \moodle_url('/course/format/onetopic/duplicate.php',
-                            ['courseid' => $course->id, 'section' => $section->section, 'sesskey' => sesskey()]);
-
-            $othercontrols['duplicate'] = [
-                'url' => $urlduplicate,
-                'icon' => 'i/reload',
-                'name' => get_string('duplicate', 'format_onetopic'),
-                'pixattr' => ['class' => ''],
-                'attr' => [
-                    'class' => 'editing_duplicate'
-                ],
-            ];
-        }
-
-        $parentcontrols = parent::section_control_items();
 
         // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
         if (array_key_exists("delete", $parentcontrols)) {
@@ -165,30 +163,40 @@ class controlmenu extends controlmenu_base {
             unset($parentcontrols['delete']['attr']['data-action']);
         }
 
-        // If the edit key exists, we are going to insert our controls after it.
-        $merged = [];
-        $editcontrolexists = array_key_exists("edit", $parentcontrols);
-        $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
-
-        if (!$editcontrolexists) {
-            $merged = array_merge($merged, $othercontrols);
-
-            if (!$visibilitycontrolexists) {
-                $merged = array_merge($merged, $movecontrols);
-            }
+        if (array_key_exists("permalink", $parentcontrols)) {
+            $sectionlink = new \moodle_url(
+                '/course/view.php',
+                ['id' => $course->id, 'sectionid' => $section->id]
+            );
+            $parentcontrols['permalink']['url'] = $sectionlink;
         }
+
+        $controlorder = [
+            'edit' => 1,
+            'highlight' => 2,
+            'duplicate' => 3,
+            'visiblity' => 4,
+            'moveup' => 5,
+            'movedown' => 6,
+            'delete' => 7,
+            'permalink' => 8,
+        ];
+
+        // We are going to merge our additional controls with the parent controls.
+        $merged = [];
 
         // We can't use splice because we are using associative arrays.
         // Step through the array and merge the arrays.
-        foreach ($parentcontrols as $key => $action) {
-            $merged[$key] = $action;
-            if ($key == "edit") {
-                // If we have come to the edit key, merge these controls here.
-                $merged = array_merge($merged, $othercontrols);
-            }
-
-            if (($key == "edit" && !$visibilitycontrolexists) || $key == "visibility") {
-                $merged = array_merge($merged, $movecontrols);
+        reset($parentcontrols);
+        reset($additionalcontrols);
+        while (key($parentcontrols) || key($additionalcontrols)) {
+            if ((key($parentcontrols) ? ($controlorder[key($parentcontrols)] ?? 0) : PHP_INT_MAX) <=
+                    (key($additionalcontrols) ? ($controlorder[key($additionalcontrols)] ?? 0) : PHP_INT_MAX)) {
+                $merged[key($parentcontrols)] = current($parentcontrols);
+                next($parentcontrols);
+            } else {
+                $merged[key($additionalcontrols)] = current($additionalcontrols);
+                next($additionalcontrols);
             }
         }
 
