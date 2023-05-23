@@ -53,12 +53,14 @@
                 }
             ]
         },
-        "modstealth": true
+        "modstealth": true,
+        "testingcminline": true
     }
 }}
-<span class="activityinsummarytpl {{#modstealth}}hiddenactivity{{/modstealth}}{{!
+{{#testingcminline}}<div>{{/testingcminline}}
+{{^testingcminline}}<span class="activityinsummarytpl {{#modstealth}}hiddenactivity{{/modstealth}}{{!
         }}{{#modhiddenfromstudents}}hiddenactivity{{/modhiddenfromstudents}}{{!
-        }}{{#modinline}}activityinline{{/modinline}}" data-activityname="{{activityname}}">
+        }}{{#modinline}}activityinline{{/modinline}}" data-activityname="{{activityname}}">{{/testingcminline}}
     {{!
       Place the actual content of the activity-item in a separate template to make it easier for other formats to add
       additional content to the activity wrapper.
@@ -66,4 +68,5 @@
     {{$ format_onetopic/courseformat/content/cm/activityinline }}
         {{> format_onetopic/courseformat/content/cm/activityinline }}
     {{/ format_onetopic/courseformat/content/cm/activityinline }}
-</span>
+{{^testingcminline}}</span>{{/testingcminline}}
+{{#testingcminline}}<div>{{/testingcminline}}

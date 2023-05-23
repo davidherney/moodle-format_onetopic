@@ -208,7 +208,7 @@ class format_onetopic extends core_courseformat\base {
      * @return bool if the course format uses indentation.
      */
     public function uses_indentation(): bool {
-        return false;
+        return true;
     }
 
     /**

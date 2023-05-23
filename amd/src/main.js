@@ -39,13 +39,16 @@ export const init = (formattype, icons) => {
     var infotitle = '';
     getString('aboutresource', 'format_onetopic').then(str => {
         infotitle = str;
+    })
+    .catch(function() {
+        infotitle = '';
     });
 
     $('.format-onetopic .onetopic .iconwithhelp').each(function() {
         var $node = $(this);
         $node.on('click', function(e) {
             e.preventDefault();
-            var $content = $node.find( '.iconwithhelp-content');
+            var $content = $node.find('.iconwithhelp-content');
 
             if ($content.data('modal')) {
                 $content.data('modal').show();
@@ -67,10 +70,9 @@ export const init = (formattype, icons) => {
                 var contenthtml = $content.html();
 
                 // Uncomment html in contenthtml. The comment is used in order to load content with tags not inline.
-                contenthtml = contenthtml.replace(/<!--([\s\S]*?)-->/g, function (match, p1) {
+                contenthtml = contenthtml.replace(/<!--([\s\S]*?)-->/g, function(match, p1) {
                     return p1;
-                  }
-                );
+                });
 
                 var $modalBody = modal.getBody();
                 $modalBody.append(contenthtml);

@@ -33,9 +33,12 @@ class tabstyles extends \admin_setting_configtextarea {
 
     /**
      * Return an XHTML string for the setting
+     *
+     * @param array $data The data to be output
+     * @param string $query The query string
      * @return string Returns an XHTML string
      */
-    public function output_html($data, $query='') {
+    public function output_html($data, $query = '') {
         global $OUTPUT, $PAGE;
 
         $tabs = new \format_onetopic\tabs();

@@ -21,11 +21,14 @@
 
     Example context (json):
     {
-        "completedclass": "complete"
+        "completedclass": "complete",
+        "testingcompletion": true
     }
 }}
+{{#testingcompletion}}<div>{{/testingcompletion}}
 <completion class="completiontag {{completedclass}}">
     {{$ format_onetopic/courseformat/content/cminline }}
         {{> format_onetopic/courseformat/content/cminline }}
     {{/ format_onetopic/courseformat/content/cminline }}
 </completion>
+{{#testingcompletion}}</div>{{/testingcompletion}}

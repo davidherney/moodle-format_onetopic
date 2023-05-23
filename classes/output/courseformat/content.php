@@ -133,7 +133,8 @@ class content extends content_base {
                             $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
                         break;
                         case 'childindex':
-                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.tab_initial a.nav-link';
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs' .
+                                            ' .nav-item.subtopic.tab_initial a.nav-link';
                         break;
                         default:
                             $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';

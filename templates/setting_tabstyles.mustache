@@ -23,8 +23,6 @@
     * name - form element name
     * id - element id
     * value - element value
-    * size - element size
-    * forceltr - always display as ltr
     * attributes - list of additional attributes containing name, value
     * readonly - bool
 
@@ -36,7 +34,14 @@
         "size": "21",
         "forceltr": false,
         "readonly": false,
-        "attributes": [ { "name": "readonly", "value": "readonly" } ]
+        "attributes": [ { "name": "readonly", "value": "readonly" } ],
+        "cssunits": [
+            { "value": "px", "label": "px" },
+            { "value": "em", "label": "em" },
+            { "value": "%", "label": "%" }
+        ],
+        "csssizeoptions": [ "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" ],
+        "colorpicker": ""
     }
 }}
 <div id="onetopic-tabstyles" class="form-text defaultsnext format-onetopic">
