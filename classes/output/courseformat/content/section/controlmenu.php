@@ -103,7 +103,8 @@ class controlmenu extends controlmenu_base {
         }
 
         // Duplicate current section option.
-        if ($section->section && has_capability('moodle/course:manageactivities', $coursecontext)) {
+        if ($section->section && has_capability('moodle/course:update', $coursecontext)
+                && has_capability('moodle/course:manageactivities', $coursecontext)) {
             $duplicatesectionurl = new \moodle_url('/course/format/onetopic/duplicate.php',
                             ['courseid' => $course->id, 'section' => $section->section, 'sesskey' => sesskey()]);
 
@@ -114,6 +115,8 @@ class controlmenu extends controlmenu_base {
                 'pixattr' => ['class' => ''],
                 'attr' => ['class' => 'editing_duplicate'],
             ];
+        } else if (array_key_exists('duplicate', $parentcontrols)) {
+            unset($parentcontrols['duplicate']);
         }
 
         if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
