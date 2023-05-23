@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/local/tabtree
+    @template format_onetopic/local/content
 
     Displays the complete course format.
 
@@ -101,7 +101,8 @@
             "summary": {
                 "summarytext": "Summary text!"
             }
-        }
+        },
+        "csstabstyles": ""
     }
 }}
 <div id="{{uniqid}}-course-format">
@@ -172,6 +173,12 @@
         {{/ core_courseformat/local/content/addsection}}
     {{/numsections}}
 </div>
+{{#csstabstyles}}
+<style>
+    {{{csstabstyles}}}
+</style>
+{{/csstabstyles}}
+
 {{#js}}
 require(['core_courseformat/local/content'], function(component) {
     component.init('{{uniqid}}-course-format', {}, {{sectionreturn}});

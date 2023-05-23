@@ -1,43 +1,18 @@
 /** Styles included in topics course format */
 
-.format-onetopic .jumpmenu {
-    text-align: center;
-}
-
-.format-onetopic .course-content div.single-section .tabtree .tabrow0 li {
-    line-height: 28px;
-    display: inline-block;
-}
-
-.format-onetopic .course-content div.single-section .tabtree .tabrow0 li.here .empty {
-    bottom: 3px;
-    display: block;
-    height: 1px;
-    left: 0;
-    right: 0;
-}
-
-.format-onetopic .course-content div.single-section .tabtree {
-    margin-bottom: 0;
-}
-
-.format-onetopic .tab_content {
+.format-onetopic .format_onetopic-tabs .nav-link {
     white-space: nowrap;
     width: 100%;
+    max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.format-onetopic .course-content ul.nav-tabs li.marker a {
+.format-onetopic ul.nav-tabs.format_onetopic-tabs li.marker a {
     font-weight: bold;
 }
 
-.format-onetopic .utilities-separator {
-    clear: both;
-    margin-top: 15px;
-}
-
-.format-onetopic .course-content ul.nav-tabs li.dimmed a {
+.format-onetopic ul.nav-tabs.format_onetopic-tabs li.dimmed a {
     color: #999;
     opacity: 0.5;
 }
@@ -52,114 +27,18 @@
     margin: 0;
 }
 
-.format-onetopic .subtopic-increase-sections {
-    margin-right: 10px;
-}
-
-.format-onetopic li.sublevel {
+/* Its a subtabs bar */
+.format-onetopic .onetopic-tab-body .format_onetopic-tabs {
     padding-left: 20px;
 }
+/* End Its a subtabs bar */
 
-.format-onetopic .onetopic .nav-tabs > li > a {
-    padding: 0;
-}
-
-.format-onetopic .onetopic .tab_content {
-    padding: 8px 12px;
-    display: inline-block;
-}
-
-.format-onetopic .onetopic .cmnameinline .activityiconcontainer {
-    width: auto;
-    height: auto;
-    padding: 0.2rem;
-}
-
-.format-onetopic .availability_info_box {
-    display: inline;
-}
-
-.format-onetopic .summary img.activityicon {
-    margin-right: 3px;
-    vertical-align: text-bottom;
-}
-
-.format-onetopic #course_format_onetopic_config_movesection .form-item {
-    border-bottom: 1px solid #999;
-    padding: 10px;
-}
-
-.format-onetopic #course_format_onetopic_config_movesection .form-label {
-    font-weight: bold;
-}
-
-.format-onetopic #course_format_onetopic_config_movesection .form-setting {
-    padding-left: 20px;
-}
-
-.format-onetopic #course_format_onetopic_config_movesection .form-description {
-    padding-left: 50px;
-    font-style: italic;
-}
-
-.format-onetopic #course_format_onetopic_config_movesection #changenumsections {
-    text-align: left;
-}
-
-.format-onetopic .onetopic .content > .summary .quickeditlink {
-    display: none;
-}
-
-.format-onetopic .onetopic .content > .summary .iconhelp {
+.format-onetopic .content .summarytext .iconwithhelp {
     cursor: pointer;
-    margin-left: 2px;
 }
 
-.format-onetopic .onetopic .content > .summary .iconhelp i {
+.format-onetopic .content .summarytext .iconwithhelp .icon {
     margin: 0;
-}
-
-.format-onetopic .onetopic .completiontag > form,
-.format-onetopic .onetopic .completiontag > form > div {
-    display: inline;
-}
-
-.format-onetopic .onetopic .completiontag > form > div button {
-    padding: 0;
-    margin: 0;
-    line-height: 0;
-}
-
-.format-onetopic .onetopic .completiontag img.icon {
-    margin: 0 3px 0 5px;
-}
-
-.format-onetopic .onetopic .completiontag .showcompletionconditions {
-    position: absolute;
-}
-
-.format-onetopic .onetopic .completiontag.hascompletionconditions {
-    padding-right: 24px;
-}
-
-.format-onetopic .onetopic .completiontag .showcompletionconditions:hover {
-    z-index: 2;
-    background-color: #fff;
-    padding: 5px;
-    border: 1px solid;
-    border-radius: 5px;
-}
-
-.format-onetopic .onetopic .completiontag .showcompletionconditions .activity-information {
-    display: none;
-}
-
-.format-onetopic .onetopic .completiontag .showcompletionconditions:hover .activity-information {
-    display: block;
-}
-
-.format-onetopic .onetopic .completiontag .showcompletionconditions:hover > img {
-    display: none;
 }
 
 .format-onetopic .verticaltabs.hastopictabs {
@@ -287,8 +166,124 @@
     content: "";
 }
 
-.format-onetopic .single-section .nextsection span {
-    float: right;
+/* Template styles */
+.format-onetopic .onetopic .cmnameinline .activityiconcontainer {
+    width: auto;
+    height: auto;
+    padding: 0.2rem;
+}
+
+.format-onetopic .availability_info_box {
+    display: inline;
+}
+
+.format-onetopic .activityinsummarytpl .description .course-description-item {
+    background-color: transparent;
+}
+
+.format-onetopic .activityinsummarytpl .description .availabilityinfo {
+    display: inline-block;
+    min-width: 300px;
+    margin: 0;
+    padding: 0;
+}
+
+/* End of template styles */
+
+/* Completion */
+.format-onetopic .onetopic .completiontag img.icon {
+    margin: 0 3px 0 5px;
+}
+/* End of completion*/
+
+/* Sections/activities navigation */
+.format-onetopic .section-navigation .prevsection,
+.format-onetopic .section-navigation .nextsection {
+    display: flex;
+    min-width: 100px;
+}
+
+.format-onetopic .section-navigation .nextsection {
+    justify-content: right;
+    margin-left: 5px;
+}
+
+.format-onetopic .section-navigation .prevsection {
+    justify-content: left;
+    margin-right: 5px;
+}
+
+.format-onetopic .section-navigation .prevsection a,
+.format-onetopic .section-navigation .nextsection a {
+    display: flex;
+    align-items: center;
+    line-height: 100%;
+}
+
+.format-onetopic .section-navigation .prevsection a {
+    padding-right: 10px;
+}
+
+.format-onetopic .section-navigation .nextsection a {
+    flex-direction: row-reverse;
+    padding-left: 10px;
+    text-align: right;
+}
+
+/* The jump list if exist */
+.format-onetopic .single-section .section-navigation.mdl-bottom div:nth-child(2) {
+    max-width: calc(100% - 210px);
+}
+
+/* Tab styles configuration */
+#onetopic-tabstyles .tabstyleset-buttons button {
+    margin-bottom: 10px;
+}
+
+#onetopic-styleswindow fieldset {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#onetopic-styleswindow fieldset > div {
+    display: flex;
+    padding: 5px;
+}
+
+#onetopic-styleswindow fieldset > div > div {
+    display: flex;
+}
+
+#onetopic-styleswindow fieldset > div.whithlabel {
+    flex-direction: column;
+}
+
+#onetopic-styleswindow fieldset > div.whithlabel label {
+    color: #888;
+    text-align: center;
+}
+
+#onetopic-styleswindow [data-control="colorpicker"] {
+    width: 100px;
+}
+
+#onetopic-styleswindow .colorpicker {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #fffe;
+    padding: 10px;
+}
+
+#onetopic-styleswindow .colorpicker #admin-colorpicker {
+    flex-direction: column;
+    align-items: center;
+}
+
+#onetopic-styleswindow .buttons-box {
+    text-align: center;
 }
 
 /* The slide navigation is only available to wide screens */
@@ -363,5 +358,13 @@
 
     .format-onetopic .verticaltabs .onetopic-tab-body {
         width: auto;
+    }
+
+    .format-onetopic .verticaltabs > .tabs-wrapper {
+        width: auto;
+    }
+
+    .format-onetopic .course-content .section-navigation {
+        flex-direction: column;
     }
 }

@@ -194,7 +194,12 @@ class format_onetopic extends core_courseformat\base {
 
         $course = $this->get_course();
 
-        return isset($course->usescourseindex) ? $course->usescourseindex : true;
+        // The 2 value is Use the site configuration.
+        if (isset($course->usescourseindex) && $course->usescourseindex < 2) {
+            return $course->usescourseindex;
+        }
+
+        return get_config('format_onetopic', 'courseindex') == 1;
     }
 
     /**
@@ -456,7 +461,7 @@ class format_onetopic extends core_courseformat\base {
                     'type' => PARAM_INT
                 ],
                 'usescourseindex' => [
-                    'default' => 1,
+                    'default' => 2,
                     'type' => PARAM_INT
                 ]
             ];
@@ -544,7 +549,7 @@ class format_onetopic extends core_courseformat\base {
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            '' => new lang_string('sectionsnavigation_sitelevel', 'format_onetopic'),
+                            '0' => new lang_string('sectionsnavigation_sitelevel', 'format_onetopic'),
                             self::SECTIONSNAVIGATION_SUPPORT => new lang_string('sectionsnavigation_support', 'format_onetopic'),
                             self::SECTIONSNAVIGATION_NOT => new lang_string('sectionsnavigation_not', 'format_onetopic'),
                             self::SECTIONSNAVIGATION_BOTTOM => new lang_string('sectionsnavigation_bottom', 'format_onetopic'),
@@ -562,8 +567,9 @@ class format_onetopic extends core_courseformat\base {
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
+                            2 => new lang_string('usecourseindexsite', 'format_onetopic'),
                             0 => new lang_string('no'),
-                            1 => new lang_string('yes')
+                            1 => new lang_string('yes'),
                         ]
                     ],
                 ]
@@ -639,7 +645,7 @@ class format_onetopic extends core_courseformat\base {
                     } else if ($key === 'usessectionsnavigation') {
                         $data['usessectionsnavigation'] = 0;
                     } else if ($key === 'usescourseindex') {
-                        $data['usescourseindex'] = 1;
+                        $data['usescourseindex'] = 2;
                     }
                 }
             }
@@ -944,73 +950,5 @@ function format_onetopics_inplace_editable($itemtype, $itemid, $newvalue) {
             'SELECT s.* FROM {course_sections} s JOIN {course} c ON s.course = c.id WHERE s.id = ? AND c.format = ?',
             [$itemid, 'onetopic'], MUST_EXIST);
         return course_get_format($section->course)->inplace_editable_update_section_name($section, $itemtype, $newvalue);
-    }
-}
-
-/**
- * Class used in order to replace tags into text. It is a part of templates functionality.
- *
- * Called by preg_replace_callback in renderer.php.
- *
- * @since 2.0
- * @package format_onetopic
- * @copyright 2012 David Herney Bernal - cirano
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class format_onetopic_replace_regularexpression {
-    /** @var string Text to search */
-    public $_string_search;
-
-    /** @var string Text to replace */
-    public $_string_replace;
-
-    /** @var string Temporal key */
-    public $_tag_string = '{label_tag_replace}';
-
-    /**
-     * Replace a tag into a text.
-     *
-     * @param array $match
-     * @return array
-     */
-    public function replace_tag_in_expresion ($match) {
-
-        $term = $match[0];
-        $term = str_replace("[[", '', $term);
-        $term = str_replace("]]", '', $term);
-
-        $text = strip_tags($term);
-
-        if (strpos($text, ':') > -1) {
-
-            $pattern = '/([^:])+:/i';
-            $text = preg_replace($pattern, '', $text);
-
-            // Change text for alternative text.
-            $newreplace = str_replace($this->_string_search, $text, $this->_string_replace);
-
-            // Posible html tags position.
-            $pattern = '/([>][^<]*:[^<]*[<])+/i';
-            $term = preg_replace($pattern, '><:><', $term);
-
-            $pattern = '/([>][^<]*:[^<]*$)+/i';
-            $term = preg_replace($pattern, '><:>', $term);
-
-            $pattern = '/(^[^<]*:[^<]*[<])+/i';
-            $term = preg_replace($pattern, '<:><', $term);
-
-            $pattern = '/(^[^<]*:[^<]*$)/i';
-            $term = preg_replace($pattern, '<:>', $term);
-
-            $pattern = '/([>][^<^:]*[<])+/i';
-            $term = preg_replace($pattern, '><', $term);
-
-            $term = str_replace('<:>', $newreplace, $term);
-        } else {
-            // Change tag for resource or mod name.
-            $newreplace = str_replace($this->_tag_string, $this->_string_search, $this->_string_replace);
-            $term = str_replace($this->_string_search, $newreplace, $term);
-        }
-        return $term;
     }
 }

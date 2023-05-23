@@ -97,6 +97,90 @@ class content extends content_base {
 
         $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
 
+        $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
+        $csscontent = '';
+        $csstabstyles = '';
+        $tabstyles = get_config('format_onetopic', 'tabstyles');
+        if (!empty($tabstyles)) {
+            $tabstyles = @json_decode($tabstyles);
+
+            if (is_object($tabstyles)) {
+
+                foreach ($tabstyles as $type => $styles) {
+
+                    switch ($type) {
+                        case 'active':
+                            $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
+                            $csscontent .= '#tabs-tree-start .nav-tabs a.nav-link.active';
+                        break;
+                        case 'parent':
+                            $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
+                            $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.haschilds a.nav-link';
+                        break;
+                        case 'highlighted':
+                            $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
+                            $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.marker a.nav-link';
+                        break;
+                        case 'disabled':
+                            $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
+                            $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.disabled a.nav-link';
+                        break;
+                        case 'hover':
+                            $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
+                            $csscontent .= '#tabs-tree-start .format_onetopic-tabs.nav-tabs .nav-item a.nav-link:hover';
+                        break;
+                        case 'childs':
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
+                        break;
+                        case 'childindex':
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.tab_initial a.nav-link';
+                        break;
+                        default:
+                            $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';
+                            $csscontent .= '#tabs-tree-start .nav-tabs a.nav-link';
+                    }
+
+                    $csscontent .= '{';
+                    $units = [];
+
+                    // Check if exist units for some rules.
+                    foreach ($styles as $key => $value) {
+
+                        // Check if the key start with the units prefix.
+                        if (strpos($key, 'unit-') === 0) {
+
+                            // Remove the prefix.
+                            $ownerkey = str_replace('unit-', '', $key);
+                            $units[$ownerkey] = $value;
+                            unset($styles->$key);
+                        }
+                    }
+
+                    foreach ($styles as $key => $value) {
+
+                        // If exist a unit for the rule, apply it.
+                        if (isset($units[$key])) {
+                            $value = $value . $units[$key];
+                        } else if (in_array($key, $withunits)) {
+                            // If the rule need units, apply px by default.
+                            $value = $value . 'px';
+                        }
+
+                        if ($key == 'others') {
+                            $csscontent .= $value . ';';
+                        } else {
+                            $csscontent .= $key . ':' . $value . ';';
+                        }
+                    }
+
+                    $csscontent .= '}';
+                }
+
+                // Clean the CSS for html tags.
+                $csstabstyles = preg_replace('/<[^>]*>/', '', $csscontent);
+            }
+        }
+
         $data = (object)[
             'title' => $format->page_title(), // This method should be in the course_format class.
             'initialsection' => $initialsection,
@@ -111,7 +195,8 @@ class content extends content_base {
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
             'formatmsgs' => \format_onetopic::$formatmsgs,
             'hidetabsbar' => ($course->hidetabsbar == 1 && $format->show_editor()),
-            'sectionclasses' => ''
+            'sectionclasses' => '',
+            'csstabstyles' => $csstabstyles,
         ];
 
         // The current section format has extra navigation.

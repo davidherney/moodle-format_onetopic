@@ -56,7 +56,7 @@
         "modstealth": true
     }
 }}
-<div class="activity-basis">
+<span class="activity-basis">
     {{^hasname}}
         {{$ core_courseformat/local/content/cm/badges }}
             {{> core_courseformat/local/content/cm/badges }}
@@ -68,19 +68,57 @@
         {{/ format_onetopic/courseformat/content/cm/cmnameinline }}
     {{/cmname}}
     {{#afterlink}}
-        <div class="afterlink">
+        <span class="afterlink">
             {{{afterlink}}}
-        </div>
+        </span>
     {{/afterlink}}
 
-    {{#activityinfo}}
-        {{#hascompletion}}
-        <div class="activity-info mt-1 mt-md-0">
-            {{> core_courseformat/local/content/cm/activity_info}}
-        </div>
-        {{/hascompletion}}
-    {{/activityinfo}}
-</div>
+    {{#showinlinehelp}}
+        {{#activityinfo}}
+            <span class="iconwithhelp">
+                {{#pix}} e/help, core, {{#str}} info {{/str}} {{/pix}}
+                <span class="hidden iconwithhelp-content" {{#singlename}}data-title="{{singlename}}"{{/singlename}}>
+
+                    {{#hascompletion}}
+                        {{#showcompletionconditions}}
+                            <span class="activity-info mt-1 mt-md-0">
+                                {{> format_onetopic/courseformat/content/cm/activity_infoinline}}
+                            </span>
+                        {{/showcompletionconditions}}
+                    {{/hascompletion}}
+
+                    <span class="description">
+                        {{#hasdates}}
+                        <span data-region="activity-dates" class="activity-dates small course-description-item">
+                            <span class="description-inner">
+                                {{#activitydates}}
+                                    {{$core_course/activity_date}}
+                                        {{>core_course/activity_date}}
+                                    {{/core_course/activity_date}}
+                                {{/activitydates}}
+                            </span>
+                        </span>
+                        {{/hasdates}}
+
+                        {{#altcontent}}
+                            <span class="activity-altcontent {{#hasname}}course-description-item small{{/hasname}}{{^hasname}}contentwithoutlink{{/hasname}} d-flex">
+                                <span class="flex-fill description-inner">
+                                    <!--{{{altcontent}}}-->
+                                </span>
+                            </span>
+                        {{/altcontent}}
+                        {{#modavailability}}
+                            {{$ format_onetopic/courseformat/content/cm/availabilityinline }}
+                                {{> format_onetopic/courseformat/content/cm/availabilityinline }}
+                            {{/ format_onetopic/courseformat/content/cm/availabilityinline }}
+                        {{/modavailability}}
+                    </span>
+
+                </span>
+            </span>
+        {{/activityinfo}}
+    {{/showinlinehelp}}
+</span>
 {{#hasname}}
     {{$ core_courseformat/local/content/cm/badges }}
         {{> core_courseformat/local/content/cm/badges }}
