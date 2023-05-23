@@ -25,10 +25,10 @@
         "testingcompletion": true
     }
 }}
-{{#testingcompletion}}<div>{{/testingcompletion}}
-<completion class="completiontag {{completedclass}}">
+{{#testingcompletion}}<div class="completiontag {{completedclass}}">{{/testingcompletion}}
+{{^testingcompletion}}<completion class="completiontag {{completedclass}}">{{/testingcompletion}}
     {{$ format_onetopic/courseformat/content/cminline }}
         {{> format_onetopic/courseformat/content/cminline }}
     {{/ format_onetopic/courseformat/content/cminline }}
-</completion>
+{{^testingcompletion}}</completion>{{/testingcompletion}}
 {{#testingcompletion}}</div>{{/testingcompletion}}

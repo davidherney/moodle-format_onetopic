@@ -41,7 +41,8 @@
             { "value": "%", "label": "%" }
         ],
         "csssizeoptions": [ "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" ],
-        "colorpicker": ""
+        "colorpicker": "",
+        "testingmode": true
     }
 }}
 <div id="onetopic-tabstyles" class="form-text defaultsnext format-onetopic">
@@ -107,7 +108,7 @@
                     <select class="form-control" data-style="font-size" title="{{#str}} csssize, format_onetopic {{/str}}">
                         {{#csssizeoptions}}
                         <option value="{{.}}">{{.}}</option>
-                        {{/csssizeoptions}}}
+                        {{/csssizeoptions}}
                     </select>
                     <select class="form-control" data-style="unit-font-size" title="{{#str}} cssstyle, format_onetopic {{/str}}">
                         {{#cssunits}}
@@ -120,7 +121,7 @@
                 </div>
                 <div>
                     <select class="form-control" data-style="font-weight" title="{{#str}} cssweight, format_onetopic {{/str}}">
-                        <option value=""></option>
+                        {{^testingmode}}<option value=""></option>{{/testingmode}}
                         <option value="normal">{{#str}} cssnormal, format_onetopic {{/str}}</option>
                         <option value="bold">{{#str}} cssweightbold, format_onetopic {{/str}}</option>
                         <option value="lighter">{{#str}} cssweightlighter, format_onetopic {{/str}}</option>
@@ -128,7 +129,7 @@
                 </div>
                 <div>
                     <select class="form-control" data-style="font-style" title="{{#str}} cssstyle, format_onetopic {{/str}}">
-                        <option value=""></option>
+                        {{^testingmode}}<option value=""></option>{{/testingmode}}
                         <option value="normal">{{#str}} cssnormal, format_onetopic {{/str}}</option>
                         <option value="italic">{{#str}} cssitalic, format_onetopic {{/str}}</option>
                         <option value="oblique">{{#str}} cssoblique, format_onetopic {{/str}}</option>
@@ -143,7 +144,7 @@
                     <select class="form-control" data-style="border-width" title="{{#str}} csssize, format_onetopic {{/str}}">
                         {{#csssizeoptions}}
                             <option value="{{.}}">{{.}}</option>
-                        {{/csssizeoptions}}}
+                        {{/csssizeoptions}}
                     </select>
                     <select class="form-control" data-style="unit-border-width" title="{{#str}} cssunit, format_onetopic {{/str}}">
                         {{#cssunits}}
@@ -156,7 +157,7 @@
                 </div>
                 <div>
                     <select class="form-control" data-style="border-style" title="{{#str}} cssstyle, format_onetopic {{/str}}">
-                        <option value=""></option>
+                        {{^testingmode}}<option value=""></option>{{/testingmode}}
                         <option value="none">{{#str}} cssnone, format_onetopic {{/str}}</option>
                         <option value="solid">{{#str}} csssolid, format_onetopic {{/str}}</option>
                         <option value="dashed">{{#str}} cssdashed, format_onetopic {{/str}}</option>
@@ -174,7 +175,7 @@
                         <select class="form-control" data-style="border-radius" title="{{#str}} cssradius, format_onetopic {{/str}}">
                             {{#csssizeoptions}}
                                 <option value="{{.}}">{{.}}</option>
-                            {{/csssizeoptions}}}
+                            {{/csssizeoptions}}
                         </select>
                         <select class="form-control" data-style="unit-border-radius" title="{{#str}} cssunit, format_onetopic {{/str}}">
                             {{#cssunits}}

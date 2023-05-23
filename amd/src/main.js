@@ -36,13 +36,7 @@ export const init = (formattype, icons) => {
         OneLine.load(icons);
     }
 
-    var infotitle = '';
-    getString('aboutresource', 'format_onetopic').then(str => {
-        infotitle = str;
-    })
-    .catch(function() {
-        infotitle = '';
-    });
+    var infotitle = getString('aboutresource', 'format_onetopic');
 
     $('.format-onetopic .onetopic .iconwithhelp').each(function() {
         var $node = $(this);
