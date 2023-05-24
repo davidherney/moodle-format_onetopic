@@ -15,17 +15,25 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/courseformat/content/cminlinecompletion
+    @template format_onetopic/courseformat/content/cm/badges
 
-    Displays a course module instance inside a course section.
+    Convenience mustache to displays if an activity is in hidden or stealth mode.
+
+    Format plugins are free to implement an alternative inplace editable for activities.
 
     Example context (json):
     {
-        "completedclass": "complete"
+        "modhiddenfromstudents" : "1",
+        "modstealth" : "1"
     }
 }}
-<span class="completiontag {{completedclass}}">
-    {{$ format_onetopic/courseformat/content/cminline }}
-        {{> format_onetopic/courseformat/content/cminline }}
-    {{/ format_onetopic/courseformat/content/cminline }}
-</span>
+{{#modhiddenfromstudents}}
+    <span class="my-1 d-flex align-items-center">
+        <span class="badge badge-pill badge-warning">{{#str}}hiddenfromstudents{{/str}}</span>
+    </span>
+{{/modhiddenfromstudents}}
+{{#modstealth}}
+    <span class="my-1 d-flex align-items-center">
+        <span class="badge badge-pill badge-warning">{{#str}}hiddenoncoursepage{{/str}}</span>
+    </span>
+{{/modstealth}}

@@ -15,17 +15,16 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/courseformat/content/cminlinecompletion
+    @template format_onetopic/local/activity_date
 
-    Displays a course module instance inside a course section.
+    Template for displaying the activity's dates.
 
     Example context (json):
     {
-        "completedclass": "complete"
+        "label": "Opens:",
+        "datestring": "6 April 2021, 6:46 PM"
     }
 }}
-<span class="completiontag {{completedclass}}">
-    {{$ format_onetopic/courseformat/content/cminline }}
-        {{> format_onetopic/courseformat/content/cminline }}
-    {{/ format_onetopic/courseformat/content/cminline }}
+<span class="activity_dateinline">
+    <strong>{{label}}</strong> {{datestring}}
 </span>
