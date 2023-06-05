@@ -187,7 +187,8 @@ var applyStyles = function() {
         switch (type) {
             case 'active':
                 csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
-                csscontent += '.format-onetopic .nav-tabs a.nav-link.active';
+                csscontent += '.format-onetopic .nav-tabs a.nav-link.active, ';
+                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs a.nav-link.active';
             break;
             case 'parent':
                 csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
@@ -195,15 +196,18 @@ var applyStyles = function() {
             break;
             case 'highlighted':
                 csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item.marker a.nav-link';
+                csscontent += '.format-onetopic .nav-tabs .nav-item.marker a.nav-link, ';
+                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link';
             break;
             case 'disabled':
                 csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item.disabled a.nav-link';
+                csscontent += '.format-onetopic .nav-tabs .nav-item.disabled a.nav-link, ';
+                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link';
             break;
             case 'hover':
                 csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item a.nav-link:hover';
+                csscontent += '.format-onetopic .nav-tabs .nav-item a.nav-link:hover, ';
+                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item a.nav-link:hover';
             break;
             case 'childs':
                 csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
