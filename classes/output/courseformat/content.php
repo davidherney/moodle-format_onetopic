@@ -121,7 +121,8 @@ class content extends content_base {
                         case 'active':
                             $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
                             $csscontent .= '#tabs-tree-start .nav-tabs a.nav-link.active, ';
-                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs a.nav-link.active';
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs a.nav-link.active, ';
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link.active';
                         break;
                         case 'parent':
                             $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
@@ -131,11 +132,13 @@ class content extends content_base {
                             $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
                             $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.marker a.nav-link, ';
                             $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link';
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.marker a.nav-link';
                         break;
                         case 'disabled':
                             $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
                             $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.disabled a.nav-link, ';
                             $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link';
+                            $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.disabled a.nav-link';
                         break;
                         case 'hover':
                             $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
