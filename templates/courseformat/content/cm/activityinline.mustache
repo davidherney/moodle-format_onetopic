@@ -56,33 +56,68 @@
         "modstealth": true
     }
 }}
-<div class="activity-basis">
-    {{^hasname}}
-        {{$ core_courseformat/local/content/cm/badges }}
-            {{> core_courseformat/local/content/cm/badges }}
-        {{/ core_courseformat/local/content/cm/badges }}
-    {{/hasname}}
+<span class="activity-basis">
     {{#cmname}}
         {{$ format_onetopic/courseformat/content/cm/cmnameinline }}
             {{> format_onetopic/courseformat/content/cm/cmnameinline }}
         {{/ format_onetopic/courseformat/content/cm/cmnameinline }}
     {{/cmname}}
     {{#afterlink}}
-        <div class="afterlink">
+        <span class="afterlink">
             {{{afterlink}}}
-        </div>
+        </span>
     {{/afterlink}}
 
-    {{#activityinfo}}
-        {{#hascompletion}}
-        <div class="activity-info mt-1 mt-md-0">
-            {{> core_courseformat/local/content/cm/activity_info}}
-        </div>
-        {{/hascompletion}}
-    {{/activityinfo}}
-</div>
-{{#hasname}}
-    {{$ core_courseformat/local/content/cm/badges }}
-        {{> core_courseformat/local/content/cm/badges }}
-    {{/ core_courseformat/local/content/cm/badges }}
-{{/hasname}}
+    {{#showinlinehelp}}
+        {{#activityinfo}}
+            {{! Only show the icon if there is a name to display. }}
+            {{#hasname}}
+                <span class="iconwithhelp">
+                    {{#pix}} e/help, core, {{#str}} info {{/str}} {{/pix}}
+                    <span class="hidden iconwithhelp-content" {{#singlename}}data-title="{{singlename}}"{{/singlename}}>
+
+                        {{$ format_onetopic/courseformat/content/cm/badgesinline }}
+                            {{> format_onetopic/courseformat/content/cm/badgesinline }}
+                        {{/ format_onetopic/courseformat/content/cm/badgesinline }}
+
+                        {{#hascompletion}}
+                            {{#showcompletionconditions}}
+                                <span class="activity-info mt-1 mt-md-0">
+                                    {{> format_onetopic/courseformat/content/cm/activity_infoinline}}
+                                </span>
+                            {{/showcompletionconditions}}
+                        {{/hascompletion}}
+
+                        <span class="description">
+                            {{#hasdates}}
+                            <span data-region="activity-dates" class="activity-dates-inline small course-description-item">
+                                <span class="description-inner">
+                                    {{#activitydates}}
+                                        {{$format_onetopic/local/activity_dateinline}}
+                                            {{>format_onetopic/local/activity_dateinline}}
+                                        {{/format_onetopic/local/activity_dateinline}}
+                                    {{/activitydates}}
+                                </span>
+                            </span>
+                            {{/hasdates}}
+
+                            {{#altcontent}}
+                                <span class="activity-altcontent {{#hasname}}course-description-item small{{/hasname}}{{^hasname}}contentwithoutlink{{/hasname}} d-flex">
+                                    <span class="flex-fill description-inner">
+                                        <!--{{{altcontent}}}-->
+                                    </span>
+                                </span>
+                            {{/altcontent}}
+                            {{#modavailability}}
+                                {{$ format_onetopic/courseformat/content/cm/availabilityinline }}
+                                    {{> format_onetopic/courseformat/content/cm/availabilityinline }}
+                                {{/ format_onetopic/courseformat/content/cm/availabilityinline }}
+                            {{/modavailability}}
+                        </span>
+
+                    </span>
+                </span>
+            {{/hasname}}
+        {{/activityinfo}}
+    {{/showinlinehelp}}
+</span>

@@ -35,6 +35,11 @@ if ($ADMIN->fulltree) {
                                                     get_string('enableanchorposition', 'format_onetopic'),
                                                     get_string('enableanchorposition_help', 'format_onetopic'), 1));
 
+    $options = ['0' => get_string('disable'), '1' => get_string('enable')];
+    $settings->add(new admin_setting_configselect('format_onetopic/courseindex',
+                                                    get_string('courseindex', 'format_onetopic'),
+                                                    get_string('courseindex_help', 'format_onetopic'), 1, $options));
+
     $fields = [
         \format_onetopic::SECTIONSNAVIGATION_SUPPORT => new lang_string('sectionsnavigation_support', 'format_onetopic'),
         \format_onetopic::SECTIONSNAVIGATION_NOT => new lang_string('sectionsnavigation_not', 'format_onetopic'),
@@ -47,4 +52,17 @@ if ($ADMIN->fulltree) {
                                                     get_string('defaultsectionsnavigation_help', 'format_onetopic'),
                                                     \format_onetopic::SECTIONSNAVIGATION_SUPPORT,
                                                     $fields));
+
+    // Styles settings.
+    $name = 'format_onetopic/settingsheaderstyles';
+    $heading = get_string('settingsheaderstyles', 'format_onetopic');
+    $setting = new admin_setting_heading($name, $heading, '');
+    $settings->add($setting);
+
+    $name = 'format_onetopic/tabstyles';
+    $title = get_string('tabstyles', 'format_onetopic');
+    $description = get_string('tabstyles_help', 'format_onetopic');
+    $setting = new \format_onetopic\tabstyles($name, $title, $description, '');
+    $settings->add($setting);
+
 }

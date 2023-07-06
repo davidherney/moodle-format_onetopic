@@ -77,7 +77,7 @@ class tabs {
 
         foreach ($this->tabslist as $tab) {
 
-            if ($assubtabs) {
+            if ($assubtabs && strpos($tab->specialclass, ' subtopic ') === false) {
                 $tab->specialclass .= ' subtopic ';
             }
 

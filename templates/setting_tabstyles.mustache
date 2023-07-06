@@ -1,0 +1,208 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_onetopic/setting_tabstyles
+
+    Admin text setting template.
+
+    Context variables required for this template:
+    * name - form element name
+    * id - element id
+    * value - element value
+    * attributes - list of additional attributes containing name, value
+    * readonly - bool
+
+    Example context (json):
+    {
+        "name": "test",
+        "id": "test0",
+        "value": "A tall, dark stranger will have more fun than you.",
+        "size": "21",
+        "forceltr": false,
+        "readonly": false,
+        "attributes": [ { "name": "readonly", "value": "readonly" } ],
+        "cssunits": [
+            { "value": "px", "label": "px" },
+            { "value": "em", "label": "em" },
+            { "value": "%", "label": "%" }
+        ],
+        "csssizeoptions": [ "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" ],
+        "colorpicker": "",
+        "testingmode": true
+    }
+}}
+<div id="onetopic-tabstyles" class="form-text defaultsnext format-onetopic">
+{{!
+    Input to save the configured styles.
+}}
+    <textarea {{#readonly}}disabled{{/readonly}} name="{{name}}" id="{{id}}" class="savecontrol hidden">{{value}}</textarea>
+
+    {{^readonly}}
+        <div class="tabstyleset-buttons">
+            <button id="tabstylesetdefault" class="btn btn-secondary">{{#str}} tabstylesetdefault, format_onetopic {{/str}}</button>
+            <button id="tabstylesetactive" class="btn btn-secondary">{{#str}} tabstylesetactive, format_onetopic {{/str}}</button>
+            <button id="tabstylesetparent" class="btn btn-secondary">{{#str}} tabstylesetparent, format_onetopic {{/str}}</button>
+            <button id="tabstylesethighlighted" class="btn btn-secondary">{{#str}} tabstylesethighlighted, format_onetopic {{/str}}</button>
+            <button id="tabstylesetdisabled" class="btn btn-secondary">{{#str}} tabstylesetdisabled, format_onetopic {{/str}}</button>
+            <button id="tabstylesethover" class="btn btn-secondary">{{#str}} tabstylesethover, format_onetopic {{/str}}</button>
+            <button id="tabstylesetchilds" class="btn btn-secondary">{{#str}} tabstylesetchilds, format_onetopic {{/str}}</button>
+            <button id="tabstylesetchildindex" class="btn btn-secondary">{{#str}} tabstylesetchildindex, format_onetopic {{/str}}</button>
+            <button id="tabstyleclear" class="btn btn-warning">{{#str}} tabstyleclear, format_onetopic {{/str}}</button>
+        </div>
+        <p>{{#str}} tabstylebuttons_help, format_onetopic {{/str}}</p>
+    {{/readonly}}
+
+    <h3>{{#str}} tabsview_default, format_onetopic {{/str}}</h3>
+    <div id="tabs-example" class="hastopictabs">
+        <div class="tabs-wrapper">
+            {{>format_onetopic/courseformat/tabtree}}
+        </div>
+
+        <div class="onetopic-tab-body">
+            {{#secondrow}}
+                {{>format_onetopic/courseformat/tabtree}}
+            {{/secondrow}}
+        </div>
+
+    </div>
+
+    <h3>{{#str}} tabsview_vertical, format_onetopic {{/str}}</h3>
+    <div id="tabs-example-vertical" class="verticaltabs hastopictabs">
+        <div class="tabs-wrapper">
+            {{>format_onetopic/courseformat/tabtree}}
+        </div>
+
+        <div class="onetopic-tab-body">
+            {{#secondrow}}
+                {{>format_onetopic/courseformat/tabtree}}
+            {{/secondrow}}
+        </div>
+
+    </div>
+
+    <div id="onetopic-styleswindow" class="hidden" data-title="{{#str}} tabstylestitle, format_onetopic {{/str}}">
+        <div class="form-group">
+            <fieldset>
+                <legend>{{#str}} cssbackground, format_onetopic {{/str}}</legend>
+                <input class="form-control" type="text" data-style="background-color" data-control="colorpicker" placeholder="{{#str}} csscolor, format_onetopic {{/str}}" title="{{#str}} csscolor, format_onetopic {{/str}}">
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <fieldset>
+                <legend>{{#str}} cssfont, format_onetopic {{/str}}</legend>
+                <div>
+                    <select class="form-control" data-style="font-size" title="{{#str}} csssize, format_onetopic {{/str}}">
+                        {{#csssizeoptions}}
+                        <option value="{{.}}">{{.}}</option>
+                        {{/csssizeoptions}}
+                    </select>
+                    <select class="form-control" data-style="unit-font-size" title="{{#str}} cssstyle, format_onetopic {{/str}}">
+                        {{#cssunits}}
+                            <option value="{{value}}">{{label}}</option>
+                        {{/cssunits}}
+                    </select>
+                </div>
+                <div>
+                    <input class="form-control" type="text" data-style="color" data-control="colorpicker" placeholder="{{#str}} csscolor, format_onetopic {{/str}}" title="{{#str}} csscolor, format_onetopic {{/str}}">
+                </div>
+                <div>
+                    <select class="form-control" data-style="font-weight" title="{{#str}} cssweight, format_onetopic {{/str}}">
+                        {{^testingmode}}<option value=""></option>{{/testingmode}}
+                        <option value="normal">{{#str}} cssnormal, format_onetopic {{/str}}</option>
+                        <option value="bold">{{#str}} cssweightbold, format_onetopic {{/str}}</option>
+                        <option value="lighter">{{#str}} cssweightlighter, format_onetopic {{/str}}</option>
+                    </select>
+                </div>
+                <div>
+                    <select class="form-control" data-style="font-style" title="{{#str}} cssstyle, format_onetopic {{/str}}">
+                        {{^testingmode}}<option value=""></option>{{/testingmode}}
+                        <option value="normal">{{#str}} cssnormal, format_onetopic {{/str}}</option>
+                        <option value="italic">{{#str}} cssitalic, format_onetopic {{/str}}</option>
+                        <option value="oblique">{{#str}} cssoblique, format_onetopic {{/str}}</option>
+                    </select>
+                </div>
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <fieldset>
+                <legend>{{#str}} cssborder, format_onetopic {{/str}}</legend>
+                <div>
+                    <select class="form-control" data-style="border-width" title="{{#str}} csssize, format_onetopic {{/str}}">
+                        {{#csssizeoptions}}
+                            <option value="{{.}}">{{.}}</option>
+                        {{/csssizeoptions}}
+                    </select>
+                    <select class="form-control" data-style="unit-border-width" title="{{#str}} cssunit, format_onetopic {{/str}}">
+                        {{#cssunits}}
+                            <option value="{{value}}">{{label}}</option>
+                        {{/cssunits}}
+                    </select>
+                </div>
+                <div>
+                    <input class="form-control" type="text" data-style="border-color" data-control="colorpicker" placeholder="{{#str}} csscolor, format_onetopic {{/str}}" title="{{#str}} csscolor, format_onetopic {{/str}}">
+                </div>
+                <div>
+                    <select class="form-control" data-style="border-style" title="{{#str}} cssstyle, format_onetopic {{/str}}">
+                        {{^testingmode}}<option value=""></option>{{/testingmode}}
+                        <option value="none">{{#str}} cssnone, format_onetopic {{/str}}</option>
+                        <option value="solid">{{#str}} csssolid, format_onetopic {{/str}}</option>
+                        <option value="dashed">{{#str}} cssdashed, format_onetopic {{/str}}</option>
+                        <option value="dotted">{{#str}} cssdotted, format_onetopic {{/str}}</option>
+                        <option value="double">{{#str}} cssdouble, format_onetopic {{/str}}</option>
+                        <option value="groove">{{#str}} cssgroove, format_onetopic {{/str}}</option>
+                        <option value="hidden">{{#str}} csshidden, format_onetopic {{/str}}</option>
+                        <option value="inset">{{#str}} cssinset, format_onetopic {{/str}}</option>
+                        <option value="outset">{{#str}} cssoutset, format_onetopic {{/str}}</option>
+                        <option value="ridge">{{#str}} cssridge, format_onetopic {{/str}}</option>
+                    </select>
+                </div>
+                <div class="whithlabel">
+                    <div>
+                        <select class="form-control" data-style="border-radius" title="{{#str}} cssradius, format_onetopic {{/str}}">
+                            {{#csssizeoptions}}
+                                <option value="{{.}}">{{.}}</option>
+                            {{/csssizeoptions}}
+                        </select>
+                        <select class="form-control" data-style="unit-border-radius" title="{{#str}} cssunit, format_onetopic {{/str}}">
+                            {{#cssunits}}
+                                <option value="{{value}}">{{label}}</option>
+                            {{/cssunits}}
+                        </select>
+                    </div>
+                    <label>{{#str}} cssradius, format_onetopic {{/str}}</label>
+                </div>
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <fieldset>
+                <legend>{{#str}} cssother, format_onetopic {{/str}}</legend>
+                <input class="form-control" type="text" data-style="others" placeholder="{{#str}} cssother, format_onetopic {{/str}}" title="{{#str}} cssother, format_onetopic {{/str}}">
+            </fieldset>
+        </div>
+        <div class="buttons-box">
+            <button data-action="setstyles" class="btn btn-primary">{{#str}} tabstylesset, format_onetopic {{/str}}</button>
+            <button data-action="cancelstyles" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
+        </div>
+        <div class="colorpicker hidden">
+            {{{colorpicker}}}
+            <div class="buttons-box">
+                <button data-action="setcolor" class="btn btn-primary">{{#str}} ok {{/str}}</button>
+                <button data-action="cancel" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
+            </div>
+        </div>
+    </div>
+</div>
