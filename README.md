@@ -6,10 +6,10 @@ Package tested in: moodle 4.0+, 4.1+.
 Download zip package, extract the onetopic folder and upload this folder into course/format/.
 
 ## ABOUT
-**Developed by:** David Herney - davidherney at gmail dot com
-**GIT:** https://github.com/davidherney/moodle-format_onetopic
-**Powered by:** [BambuCo](https://bambuco.co/)
-**Documentation:** [En](https://bambuco.co/onetopic-en/) - [Es](https://bambuco.co/onetopic/)
+* **Developed by:** David Herney - davidherney at gmail dot com
+* **GIT:** https://github.com/davidherney/moodle-format_onetopic
+* **Powered by:** [BambuCo](https://bambuco.co/)
+* **Documentation:** [En](https://bambuco.co/onetopic-en/) - [Es](https://bambuco.co/onetopic/)
 
 ## COMING SOON
 * Fix: the topics bar is not refresh when change (move a section in boost sections bar) or delete a section.
