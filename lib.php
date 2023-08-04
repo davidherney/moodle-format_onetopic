@@ -56,6 +56,9 @@ class format_onetopic extends core_courseformat\base {
     /** @var int One line view */
     const TABSVIEW_ONELINE = 2;
 
+    /** @var int Embed course index */
+    const TABSVIEW_COURSEINDEX = 3;
+
     /** @var int Only if theme not support "usescourseindex" */
     const SECTIONSNAVIGATION_SUPPORT = 1;
 
@@ -71,6 +74,12 @@ class format_onetopic extends core_courseformat\base {
     /** @var int Like slides */
     const SECTIONSNAVIGATION_SLIDES = 5;
 
+    /** @var string Course index scope */
+    const SCOPE_COURSE = 'course';
+
+    /** @var string Course modules scope */
+    const SCOPE_MOD = 'mod';
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -82,6 +91,18 @@ class format_onetopic extends core_courseformat\base {
 
     /** @var array Modules used in template */
     public $tplcmsused = [];
+
+    /** @var bool If the course has topic tabs */
+    public $hastopictabs = false;
+
+    /** @var string Unique id for the course format */
+    public $uniqid;
+
+    /** @var bool If print the tabs menu in the current scope */
+    public $printable = true;
+
+    /** @var string Current format scope */
+    public $currentscope = null;
 
     /**
      * Creates a new instance of class
@@ -95,81 +116,116 @@ class format_onetopic extends core_courseformat\base {
     protected function __construct($format, $courseid) {
         parent::__construct($format, $courseid);
 
+        $this->uniqid = uniqid();
+
         // Hack for section number, when not is like a param in the url or section is not available.
         global $section, $sectionid, $PAGE, $USER, $urlparams, $DB, $context;
 
-        $course = $this->get_course();
+        $inpopup = optional_param('inpopup', 0, PARAM_INT);
 
-        if (!self::$loaded && isset($section) && $courseid &&
-                ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
-            self::$loaded = true;
+        if ($inpopup) {
+            $this->printable = false;
+        } else {
 
-            if ($sectionid <= 0) {
-                $section = optional_param('section', -1, PARAM_INT);
-            }
+            $defaultscope = get_config('format_onetopic', 'defaultscope');
 
-            $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', ['course' => $courseid], MUST_EXIST);
-
-            if ($section >= 0 && $numsections >= $section) {
-                $realsection = $section;
+            if ($defaultscope) {
+                $scope = explode(',', $defaultscope);
             } else {
-                if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
-                    $realsection = $USER->display[$course->id];
-                } else if ($course->marker && $course->marker > 0) {
-                    $realsection = (int)$course->marker;
+                $scope = [];
+            }
+
+            $pagesavailable = ['course-view-onetopic', 'course-view'];
+
+            if (!in_array($PAGE->pagetype, $pagesavailable)) {
+
+                if (in_array(self::SCOPE_MOD, $scope)) {
+                    $this->currentscope = self::SCOPE_MOD;
+                    $patternavailable = '/^mod-.*-view$/';
+                    $this->printable = preg_match($patternavailable, $PAGE->pagetype);
                 } else {
-                    $realsection = 0;
+                    $this->printable = false;
                 }
+            } else {
+                $this->currentscope = self::SCOPE_COURSE;
             }
-
-            if ($realsection < 0 || $realsection > $numsections) {
-                $realsection = 0;
-            }
-
-            // Onetopic format is always multipage.
-            $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
-
-            if ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $realsection === 0 && $numsections >= 1) {
-                $realsection = 1;
-            }
-
-            // Can view the hidden sections in current course?
-            $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
-
-            $modinfo = get_fast_modinfo($course);
-            $sections = $modinfo->get_section_info_all();
-
-            // Check if the display section is available.
-            if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
-
-                self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
-
-                $valid = false;
-                $k = $realcoursedisplay ? 1 : 0;
-
-                do {
-                    $formatoptions = $this->get_format_options($k);
-                    if ($formatoptions['level'] == 0
-                            && ($sections[$k]->available && $sections[$k]->uservisible)
-                            || $canviewhidden) {
-                        $valid = true;
-                        break;
-                    }
-
-                    $k++;
-
-                } while (!$valid && $k <= $numsections);
-
-                $realsection = $valid ? $k : 0;
-            }
-
-            $section = $realsection;
-            $USER->display[$course->id] = $realsection;
-            $urlparams['section'] = $realsection;
-            $PAGE->set_url('/course/view.php', $urlparams);
-
         }
 
+        if ($this->printable) {
+            if (!self::$loaded && isset($section) && $courseid &&
+                    ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
+                self::$loaded = true;
+
+                $this->singlesection = $section;
+
+                $course = $this->get_course();
+
+                // Onetopic format is always multipage.
+                $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+
+                if ($sectionid <= 0) {
+                    $section = optional_param('section', -1, PARAM_INT);
+                }
+
+                $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', ['course' => $courseid], MUST_EXIST);
+
+                if ($section >= 0 && $numsections >= $section) {
+                    $realsection = $section;
+                } else {
+                    if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
+                        $realsection = $USER->display[$course->id];
+                    } else if ($course->marker && $course->marker > 0) {
+                        $realsection = (int)$course->marker;
+                    } else {
+                        $realsection = 0;
+                    }
+                }
+
+                if ($realsection < 0 || $realsection > $numsections) {
+                    $realsection = 0;
+                }
+
+                if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $realsection === 0 && $numsections >= 1) {
+                    $realsection = 1;
+                }
+
+                // Can view the hidden sections in current course?
+                $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
+
+                $modinfo = get_fast_modinfo($course);
+                $sections = $modinfo->get_section_info_all();
+
+                // Check if the display section is available.
+                if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
+
+                    self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+
+                    $valid = false;
+                    $k = $course->realcoursedisplay ? 1 : 0;
+
+                    do {
+                        $formatoptions = $this->get_format_options($k);
+                        if ($formatoptions['level'] == 0
+                                && ($sections[$k]->available && $sections[$k]->uservisible)
+                                || $canviewhidden) {
+                            $valid = true;
+                            break;
+                        }
+
+                        $k++;
+
+                    } while (!$valid && $k <= $numsections);
+
+                    $realsection = $valid ? $k : 0;
+                }
+
+                $section = $realsection;
+                $USER->display[$course->id] = $realsection;
+                $urlparams['section'] = $realsection;
+                $PAGE->set_url('/course/view.php', $urlparams);
+
+            }
+        }
     }
 
     /**
@@ -188,11 +244,15 @@ class format_onetopic extends core_courseformat\base {
      */
     public function uses_course_index() {
 
+        $course = $this->get_course();
+
+        if ($course->tabsview == self::TABSVIEW_COURSEINDEX) {
+            return false;
+        }
+
         if ($this->show_editor()) {
             return true;
         }
-
-        $course = $this->get_course();
 
         // The 2 value is Use the site configuration.
         if (isset($course->usescourseindex) && $course->usescourseindex < 2) {
@@ -538,7 +598,8 @@ class format_onetopic extends core_courseformat\base {
                         [
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
                             self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
-                            self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic')
+                            self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
+                            self::TABSVIEW_COURSEINDEX => new lang_string('tabsview_courseindex', 'format_onetopic')
                         ]
                     ],
                     'help' => 'tabsview',
@@ -783,6 +844,47 @@ class format_onetopic extends core_courseformat\base {
     }
 
     /**
+     * Allows course format to execute code on moodle_page::set_cm()
+     *
+     * Current module can be accessed as $page->cm (returns instance of cm_info)
+     *
+     * @param moodle_page $page instance of page calling set_cm
+     */
+    public function page_set_cm(moodle_page $page) {
+        $this->set_section_number($page->cm->sectionnum);
+    }
+
+    /**
+     * Course-specific information to be output immediately above content on any course page
+     *
+     * See {@see core_courseformat\base::course_header()} for usage
+     *
+     * @return null|renderable null for no output or object with data for plugin renderer
+     */
+    public function course_content_header() {
+        if ($this->printable) {
+            return new \format_onetopic\header($this);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Course-specific information to be output immediately below content on any course page
+     *
+     * See course_format::course_header() for usage
+     *
+     * @return null|renderable null for no output or object with data for plugin renderer
+     */
+    public function course_content_footer() {
+        if ($this->printable) {
+            return new \format_onetopic\footer($this);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Prepares the templateable object to display section name.
      *
      * @param \section_info|\stdClass $section
@@ -932,6 +1034,24 @@ class format_onetopic extends core_courseformat\base {
             }
         }
     }
+
+    /**
+     * return true if the course editor must be displayed.
+     *
+     * @param array|null $capabilities array of capabilities a user needs to have to see edit controls in general.
+     *  If null or not specified, the user needs to have 'moodle/course:manageactivities'.
+     * @return bool true if edit controls must be displayed
+     */
+    public function show_editor(?array $capabilities = ['moodle/course:manageactivities']): bool {
+        global $PAGE;
+
+        if ($this->currentscope != self::SCOPE_COURSE) {
+            return false;
+        }
+
+        return parent::show_editor($capabilities);
+    }
+
 }
 
 /**

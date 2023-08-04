@@ -94,6 +94,7 @@ One single line: all tabs are displayed in a single line with horizontal scroll.
 $string['tabsview_default'] = 'By default';
 $string['tabsview_vertical'] = 'Vertically';
 $string['tabsview_oneline'] = 'Only one line';
+$string['tabsview_courseindex'] = 'Embed course index';
 
 $string['increasesections'] = 'Add a section after the currently selected section';
 
@@ -174,3 +175,6 @@ $string['invalidjsonstyles'] = 'Styles configuration is not valid, fails with: {
 $string['tabstylebuttons_help'] = 'Click on each button to configure the appearance of the tab in each of its possible states.';
 $string['tabstylesetchilds'] = 'Set Childs';
 $string['tabstylesetchildindex'] = 'Set Child index';
+$string['defaultscope'] = 'Default scope';
+$string['defaultscope_help'] = 'Default scope used to define the pages on which the tab menu is printed.';
+$string['scope_mod'] = 'Modules';

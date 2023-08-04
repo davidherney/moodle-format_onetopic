@@ -1,0 +1,111 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_onetopic/header
+
+    Example context (json):
+    {
+        "uniqid": "course-1",
+        "title": "Course 1",
+        "initialsection": {
+            "num": 0,
+            "id": 34,
+            "cmlist": {
+                "cms": [
+                    {
+                        "cmitem": {
+                            "cmformat": {
+                                "cmname": "<a class=\"aalink\" href=\"#\"><span class=\"instancename\">Forum example</span></a>",
+                                "hasname": "true"
+                            },
+                            "cmid": 3,
+                            "id": 3,
+                            "anchor": "module-3",
+                            "module": "forum",
+                            "extraclasses": "newmessages"
+                        }
+                    }
+                ],
+                "hascms": true
+            },
+            "iscurrent": true,
+            "summary": {
+                "summarytext": "Summary text!"
+            }
+        },
+        "hasformatmsgs": "true",
+        "formatmsgs": [{
+            "message": "This course uses the onetopic format."
+        }],
+        "format": "onetopic",
+        "templatetopic": "true",
+        "withicons": "true",
+        "testing": true
+    }
+}}
+
+<div id="{{uniqid}}-course-format">
+    <h2 class="accesshide">{{{title}}}</h2>
+    {{{completionhelp}}}
+
+    {{#hasformatmsgs}}
+        {{#formatmsgs}}
+            {{>core/notification_info}}
+        {{/formatmsgs}}
+    {{/hasformatmsgs}}
+
+    {{#initialsection}}
+    <div class="single-section general-section">
+        <ul class="{{format}}">
+            {{$ format_onetopic/local/content/section }}
+                {{> format_onetopic/local/content/section }}
+            {{/ format_onetopic/local/content/section }}
+        </ul>
+    </div>
+    {{/initialsection}}
+
+    <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hastopictabs}}hastopictabs{{/hastopictabs}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
+        {{#hastopictabs}}
+            <div class="tabs-wrapper">
+
+                {{{courseindex}}}
+
+                {{^courseindex}}
+                    {{>format_onetopic/courseformat/tabtree}}
+                {{/courseindex}}
+            </div>
+
+            <div class="onetopic-tab-body">
+
+            {{#hassecondrow}}
+                {{#secondrow}}
+                    {{>format_onetopic/courseformat/tabtree}}
+                {{/secondrow}}
+            {{/hassecondrow}}
+
+        {{/hastopictabs}}
+        <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
+
+{{#testing}}
+        </div>
+        {{#hastopictabs}}
+            {{! End of onetopic-tab-body box. }}
+            </div>
+        {{/hastopictabs}}
+    </div>
+</div>
+{{/testing}}
