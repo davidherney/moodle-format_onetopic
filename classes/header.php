@@ -74,7 +74,6 @@ class header implements \renderable, \templatable {
         $coursecontext = \context_course::instance($course->id);
         $canviewhidden = has_capability('moodle/course:viewhiddensections', $coursecontext);
 
-
         $tabslist = [];
         $secondtabslist = null;
         if ($course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
@@ -103,7 +102,7 @@ class header implements \renderable, \templatable {
             $hassecondrow = false;
             $hastopictabs = true;
         } else {
-            $hastopictabs = $format->hastopicstabs;
+            $hastopictabs = $format->hastopictabs;
             $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
         }
 
@@ -153,6 +152,11 @@ class header implements \renderable, \templatable {
                 'right' => $OUTPUT->pix_icon('t/collapsed', ''),
             ]
         ];
+
+        // Include course format js module.
+        $PAGE->requires->js('/course/format/topics/format.js');
+        $PAGE->requires->js('/course/format/onetopic/format.js');
+        $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
         $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);
 
         return $data;

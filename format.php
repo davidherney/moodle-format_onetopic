@@ -78,17 +78,3 @@ if (!empty($displaysection)) {
 $outputclass = $format->get_output_classname('content');
 $widget = new $outputclass($format);
 echo $renderer->render($widget);
-
-// Include course format js module.
-$PAGE->requires->js('/course/format/topics/format.js');
-$PAGE->requires->js('/course/format/onetopic/format.js');
-$PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
-
-$params = array(
-    'formattype' => $course->tabsview,
-    'icons' => [
-        'left' => $OUTPUT->pix_icon('t/collapsed_rtl', ''),
-        'right' => $OUTPUT->pix_icon('t/collapsed', ''),
-    ]
-);
-$PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);
