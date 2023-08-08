@@ -1055,6 +1055,14 @@ class format_onetopic extends core_courseformat\base {
 }
 
 /**
+ * Moodle native lib/navigationlib.php calls this hook allowing us to override UI.
+ */
+function format_onetopic_before_http_headers() {
+    global $PAGE;
+    $PAGE->requires->css('/course/format/onetopic/styles.php');
+}
+
+/**
  * Implements callback inplace_editable() allowing to edit values in-place.
  *
  * @param string $itemtype
