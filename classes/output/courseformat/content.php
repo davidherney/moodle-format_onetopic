@@ -182,4 +182,225 @@ class content extends content_base {
         return $sections;
     }
 
+    /**
+     * Return an array of tabs to display.
+     *
+     * @param course_modinfo $modinfo the current course modinfo object
+     * @param renderer_base $output typically, the renderer that's calling this function
+     * @return \format_onetopic\tabs an object with tabs information
+     */
+    private function get_tabs(course_modinfo $modinfo, \renderer_base $output): \format_onetopic\tabs {
+
+        global $PAGE;
+
+        $course = $this->format->get_course();
+        $sections = $modinfo->get_section_info_all();
+        $numsections = count($sections);
+        $displaysection = $this->format->get_section_number();
+        $enablecustomstyles = get_config('format_onetopic', 'enablecustomstyles');
+
+        // Can we view the section in question?
+        $context = \context_course::instance($course->id);
+        $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
+
+        // Init custom tabs.
+        $section = 0;
+
+        $tabs = new \format_onetopic\tabs();
+        $selectedparent = null;
+        $parenttab = null;
+        $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+
+        while ($section < $numsections) {
+            $inactivetab = false;
+
+            if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $section == 0) {
+                $section++;
+                continue;
+            }
+
+            $thissection = $sections[$section];
+
+            $showsection = true;
+            if (!$thissection->visible || !$thissection->available) {
+                $showsection = $canviewhidden || !($course->hiddensections == 1);
+            }
+
+            if ($showsection) {
+
+                $formatoptions = course_get_format($course)->get_format_options($thissection);
+
+                $sectionname = get_section_name($course, $thissection);
+                $title = $sectionname;
+
+                if (!$thissection->visible || !$thissection->available) {
+                    $title .= ': '. get_string('hiddenfromstudents');
+                }
+
+                $customstyles = '';
+                $level = 0;
+                if (is_array($formatoptions)) {
+
+                    if ($enablecustomstyles) {
+                        if (!empty($formatoptions['fontcolor'])) {
+                            $customstyles .= 'color: ' . $formatoptions['fontcolor'] . '; ';
+                        }
+
+                        if (!empty($formatoptions['bgcolor'])) {
+                            $customstyles .= 'background-color: ' . $formatoptions['bgcolor'] . '; ';
+                        }
+
+                        if (!empty($formatoptions['cssstyles'])) {
+                            $customstyles .= $formatoptions['cssstyles'] . '; ';
+                        }
+                    }
+
+                    if (isset($formatoptions['level']) && $section > $firstsection) {
+                        $level = $formatoptions['level'];
+                    }
+                }
+
+                if ($section == 0) {
+                    $url = new \moodle_url('/course/view.php', array('id' => $course->id, 'section' => 0));
+                } else {
+                    $url = course_get_url($course, $section);
+                }
+
+                $specialclass = 'tab_position_' . $section . ' tab_level_' . $level;
+                if ($course->marker == $section) {
+                    $specialclass .= ' marker ';
+                }
+
+                if (!$thissection->visible || !$thissection->available) {
+                    $specialclass .= ' dimmed disabled ';
+
+                    if (!$canviewhidden) {
+                        $inactivetab = true;
+                    }
+                }
+
+                // Check if display available message is required.
+                $availablemessage = null;
+                if ($course->hiddensections == 2) {
+                    $sectiontpl = new content_base\section($this->format, $thissection);
+                    $availabilityclass = $this->format->get_output_classname('content\\section\\availability');
+                    $availability = new $availabilityclass($this->format, $thissection);
+                    $availabledata = $availability->export_for_template($output);
+
+                    if ($availabledata->hasavailability) {
+                        $availablemessage = $output->render($availability);
+                    }
+                }
+
+                $newtab = new \format_onetopic\singletab($section, $sectionname, $url, $title,
+                                        $availablemessage, $customstyles, $specialclass);
+                $newtab->active = !$inactivetab;
+
+                if ($displaysection == $section) {
+                    $newtab->selected = true;
+                }
+
+                if (is_array($formatoptions) && isset($formatoptions['level'])) {
+
+                    if ($formatoptions['level'] == 0 || $parenttab == null) {
+                        $tabs->add($newtab);
+                        $parenttab = $newtab;
+                    } else {
+
+                        if (!$parenttab->has_childs()) {
+                            $specialclasstmp = str_replace('tab_level_0', 'tab_level_1', $parenttab->specialclass);
+                            $indextab = new \format_onetopic\singletab($parenttab->section,
+                                                    $parenttab->content,
+                                                    $parenttab->link,
+                                                    $parenttab->title,
+                                                    $parenttab->availablemessage,
+                                                    $parenttab->customstyles,
+                                                    $specialclasstmp);
+
+                            $prevsectionindex = $section - 1;
+                            do {
+                                $parentsection = $sections[$prevsectionindex];
+                                $parentformatoptions = course_get_format($course)->get_format_options($parentsection);
+                                $prevsectionindex--;
+                            } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= $firstsection);
+
+                            if ($parentformatoptions['firsttabtext']) {
+                                $indextab->content = format_string($parentformatoptions['firsttabtext']);
+                            } else {
+                                $indextab->content = get_string('index', 'format_onetopic');
+                            }
+                            $indextab->title = $indextab->content;
+                            $indextab->specialclass .= ' tab_initial ';
+
+                            if ($displaysection == $parentsection->section) {
+                                $indextab->selected = true;
+                                $parenttab->selected = true;
+                                $selectedparent = $parenttab;
+                            }
+
+                            $parenttab->add_child($indextab);
+                        }
+
+                        // Load subtabs.
+                        $parenttab->add_child($newtab);
+
+                        if ($displaysection == $section) {
+                            $selectedparent = $parenttab;
+                            $parenttab->selected = true;
+                        }
+                    }
+                } else {
+                    $tabs->add($newtab);
+                    $parenttab = $newtab;
+                }
+
+            }
+
+            $section++;
+        }
+
+        if ($this->format->show_editor()) {
+
+            $maxsections = $this->format->get_max_sections();
+
+            // Only can add sections if it does not exceed the maximum amount.
+            if (count($sections) < $maxsections) {
+
+                $straddsection = get_string('increasesections', 'format_onetopic');
+                $icon = $output->pix_icon('t/switch_plus', s($straddsection));
+                $insertposition = $displaysection + 1;
+
+                $paramstotabs = array('courseid' => $course->id,
+                                    'increase' => true,
+                                    'sesskey' => sesskey(),
+                                    'insertsection' => $insertposition);
+
+                // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
+                $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
+                $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
+
+                if ($showsubtabs) {
+                    // Increase number of sections in child tabs.
+                    $paramstotabs['aschild'] = 1;
+                    $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                    $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
+                    $selectedsubtabs->add_child($newtab);
+
+                    // The new tab is inserted after the last child because it is a parent tab.
+                    // -2 = add subtab button and index subtab.
+                    // +1 = because the selectedparent section start in 0.
+                    $insertposition = $selectedparent->section + $selectedsubtabs->count_childs() - 2 + 1;
+                }
+
+                $paramstotabs['aschild'] = 0;
+                $paramstotabs['insertsection'] = $insertposition;
+                $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
+                $tabs->add($newtab);
+
+            }
+        }
+
+        return $tabs;
+    }
 }
