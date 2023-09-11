@@ -470,7 +470,7 @@ class content extends content_base {
                             } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= $firstsection);
 
                             if ($parentformatoptions['firsttabtext']) {
-                                $indextab->content = $parentformatoptions['firsttabtext'];
+                                $indextab->content = format_string($parentformatoptions['firsttabtext']);
                             } else {
                                 $indextab->content = get_string('index', 'format_onetopic');
                             }
