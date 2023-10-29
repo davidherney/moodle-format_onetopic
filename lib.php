@@ -434,36 +434,36 @@ class format_onetopic extends core_courseformat\base {
             $courseformatoptions = [
                 'hiddensections' => [
                     'default' => $courseconfig->hiddensections,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'hidetabsbar' => [
                     'default' => 0,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'coursedisplay' => [
                     'default' => $courseconfig->coursedisplay,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'templatetopic' => [
                     'default' => self::TEMPLATETOPIC_NOT,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'templatetopic_icons' => [
                     'default' => 0,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'tabsview' => [
                     'default' => 0,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'usessectionsnavigation' => [
                     'default' => 0,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'usescourseindex' => [
                     'default' => 2,
-                    'type' => PARAM_INT
-                ]
+                    'type' => PARAM_INT,
+                ],
             ];
         }
 
@@ -478,8 +478,8 @@ class format_onetopic extends core_courseformat\base {
                         [
                             0 => new lang_string('hiddensectionscollapsed'),
                             1 => new lang_string('hiddensectionsinvisible'),
-                            2 => new lang_string('hiddensectionshelp', 'format_onetopic')
-                        ]
+                            2 => new lang_string('hiddensectionshelp', 'format_onetopic'),
+                        ],
                     ],
                 ],
                 'hidetabsbar' => [
@@ -490,8 +490,8 @@ class format_onetopic extends core_courseformat\base {
                     'element_attributes' => [
                         [
                             0 => new lang_string('no'),
-                            1 => new lang_string('yes')
-                        ]
+                            1 => new lang_string('yes'),
+                        ],
                     ],
                 ],
                 'coursedisplay' => [
@@ -500,8 +500,8 @@ class format_onetopic extends core_courseformat\base {
                     'element_attributes' => [
                         [
                             COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single', 'format_onetopic'),
-                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi', 'format_onetopic')
-                        ]
+                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi', 'format_onetopic'),
+                        ],
                     ],
                     'help' => 'coursedisplay',
                     'help_component' => 'format_onetopic',
@@ -513,8 +513,8 @@ class format_onetopic extends core_courseformat\base {
                         [
                             self::TEMPLATETOPIC_NOT => new lang_string('templetetopic_not', 'format_onetopic'),
                             self::TEMPLATETOPIC_SINGLE => new lang_string('templetetopic_single', 'format_onetopic'),
-                            self::TEMPLATETOPIC_LIST => new lang_string('templetetopic_list', 'format_onetopic')
-                        ]
+                            self::TEMPLATETOPIC_LIST => new lang_string('templetetopic_list', 'format_onetopic'),
+                        ],
                     ],
                     'help' => 'templatetopic',
                     'help_component' => 'format_onetopic',
@@ -527,8 +527,8 @@ class format_onetopic extends core_courseformat\base {
                     'element_attributes' => [
                         [
                             0 => new lang_string('no'),
-                            1 => new lang_string('yes')
-                        ]
+                            1 => new lang_string('yes'),
+                        ],
                     ],
                 ],
                 'tabsview' => [
@@ -538,8 +538,8 @@ class format_onetopic extends core_courseformat\base {
                         [
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
                             self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
-                            self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic')
-                        ]
+                            self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
+                        ],
                     ],
                     'help' => 'tabsview',
                     'help_component' => 'format_onetopic',
@@ -555,7 +555,7 @@ class format_onetopic extends core_courseformat\base {
                             self::SECTIONSNAVIGATION_BOTTOM => new lang_string('sectionsnavigation_bottom', 'format_onetopic'),
                             self::SECTIONSNAVIGATION_BOTH => new lang_string('sectionsnavigation_both', 'format_onetopic'),
                             self::SECTIONSNAVIGATION_SLIDES => new lang_string('sectionsnavigation_slides', 'format_onetopic'),
-                        ]
+                        ],
                     ],
                     'help' => 'usessectionsnavigation',
                     'help_component' => 'format_onetopic',
@@ -570,9 +570,9 @@ class format_onetopic extends core_courseformat\base {
                             2 => new lang_string('usecourseindexsite', 'format_onetopic'),
                             0 => new lang_string('no'),
                             1 => new lang_string('yes'),
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -687,28 +687,28 @@ class format_onetopic extends core_courseformat\base {
             $sectionformatoptions = [
                 'level' => [
                     'default' => 0,
-                    'type' => PARAM_INT
+                    'type' => PARAM_INT,
                 ],
                 'firsttabtext' => [
                     'default' => get_string('index', 'format_onetopic'),
-                    'type' => PARAM_TEXT
-                ]
+                    'type' => PARAM_TEXT,
+                ],
             ];
 
             if ($enablecustomstyles) {
                 $sectionformatoptions['fontcolor'] = [
                     'default' => '',
-                    'type' => PARAM_RAW
+                    'type' => PARAM_RAW,
                 ];
 
                 $sectionformatoptions['bgcolor'] = [
                     'default' => '',
-                    'type' => PARAM_RAW
+                    'type' => PARAM_RAW,
                 ];
 
                 $sectionformatoptions['cssstyles'] = [
                     'default' => '',
-                    'type' => PARAM_RAW
+                    'type' => PARAM_RAW,
                 ];
             }
         }
@@ -723,8 +723,8 @@ class format_onetopic extends core_courseformat\base {
                     'element_attributes' => [
                         [
                             0 => get_string('asprincipal', 'format_onetopic'),
-                            1 => get_string('aschild', 'format_onetopic')
-                        ]
+                            1 => get_string('aschild', 'format_onetopic'),
+                        ],
                         ],
                     'help' => 'level',
                     'help_component' => 'format_onetopic',
@@ -735,7 +735,7 @@ class format_onetopic extends core_courseformat\base {
                     'label' => get_string('firsttabtext', 'format_onetopic'),
                     'help' => 'firsttabtext',
                     'help_component' => 'format_onetopic',
-                ]
+                ],
             ];
 
             if ($enablecustomstyles) {

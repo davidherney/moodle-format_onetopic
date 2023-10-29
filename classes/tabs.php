@@ -41,7 +41,7 @@ class tabs {
      *
      */
     public function __construct() {
-        $this->tabslist = array();
+        $this->tabslist = [];
     }
 
     /**

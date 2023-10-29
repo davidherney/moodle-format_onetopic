@@ -406,7 +406,7 @@ class content extends content_base {
                 }
 
                 if ($section == 0) {
-                    $url = new \moodle_url('/course/view.php', array('id' => $course->id, 'section' => 0));
+                    $url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => 0]);
                 } else {
                     $url = course_get_url($course, $section);
                 }
@@ -515,10 +515,10 @@ class content extends content_base {
                 $icon = $output->pix_icon('t/switch_plus', s($straddsection));
                 $insertposition = $displaysection + 1;
 
-                $paramstotabs = array('courseid' => $course->id,
-                                    'increase' => true,
-                                    'sesskey' => sesskey(),
-                                    'insertsection' => $insertposition);
+                $paramstotabs = ['courseid' => $course->id,
+                                'increase' => true,
+                                'sesskey' => sesskey(),
+                                'insertsection' => $insertposition, ];
 
                 // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
                 $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;

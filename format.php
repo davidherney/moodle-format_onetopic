@@ -56,12 +56,10 @@ $renderer = $PAGE->get_renderer('format_onetopic');
 
 $section = $displaysection;
 
-$renderer->numsections = course_get_format($course)->get_last_section_number();
-
 $disableajax = optional_param('onetopic_da', -1, PARAM_INT);
 
 if (!isset($USER->onetopic_da)) {
-    $USER->onetopic_da = array();
+    $USER->onetopic_da = [];
 }
 
 if ($disableajax !== -1) {
@@ -85,11 +83,11 @@ $PAGE->requires->js('/course/format/topics/format.js');
 $PAGE->requires->js('/course/format/onetopic/format.js');
 $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
 
-$params = array(
+$params = [
     'formattype' => $course->tabsview,
     'icons' => [
         'left' => $OUTPUT->pix_icon('t/collapsed_rtl', ''),
         'right' => $OUTPUT->pix_icon('t/collapsed', ''),
-    ]
-);
+    ],
+];
 $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);

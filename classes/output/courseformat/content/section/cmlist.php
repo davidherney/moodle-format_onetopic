@@ -46,7 +46,7 @@ class cmlist extends cmlist_base {
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param renderer_base $output typically, the renderer that's calling this function
-     * @return array data context for a mustache template
+     * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
         global $USER;
@@ -99,7 +99,7 @@ class cmlist extends cmlist_base {
                 $item = new $this->itemclass($format, $section, $mod, $this->displayoptions);
                 $data->cms[] = (object)[
                     'cmitem' => $item->export_for_template($output),
-                    'moveurl' => new moodle_url('/course/mod.php', array('moveto' => $modnumber, 'sesskey' => sesskey())),
+                    'moveurl' => new moodle_url('/course/mod.php', ['moveto' => $modnumber, 'sesskey' => sesskey()]),
                 ];
             }
         }
