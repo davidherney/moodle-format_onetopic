@@ -17,6 +17,15 @@
 /**
  * Version details.
  *
+ * Component releases:
+ * Un recorderis de las Veredas de mi pueblo, en homenaje a los campesinos de mi tierra.
+ *
+ * Old releases: Guarango, Pantalio, Chalarca, Mazorcal, Chuscalito, Las Teresas, La Madera, Las Brisas, Buenavista,
+ * San Juan, La Almería, Piedras Teherán
+ *
+ * Next releases: El Cardal, Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Acacias, Las Colmenas, Minitas,
+ * Quebrada Negra, San Francisco, San Miguel Abajo, San Miguel, La Concha, La Divisa
+ *
  * @package format_onetopic
  * @copyright 2015 David Herney Bernal - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,9 +33,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022081610; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2022041902; // Requires this Moodle version.
+$plugin->version = 2022081610.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2023042403; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.1.10(PiedrasTeherán)';
-$plugin->dependencies = ['format_topics' => 2022041900];
+$plugin->release = '4.2.01(ElCardal)';
+$plugin->dependencies = ['format_topics' => 2023042400];
