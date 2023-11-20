@@ -78,7 +78,7 @@ class summary extends summary_base {
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param renderer_base $output typically, the renderer that's calling this function
-     * @return array data context for a mustache template
+     * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
 
@@ -227,7 +227,7 @@ class summary extends summary_base {
                 $this->tplstringsearch = $instancename;
 
                 $newsummary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tplstringsearch, '/') .
-                    ")(:?))([^\]]*)\]\]/i", array($this, "replace_tag_in_expresion"), $summary);
+                    ")(:?))([^\]]*)\]\]/i", [$this, "replace_tag_in_expresion"], $summary);
 
                 if ($newsummary != $summary) {
                     $this->format->tplcmsused[] = $modnumber;

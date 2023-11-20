@@ -35,10 +35,10 @@ $returnurl = optional_param('returnurl', null, PARAM_LOCALURL);    // Where to r
 $sectionreturn = optional_param('sectionreturn', null, PARAM_INT); // Section to return to, ignored if $returnurl is specified.
 $aschild = optional_param('aschild', 0, PARAM_BOOL);               // It is created as child.
 
-$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $courseformatoptions = course_get_format($course)->get_format_options();
 
-$PAGE->set_url('/course/format/onetopic/changenumsections.php', array('courseid' => $courseid));
+$PAGE->set_url('/course/format/onetopic/changenumsections.php', ['courseid' => $courseid]);
 // Authorisation checks.
 require_login($course);
 require_capability('moodle/course:update', context_course::instance($course->id));
@@ -81,8 +81,8 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
     // Don't go less than 0, intentionally redirect silently (for the case of
     // double clicks).
     if ($courseformatoptions['numsections'] >= 0) {
-        update_course((object)array('id' => $course->id,
-            'numsections' => $courseformatoptions['numsections']));
+        update_course((object)['id' => $course->id,
+            'numsections' => $courseformatoptions['numsections'], ]);
     }
     if (!$returnurl) {
         $returnurl = course_get_url($course);
@@ -100,7 +100,7 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
 
         if ($aschild) {
             // Set level to one because it is a child tab.
-            $courseformat->update_section_format_options(array('level' => 1, 'id' => $section->id));
+            $courseformat->update_section_format_options(['level' => 1, 'id' => $section->id]);
         }
     }
     if (!$returnurl) {

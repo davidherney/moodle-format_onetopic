@@ -55,12 +55,10 @@ $renderer = $PAGE->get_renderer('format_onetopic');
 
 $section = $displaysection;
 
-$renderer->numsections = course_get_format($course)->get_last_section_number();
-
 $disableajax = optional_param('onetopic_da', -1, PARAM_INT);
 
 if (!isset($USER->onetopic_da)) {
-    $USER->onetopic_da = array();
+    $USER->onetopic_da = [];
 }
 
 if ($disableajax !== -1) {
