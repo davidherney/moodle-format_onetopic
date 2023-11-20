@@ -77,7 +77,7 @@ class content extends content_base {
             'title' => $format->page_title(), // This method should be in the course_format class.
             'sections' => $sections,
             'format' => $format->get_format(),
-            'sectionclasses' => ''
+            'sectionclasses' => '',
         ];
 
         // The current section format has extra navigation.

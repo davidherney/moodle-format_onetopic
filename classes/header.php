@@ -150,7 +150,7 @@ class header implements \renderable, \templatable {
             'icons' => [
                 'left' => $OUTPUT->pix_icon('t/collapsed_rtl', ''),
                 'right' => $OUTPUT->pix_icon('t/collapsed', ''),
-            ]
+            ],
         ];
 
         // Include course format js module.
@@ -240,7 +240,7 @@ class header implements \renderable, \templatable {
                 }
 
                 if ($section == 0) {
-                    $url = new \moodle_url('/course/view.php', array('id' => $course->id, 'section' => 0));
+                    $url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => 0]);
                 } else {
                     $url = course_get_url($course, $section);
                 }
@@ -349,10 +349,12 @@ class header implements \renderable, \templatable {
                 $icon = $output->pix_icon('t/switch_plus', s($straddsection));
                 $insertposition = $displaysection + 1;
 
-                $paramstotabs = array('courseid' => $course->id,
+                $paramstotabs = [
+                                    'courseid' => $course->id,
                                     'increase' => true,
                                     'sesskey' => sesskey(),
-                                    'insertsection' => $insertposition);
+                                    'insertsection' => $insertposition,
+                                ];
 
                 // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
                 $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
