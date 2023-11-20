@@ -56,7 +56,7 @@ class format_onetopic extends core_courseformat\base {
     /** @var int One line view */
     const TABSVIEW_ONELINE = 2;
 
-    /** @var int Embed course index */
+    /** @var int Embedded course index */
     const TABSVIEW_COURSEINDEX = 3;
 
     /** @var int Only if theme not support "usescourseindex" */

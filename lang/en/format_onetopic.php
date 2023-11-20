@@ -94,7 +94,7 @@ One single line: all tabs are displayed in a single line with horizontal scroll.
 $string['tabsview_default'] = 'By default';
 $string['tabsview_vertical'] = 'Vertically';
 $string['tabsview_oneline'] = 'Only one line';
-$string['tabsview_courseindex'] = 'Embed course index';
+$string['tabsview_courseindex'] = 'Embedded course index';
 
 $string['increasesections'] = 'Add a section after the currently selected section';
 
