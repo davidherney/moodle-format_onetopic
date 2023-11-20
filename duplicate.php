@@ -30,7 +30,7 @@ require_once($CFG->dirroot.'/course/lib.php');
 $courseid = required_param('courseid', PARAM_INT);
 $section = required_param('section', PARAM_INT);
 
-$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
 $urlstring = '/course/format/onetopic/duplicate.php';
 $PAGE->set_url($urlstring, ['courseid' => $courseid, 'section' => $section]);
@@ -73,7 +73,7 @@ if (!$confirm) {
 $PAGE->set_pagelayout('course');
 $PAGE->set_heading($course->fullname);
 
-$PAGE->set_title(get_string('coursetitle', 'moodle', array('course' => $course->fullname)));
+$PAGE->set_title(get_string('coursetitle', 'moodle', ['course' => $course->fullname]));
 
 echo $OUTPUT->header();
 
@@ -84,7 +84,7 @@ if (!empty($sectioninfo)) {
 
     $courseformat = course_get_format($course);
 
-    $lastsectionnum = $DB->get_field('course_sections', 'MAX(section)', array('course' => $courseid), MUST_EXIST);
+    $lastsectionnum = $DB->get_field('course_sections', 'MAX(section)', ['course' => $courseid], MUST_EXIST);
 
     $numnewsection = $lastsectionnum + 1;
 
@@ -109,11 +109,11 @@ if (!empty($sectioninfo)) {
         if ($files && is_array($files)) {
             foreach ($files as $f) {
 
-                $fileinfo = array(
+                $fileinfo = [
                     'contextid' => $context->id,
                     'component' => 'course',
                     'filearea' => 'section',
-                    'itemid' => $newsectionid);
+                    'itemid' => $newsectionid, ];
 
                 $fs->create_file_from_storedfile($fileinfo, $f);
             }
@@ -135,12 +135,12 @@ if (!empty($sectioninfo)) {
 
     // Trigger an event for course section update.
     $event = \core\event\course_section_updated::create(
-            array(
+            [
                 'objectid' => $newsectionid,
                 'courseid' => $course->id,
                 'context' => $context,
-                'other' => array('sectionnum' => $numnewsection)
-            )
+                'other' => ['sectionnum' => $numnewsection],
+            ]
         );
     $event->trigger();
 
@@ -150,7 +150,7 @@ if (!empty($sectioninfo)) {
     $pbar->update_full(10, get_string('rebuild_course_cache', 'format_onetopic'));
     $newsectioninfo = $modinfo->get_section_info($numnewsection);
 
-    $modules = array();
+    $modules = [];
 
     if (is_object($modinfo) && isset($modinfo->sections[$section])) {
         $sectionmods = $modinfo->sections[$section];

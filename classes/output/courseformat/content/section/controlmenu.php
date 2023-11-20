@@ -80,7 +80,7 @@ class controlmenu extends controlmenu_base {
                     'pixattr' => ['class' => ''],
                     'attr' => [
                         'class' => 'editing_highlight',
-                        'data-action' => 'removemarker'
+                        'data-action' => 'removemarker',
                     ],
                 ];
             } else {
@@ -93,7 +93,7 @@ class controlmenu extends controlmenu_base {
                     'pixattr' => ['class' => ''],
                     'attr' => [
                         'class' => 'editing_highlight',
-                        'data-action' => 'setmarker'
+                        'data-action' => 'setmarker',
                     ],
                 ];
             }
@@ -147,7 +147,7 @@ class controlmenu extends controlmenu_base {
                 'name' => get_string('duplicate', 'format_onetopic'),
                 'pixattr' => ['class' => ''],
                 'attr' => [
-                    'class' => 'editing_duplicate'
+                    'class' => 'editing_duplicate',
                 ],
             ];
         }
@@ -160,7 +160,7 @@ class controlmenu extends controlmenu_base {
                 'id' => $section->id,
                 'sr' => $section->section - 1,
                 'delete' => 1,
-                'sesskey' => sesskey()]);
+                'sesskey' => sesskey(), ]);
             $parentcontrols['delete']['url'] = $url;
             unset($parentcontrols['delete']['attr']['data-action']);
         }
