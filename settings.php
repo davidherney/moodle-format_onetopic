@@ -40,7 +40,7 @@ if ($ADMIN->fulltree) {
                                                     get_string('courseindex', 'format_onetopic'),
                                                     get_string('courseindex_help', 'format_onetopic'), 1, $options));
 
-    $fields = [
+    $options = [
         \format_onetopic::SECTIONSNAVIGATION_SUPPORT => new lang_string('sectionsnavigation_support', 'format_onetopic'),
         \format_onetopic::SECTIONSNAVIGATION_NOT => new lang_string('sectionsnavigation_not', 'format_onetopic'),
         \format_onetopic::SECTIONSNAVIGATION_BOTTOM => new lang_string('sectionsnavigation_bottom', 'format_onetopic'),
@@ -51,7 +51,16 @@ if ($ADMIN->fulltree) {
                                                     get_string('defaultsectionsnavigation', 'format_onetopic'),
                                                     get_string('defaultsectionsnavigation_help', 'format_onetopic'),
                                                     \format_onetopic::SECTIONSNAVIGATION_SUPPORT,
-                                                    $fields));
+                                                    $options));
+
+    $options = [
+        \format_onetopic::SCOPE_MOD => new lang_string('scope_mod', 'format_onetopic')
+    ];
+    $settings->add(new admin_setting_configmulticheckbox('format_onetopic/defaultscope',
+                                                    get_string('defaultscope', 'format_onetopic'),
+                                                    get_string('defaultscope_help', 'format_onetopic'),
+                                                    \format_onetopic::SCOPE_MOD,
+                                                    $options));
 
     // Styles settings.
     $name = 'format_onetopic/settingsheaderstyles';
