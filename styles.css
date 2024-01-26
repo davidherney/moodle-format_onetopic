@@ -294,6 +294,12 @@
     text-align: center;
 }
 
+/* Indent subtopics in courseindex */
+.format-onetopic .drawer .subtopic {
+    padding-left: 20px;
+}
+
+
 /* The slide navigation is only available to wide screens */
 @media (min-width: 600px) {
 
