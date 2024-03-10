@@ -243,6 +243,10 @@
     max-width: calc(100% - 210px);
 }
 
+.format-onetopic #tabs-tree-start .nav-tabs .nav-link.active {
+    box-shadow: 0 -5px 0 0 currentColor inset;
+}
+
 /* Tab styles configuration */
 #onetopic-tabstyles .tabstyleset-buttons button {
     margin-bottom: 10px;
