@@ -70,6 +70,10 @@ class section extends section_base {
         $haspartials['availability'] = $this->add_availability_data($data, $output);
         $haspartials['visibility'] = $this->add_visibility_data($data, $output);
         $haspartials['editor'] = $this->add_editor_data($data, $output);
+        if ($haspartials['editor'] && !isset($data->control_menu) && empty($this->hidecontrols)) {
+            $controlmenu = new $this->controlmenuclass($this->format, $this->section);
+            $data->controlmenu = $controlmenu->export_for_template($output);
+        }
         $haspartials['header'] = $this->add_header_data($data, $output);
         $haspartials['cm'] = $this->add_cm_data($data, $output);
         $this->add_format_data($data, $haspartials, $output);
