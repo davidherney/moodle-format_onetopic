@@ -117,6 +117,11 @@ class content extends content_base {
             $data->numsections = $addsection->export_for_template($output);
         }
 
+        if ($format->show_editor()) {
+            $bulkedittools = new $this->bulkedittoolsclass($format);
+            $data->bulkedittools = $bulkedittools->export_for_template($output);
+        }
+
         return $data;
     }
 

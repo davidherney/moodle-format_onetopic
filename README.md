@@ -1,6 +1,6 @@
 # COURSE FORMAT Onetopic
 
-Package tested in: moodle 4.0+, 4.1+.
+Package tested in: moodle 4.2+.
 
 ## QUICK INSTALL
 Download zip package, extract the onetopic folder and upload this folder into course/format/.
@@ -15,6 +15,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 * Fix: the topics bar is not refresh when change (move a section in boost sections bar) or delete a section.
 
 ## IN VERSION
+
+### 2024050301:
+* Support bulk edit tools.
 
 ### 2022081610:
 * New tabs view option: course index
