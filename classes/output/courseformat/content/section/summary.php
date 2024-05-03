@@ -248,7 +248,7 @@ class summary extends summary_base {
      * @param array $match
      * @return array
      */
-    public function replace_tag_in_expresion ($match) {
+    public function replace_tag_in_expresion($match) {
 
         $term = $match[0];
         $term = str_replace("[[", '', $term);

@@ -69,7 +69,7 @@ class tabs {
      * @param bool $assubtabs It's a subtabs list.
      * @return array of object.
      */
-    public function get_list(bool $assubtabs = false) : array {
+    public function get_list(bool $assubtabs = false): array {
 
         $tabstree = [];
 
@@ -126,7 +126,7 @@ class tabs {
      *
      * @return object With list of tabs in a tabs attribute.
      */
-    public function get_secondlist() : object {
+    public function get_secondlist(): object {
 
         $tabstree = new \stdClass();
         $tabstree->tabs = [];

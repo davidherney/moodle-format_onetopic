@@ -72,12 +72,12 @@ class singletab {
     public $specialclass;
 
     /**
-     * @var boolean If tab is selected.
+     * @var bool If tab is selected.
      */
     public $selected = false;
 
     /**
-     * @var boolean If tab is active.
+     * @var bool If tab is active.
      */
     public $active = true;
 
