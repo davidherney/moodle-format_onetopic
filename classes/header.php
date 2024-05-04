@@ -178,10 +178,6 @@ class header implements \renderable, \templatable {
         $displaysection = $this->format->get_section_number();
         $enablecustomstyles = get_config('format_onetopic', 'enablecustomstyles');
 
-        // Can we view the section in question?
-        $context = \context_course::instance($course->id);
-        $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
-
         // Init custom tabs.
         $section = 0;
 
@@ -200,12 +196,8 @@ class header implements \renderable, \templatable {
 
             $thissection = $sections[$section];
 
-            $showsection = true;
-            if (!$thissection->visible || !$thissection->available) {
-                $showsection = $canviewhidden || !($course->hiddensections == 1);
-            }
-
-            if ($showsection) {
+            // Can we view the section in question?
+            if ($thissection->uservisible || $course->hiddensections != 1) {
 
                 $formatoptions = course_get_format($course)->get_format_options($thissection);
 
@@ -253,7 +245,7 @@ class header implements \renderable, \templatable {
                 if (!$thissection->visible || !$thissection->available) {
                     $specialclass .= ' dimmed disabled ';
 
-                    if (!$canviewhidden) {
+                    if (!$thissection->uservisible) {
                         $inactivetab = true;
                     }
                 }

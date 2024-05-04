@@ -189,14 +189,11 @@ class format_onetopic extends core_courseformat\base {
                     $realsection = 1;
                 }
 
-                // Can view the hidden sections in current course?
-                $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
-
                 $modinfo = get_fast_modinfo($course);
                 $sections = $modinfo->get_section_info_all();
 
                 // Check if the display section is available.
-                if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
+                if (!$sections[$realsection]->uservisible) {
 
                     self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
 
@@ -205,9 +202,7 @@ class format_onetopic extends core_courseformat\base {
 
                     do {
                         $formatoptions = $this->get_format_options($k);
-                        if ($formatoptions['level'] == 0
-                                && ($sections[$k]->available && $sections[$k]->uservisible)
-                                || $canviewhidden) {
+                        if ($formatoptions['level'] == 0 && $sections[$k]->uservisible) {
                             $valid = true;
                             break;
                         }
