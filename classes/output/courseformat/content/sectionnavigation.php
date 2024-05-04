@@ -18,7 +18,7 @@
  * Contains the default section navigation output class.
  *
  * @package   format_onetopic
- * @copyright 2022 David Herney Bernal - cirano. https://bambuco.co
+ * @copyright 2022 David Herney - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,7 +36,7 @@ use stdClass;
  * Base class to render a course add section navigation.
  *
  * @package   format_onetopic
- * @copyright 2022 David Herney Bernal - cirano. https://bambuco.co
+ * @copyright 2022 David Herney - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class sectionnavigation extends sectionnavigation_base {
@@ -64,9 +64,6 @@ class sectionnavigation extends sectionnavigation_base {
         $modinfo = $this->format->get_modinfo();
         $sections = $modinfo->get_section_info_all();
 
-        // FIXME: This is really evil and should by using the navigation API.
-        $canviewhidden = has_capability('moodle/course:viewhiddensections', $context, $USER);
-
         $data = (object)[
             'previousurl' => '',
             'nexturl' => '',
@@ -78,7 +75,7 @@ class sectionnavigation extends sectionnavigation_base {
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
         $back = $this->sectionno - 1;
         while ($back > ($firstsection - 1) && empty($data->previousurl)) {
-            if ($canviewhidden || $sections[$back]->uservisible) {
+            if ($sections[$back]->uservisible) {
                 if (!$sections[$back]->visible) {
                     $data->previoushidden = true;
                 }
@@ -92,7 +89,7 @@ class sectionnavigation extends sectionnavigation_base {
         $forward = $this->sectionno + 1;
         $numsections = course_get_format($course)->get_last_section_number();
         while ($forward <= $numsections && empty($data->nexturl)) {
-            if ($canviewhidden || $sections[$forward]->uservisible) {
+            if ($sections[$forward]->uservisible) {
                 if (!$sections[$forward]->visible) {
                     $data->nexthidden = true;
                 }

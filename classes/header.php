@@ -48,8 +48,6 @@ class header implements \renderable, \templatable {
      * @param \format_onetopic $format Course format instance.
      */
     public function __construct(\format_onetopic $format) {
-        global $COURSE;
-
         $this->format = $format;
     }
 
@@ -60,7 +58,7 @@ class header implements \renderable, \templatable {
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output) {
-        global $COURSE, $PAGE, $CFG, $OUTPUT;
+        global $PAGE, $CFG, $OUTPUT;
 
         $format = $this->format;
         $course = $this->format->get_course();
@@ -70,9 +68,6 @@ class header implements \renderable, \templatable {
 
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
         $currentsection = $this->format->get_section_number();
-
-        $coursecontext = \context_course::instance($course->id);
-        $canviewhidden = has_capability('moodle/course:viewhiddensections', $coursecontext);
 
         $tabslist = [];
         $secondtabslist = null;
@@ -113,7 +108,6 @@ class header implements \renderable, \templatable {
             'format' => $this->format->get_format(),
             'templatetopic' => $course->templatetopic,
             'withicons' => $course->templatetopic_icons,
-            'canviewhidden' => $canviewhidden,
             'hastopictabs' => $hastopictabs,
             'tabs' => $tabslist,
             'hassecondrow' => $hassecondrow,
