@@ -17,7 +17,7 @@ Download zip package, extract the onetopic folder and upload this folder into co
 ## IN VERSION
 
 ### 2024050303:
-* Update section control menu for Moodle 4.2
+* Update section control menu for Moodle 4.2 and stabilization improvements.
 
 ### 2024050301:
 * Support bulk edit tools.

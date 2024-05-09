@@ -294,7 +294,7 @@ class header implements \renderable, \templatable {
                             } while ($parentformatoptions['level'] == 1 && $prevsectionindex >= $firstsection);
 
                             if ($parentformatoptions['firsttabtext']) {
-                                $indextab->content = format_string($parentformatoptions['firsttabtext'], true, $course->id);
+                                $indextab->content = format_text($parentformatoptions['firsttabtext'], true, $course->id);
                             } else {
                                 $indextab->content = get_string('index', 'format_onetopic');
                             }
