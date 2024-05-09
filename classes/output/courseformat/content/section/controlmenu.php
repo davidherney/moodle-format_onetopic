@@ -55,7 +55,7 @@ class controlmenu extends controlmenu_format_topics {
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
-        $sectionreturn = $format->get_section_number();
+        $sectionreturn = $format->get_sectionnum();
 
         $coursecontext = context_course::instance($course->id);
         $numsections = $format->get_last_section_number();

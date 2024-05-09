@@ -43,7 +43,7 @@ class section extends section_base {
     /**
      * Export this data so it can be used as the context for a mustache template.
      *
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
@@ -58,7 +58,7 @@ class section extends section_base {
         $data = (object)[
             'num' => $section->section ?? '0',
             'id' => $section->id,
-            'sectionreturnid' => $format->get_section_number(),
+            'sectionreturnid' => $format->get_sectionnum(),
             'insertafter' => false,
             'summary' => $summary->export_for_template($output),
             'highlightedlabel' => $format->get_section_highlighted_name(),

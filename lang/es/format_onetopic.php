@@ -71,6 +71,7 @@ $string['movesectionto_help'] = 'Mover el tema actual <strong>antes</strong> de 
 $string['page-course-view-topics'] = 'Alguna página principal de curso en formato onetopic';
 $string['page-course-view-topics-x'] = 'Alguna página de curso en formato onetopic';
 $string['pluginname'] = 'Temas en pestañas';
+$string['plugin_description'] = 'Las secciones del curso se muestran separadas en pestañas.';
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
 $string['progress_counter'] = 'Duplicando actividades ({$a->current}/{$a->size})';
 $string['progress_full'] = 'Duplicando el tema';

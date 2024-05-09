@@ -67,7 +67,7 @@ class header implements \renderable, \templatable {
         $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
 
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
-        $currentsection = $this->format->get_section_number();
+        $currentsection = $this->format->get_sectionnum();
 
         $tabslist = [];
         $secondtabslist = null;
@@ -148,7 +148,9 @@ class header implements \renderable, \templatable {
         ];
 
         // Include course format js module.
-        $PAGE->requires->js('/course/format/topics/format.js');
+//        $PAGE->requires->js('/course/format/topics/format.js');
+        $PAGE->requires->js_call_amd('format_topics/mutations', 'init');
+        $PAGE->requires->js_call_amd('format_topics/section', 'init');
         $PAGE->requires->js('/course/format/onetopic/format.js');
         $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
         $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);
@@ -169,7 +171,11 @@ class header implements \renderable, \templatable {
         if ($section && $section > 0) {
             $displaysection = $section;
         } else {
-            $displaysection = $this->format->get_section_number();
+            $displaysection = $this->format->get_sectionnum();
+        }
+
+        if ($displaysection === null) {
+            $displaysection = 0;
         }
 
         $course = $this->format->get_course();

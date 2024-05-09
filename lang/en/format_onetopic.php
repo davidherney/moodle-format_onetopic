@@ -111,6 +111,7 @@ $string['movesectionto_help'] = 'Move current topic to left/right of selected to
 $string['page-course-view-topics'] = 'Any course main page in onetopic format';
 $string['page-course-view-topics-x'] = 'Any course page in onetopic format';
 $string['pluginname'] = 'Onetopic format';
+$string['plugin_description'] = 'Course sections are displayed separately in tabs.';
 $string['privacy:metadata'] = 'The Onetopic format plugin does not store any personal data.';
 $string['progress_counter'] = 'Duplicating activities ({$a->current}/{$a->size})';
 $string['progress_full'] = 'Duplicating topic';

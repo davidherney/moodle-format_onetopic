@@ -285,6 +285,17 @@ class format_onetopic extends core_courseformat\base {
     }
 
     /**
+     * Get the current section number to display.
+     * Some formats has the hability to swith from one section to multiple sections per page.
+     *
+     * @since Moodle 4.4
+     * @return int|null the current section number or null when there is no single section.
+     */
+    public function get_sectionnum(): ?int {
+        return $this->singlesection == null ? 0 : $this->singlesection;
+    }
+
+    /**
      * Returns the default section name for the topics course format.
      *
      * If the section number is 0, it will use the string with key = section0name from the course format's lang file.
@@ -311,7 +322,7 @@ class format_onetopic extends core_courseformat\base {
      * @return string the page title
      */
     public function page_title(): string {
-        return get_string('topicoutline');
+        return get_string('sectionoutline');
     }
 
     /**
@@ -846,7 +857,7 @@ class format_onetopic extends core_courseformat\base {
      * @param moodle_page $page instance of page calling set_cm
      */
     public function page_set_cm(moodle_page $page) {
-        $this->set_section_number($page->cm->sectionnum);
+        $this->set_sectionnum($page->cm->sectionnum);
     }
 
     /**
@@ -892,11 +903,11 @@ class format_onetopic extends core_courseformat\base {
     public function inplace_editable_render_section_name($section, $linkifneeded = true,
             $editable = null, $edithint = null, $editlabel = null) {
         if (empty($edithint)) {
-            $edithint = new lang_string('editsectionname', 'format_topics');
+            $edithint = new lang_string('editsectionname');
         }
         if (empty($editlabel)) {
             $title = get_section_name($section->course, $section);
-            $editlabel = new lang_string('newsectionname', 'format_topics', $title);
+            $editlabel = new lang_string('newsectionname', 'core', $title);
         }
         return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }
@@ -1047,14 +1058,6 @@ class format_onetopic extends core_courseformat\base {
         return parent::show_editor($capabilities);
     }
 
-}
-
-/**
- * Moodle native lib/navigationlib.php calls this hook allowing us to override UI.
- */
-function format_onetopic_before_http_headers() {
-    global $PAGE;
-    $PAGE->requires->css('/course/format/onetopic/styles.php');
 }
 
 /**
