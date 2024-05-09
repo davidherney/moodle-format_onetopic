@@ -2,7 +2,7 @@
 Feature: Sections can be edited and deleted in Onetopic format
   In order to rearrange my course contents
   As a teacher
-  I need to edit and Delete topics
+  I need to edit and delete topics
 
   Background:
     Given the following "users" exist:
@@ -15,7 +15,7 @@ Feature: Sections can be edited and deleted in Onetopic format
       | activity   | name                   | intro                         | course | idnumber    | section |
       | assign     | Test assignment name   | Test assignment description   | C1     | assign1     | 0       |
       | book       | Test book name         | Test book description         | C1     | book1       | 1       |
-      | chat       | Test chat name         | Test chat description         | C1     | chat1       | 4       |
+      | lesson     | Test lesson name       | Test lesson description       | C1     | lesson1     | 4       |
       | choice     | Test choice name       | Test choice description       | C1     | choice1     | 5       |
     And the following "course enrolments" exist:
       | user     | course | role           |
@@ -61,16 +61,16 @@ Feature: Sections can be edited and deleted in Onetopic format
     And I should see "Topic 4"
 
   Scenario: Deleting the middle section in Onetopic format
-    When I click on "Topic 3" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
-    And I delete section "3"
-    Then I should see "Are you absolutely sure you want to completely delete \"Topic 3\" and all the activities it contains?"
+    When I click on "Topic 4" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
+    And I delete section "4"
+    Then I should see "Are you absolutely sure you want to completely delete \"Topic 4\" and all the activities it contains?"
     And I press "Delete"
     And I should not see "Topic 5"
     And I should see "Topic 3" in the ".format_onetopic-tabs .tab_position_3 .nav-link.active" "css_element"
-    And I click on "Topic 3" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
-    And I should not see "Test book name"
-    And I should see "Test chat name" in the "#page-content li#section-3" "css_element"
-    And I should see "Topic 3"
+    And I click on "Topic 4" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
+    And I should not see "Test lesson name"
+    And I should see "Test choice name" in the "#page-content li#section-4" "css_element"
+    And I should see "Topic 4"
 
   Scenario: Adding a section in Onetopic format
     When I follow "Add a section after the currently selected section"
@@ -88,8 +88,8 @@ Feature: Sections can be edited and deleted in Onetopic format
 
   @javascript
   Scenario: Copy section permalink URL to clipboard
-    Given I am on "Course 1" course homepage with editing mode on
-    When I open section "1" edit menu
+    When I click on "Topic 1" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
+    And I open section "1" edit menu
     And I click on "Permalink" "link" in the "Section 1" "section"
     And I click on "Copy to clipboard" "link" in the "Permalink" "dialogue"
     Then I should see "Text copied to clipboard"
