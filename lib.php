@@ -135,7 +135,7 @@ class format_onetopic extends core_courseformat\base {
                 $scope = [];
             }
 
-            $pagesavailable = ['course-view-onetopic', 'course-view'];
+            $pagesavailable = ['course-view-onetopic', 'course-view', 'lib-ajax-service'];
 
             if (!in_array($PAGE->pagetype, $pagesavailable)) {
 
