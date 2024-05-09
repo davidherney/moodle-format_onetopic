@@ -49,12 +49,14 @@ if (!empty($tabstyles)) {
 
         foreach ($orderedtabs as $type => $styles) {
 
+            $important = false;
             switch ($type) {
                 case 'active':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs a.nav-link.active, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs a.nav-link.active, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link.active';
+                    $important = true;
                 break;
                 case 'parent':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
@@ -65,12 +67,14 @@ if (!empty($tabstyles)) {
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.marker a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.marker a.nav-link';
+                    $important = true;
                 break;
                 case 'disabled':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.disabled a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.disabled a.nav-link';
+                    $important = true;
                 break;
                 case 'hover':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
@@ -119,7 +123,7 @@ if (!empty($tabstyles)) {
                 if ($key == 'others') {
                     $csscontent .= $value . ';';
                 } else {
-                    $csscontent .= $key . ':' . $value . ';';
+                    $csscontent .= $key . ':' . $value . ($important ? '!important' : '') . ';';
                 }
             }
 
