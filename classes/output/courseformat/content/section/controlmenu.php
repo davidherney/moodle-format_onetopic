@@ -68,8 +68,6 @@ class controlmenu extends controlmenu_format_topics {
         }
         $url->param('sesskey', sesskey());
 
-        $othercontrols = [];
-
         $movecontrols = [];
         if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
             $baseurl = course_get_url($course);
@@ -136,8 +134,6 @@ class controlmenu extends controlmenu_format_topics {
         $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
 
         if (!$editcontrolexists) {
-            $merged = array_merge($merged, $othercontrols);
-
             if (!$visibilitycontrolexists) {
                 $merged = array_merge($merged, $movecontrols);
             }
@@ -147,10 +143,6 @@ class controlmenu extends controlmenu_format_topics {
         // Step through the array and merge the arrays.
         foreach ($parentcontrols as $key => $action) {
             $merged[$key] = $action;
-            if ($key == "edit") {
-                // If we have come to the edit key, merge these controls here.
-                $merged = array_merge($merged, $othercontrols);
-            }
 
             if (($key == "edit" && !$visibilitycontrolexists) || $key == "visibility") {
                 $merged = array_merge($merged, $movecontrols);

@@ -21,19 +21,19 @@
  * Un recorderis de las Veredas de mi pueblo, en homenaje a los campesinos de mi tierra.
  *
  * Old releases: Guarango, Pantalio, Chalarca, Mazorcal, Chuscalito, Las Teresas, La Madera, Las Brisas, Buenavista,
- * San Juan, La Almería, Piedras Teherán
+ * San Juan, La Almería, Piedras Teherán, El Cardal.
  *
- * Next releases: El Cardal, Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Acacias, Las Colmenas, Minitas,
+ * Next releases: Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Acacias, Las Colmenas, Minitas,
  * Quebrada Negra, San Francisco, San Miguel Abajo, San Miguel, La Concha, La Divisa
  *
  * @package format_onetopic
- * @copyright 2015 David Herney Bernal - cirano. https://bambuco.co
+ * @copyright 2015 David Herney - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024050900.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version = 2024050900.04; // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2024041600; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_BETA;

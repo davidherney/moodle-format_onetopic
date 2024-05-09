@@ -25,32 +25,30 @@ Feature: Sections can be edited and deleted in Onetopic format
 
   Scenario: View the default name of the general section in Onetopic format
     When I edit the section "0"
-    Then the field "Custom" matches value "0"
-    And the field "New value for Section name" matches value "General"
+    Then the field "Section name" matches value ""
+    And I should see "General"
 
   Scenario: Edit the default name of the general section in Onetopic format
     When I edit the section "0" and I fill the form with:
-      | Custom | 1                     |
-      | New value for Section name      | This is the general section |
+      | Section name      | This is the general section |
     Then I should see "This is the general section" in the ".format_onetopic-tabs .tab_position_0 .nav-link.active" "css_element"
 
   Scenario: View the default name of the second section in Onetopic format
     When I click on "Topic 2" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
     And I edit the section "2"
-    Then the field "Custom" matches value "0"
-    And the field "New value for Section name" matches value "Topic 2"
+    Then the field "Section name" matches value ""
+    And I should see "Topic 2"
 
-  Scenario: Edit section summary in Onetopic format
+  Scenario: Edit section description in Onetopic format
     When I click on "Topic 2" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
     And I edit the section "2" and I fill the form with:
-      | Summary | Welcome to section 2 |
+      | Description | Welcome to section 2 |
     Then I should see "Welcome to section 2" in the "#page-content li#section-2" "css_element"
 
   Scenario: Edit section default name in Onetopic format
     When I click on "Topic 2" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
     And I edit the section "2" and I fill the form with:
-      | Custom | 1                      |
-      | New value for Section name      | This is the second topic |
+      | Section name      | This is the second topic |
     Then I should see "This is the second topic" in the ".format_onetopic-tabs .tab_position_2 .nav-link.active" "css_element"
     And I should not see "Topic 2" in the ".format_onetopic-tabs .tab_position_2 .nav-link.active" "css_element"
 
@@ -63,15 +61,16 @@ Feature: Sections can be edited and deleted in Onetopic format
     And I should see "Topic 4"
 
   Scenario: Deleting the middle section in Onetopic format
-    When I click on "Topic 4" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
-    And I delete section "4"
+    When I click on "Topic 3" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
+    And I delete section "3"
+    Then I should see "Are you absolutely sure you want to completely delete \"Topic 3\" and all the activities it contains?"
     And I press "Delete"
-    Then I should not see "Topic 5"
+    And I should not see "Topic 5"
     And I should see "Topic 3" in the ".format_onetopic-tabs .tab_position_3 .nav-link.active" "css_element"
-    And I click on "Topic 4" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
-    And I should not see "Test chat name"
-    And I should see "Test choice name" in the "#page-content li#section-4" "css_element"
-    And I should see "Topic 4"
+    And I click on "Topic 3" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
+    And I should not see "Test book name"
+    And I should see "Test chat name" in the "#page-content li#section-3" "css_element"
+    And I should see "Topic 3"
 
   Scenario: Adding a section in Onetopic format
     When I follow "Add a section after the currently selected section"
@@ -86,3 +85,11 @@ Feature: Sections can be edited and deleted in Onetopic format
     Then I should see "Topic 6"
     And I should not see "Test choice name" in the "#page-content li#section-5" "css_element"
     And ".format_onetopic-tabs .tab_position_7 .nav-link" "css_element" should not exist
+
+  @javascript
+  Scenario: Copy section permalink URL to clipboard
+    Given I am on "Course 1" course homepage with editing mode on
+    When I open section "1" edit menu
+    And I click on "Permalink" "link" in the "Section 1" "section"
+    And I click on "Copy to clipboard" "link" in the "Permalink" "dialogue"
+    Then I should see "Text copied to clipboard"

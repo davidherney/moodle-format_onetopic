@@ -317,6 +317,19 @@ class format_onetopic extends core_courseformat\base {
     }
 
     /**
+     * Get if the current format instance will show multiple sections or an individual one.
+     *
+     * Some formats has the hability to swith from one section to multiple sections per page,
+     * output components will use this method to know if the current display is a single or
+     * multiple sections.
+     *
+     * @return int|null null for all sections or the sectionid.
+     */
+    public function get_sectionid(): ?int {
+        return null;
+    }
+
+    /**
      * Generate the title for this section page.
      *
      * @return string the page title

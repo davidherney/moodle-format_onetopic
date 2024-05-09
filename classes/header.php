@@ -148,7 +148,6 @@ class header implements \renderable, \templatable {
         ];
 
         // Include course format js module.
-//        $PAGE->requires->js('/course/format/topics/format.js');
         $PAGE->requires->js_call_amd('format_topics/mutations', 'init');
         $PAGE->requires->js_call_amd('format_topics/section', 'init');
         $PAGE->requires->js('/course/format/onetopic/format.js');

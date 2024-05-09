@@ -1,5 +1,9 @@
 /** Styles included in topics course format */
 
+.format-onetopic ul.onetopic {
+    padding: 0;
+}
+
 .format-onetopic .format_onetopic-tabs .nav-link {
     white-space: nowrap;
     width: 100%;

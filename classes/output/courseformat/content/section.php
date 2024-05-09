@@ -47,7 +47,7 @@ class section extends section_base {
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
-        global $USER, $PAGE;
+        global $PAGE;
 
         $format = $this->format;
         $course = $format->get_course();
@@ -64,6 +64,7 @@ class section extends section_base {
             'highlightedlabel' => $format->get_section_highlighted_name(),
             'sitehome' => $course->id == SITEID,
             'editing' => $PAGE->user_is_editing(),
+            'displayonesection' => ($course->id != SITEID && !is_null($format->get_sectionid())),
         ];
 
         $haspartials = [];
