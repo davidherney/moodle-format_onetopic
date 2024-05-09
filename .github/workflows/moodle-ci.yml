@@ -32,25 +32,30 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Moodle 4.2, PHP 8.0, PostgreSQL
-          - php: '8.0' # 8.0-8.2
-            moodle-branch: 'MOODLE_402_STABLE'
-            database: pgsql
-            plugin-ci: ^4
-          # Moodle 4.2, PHP 8.1, PostgreSQL
-          - php: '8.1' # 8.0-8.2
-            moodle-branch: 'MOODLE_402_STABLE'
-            database: mariadb
-            plugin-ci: ^4
-          # Moodle 4.2, PHP 8.1, PostgreSQL
-          - php: '8.2' # 8.0-8.2
-            moodle-branch: 'MOODLE_402_STABLE'
-            database: pgsql
-            plugin-ci: ^4
-          # Moodle 4.3, PHP 8.1, MySQL
+          # Moodle 4.3, PHP 8.1, MariaDB
           - php: '8.1'
             moodle-branch: 'MOODLE_403_STABLE'
             database: mariadb
+            plugin-ci: ^4
+          # Moodle 4.3, PHP 8.2, PostgreSQL
+          - php: '8.2'
+            moodle-branch: 'MOODLE_403_STABLE'
+            database: pgsql
+            plugin-ci: ^4
+          # Moodle 4.4, PHP 8.1, MariaDB
+          - php: '8.1'
+            moodle-branch: 'MOODLE_404_STABLE'
+            database: mariadb
+            plugin-ci: ^4
+          # Moodle 4.4, PHP 8.2, MariaDB
+          - php: '8.2'
+            moodle-branch: 'MOODLE_404_STABLE'
+            database: mariadb
+            plugin-ci: ^4
+          # Moodle 4.4, PHP 8.2, PostgreSQL
+          - php: '8.3'
+            moodle-branch: 'MOODLE_404_STABLE'
+            database: pgsql
             plugin-ci: ^4
     steps:
       - name: Check out repository code
@@ -89,11 +94,6 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phplint
 
-      - name: PHP Copy/Paste Detector
-        continue-on-error: true # This step will show errors but will not fail
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcpd
-
       - name: PHP Mess Detector
         continue-on-error: true # This step will show errors but will not fail
         if: ${{ !cancelled() }}
@@ -128,8 +128,18 @@ jobs:
         run: moodle-plugin-ci phpunit --fail-on-warning
 
       - name: Behat features
+        id: behat
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci behat --profile chrome
+
+      - name: Upload Behat Faildump
+        if: ${{ failure() && steps.behat.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Behat Faildump (${{ join(matrix.*, ', ') }})
+          path: ${{ github.workspace }}/moodledata/behat_dump
+          retention-days: 7
+          if-no-files-found: ignore
 
       - name: Mark cancelled jobs as failed.
         if: ${{ cancelled() }}
