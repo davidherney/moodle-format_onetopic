@@ -48,13 +48,8 @@ jobs:
             database: pgsql
             plugin-ci: ^4
           # Moodle 4.3, PHP 8.1, MySQL
-          - php: '8.1' 
+          - php: '8.1'
             moodle-branch: 'MOODLE_403_STABLE'
-            database: mariadb
-            plugin-ci: ^4
-          # Moodle main (not yet released 4.4), PHP 8.1, MySQL
-          - php: '8.1' 
-            moodle-branch: 'main'
             database: mariadb
             plugin-ci: ^4
     steps:
