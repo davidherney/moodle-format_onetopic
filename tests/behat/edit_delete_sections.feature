@@ -90,6 +90,6 @@ Feature: Sections can be edited and deleted in Onetopic format
   Scenario: Copy section permalink URL to clipboard
     When I click on "Topic 1" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
     And I open section "1" edit menu
-    And I click on "Permalink" "link" in the "Section 1" "section"
+    And I click on "Permalink" "link"
     And I click on "Copy to clipboard" "link" in the "Permalink" "dialogue"
     Then I should see "Text copied to clipboard"
