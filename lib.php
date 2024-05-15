@@ -196,7 +196,9 @@ class format_onetopic extends core_courseformat\base {
                 if ($realsection === null || !$sections[$realsection]->uservisible) {
 
                     if ($realsection) {
-                        self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+                        self::$formatmsgs[] = get_string('hidden_message',
+                                                            'format_onetopic',
+                                                            $this->get_section_name($realsection));
                     }
 
                     $valid = false;
