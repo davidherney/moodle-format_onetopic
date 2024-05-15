@@ -56,11 +56,11 @@ class header implements \renderable, \templatable {
     /**
      * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
      *
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output) {
-        global $COURSE, $PAGE, $CFG, $OUTPUT;
+        global $PAGE, $CFG, $OUTPUT;
 
         $format = $this->format;
         $course = $this->format->get_course();
@@ -170,7 +170,6 @@ class header implements \renderable, \templatable {
      * @return \format_onetopic\tabs an object with tabs information
      */
     private function get_tabs(course_modinfo $modinfo, \renderer_base $output): \format_onetopic\tabs {
-        global $PAGE;
 
         $course = $this->format->get_course();
         $sections = $modinfo->get_section_info_all();
@@ -240,7 +239,7 @@ class header implements \renderable, \templatable {
                 }
 
                 if ($section == 0) {
-                    $url = new \moodle_url('/course/view.php', array('id' => $course->id, 'section' => 0));
+                    $url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => 0]);
                 } else {
                     $url = course_get_url($course, $section);
                 }
@@ -261,7 +260,6 @@ class header implements \renderable, \templatable {
                 // Check if display available message is required.
                 $availablemessage = null;
                 if ($course->hiddensections == 2) {
-                    $sectiontpl = new content_base\section($this->format, $thissection);
                     $availabilityclass = $this->format->get_output_classname('content\\section\\availability');
                     $availability = new $availabilityclass($this->format, $thissection);
                     $availabledata = $availability->export_for_template($output);

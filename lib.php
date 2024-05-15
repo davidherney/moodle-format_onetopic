@@ -186,28 +186,25 @@ class format_onetopic extends core_courseformat\base {
                 }
 
                 if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $realsection === 0 && $numsections >= 1) {
-                    $realsection = 1;
+                    $realsection = null;
                 }
-
-                // Can view the hidden sections in current course?
-                $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
 
                 $modinfo = get_fast_modinfo($course);
                 $sections = $modinfo->get_section_info_all();
 
                 // Check if the display section is available.
-                if ((!$canviewhidden && (!$sections[$realsection]->uservisible || !$sections[$realsection]->available))) {
+                if ($realsection === null || !$sections[$realsection]->uservisible) {
 
-                    self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+                    if ($realsection) {
+                        self::$formatmsgs[] = get_string('hidden_message', 'format_onetopic', $this->get_section_name($realsection));
+                    }
 
                     $valid = false;
                     $k = $course->realcoursedisplay ? 1 : 0;
 
                     do {
                         $formatoptions = $this->get_format_options($k);
-                        if ($formatoptions['level'] == 0
-                                && ($sections[$k]->available && $sections[$k]->uservisible)
-                                || $canviewhidden) {
+                        if ($formatoptions['level'] == 0 && $sections[$k]->uservisible) {
                             $valid = true;
                             break;
                         }
@@ -219,7 +216,10 @@ class format_onetopic extends core_courseformat\base {
                     $realsection = $valid ? $k : 0;
                 }
 
+                $realsection = $realsection ?? 0;
+                // The $section var is a global var, we need to set it to the real section.
                 $section = $realsection;
+                $this->set_section_number($section);
                 $USER->display[$course->id] = $realsection;
                 $urlparams['section'] = $realsection;
                 $PAGE->set_url('/course/view.php', $urlparams);
@@ -989,7 +989,7 @@ class format_onetopic extends core_courseformat\base {
         }
 
         $course = $this->get_course();
-        $realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+        $realcoursedisplay = property_exists($course, 'realcoursedisplay') ? $course->realcoursedisplay : false;
         $firstsection = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
         $sections = $this->get_sections();
         $parentsections = [];

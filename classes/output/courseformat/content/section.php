@@ -43,11 +43,11 @@ class section extends section_base {
     /**
      * Export this data so it can be used as the context for a mustache template.
      *
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \renderer_base $output typically, the renderer that's calling this function
      * @return array data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
-        global $USER, $PAGE;
+        global $PAGE;
 
         $format = $this->format;
         $course = $format->get_course();
@@ -75,5 +75,14 @@ class section extends section_base {
         $this->add_format_data($data, $haspartials, $output);
 
         return $data;
+    }
+
+    /**
+     * Get the section number.
+     *
+     * @return int
+     */
+    public function get_section_number() {
+        return $this->section->section;
     }
 }

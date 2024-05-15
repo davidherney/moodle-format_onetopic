@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ define('NO_MOODLE_COOKIES', true);
+
 // Require_login is not needed here.
 // phpcs:disable moodle.Files.RequireLogin.Missing
 require_once('../../../config.php');
