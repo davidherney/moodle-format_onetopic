@@ -1,6 +1,6 @@
 # COURSE FORMAT Onetopic
 
-Package tested in: moodle 4.2+.
+Package tested in: moodle 4.3+.
 
 ## QUICK INSTALL
 Download zip package, extract the onetopic folder and upload this folder into course/format/.

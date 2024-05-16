@@ -61,7 +61,7 @@ class content extends content_base {
     /**
      * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
      *
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output) {
@@ -128,7 +128,7 @@ class content extends content_base {
     /**
      * Export sections array data.
      *
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \renderer_base $output typically, the renderer that's calling this function
      * @return array data context for a mustache template
      */
     protected function export_sections(\renderer_base $output): array {
@@ -137,11 +137,14 @@ class content extends content_base {
         $course = $format->get_course();
         $modinfo = $this->format->get_modinfo();
 
+        $realcoursedisplay = property_exists($course, 'realcoursedisplay') ? $course->realcoursedisplay : false;
+        $firstsectionastab = ($realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+
         // Generate section list.
         $sections = [];
         $stealthsections = [];
         $numsections = $format->get_last_section_number();
-        foreach ($this->get_sections_to_display($modinfo) as $sectionnum => $thissection) {
+        foreach ($this->get_sections_to_display($modinfo) as $thissection) {
             // The course/view.php check the section existence but the output can be called
             // from other parts so we need to check it.
             if (!$thissection) {
@@ -149,6 +152,11 @@ class content extends content_base {
             }
 
             $section = new $this->sectionclass($format, $thissection);
+            $sectionnum = $section->get_section_number();
+
+            if ($sectionnum === 0 && $firstsectionastab) {
+                continue;
+            }
 
             if ($sectionnum > $numsections) {
                 // Activities inside this section are 'orphaned', this section will be printed as 'stealth' below.
@@ -164,9 +172,11 @@ class content extends content_base {
 
             $sections[] = $section->export_for_template($output);
         }
+
         if (!empty($stealthsections)) {
             $sections = array_merge($sections, $stealthsections);
         }
+
         return $sections;
     }
 
