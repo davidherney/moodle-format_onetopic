@@ -77,4 +77,13 @@ class section extends section_base {
 
         return $data;
     }
+
+    /**
+     * Get the section number.
+     *
+     * @return int
+     */
+    public function get_sectionnum() {
+        return $this->section->section;
+    }
 }
