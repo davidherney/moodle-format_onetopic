@@ -185,9 +185,9 @@ class summary extends summary_base {
                 $cmdata->uniqueid = 'cm_' . $mod->id . '_' . time() . '_' . rand(0, 1000);
                 $cmdata->singlename = $instancename;
 
-                $cmdata->showinlinehelp = $cmdata->activityinfo->hascompletion
-                                            || $cmdata->activityinfo->hasdates
-                                            || !empty($cmdata->altcontent);
+                //ToDo: Implement additional activity information. Now it's called "activity badge"
+                $cmdata->showinlinehelp = false;
+
                 $url = $mod->url;
                 if (empty($url)) {
                     // If there is content but NO link (like label), then don't display it.
