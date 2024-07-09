@@ -185,7 +185,7 @@ class summary extends summary_base {
                 $cmdata->uniqueid = 'cm_' . $mod->id . '_' . time() . '_' . rand(0, 1000);
                 $cmdata->singlename = $instancename;
 
-                //ToDo: Implement additional activity information. Now it's called "activity badge"
+                // ToDo: Implement additional activity information. Now it's called "activity badge".
                 $cmdata->showinlinehelp = false;
 
                 $url = $mod->url;
