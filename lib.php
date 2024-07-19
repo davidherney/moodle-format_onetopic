@@ -540,6 +540,10 @@ class format_onetopic extends core_courseformat\base {
                     'default' => $courseconfig->coursedisplay,
                     'type' => PARAM_INT,
                 ],
+                'showtab1' => [
+                    'default' => 0,
+                    'type' => PARAM_INT,
+                ],
                 'templatetopic' => [
                     'default' => self::TEMPLATETOPIC_NOT,
                     'type' => PARAM_INT,
@@ -601,6 +605,18 @@ class format_onetopic extends core_courseformat\base {
                     ],
                     'help' => 'coursedisplay',
                     'help_component' => 'format_onetopic',
+                ],
+                'showtab1' => [
+                    'label' => get_string('showtab1', 'format_onetopic'),
+                    'help' => 'showtab1',
+                    'help_component' => 'format_onetopic',
+                    'element_type' => 'select',
+                    'element_attributes' => [
+                        [
+                            0 => new lang_string('no'),
+                            1 => new lang_string('yes'),
+                        ],
+                    ],
                 ],
                 'templatetopic' => [
                     'label' => new lang_string('templatetopic', 'format_onetopic'),
