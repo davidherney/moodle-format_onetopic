@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/courseformat/content/cm/cmname
+    @template format_onetopic/courseformat/content/cm/cmnameinline
 
     Convenience mustache to displays a course module inplcae editable from the format renderer.
 
@@ -46,9 +46,12 @@
 {{#url}}
     <span class="cmnameinline {{textclasses}} modtype_{{modname}} position-relative">
         {{^hideicons}}
-        <span class="activityiconcontainer {{purpose}} courseicon">
-            <img src="{{{icon}}}" class="activityicon " alt="{{{modname}}} icon">
-        </span>
+            {{! Icon }}
+            {{#activityicon}}
+                {{$ format_onetopic/courseformat/content/cm/cmiconinline }}
+                    {{> format_onetopic/courseformat/content/cm/cmiconinline }}
+                {{/ format_onetopic/courseformat/content/cm/cmiconinline }}
+            {{/activityicon}}
         {{/hideicons}}
         <span class="activityname">
             {{#activityname}}
