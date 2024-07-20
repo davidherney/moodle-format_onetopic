@@ -176,9 +176,9 @@
 
 /* Template styles */
 .format-onetopic .onetopic .cmnameinline .activityiconcontainer {
-    width: auto;
-    height: auto;
-    padding: 0.2rem;
+    padding-left: 0.2rem;
+    padding-right: 0;
+    display: inline;
 }
 
 .format-onetopic .activityinsummarytpl .description .course-description-item {
@@ -200,6 +200,22 @@
     display: block;
 }
 
+.format-onetopic .modal-body .activity-info .completion-dropdown a[role="button"].btn,
+.format-onetopic .modal-body .activity-info .completion-dropdown button.btn {
+    color: #1d2125;
+    background-color: #fff;
+    border-color: #ced4da;
+    min-height: 32px;
+    font-weight: bold;
+    border-radius: 0.5rem;
+}
+
+.format-onetopic .modal-body .activity-info .completion-dropdown a[role="button"].btn:hover,
+.format-onetopic .modal-body .activity-info .completion-dropdown button.btn:hover {
+    color: #fff;
+    background-color: #6a737b;
+    border-color: #b1bbc4;
+}
 /* End of template styles */
 
 /* Completion */

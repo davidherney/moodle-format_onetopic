@@ -1,0 +1,95 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_onetopic/courseformat/content/cm/cmhelpinfo
+
+    Mustache to displays the help information for a course module instance.
+
+    Example context (json):
+    {
+        "url": "#",
+        "icon": "../../../pix/help.svg",
+        "pluginname": "File",
+        "textclasses": "",
+        "purpose": "content",
+        "modname": "resource",
+        "activityname": {
+            "displayvalue" : "<a href=\"#\">Moodle</a>",
+            "value" : "Moodle",
+            "itemid" : "1",
+            "component" : "core_unknown",
+            "itemtype" : "unknown",
+            "edithint" : "Edit this",
+            "editlabel" : "New name for this",
+            "type" : "text",
+            "options" : "",
+            "linkeverything": 0
+        }
+    }
+}}
+
+{{! Only show the icon if there is a name to display. }}
+{{#hasname}}
+    <div id="hw-{{uniqueid}}" class="hidden iconwithhelp-content" {{#singlename}}data-title="{{singlename}}"{{/singlename}}>
+
+        {{$ format_onetopic/courseformat/content/cm/badgesinline }}
+            {{> format_onetopic/courseformat/content/cm/badgesinline }}
+        {{/ format_onetopic/courseformat/content/cm/badgesinline }}
+
+        {{! Completion }}
+        {{#completion}}
+            {{#hascompletion}}
+                {{#showcompletionconditions}}
+                    <div class="activity-info mt-1 mt-md-0">
+                        {{$ core_courseformat/local/content/cm/activity_info}}
+                            {{> core_courseformat/local/content/cm/activity_info}}
+                        {{/ core_courseformat/local/content/cm/activity_info}}
+                    </div>
+                {{/showcompletionconditions}}
+            {{/hascompletion}}
+        {{/completion}}
+
+        <div class="description">
+            {{#hasdates}}
+            <div data-region="activity-dates" class="activity-dates-inline small course-description-item">
+                <div class="description-inner">
+                    {{#activitydates}}
+                        {{$format_onetopic/local/activity_dateinline}}
+                            {{>format_onetopic/local/activity_dateinline}}
+                        {{/format_onetopic/local/activity_dateinline}}
+                    {{/activitydates}}
+                </div>
+            </div>
+            {{/hasdates}}
+
+            {{#altcontent}}
+                <div class="activity-altcontent {{#hasname}}course-description-item small{{/hasname}}{{^hasname}}contentwithoutlink{{/hasname}} d-flex">
+                    <div class="flex-fill description-inner">
+                        <!--{{{altcontent}}}-->
+                    </div>
+                </div>
+            {{/altcontent}}
+
+            {{! Availability }}
+            {{#modavailability}}
+                {{$ core_courseformat/local/content/cm/availability }}
+                    {{> core_courseformat/local/content/cm/availability }}
+                {{/ core_courseformat/local/content/cm/availability }}
+            {{/modavailability}}
+        </div>
+    </div>
+{{/hasname}}

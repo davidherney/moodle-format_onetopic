@@ -38,11 +38,11 @@ export const init = (formattype, icons) => {
 
     var infotitle = getString('aboutresource', 'format_onetopic');
 
-    $('.format-onetopic .onetopic .iconwithhelp').each(function() {
+    $('.format-onetopic .onetopic .iconwithhelp[data-helpwindow]').each(function() {
         var $node = $(this);
         $node.on('click', function(e) {
             e.preventDefault();
-            var $content = $node.find('.iconwithhelp-content');
+            var $content = $('#hw-' + $node.data('helpwindow'));
 
             if ($content.data('modal')) {
                 $content.data('modal').show();
@@ -58,7 +58,7 @@ export const init = (formattype, icons) => {
             // Show the content in a modal window.
             ModalFactory.create({
                 'title': title,
-                'body': ''
+                'body': '',
             }).done(function(modal) {
 
                 var contenthtml = $content.html();
@@ -69,6 +69,7 @@ export const init = (formattype, icons) => {
                 });
 
                 var $modalBody = modal.getBody();
+                $modalBody.css('min-height', '150px');
                 $modalBody.append(contenthtml);
                 modal.show();
                 $content.data('modal', modal);
