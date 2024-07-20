@@ -76,5 +76,4 @@ export const init = (formattype, icons) => {
             });
         });
     });
-
 };

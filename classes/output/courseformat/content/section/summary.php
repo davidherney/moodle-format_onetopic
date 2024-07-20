@@ -184,7 +184,6 @@ class summary extends summary_base {
                 $cmdata->uniqueid = 'cm_' . $mod->id . '_' . time() . '_' . rand(0, 1000);
                 $cmdata->singlename = $instancename;
 
-                // ToDo: Implement additional activity information. Now it's called "activity badge".
                 $cmdata->hascompletion = isset($cmdata->completion) && $cmdata->completion;
 
                 $hasavailability = isset($cmdata->modavailability) ? $cmdata->modavailability->hasmodavailability : false;
@@ -192,7 +191,7 @@ class summary extends summary_base {
                 $cmdata->showinlinehelp = false;
                 if ($cmdata->hascompletion
                         || (isset($cmdata->hasdates) && $cmdata->hasdates)
-                        || $hasavailability){
+                        || $hasavailability) {
                     $cmdata->showinlinehelp = true;
                 }
 
