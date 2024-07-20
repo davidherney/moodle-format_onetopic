@@ -55,6 +55,7 @@ if ($ADMIN->fulltree) {
 
     $options = [
         \format_onetopic::SCOPE_MOD => new lang_string('scope_mod', 'format_onetopic'),
+        \format_onetopic::SCOPE_SCORM => new lang_string('scope_scorm', 'format_onetopic'),
     ];
     $settings->add(new admin_setting_configmulticheckbox('format_onetopic/defaultscope',
                                                     get_string('defaultscope', 'format_onetopic'),
