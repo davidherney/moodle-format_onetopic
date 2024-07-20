@@ -80,6 +80,9 @@ class format_onetopic extends core_courseformat\base {
     /** @var string Course modules scope */
     const SCOPE_MOD = 'mod';
 
+    /** @var string Scorm modules scope */
+    const SCOPE_SCORM = 'scorm';
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -143,6 +146,13 @@ class format_onetopic extends core_courseformat\base {
                     $this->currentscope = self::SCOPE_MOD;
                     $patternavailable = '/^mod-.*-view$/';
                     $this->printable = preg_match($patternavailable, $PAGE->pagetype);
+
+                    if (!$this->printable) {
+                        if (in_array(self::SCOPE_SCORM, $scope) && $PAGE->pagetype == 'mod-scorm-player') {
+                            $this->printable = true;
+                        }
+                    }
+
                 } else {
                     $this->printable = false;
                 }
