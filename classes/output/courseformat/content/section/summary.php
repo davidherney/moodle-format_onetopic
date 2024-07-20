@@ -51,7 +51,7 @@ class summary extends summary_base {
     /** @var section_info the course section class */
     private $section;
 
-    /** @var renderer_base the renderer output class */
+    /** @var \renderer_base the renderer output class */
     private $output;
 
     /** @var string Text to search */
