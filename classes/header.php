@@ -153,7 +153,7 @@ class header implements \renderable, \templatable {
         $PAGE->requires->js('/course/format/onetopic/format.js');
         $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
         $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);
-        if (isset($course->showtab1) && $course->showtab1) {
+        if (get_config('format_onetopic', 'showtab1')) {
             $PAGE->requires->js_call_amd('format_onetopic/defaultsection', 'init', $params);
         }
 
