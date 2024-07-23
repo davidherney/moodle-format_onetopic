@@ -31,42 +31,33 @@
 export const init = () => {
     // Do this only if section 0 is before the tabs and no section is already set in the URL.
     const generalSection = document.querySelector('.general-section');
-    var currentUrl = new URL(window.location.href);
+    const currentUrl = new URL(window.location.href);
     var params = new URLSearchParams(currentUrl.search);
-    if (generalSection && !params.has('section')) {
-        if (params.has('id')) {
-            const idValue = params.get('id');
-            if (idValue) {
-                var link = '';
-                // If a section is marked show this by default.
-                const marked = document.querySelector('.marker .nav-link');
-                if (marked) {
-                    const url = marked.getAttribute('href');
-                    link = url.split('#')[0]; // Keep only the URL w/o any anchors.
-                } else { // Show the 1st section.
-                    link = getBaseURL() + '/course/view.php?id=' + idValue + '&section=1';
-                }
-                window.location.href = link;
-            }
+    const idValue = params.get('id');
+    const sectionValue = params.get('section');
+    if (generalSection && idValue && !sectionValue) {
+        var link = window.location + "&section=1";
+        var sectionId = 1;
+        // If a section is marked show this by default.
+        const marked = document.querySelector('.marker .nav-link');
+        if (marked) {
+            const url = marked.getAttribute('href');
+            link = url.split('#')[0]; // Keep only the URL w/o any anchors.
+            sectionId = link.split('section=')[1] ?? 1; // Get the section ID from the URL.
         }
+
+        let xhrSection1 = new XMLHttpRequest();
+        xhrSection1.responseType = "document";
+        xhrSection1.onload = () => {
+            let doc = xhrSection1.response;
+            let tabBody = document.querySelector("#tabs-tree-start .onetopic-tab-body");
+            tabBody.textContent = '';
+            tabBody.insertAdjacentHTML("beforeend",
+                doc.querySelector("#tabs-tree-start .onetopic-tab-body").innerHTML);
+            document.querySelector("a.nav-link[href*='section=" + sectionId + "#tabs-tree-start']").classList.add("active");
+            history.replaceState({}, "", xhrSection1.responseURL);
+        };
+        xhrSection1.open("GET", link);
+        xhrSection1.send();
     }
 };
-
-/**
- * Get the base URL of the current page.
- */
-function getBaseURL() {
-    // Get the protocol
-    var protocol = window.location.protocol;
-    // Get the hostname
-    var hostname = window.location.hostname;
-    // Get the port, if specified
-    var port = window.location.port;
-
-    // Construct the base URL
-    var baseURL = protocol + "//" + hostname;
-    if (port) {
-        baseURL += ":" + port;
-    }
-    return baseURL;
-}
