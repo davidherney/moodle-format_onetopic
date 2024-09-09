@@ -32,13 +32,15 @@ export const init = () => {
     // Do this only if section 0 is before the tabs and no section is already set in the URL.
     const generalSection = document.querySelector('.general-section');
     const currentUrl = new URL(window.location.href);
+    let nextUrl = new URL(window.location.href);
     var params = new URLSearchParams(currentUrl.search);
     const idValue = params.get('id');
     const sectionValue = params.get('section');
     if (generalSection && idValue && !sectionValue) {
-        var link = window.location + "&section=1";
+        nextUrl.search = currentUrl.search + "&section=1";
+        var link = nextUrl.href;
         var sectionId = 1;
-        // If a section is marked show this by default.
+        // If a section is marked show this by default. This won't exist if tabs are hidden
         const marked = document.querySelector('.marker .nav-link');
         if (marked) {
             const url = marked.getAttribute('href');
@@ -46,15 +48,22 @@ export const init = () => {
             sectionId = link.split('section=')[1] ?? 1; // Get the section ID from the URL.
         }
 
+        let tabsVisible = document.getElementById("tabs-tree-start").classList.contains("hastopictabs");
+        let contentToReplace = "#tabs-tree-start .onetopic-tab-body";
+        if(tabsVisible==false) {
+            contentToReplace = "#tabs-tree-start>div[role='main']";
+        }
         let xhrSection1 = new XMLHttpRequest();
         xhrSection1.responseType = "document";
         xhrSection1.onload = () => {
             let doc = xhrSection1.response;
-            let tabBody = document.querySelector("#tabs-tree-start .onetopic-tab-body");
+            let tabBody = document.querySelector(contentToReplace);
             tabBody.textContent = '';
             tabBody.insertAdjacentHTML("beforeend",
-                doc.querySelector("#tabs-tree-start .onetopic-tab-body").innerHTML);
-            document.querySelector("a.nav-link[href*='section=" + sectionId + "#tabs-tree-start']").classList.add("active");
+                doc.querySelector(contentToReplace).innerHTML);
+            if(tabsVisible) {
+                document.querySelector("a.nav-link[href*='section=" + sectionId + "#tabs-tree-start']").classList.add("active");
+            }
             history.replaceState({}, "", xhrSection1.responseURL);
         };
         xhrSection1.open("GET", link);
