@@ -55,23 +55,22 @@ class controlmenu extends controlmenu_format_topics {
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
-        $sectionreturn = $format->get_sectionnum();
 
         $coursecontext = context_course::instance($course->id);
         $numsections = $format->get_last_section_number();
         $isstealth = $section->section > $numsections;
 
-        if ($sectionreturn) {
-            $url = course_get_url($course, $section->section);
-        } else {
-            $url = course_get_url($course);
+        $baseurl = course_get_url($course);
+        $baseurl->param('sesskey', sesskey());
+
+        $parentcontrols = parent::section_control_items();
+
+        if (array_key_exists('view', $parentcontrols)) {
+            unset($parentcontrols['view']);
         }
-        $url->param('sesskey', sesskey());
 
         $movecontrols = [];
         if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
-            $baseurl = course_get_url($course);
-            $baseurl->param('sesskey', sesskey());
             $horizontal = !$course->hidetabsbar && $course->tabsview != \format_onetopic::TABSVIEW_VERTICAL;
             $rtl = right_to_left();
 
@@ -105,8 +104,6 @@ class controlmenu extends controlmenu_format_topics {
             }
         }
 
-        $parentcontrols = parent::section_control_items();
-
         // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
         if (array_key_exists("delete", $parentcontrols)) {
             $url = new \moodle_url('/course/editsection.php', [
@@ -128,25 +125,27 @@ class controlmenu extends controlmenu_format_topics {
             $parentcontrols['permalink']['url'] = $sectionlink;
         }
 
-        // If the edit key exists, we are going to insert our controls after it.
+        // If the delete key exists, we are going to insert our controls before it.
         $merged = [];
-        $editcontrolexists = array_key_exists("edit", $parentcontrols);
-        $visibilitycontrolexists = array_key_exists("visibility", $parentcontrols);
-
-        if (!$editcontrolexists) {
-            if (!$visibilitycontrolexists) {
-                $merged = array_merge($merged, $movecontrols);
+        $movecontrolsbefore = null;
+        foreach (['delete', 'permalink'] as $controlname) {
+            if (array_key_exists($controlname, $parentcontrols)) {
+                $movecontrolsbefore = $controlname;
+                break;
             }
         }
 
         // We can't use splice because we are using associative arrays.
         // Step through the array and merge the arrays.
         foreach ($parentcontrols as $key => $action) {
-            $merged[$key] = $action;
-
-            if (($key == "edit" && !$visibilitycontrolexists) || $key == "visibility") {
+            if ($key == $movecontrolsbefore) {
                 $merged = array_merge($merged, $movecontrols);
             }
+            $merged[$key] = $action;
+        }
+
+        if (!$movecontrolsbefore) {
+            $merged = array_merge($merged, $movecontrols);
         }
 
         return $merged;
