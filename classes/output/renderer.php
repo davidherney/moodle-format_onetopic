@@ -44,6 +44,43 @@ class renderer extends section_renderer {
     }
 
     /**
+     * Renders the provided widget and returns the HTML to display it.
+     *
+     * Course format templates uses a similar subfolder structure to the renderable classes.
+     * This method find out the specific template for a course widget. That's the reason why
+     * this render method is different from the normal plugin renderer one.
+     *
+     * course format templatables can be rendered using the core_course/local/* templates.
+     * Format plugins are free to override the default template location using render_xxx methods as usual.
+     *
+     * @param \renderable $widget instance with renderable interface
+     * @return string the widget HTML
+     */
+    public function render(\renderable $widget) {
+        global $CFG;
+        $fullpath = str_replace('\\', '/', get_class($widget));
+
+        // Check for special course format templatables.
+        if ($widget instanceof \templatable) {
+            // Templatables from both core_courseformat\output\local\* and format_onetopic\output\courseformat\*
+            // use format_onetopic/local/* templates, if they exist.
+            $corepath = 'core_courseformat\/output\/local';
+            $pluginpath = 'format_onetopic\/output\/courseformat';
+            $specialrenderers = '/^(?<componentpath>' . $corepath . '|' . $pluginpath . ')\/(?<template>.+)$/';
+            $matches = null;
+
+            if (preg_match($specialrenderers, $fullpath, $matches)
+                && file_exists($CFG->dirroot . '/course/format/onetopic/templates/local/' . $matches['template'])) {
+                $data = $widget->export_for_template($this);
+                return $this->render_from_template('format_onetopic/local/' . $matches['template'], $data);
+            }
+        }
+
+        // If it doesn't work, let the parent class decide.
+        return parent::render($widget);
+    }
+
+    /**
      * Generate the section title, wraps it in a link to the section page if page is to be displayed on a separate page.
      *
      * @param section_info|stdClass $section The course_section entry from DB
