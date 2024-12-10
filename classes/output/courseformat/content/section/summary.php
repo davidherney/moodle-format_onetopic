@@ -47,7 +47,7 @@ class summary extends summary_base {
     protected $format;
 
     /** @var section_info the course section class */
-    private $section;
+    protected $section;
 
     /** @var \renderer_base the renderer output class */
     private $output;
