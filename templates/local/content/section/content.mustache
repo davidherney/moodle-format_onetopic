@@ -85,11 +85,6 @@
         "highlightedlabel" : "Highlighted"
     }
 }}
-{{#restrictionlock}}
-    <div class="align-self-center ml-2">
-        {{#pix}}t/unlock, core{{/pix}}
-    </div>
-{{/restrictionlock}}
 {{#collapsemenu}}
     {{^displayonesection}}
     <div class="flex-fill d-flex justify-content-end mr-2 align-self-start mt-2">
@@ -117,9 +112,9 @@
             {{/ core_courseformat/local/content/section/summary }}
         {{/summary}}
         {{#availability}}
-            {{$ format_onetopic/courseformat/content/cm/availabilityinline }}
-                {{> format_onetopic/courseformat/content/cm/availabilityinline }}
-            {{/ format_onetopic/courseformat/content/cm/availabilityinline }}
+            {{$ core_courseformat/local/content/section/availability }}
+                {{> core_courseformat/local/content/section/availability }}
+            {{/ core_courseformat/local/content/section/availability }}
         {{/availability}}
     </div>
     {{#cmsummary}}
