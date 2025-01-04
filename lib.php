@@ -110,11 +110,10 @@ class format_onetopic extends core_courseformat\base {
     /**
      * Creates a new instance of class
      *
-     * Please use {@see course_get_format($courseorid)} to get an instance of the format class
+     * Please use course_get_format($courseorid) to get an instance of the format class
      *
      * @param string $format
      * @param int $courseid
-     * @return format_base
      */
     protected function __construct($format, $courseid) {
         parent::__construct($format, $courseid);
@@ -755,14 +754,14 @@ class format_onetopic extends core_courseformat\base {
     }
 
     /**
-     * Definitions of the additional options that this course format uses for section.
+     * Definitions of the additional options that this course format uses for section
      *
-     * See {@see format_base::course_format_options()} for return array definition.
+     * See course_format::course_format_options() for return array definition.
      *
      * Additionally section format options may have property 'cache' set to true
-     * if this option needs to be cached in {@see get_fast_modinfo()}. The 'cache' property
-     * is recommended to be set only for fields used in {@see format_base::get_section_name()},
-     * {@see format_base::extend_course_navigation()} and {@see format_base::get_view_url()}
+     * if this option needs to be cached in get_fast_modinfo(). The 'cache' property
+     * is recommended to be set only for fields used in course_format::get_section_name(),
+     * course_format::extend_course_navigation() and course_format::get_view_url()
      *
      * For better performance cached options are recommended to have 'cachedefault' property
      * Unlike 'default', 'cachedefault' should be static and not access get_config().

@@ -78,9 +78,18 @@ class header implements \renderable, \templatable {
             $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
         }
 
-        $tabsview = $course->tabsview == \format_onetopic::TABSVIEW_VERTICAL ||
-                    $course->tabsview == \format_onetopic::TABSVIEW_COURSEINDEX ? 'verticaltabs' :
-                        ($course->tabsview == \format_onetopic::TABSVIEW_ONELINE ? 'onelinetabs' : 'defaulttabs');
+        switch ($course->tabsview) {
+            case \format_onetopic::TABSVIEW_VERTICAL:
+            case \format_onetopic::TABSVIEW_COURSEINDEX:
+                $tabsview = 'verticaltabs';
+                break;
+            case \format_onetopic::TABSVIEW_ONELINE:
+                $tabsview = 'onelinetabs';
+                break;
+            default:
+                $tabsview = 'defaulttabs';
+                break;
+        }
 
         foreach (\format_onetopic::$formatmsgs as $key => $msg) {
             if (is_string($msg)) {
