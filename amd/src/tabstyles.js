@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
- * @package   format_onetopic
- * @copyright 2023 David Herney Bernal - cirano
+/**
+ * Tab editor in site settings.
+ *
+ * @module    format_onetopic/tabstyles
+ * @copyright 2021 David Herney Bernal - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import $ from 'jquery';

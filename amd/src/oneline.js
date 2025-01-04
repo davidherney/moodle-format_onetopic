@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
- * @package   format_onetopic
+/**
+ * Used to oneline tabs view.
+ *
+ * @module    format_onetopic/oneline
  * @copyright 2021 David Herney Bernal - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 import $ from 'jquery';
 
 /**

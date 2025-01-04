@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
- * @package   format_onetopic
+/**
+ * General format features.
+ *
+ * @module    format_onetopic/main
  * @copyright 2021 David Herney Bernal - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 import * as OneLine from 'format_onetopic/oneline';
 import $ from 'jquery';
 import ModalFactory from 'core/modal_factory';
