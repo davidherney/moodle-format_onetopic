@@ -65,10 +65,6 @@ class controlmenu extends controlmenu_format_topics {
 
         $parentcontrols = parent::section_control_items();
 
-        if (array_key_exists('view', $parentcontrols)) {
-            unset($parentcontrols['view']);
-        }
-
         $movecontrols = [];
         if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
             $horizontal = !$course->hidetabsbar && $course->tabsview != \format_onetopic::TABSVIEW_VERTICAL;

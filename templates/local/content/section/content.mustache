@@ -106,16 +106,16 @@
 <div id="coursecontentcollapse{{num}}"
     class="content {{^iscoursedisplaymultipage}}{{^sitehome}}{{^displayonesection}}course-content-item-content collapse {{^contentcollapsed}}show{{/contentcollapsed}}{{/displayonesection}}{{/sitehome}}{{/iscoursedisplaymultipage}}">
     <div class="{{#hasavailability}}description{{/hasavailability}} my-3" data-for="sectioninfo">
-        {{#summary}}
-            {{$ core_courseformat/local/content/section/summary }}
-                {{> core_courseformat/local/content/section/summary }}
-            {{/ core_courseformat/local/content/section/summary }}
-        {{/summary}}
         {{#availability}}
             {{$ core_courseformat/local/content/section/availability }}
                 {{> core_courseformat/local/content/section/availability }}
             {{/ core_courseformat/local/content/section/availability }}
         {{/availability}}
+        {{#summary}}
+            {{$ core_courseformat/local/content/section/summary }}
+                {{> core_courseformat/local/content/section/summary }}
+            {{/ core_courseformat/local/content/section/summary }}
+        {{/summary}}
     </div>
     {{#cmsummary}}
         {{$ core_courseformat/local/content/section/cmsummary }}

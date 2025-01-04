@@ -258,6 +258,11 @@
     text-align: right;
 }
 
+.format-onetopic .course-section .description .section_availability > .availabilityinfo {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
 /* The jump list if exist */
 .format-onetopic .single-section .section-navigation.mdl-bottom div:nth-child(2) {
     max-width: calc(100% - 210px);

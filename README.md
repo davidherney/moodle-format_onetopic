@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2024050903:
+* Fixed Load previously browsed section when section is not specified in URL.
+
 ### 2024050901:
 * Compatibility with moodle 4.4
 

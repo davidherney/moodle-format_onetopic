@@ -161,6 +161,25 @@ class format_onetopic extends core_courseformat\base {
             }
         }
 
+        $course = $this->get_course();
+
+        if (!isset($section) && ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
+
+            if ($sectionid <= 0) {
+                $section = optional_param('section', -1, PARAM_INT);
+            }
+
+            if ($section < 0) {
+                if (isset($USER->display[$course->id])) {
+                    $section = $USER->display[$course->id];
+                } else if ($course->marker && $course->marker > 0) {
+                    $section = (int)$course->marker;
+                } else {
+                    $section = 0;
+                }
+            }
+        }
+
         if ($this->printable) {
             if (!self::$loaded && isset($section) && $courseid &&
                     ($PAGE->pagetype == 'course-view-onetopic' || $PAGE->pagetype == 'course-view')) {
@@ -172,26 +191,11 @@ class format_onetopic extends core_courseformat\base {
 
                 // Onetopic format is always multipage.
                 $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
-
-                if ($sectionid <= 0) {
-                    $section = optional_param('section', -1, PARAM_INT);
-                }
-
                 $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', ['course' => $courseid], MUST_EXIST);
 
                 if ($section >= 0 && $numsections >= $section) {
                     $realsection = $section;
                 } else {
-                    if (isset($USER->display[$course->id]) && $numsections >= $USER->display[$course->id]) {
-                        $realsection = $USER->display[$course->id];
-                    } else if ($course->marker && $course->marker > 0) {
-                        $realsection = (int)$course->marker;
-                    } else {
-                        $realsection = 0;
-                    }
-                }
-
-                if ($realsection < 0 || $realsection > $numsections) {
                     $realsection = 0;
                 }
 
@@ -866,7 +870,6 @@ class format_onetopic extends core_courseformat\base {
         return $sectionformatoptions;
     }
 
-
     /**
      * Whether this format allows to delete sections.
      *
@@ -1079,7 +1082,6 @@ class format_onetopic extends core_courseformat\base {
      * @return bool true if edit controls must be displayed
      */
     public function show_editor(?array $capabilities = ['moodle/course:manageactivities']): bool {
-        global $PAGE;
 
         if ($this->currentscope != self::SCOPE_COURSE) {
             return false;
@@ -1088,6 +1090,22 @@ class format_onetopic extends core_courseformat\base {
         return parent::show_editor($capabilities);
     }
 
+    /**
+     * Get the course display value for the current course.
+     *
+     * Formats extending topics or weeks will use coursedisplay as this setting name
+     * so they don't need to override the method. However, if the format uses a different
+     * display logic it must override this method to ensure the core renderers know
+     * if a COURSE_DISPLAY_MULTIPAGE or COURSE_DISPLAY_SINGLEPAGE is being used.
+     *
+     * @return int The current value (COURSE_DISPLAY_MULTIPAGE or COURSE_DISPLAY_SINGLEPAGE)
+     */
+    public function get_course_display(): int {
+        global $destsection, $move;
+
+        // The display is SINGLEPAGE when we move a section, in other case we use the MULTIPAGE.
+        return $destsection && $move ? COURSE_DISPLAY_SINGLEPAGE : COURSE_DISPLAY_MULTIPAGE;
+    }
 }
 
 /**
