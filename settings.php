@@ -60,7 +60,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configmulticheckbox('format_onetopic/defaultscope',
                                                     get_string('defaultscope', 'format_onetopic'),
                                                     get_string('defaultscope_help', 'format_onetopic'),
-                                                    \format_onetopic::SCOPE_MOD,
+                                                    [\format_onetopic::SCOPE_MOD => 1],
                                                     $options));
 
     // Styles settings.
