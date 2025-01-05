@@ -33,9 +33,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024050903.03; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version = 2024050904; // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2024041600; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.4.03(LasAcacias)';
+$plugin->release = '4.4.04(LasAcacias)';
 $plugin->dependencies = ['format_topics' => 2024042200];
