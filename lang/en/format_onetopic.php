@@ -155,7 +155,7 @@ $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
-$string['settingsheaderdefault'] = 'Default settings';
+$string['settingsheaderdefault'] = 'Default course settings';
 
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';

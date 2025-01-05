@@ -38,6 +38,15 @@ use core\output\inplace_editable;
  */
 class format_onetopic extends core_courseformat\base {
 
+    /** @var int Hidden sections are shown collapsed */
+    const HIDDENSENTIONS_COLLAPSED = 0;
+
+    /** @var int Hidden sections are invisible */
+    const HIDDENSENTIONS_INVISIBLE = 1;
+
+    /** @var int Hidden sections has the help information in a icon */
+    const HIDDENSENTIONS_HELP = 2;
+
     /** @var int The summary is not a template */
     const TEMPLATETOPIC_NOT = 0;
 
@@ -536,10 +545,10 @@ class format_onetopic extends core_courseformat\base {
     public function course_format_options($foreditform = false) {
         static $courseformatoptions = false;
         if ($courseformatoptions === false) {
-            $courseconfig = get_config('moodlecourse');
+            $courseconfig = get_config('format_onetopic');
             $courseformatoptions = [
                 'hiddensections' => [
-                    'default' => $courseconfig->hiddensections,
+                    'default' => $courseconfig->defaulthiddensections,
                     'type' => PARAM_INT,
                 ],
                 'hidetabsbar' => [
@@ -547,7 +556,7 @@ class format_onetopic extends core_courseformat\base {
                     'type' => PARAM_INT,
                 ],
                 'coursedisplay' => [
-                    'default' => $courseconfig->coursedisplay,
+                    'default' => $courseconfig->defaultcoursedisplay,
                     'type' => PARAM_INT,
                 ],
                 'templatetopic' => [
@@ -559,11 +568,11 @@ class format_onetopic extends core_courseformat\base {
                     'type' => PARAM_INT,
                 ],
                 'tabsview' => [
-                    'default' => 0,
+                    'default' => $courseconfig->defaulttabsview,
                     'type' => PARAM_INT,
                 ],
                 'usessectionsnavigation' => [
-                    'default' => 0,
+                    'default' => 0, // The 0 value is the site level.
                     'type' => PARAM_INT,
                 ],
                 'usescourseindex' => [
@@ -582,9 +591,9 @@ class format_onetopic extends core_courseformat\base {
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            0 => new lang_string('hiddensectionscollapsed'),
-                            1 => new lang_string('hiddensectionsinvisible'),
-                            2 => new lang_string('hiddensectionshelp', 'format_onetopic'),
+                            self::HIDDENSENTIONS_COLLAPSED => new lang_string('hiddensectionscollapsed'),
+                            self::HIDDENSENTIONS_INVISIBLE => new lang_string('hiddensectionsinvisible'),
+                            self::HIDDENSENTIONS_HELP => new lang_string('hiddensectionshelp', 'format_onetopic'),
                         ],
                     ],
                 ],
@@ -683,6 +692,7 @@ class format_onetopic extends core_courseformat\base {
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
+
         return $courseformatoptions;
     }
 
@@ -729,11 +739,12 @@ class format_onetopic extends core_courseformat\base {
      * @return bool whether there were any changes to the options values
      */
     public function update_course_format_options($data, $oldcourse = null) {
-        global $DB;
+
         $data = (array)$data;
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
             $options = $this->course_format_options();
+            $defaultconfig = get_config('format_onetopic');
 
             foreach ($options as $key => $unused) {
                 if (!array_key_exists($key, $data)) {
@@ -748,11 +759,11 @@ class format_onetopic extends core_courseformat\base {
                     } else if ($key === 'templatetopic_icons') {
                         $data['templatetopic_icons'] = 0;
                     } else if ($key === 'tabsview') {
-                        $data['tabsview'] = self::TABSVIEW_DEFAULT;
+                        $data['tabsview'] = $defaultconfig->defaulttabsview;
                     } else if ($key === 'usessectionsnavigation') {
-                        $data['usessectionsnavigation'] = 0;
+                        $data['usessectionsnavigation'] = $defaultconfig->defaultsectionsnavigation;
                     } else if ($key === 'usescourseindex') {
-                        $data['usescourseindex'] = 2;
+                        $data['usescourseindex'] = $defaultconfig->courseindex;
                     }
                 }
             }
