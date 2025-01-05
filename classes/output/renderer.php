@@ -18,6 +18,7 @@ namespace format_onetopic\output;
 
 use core_courseformat\output\section_renderer;
 use moodle_page;
+use core_courseformat\base as course_format;
 
 /**
  * Basic renderer for topics format.
@@ -101,4 +102,21 @@ class renderer extends section_renderer {
     public function section_title_without_link($section, $course) {
         return $this->render(course_get_format($course)->inplace_editable_render_section_name($section, false));
     }
+    
+    /**
+     * Get the course index drawer with placeholder.
+     *
+     * If the format is not compatible with the course index, this method will return an empty string.
+     *
+     * @param course_format $format the course format
+     * @return string the course index HTML.
+     */
+    public function course_index_drawer(course_format $format): ?String {
+        if ($format->uses_course_index()) {
+            include_course_editor($format);
+            return $this->render_from_template('format_onetopic/local/courseindex/drawer', []);
+        }
+        return '';
+    }
+
 }
