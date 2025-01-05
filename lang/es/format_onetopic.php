@@ -40,15 +40,6 @@ $string['defaultscope'] = 'Alcance predeterminado';
 $string['defaultscope_help'] = 'Alcance predeterminado utilizado para definir las páginas adicionales en las que se imprime el menú de pestañas. El alcance del Reproductor SCORM requiere el alcance de los Módulos.';
 $string['defaultsectionsnavigation'] = 'Valor por defecto para la navegación de secciones';
 $string['defaultsectionsnavigation_help'] = 'Valor por defecto a ser utilizado para definir el comportamiento de la funcionalidad "Usar navegación en secciones". Este valor puede ser sobreescrito por cada curso.';
-$string['disable'] = 'Deshabilitar';
-$string['disableajax'] = 'Acciones de edición asíncronas';
-$string['disableajax_help'] = 'Deshabilitarlas le permite mover recursos entre pestañas de temas. Sólo se deshabilitan las acciones asíncronas en la sesión actual, no es permanente.';
-$string['duplicate'] = 'Duplicar';
-$string['duplicate_confirm'] = '¿Está seguro de que desea duplicar el tema actual? La tarea puede tardar un buen rato dependiendo de la cantidad de recursos.';
-$string['duplicatesection'] = 'Duplicar tema actual';
-$string['duplicatesection_help'] = 'Usado para duplicar los recursos del tema actual en un nuevo tema.';
-$string['duplicating'] = 'Duplicando';
-$string['enable'] = 'Habilitar';
 $string['enableanchorposition'] = 'Habilitar ancla de posición';
 $string['enableanchorposition_help'] = 'Usar una ancla para posicionarse en la parte superior de las pestañas cuando se haga clic en una pestaña.';
 $string['enablecustomstyles'] = 'Habilitar estilos personalizados';
@@ -75,9 +66,6 @@ $string['page-course-view-topics-x'] = 'Alguna página de curso en formato oneto
 $string['plugin_description'] = 'Las secciones del curso se muestran separadas en pestañas.';
 $string['pluginname'] = 'Temas en pestañas';
 $string['privacy:metadata'] = 'El formato Temas en pestañas no almacena datos personales.';
-$string['progress_counter'] = 'Duplicando actividades ({$a->current}/{$a->size})';
-$string['progress_full'] = 'Duplicando el tema';
-$string['rebuild_course_cache'] = 'Recreando el caché del curso';
 $string['scope_mod'] = 'Módulos';
 $string['scope_scorm'] = 'Reproductor de SCORM';
 $string['sectionname'] = 'Tema';
@@ -107,4 +95,20 @@ $string['usescourseindex'] = 'Usar índice de curso';
 $string['usescourseindex_help'] = 'Usar la barra lateral conocida como <em>Índice de curso</em> que permite la navegación a través de secciones y recursos.';
 $string['usessectionsnavigation'] = 'Usar navegación en secciones';
 $string['usessectionsnavigation_help'] = 'Mostrar un botón para navegar a la sección anterior y a la siguiente.';
+
+// Deprecated since Moodle 4.0.
+$string['disable'] = 'Deshabilitar';
+$string['disableajax'] = 'Acciones de edición asíncronas';
+$string['disableajax_help'] = 'Deshabilitarlas le permite mover recursos entre pestañas de temas. Sólo se deshabilitan las acciones asíncronas en la sesión actual, no es permanente.';
+$string['enable'] = 'Habilitar';
 $string['utilities'] = 'Utilidades de edición de pestañas';
+
+// Deprecated since Moodle 4.3.
+$string['duplicate'] = 'Duplicar';
+$string['duplicate_confirm'] = '¿Está seguro de que desea duplicar el tema actual? La tarea puede tardar un buen rato dependiendo de la cantidad de recursos.';
+$string['duplicatesection'] = 'Duplicar tema actual';
+$string['duplicatesection_help'] = 'Usado para duplicar los recursos del tema actual en un nuevo tema.';
+$string['duplicating'] = 'Duplicando';
+$string['progress_counter'] = 'Duplicando actividades ({$a->current}/{$a->size})';
+$string['progress_full'] = 'Duplicando el tema';
+$string['rebuild_course_cache'] = 'Recreando el caché del curso';

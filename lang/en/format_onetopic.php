@@ -77,15 +77,6 @@ $string['defaultscope'] = 'Default scope';
 $string['defaultscope_help'] = 'Default scope used to define the pages on which the tab menu is printed. The SCORM Player scope require the Modules scope.';
 $string['defaultsectionsnavigation'] = 'Default value to sections navigation';
 $string['defaultsectionsnavigation_help'] = 'Default value used in courses to define the "Uses sections navigation" feature. This can be overwrite for each course.';
-$string['disable'] = 'Disable';
-$string['disableajax'] = 'Asynchronous edit actions';
-$string['disableajax_help'] = 'Use this action in order to move resources between topic tabs. It only disables the asynchronous actions in current session, it is not permanently.';
-$string['duplicate'] = 'Duplicate';
-$string['duplicate_confirm'] = 'Are you sure you want to duplicate the current topic? The task can take a while depending on the amount of resources.';
-$string['duplicatesection'] = 'Duplicate current topic';
-$string['duplicatesection_help'] = 'Used to duplicate the resources of current topic in a new topic';
-$string['duplicating'] = 'Duplicating';
-$string['enable'] = 'Enable';
 $string['enableanchorposition'] = 'Enable anchor position';
 $string['enableanchorposition_help'] = 'Use an anchor to navigate to the top of tabs when click in a tab.';
 $string['enablecustomstyles'] = 'Enable custom styles';
@@ -113,9 +104,6 @@ $string['page-course-view-topics-x'] = 'Any course page in onetopic format';
 $string['plugin_description'] = 'Course sections are displayed separately in tabs.';
 $string['pluginname'] = 'Onetopic format';
 $string['privacy:metadata'] = 'The Onetopic format plugin does not store any personal data.';
-$string['progress_counter'] = 'Duplicating activities ({$a->current}/{$a->size})';
-$string['progress_full'] = 'Duplicating topic';
-$string['rebuild_course_cache'] = 'Rebuild course cache';
 $string['scope_mod'] = 'Modules';
 $string['scope_scorm'] = 'SCORM Player';
 $string['sectionname'] = 'Topic';
@@ -167,4 +155,21 @@ $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
+$string['settingsheaderdefault'] = 'Default settings';
+
+// Deprecated since Moodle 4.0.
+$string['disable'] = 'Disable';
+$string['disableajax'] = 'Asynchronous edit actions';
+$string['disableajax_help'] = 'Use this action in order to move resources between topic tabs. It only disables the asynchronous actions in current session, it is not permanently.';
+$string['enable'] = 'Enable';
 $string['utilities'] = 'Tabs edition utilities';
+
+// Deprecated since Moodle 4.3.
+$string['duplicate'] = 'Duplicate';
+$string['duplicate_confirm'] = 'Are you sure you want to duplicate the current topic? The task can take a while depending on the amount of resources.';
+$string['duplicatesection'] = 'Duplicate current topic';
+$string['duplicatesection_help'] = 'Used to duplicate the resources of current topic in a new topic';
+$string['duplicating'] = 'Duplicating';
+$string['progress_counter'] = 'Duplicating activities ({$a->current}/{$a->size})';
+$string['progress_full'] = 'Duplicating topic';
+$string['rebuild_course_cache'] = 'Rebuild course cache';

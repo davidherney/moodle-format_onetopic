@@ -1,0 +1,13 @@
+disable,format_onetopic
+disableajax,format_onetopic
+disableajax_help,format_onetopic
+enable,format_onetopic
+utilities,format_onetopic
+duplicate,format_onetopic
+duplicate_confirm,format_onetopic
+duplicatesection,format_onetopic
+duplicatesection_help,format_onetopic
+duplicating,format_onetopic
+progress_counter,format_onetopic
+progress_full,format_onetopic
+rebuild_course_cache,format_onetopic
