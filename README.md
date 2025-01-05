@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2024050904:
+* New "sectionname" parameter to navigate to a tab directly using its name.
+
 ### 2024050903:
 * Fixed Load previously browsed section when section is not specified in URL.
 

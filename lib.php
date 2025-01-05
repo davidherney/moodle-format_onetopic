@@ -169,12 +169,24 @@ class format_onetopic extends core_courseformat\base {
             }
 
             if ($section < 0) {
-                if (isset($USER->display[$course->id])) {
-                    $section = $USER->display[$course->id];
-                } else if ($course->marker && $course->marker > 0) {
-                    $section = (int)$course->marker;
+                $sectionname = optional_param('sectionname', '', PARAM_TEXT);
+                $sectionbyname = null;
+
+                if (!empty($sectionname)) {
+                    $conditions = ['course' => $courseid, 'name' => $sectionname];
+                    $sectionbyname = $DB->get_field('course_sections', 'section', $conditions, IGNORE_MULTIPLE);
+                }
+
+                if (!empty($sectionbyname)) {
+                    $section = $sectionbyname;
                 } else {
-                    $section = 0;
+                    if (isset($USER->display[$course->id])) {
+                        $section = $USER->display[$course->id];
+                    } else if ($course->marker && $course->marker > 0) {
+                        $section = (int)$course->marker;
+                    } else {
+                        $section = 0;
+                    }
                 }
             }
         }
@@ -369,7 +381,7 @@ class format_onetopic extends core_courseformat\base {
      * @return null|moodle_url
      */
     public function get_view_url($section, $options = []) {
-        global $CFG;
+
         $course = $this->get_course();
         $url = new moodle_url('/course/view.php', ['id' => $course->id]);
 
@@ -385,13 +397,8 @@ class format_onetopic extends core_courseformat\base {
         if ($sectionno !== null) {
             if ($sr !== null) {
                 if ($sr) {
-                    $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
                     $sectionno = $sr;
-                } else {
-                    $usercoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
                 }
-            } else {
-                $usercoursedisplay = $course->coursedisplay;
             }
             $url->param('section', $sectionno);
         }
