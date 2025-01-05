@@ -81,7 +81,6 @@ if ($ADMIN->fulltree) {
         \format_onetopic::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
         \format_onetopic::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
         \format_onetopic::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
-        \format_onetopic::TABSVIEW_COURSEINDEX => new lang_string('tabsview_courseindex', 'format_onetopic'),
     ];
     $settings->add(new admin_setting_configselect('format_onetopic/defaulttabsview',
                                                     get_string('tabsview', 'format_onetopic'),

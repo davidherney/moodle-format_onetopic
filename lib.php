@@ -654,7 +654,6 @@ class format_onetopic extends core_courseformat\base {
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
                             self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
                             self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
-                            self::TABSVIEW_COURSEINDEX => new lang_string('tabsview_courseindex', 'format_onetopic'),
                         ],
                     ],
                     'help' => 'tabsview',
