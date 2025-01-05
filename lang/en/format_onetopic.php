@@ -113,6 +113,7 @@ $string['sectionsnavigation_not'] = 'Not use';
 $string['sectionsnavigation_sitelevel'] = 'Use the default site value';
 $string['sectionsnavigation_slides'] = 'Like slides';
 $string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
+$string['settingsheaderdefault'] = 'Default course settings';
 $string['settingsheaderstyles'] = 'Styles';
 $string['showfromothers'] = 'Show topic';
 $string['subtopictoright'] = 'Move to right as subtopic';
@@ -155,7 +156,6 @@ $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
-$string['settingsheaderdefault'] = 'Default course settings';
 
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';

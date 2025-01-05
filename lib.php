@@ -807,7 +807,7 @@ class format_onetopic extends core_courseformat\base {
                     'type' => PARAM_INT,
                 ],
                 'firsttabtext' => [
-                    'default' => get_string('index', 'format_onetopic'),
+                    'default' => new lang_string('index', 'format_onetopic'),
                     'type' => PARAM_TEXT,
                 ],
             ];
@@ -835,21 +835,21 @@ class format_onetopic extends core_courseformat\base {
                 'level' => [
                     'default' => 0,
                     'type' => PARAM_INT,
-                    'label' => get_string('level', 'format_onetopic'),
+                    'label' => new lang_string('level', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            0 => get_string('asprincipal', 'format_onetopic'),
-                            1 => get_string('aschild', 'format_onetopic'),
+                            0 => new lang_string('asprincipal', 'format_onetopic'),
+                            1 => new lang_string('aschild', 'format_onetopic'),
                         ],
                         ],
                     'help' => 'level',
                     'help_component' => 'format_onetopic',
                 ],
                 'firsttabtext' => [
-                    'default' => get_string('index', 'format_onetopic'),
+                    'default' => new lang_string('index', 'format_onetopic'),
                     'type' => PARAM_TEXT,
-                    'label' => get_string('firsttabtext', 'format_onetopic'),
+                    'label' => new lang_string('firsttabtext', 'format_onetopic'),
                     'help' => 'firsttabtext',
                     'help_component' => 'format_onetopic',
                 ],
@@ -859,7 +859,7 @@ class format_onetopic extends core_courseformat\base {
                 $sectionformatoptionsedit['fontcolor'] = [
                     'default' => '',
                     'type' => PARAM_RAW,
-                    'label' => get_string('fontcolor', 'format_onetopic'),
+                    'label' => new lang_string('fontcolor', 'format_onetopic'),
                     'help' => 'fontcolor',
                     'help_component' => 'format_onetopic',
                 ];
@@ -867,7 +867,7 @@ class format_onetopic extends core_courseformat\base {
                 $sectionformatoptionsedit['bgcolor'] = [
                     'default' => '',
                     'type' => PARAM_RAW,
-                    'label' => get_string('bgcolor', 'format_onetopic'),
+                    'label' => new lang_string('bgcolor', 'format_onetopic'),
                     'help' => 'bgcolor',
                     'help_component' => 'format_onetopic',
                 ];
@@ -875,7 +875,7 @@ class format_onetopic extends core_courseformat\base {
                 $sectionformatoptionsedit['cssstyles'] = [
                     'default' => '',
                     'type' => PARAM_RAW,
-                    'label' => get_string('cssstyles', 'format_onetopic'),
+                    'label' => new lang_string('cssstyles', 'format_onetopic'),
                     'help' => 'cssstyles',
                     'help_component' => 'format_onetopic',
                 ];

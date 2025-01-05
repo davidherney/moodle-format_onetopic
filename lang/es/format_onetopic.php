@@ -75,6 +75,7 @@ $string['sectionsnavigation_not'] = 'No usar';
 $string['sectionsnavigation_sitelevel'] = 'Usar el valor por defecto del sitio';
 $string['sectionsnavigation_slides'] = 'Similar a un pase de diapositivas';
 $string['sectionsnavigation_support'] = 'Solamente si el tema no soporta la funcionalidad "Índice de curso"';
+$string['settingsheaderdefault'] = 'Configuración por defecto del curso';
 $string['showfromothers'] = 'Mostrar tema';
 $string['subtopictoright'] = 'Mover a la derecha como pestaña hija';
 $string['tabsview'] = 'Vista de pestañas';
