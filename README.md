@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2024050905:
+* New tab styles editor when editing each section.
+
 ### 2024050904:
 * New "sectionname" parameter to navigate to a tab directly using its name.
 * New default course settings in site level.

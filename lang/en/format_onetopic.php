@@ -19,7 +19,7 @@
  *
  * @since 2.4
  * @package format_onetopic
- * @copyright 2012 David Herney Bernal - cirano
+ * @copyright 2012 David Herney - cirano
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -114,7 +114,7 @@ $string['sectionsnavigation_sitelevel'] = 'Use the default site value';
 $string['sectionsnavigation_slides'] = 'Like slides';
 $string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
 $string['settingsheaderdefault'] = 'Default course settings';
-$string['settingsheaderstyles'] = 'Styles';
+$string['settingsheaderstyles'] = 'Default tabs styles';
 $string['showfromothers'] = 'Show topic';
 $string['subtopictoright'] = 'Move to right as subtopic';
 $string['tablabelactive'] = 'Active tab';
@@ -126,6 +126,9 @@ $string['tabstylebuttons_help'] = 'Click on each button to configure the appeara
 $string['tabstyleclear'] = 'Clear styles';
 $string['tabstyles'] = 'Tab styles';
 $string['tabstyles_help'] = 'Set the styles for the differents tab states.';
+$string['tabstylesdisplay'] = 'Show/hide tab style options';
+$string['tabstylesdisplay_help'] = 'The styles that are edited apply only to the tab in this section and to the child tabs when applicable. The entire bar is shown as an example of the different states that the tab can go through, but they will all be on the tab itself.';
+$string['tabstyleserrorjsoninvalid'] = 'Invalid JSON format';
 $string['tabstylesetactive'] = 'Set Active';
 $string['tabstylesetchildindex'] = 'Set Child index';
 $string['tabstylesetchilds'] = 'Set Childs';
@@ -152,6 +155,8 @@ $string['templetetopic_list'] = 'Yes, use the summary as template, list the reso
 $string['templetetopic_not'] = 'No, display as default';
 $string['templetetopic_single'] = 'Yes, use the summary as template';
 $string['usecourseindexsite'] = 'Use the default site value';
+$string['useoldstylescontrol'] = 'Use legacy styles control';
+$string['useoldstylescontrol_help'] = 'Use legacy style controls. This option is only available for compatibility with older versions of the plugin and will be removed in the future in favor of using only the new style editor.';
 $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';

@@ -40,7 +40,7 @@
 {{/hidetabsbar}}
 <ul class="nav nav-tabs mb-3 format_onetopic-tabs {{#hidetabsbar}}hiddentabsbar{{/hidetabsbar}}">
   {{#tabs}}
-    <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}">
+    <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}" {{#id}}id="onetabid-{{.}}"{{/id}}>
       <a class="nav-link{{#active}} active{{/active}}{{#inactive}} disabled{{/inactive}}" {{#link}}href="{{{link}}}"{{/link}} title="{{title}}" style="{{styles}}">
         {{#haschilds}}{{#pix}} t/expandedchevron {{/pix}}{{/haschilds}}{{{text}}}
 

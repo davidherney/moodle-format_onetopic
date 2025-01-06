@@ -140,6 +140,13 @@ export const init = () => {
         applyStyles();
     });
 
+    $('#tabstylesdisplay').on('click', function(e) {
+        e.preventDefault();
+
+        $tabstyles.toggleClass('hidden');
+
+    });
+
 };
 
 /**
@@ -188,42 +195,42 @@ var applyStyles = function() {
 
         switch (type) {
             case 'active':
-                csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
-                csscontent += '.format-onetopic .nav-tabs a.nav-link.active, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs a.nav-link.active, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link.active';
+                csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
+                csscontent += '#onetopic-tabstyles .nav-tabs a.nav-link.active, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs a.nav-link.active, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link.active';
             break;
             case 'parent':
-                csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item.haschilds a.nav-link';
+                csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .nav-tabs .nav-item.haschilds a.nav-link';
             break;
             case 'highlighted':
-                csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item.marker a.nav-link, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic.marker a.nav-link';
+                csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .nav-tabs .nav-item.marker a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic.marker a.nav-link';
             break;
             case 'disabled':
-                csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item.disabled a.nav-link, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic.disabled a.nav-link';
+                csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .nav-tabs .nav-item.disabled a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic.disabled a.nav-link';
             break;
             case 'hover':
-                csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
-                csscontent += '.format-onetopic .nav-tabs .nav-item a.nav-link:hover, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item a.nav-link:hover, ';
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link:hover';
+                csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
+                csscontent += '#onetopic-tabstyles .nav-tabs .nav-item a.nav-link:hover, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item a.nav-link:hover, ';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link:hover';
             break;
             case 'childs':
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
             break;
             case 'childindex':
-                csscontent += '.format-onetopic .onetopic-tab-body .nav-tabs .nav-item.subtopic.tab_initial a.nav-link';
+                csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic.tab_initial a.nav-link';
             break;
             default:
-                csscontent += '.format-onetopic .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';
-                csscontent += '.format-onetopic .nav-tabs a.nav-link';
+                csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';
+                csscontent += '#onetopic-tabstyles .nav-tabs a.nav-link';
         }
 
         csscontent += '{';

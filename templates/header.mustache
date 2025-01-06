@@ -80,6 +80,13 @@
 
     <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hastopictabs}}hastopictabs{{/hastopictabs}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
         {{#hastopictabs}}
+
+            {{#cssstyles}}
+            <style type="text/css">
+                {{{cssstyles}}}
+            </style>
+            {{/cssstyles}}
+
             <div class="tabs-wrapper">
 
                 {{{courseindex}}}
@@ -89,7 +96,7 @@
                 {{/courseindex}}
             </div>
 
-            <div class="onetopic-tab-body">
+            <div class="onetopic-tab-body" {{#activetab}}data-tabid="{{id}}"{{/activetab}}>
 
             {{#hassecondrow}}
                 {{#secondrow}}
@@ -98,6 +105,7 @@
             {{/hassecondrow}}
 
         {{/hastopictabs}}
+
         <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
 
 {{#testing}}
@@ -109,3 +117,4 @@
     </div>
 </div>
 {{/testing}}
+

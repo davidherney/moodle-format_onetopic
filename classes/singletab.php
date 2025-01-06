@@ -32,6 +32,11 @@ namespace format_onetopic;
 class singletab {
 
     /**
+     * @var int Tab id.
+     */
+    public $id;
+
+    /**
      * @var int Tab index.
      */
     public $index;
@@ -80,6 +85,11 @@ class singletab {
      * @var bool If tab is active.
      */
     public $active = true;
+
+    /**
+     * @var string Custom CSS styles.
+     */
+    public $cssstyles = '';
 
     /**
      * @var \format_onetopic\tabs Tabs childs list.

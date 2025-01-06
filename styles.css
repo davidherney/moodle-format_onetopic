@@ -319,6 +319,12 @@
     text-align: center;
 }
 
+#page-course-editsection.format-onetopic #onetopic-tabstyles {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 /* The slide navigation is only available to wide screens */
 @media (min-width: 600px) {
 

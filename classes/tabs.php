@@ -87,12 +87,14 @@ class tabs {
             $newtab->text = $tab->content;
             $newtab->active = $tab->selected;
             $newtab->inactive = !$tab->active;
-            $newtab->styles = $tab->customstyles;
+            // The new CSS styles feature ovewrite the custom styles.
+            $newtab->styles = empty($tab->cssstyles) ? $tab->customstyles : '';
             $newtab->specialclass = $tab->specialclass;
             $newtab->availablemessage = $tab->availablemessage;
             $newtab->uniqueid = 'tab-' . time() . '-' . rand(0, 1000);
+            $newtab->id = !empty($tab->id) ? $tab->id : null;
 
-            if ($tab->has_childs()) {
+            if (!$assubtabs && $tab->has_childs()) {
                 $newtab->secondrow = $tab->get_childs()->get_list(true);
                 $newtab->haschilds = true;
             }
@@ -138,6 +140,37 @@ class tabs {
         }
 
         return $tabstree;
+    }
+
+    /**
+     * To get the CSS styles of the tabs, including childs.
+     *
+     * @return string CSS styles.
+     */
+    public function get_allcssstyles(): string {
+        $css = [];
+        foreach ($this->tabslist as $tab) {
+            $css[] = $tab->cssstyles;
+            if ($tab->selected) {
+                $css[] = $tab->get_childs()->get_allcssstyles();
+            }
+        }
+
+        return implode(' ', $css);
+    }
+
+    /**
+     * To get the active tab.
+     *
+     * @return \format_onetopic\singletab The active tab.
+     */
+    public function get_active(): ?singletab {
+        foreach ($this->tabslist as $tab) {
+            if ($tab->selected) {
+                return $tab;
+            }
+        }
+        return null;
     }
 
 }

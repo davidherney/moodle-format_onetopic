@@ -71,11 +71,13 @@ class header implements \renderable, \templatable {
 
         $tabslist = [];
         $secondtabslist = null;
+        $tabscssstyles = '';
         if ($course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
                 ($format->show_editor() || !$course->hidetabsbar)) {
             $tabs = $this->get_tabs($this->format->get_modinfo(), $output);
             $tabslist = $tabs->get_list();
             $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
+            $tabscssstyles = $tabs->get_allcssstyles();
         }
 
         switch ($course->tabsview) {
@@ -119,6 +121,7 @@ class header implements \renderable, \templatable {
             'withicons' => $course->templatetopic_icons,
             'hastopictabs' => $hastopictabs,
             'tabs' => $tabslist,
+            'activetab' => $tabs->get_active(),
             'hassecondrow' => $hassecondrow,
             'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,
@@ -127,6 +130,7 @@ class header implements \renderable, \templatable {
             'hidetabsbar' => ($course->hidetabsbar == 1 && $format->show_editor()),
             'sectionclasses' => '',
             'courseindex' => $courseindex,
+            'cssstyles' => $tabscssstyles,
         ];
 
         $initialsection = null;
@@ -198,9 +202,11 @@ class header implements \renderable, \templatable {
         $selectedparent = null;
         $parenttab = null;
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
+        $precedence = ['default', 'childs', 'childindex', 'active', 'parent', 'highlighted', 'disabled', 'hover'];
 
         while ($localsection < $numsections) {
             $inactivetab = false;
+            $csstabstyles = '';
 
             if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE && $localsection == 0) {
                 $localsection++;
@@ -237,6 +243,98 @@ class header implements \renderable, \templatable {
                         if (!empty($formatoptions['cssstyles'])) {
                             $customstyles .= $formatoptions['cssstyles'] . '; ';
                         }
+
+                        $tabstyles = !empty($formatoptions['tabstyles']) ? @json_decode($formatoptions['tabstyles']) : null;
+                        if (is_object($tabstyles)) {
+
+                            $orderedtabs = new \stdClass();
+                            foreach ($precedence as $type) {
+                                if (property_exists($tabstyles, $type)) {
+                                    $orderedtabs->$type = $tabstyles->$type;
+                                }
+                            }
+
+                            $onecss = '';
+                            $cssparentid = '[data-tabid="' . $thissection->id . '"]';
+                            $cssid = '#onetabid-' . $thissection->id . '';
+                            $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
+                            foreach ($orderedtabs as $type => $styles) {
+
+                                $important = false;
+                                switch ($type) {
+                                    case 'active':
+                                        $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link.active,';
+                                        $important = true;
+                                    break;
+                                    case 'parent':
+                                        $onecss .= '#tabs-tree-start .nav-item.haschilds' . $cssid . ' a.nav-link';
+                                    break;
+                                    case 'highlighted':
+                                        $onecss .= '#tabs-tree-start .nav-item.marker' . $cssid . ' a.nav-link';
+                                        $important = true;
+                                    break;
+                                    case 'disabled':
+                                        $onecss .= '#tabs-tree-start .nav-item.disabled' . $cssid . ' a.nav-link';
+                                        $important = true;
+                                    break;
+                                    case 'hover':
+                                        $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link:hover,';
+                                        $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid
+                                                    . ' .nav-item.subtopic a.nav-link:hover';
+                                    break;
+                                    case 'childs':
+                                        $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid
+                                                    . ' .nav-item.subtopic a.nav-link';
+                                    break;
+                                    case 'childindex':
+                                        $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid . ' .nav-tabs' .
+                                                        ' .nav-item.subtopic.tab_initial a.nav-link';
+                                    break;
+                                    default:
+                                        $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link,';
+                                        $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid . ' a.nav-link';
+                                }
+
+                                $onecss .= '{';
+                                $units = [];
+
+                                // Check if exist units for some rules.
+                                foreach ($styles as $key => $value) {
+
+                                    // Check if the key start with the units prefix.
+                                    if (strpos($key, 'unit-') === 0) {
+
+                                        // Remove the prefix.
+                                        $ownerkey = str_replace('unit-', '', $key);
+                                        $units[$ownerkey] = $value;
+                                        unset($styles->$key);
+                                    }
+                                }
+
+                                foreach ($styles as $key => $value) {
+
+                                    // If exist a unit for the rule, apply it.
+                                    if (isset($units[$key])) {
+                                        $value = $value . $units[$key];
+                                    } else if (in_array($key, $withunits)) {
+                                        // If the rule need units, apply px by default.
+                                        $value = $value . 'px';
+                                    }
+
+                                    if ($key == 'others') {
+                                        $onecss .= $value . ';';
+                                    } else {
+                                        $onecss .= $key . ':' . $value . ($important ? '!important' : '') . ';';
+                                    }
+                                }
+
+                                $onecss .= '} ';
+                            }
+
+                            // Clean the CSS for html tags.
+                            $csstabstyles .= preg_replace('/<[^>]*>/', '', $onecss);
+                        }
+
                     }
 
                     if (isset($formatoptions['level']) && $localsection > $firstsection) {
@@ -278,6 +376,8 @@ class header implements \renderable, \templatable {
                 $newtab = new \format_onetopic\singletab($localsection, $sectionname, $url, $title,
                                         $availablemessage, $customstyles, $specialclass);
                 $newtab->active = !$inactivetab;
+                $newtab->id = $thissection->id;
+                $newtab->cssstyles = $csstabstyles;
 
                 if ($displaysection == $localsection) {
                     $newtab->selected = true;
@@ -297,7 +397,7 @@ class header implements \renderable, \templatable {
                                                     $parenttab->link,
                                                     $parenttab->title,
                                                     $parenttab->availablemessage,
-                                                    $parenttab->customstyles,
+                                                    (empty($parenttab->cssstyles) ? $parenttab->customstyles : ''),
                                                     $specialclasstmp);
 
                             $prevsectionindex = $localsection - 1;
