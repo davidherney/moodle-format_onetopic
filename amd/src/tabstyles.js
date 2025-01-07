@@ -331,9 +331,7 @@ var applyStyles = function() {
                 units[key] = value;
             } else if (key == 'tabicon') {
                 if (value !== '') {
-                    console.log(value);
                     var icon = $('#onetopic-styleswindow .listicons span[data-value="' + value + '"]').html();
-                    console.log(icon);
                     $('#onetopic-tabstyles .tabicon-' + type).html(icon).removeClass('hidden');
                 }
             }

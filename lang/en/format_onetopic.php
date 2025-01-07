@@ -113,15 +113,21 @@ $string['sectionsnavigation_not'] = 'Not use';
 $string['sectionsnavigation_sitelevel'] = 'Use the default site value';
 $string['sectionsnavigation_slides'] = 'Like slides';
 $string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
+$string['selectcolor'] = 'Select color';
 $string['settingsheaderdefault'] = 'Default course settings';
 $string['settingsheaderstyles'] = 'Default tabs styles';
 $string['showfromothers'] = 'Show topic';
 $string['subtopictoright'] = 'Move to right as subtopic';
+$string['tabicon'] = 'Icon';
+$string['tabiconselect'] = 'Select icon';
 $string['tablabelactive'] = 'Active tab';
 $string['tablabeldefault'] = 'Default tab {$a}';
 $string['tablabeldisabled'] = 'Disabled';
 $string['tablabelhighlighted'] = 'Highlighted';
 $string['tablabelparent'] = 'Parent tab';
+$string['tabsectionbackground'] = 'Section content background';
+$string['tabsectionbackground_help'] = 'Used to change the background of the section content. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>
+It can also be a URL attribute and other CSS background options.';
 $string['tabstylebuttons_help'] = 'Click on each button to configure the appearance of the tab in each of its possible states.';
 $string['tabstyleclear'] = 'Clear styles';
 $string['tabstyles'] = 'Tab styles';
@@ -162,11 +168,8 @@ $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
 
-$string['tabicon'] = 'Icon';
-$string['tabiconselect'] = 'Select icon';
-$string['tabsectionbackground'] = 'Section content background';
-$string['tabsectionbackground_help'] = 'Used to change the background of the section content. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>
-It can also be a URL attribute and other CSS background options.';
+$string['setcolor'] = 'Set color';
+$string['backgroundpickerinvalid'] = 'Invalid background value';
 
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';

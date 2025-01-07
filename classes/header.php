@@ -61,20 +61,20 @@ class header implements \renderable, \templatable {
         global $PAGE, $CFG, $OUTPUT;
 
         $format = $this->format;
-        $course = $this->format->get_course();
+        $course = $format->get_course();
 
         // Onetopic format is always multipage.
         $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
 
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
-        $currentsection = $this->format->get_sectionnum();
+        $currentsection = $format->get_sectionnum();
 
         $tabslist = [];
         $secondtabslist = null;
         $tabscssstyles = '';
         if ($course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
                 ($format->show_editor() || !$course->hidetabsbar)) {
-            $tabs = $this->get_tabs($this->format->get_modinfo(), $output);
+            $tabs = $this->get_tabs($format->get_modinfo(), $output);
             $tabslist = $tabs->get_list();
             $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
             $tabscssstyles = $tabs->get_allcssstyles();
@@ -112,11 +112,19 @@ class header implements \renderable, \templatable {
             $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
         }
 
+        $formatoptions = course_get_format($course)->get_format_options($currentsection);
+        $tabsectionbackground = $formatoptions['tabsectionbackground'] ?? '';
+
+        if (!empty($tabsectionbackground)) {
+            $tabsectionbackground = clean_param($tabsectionbackground, PARAM_NOTAGS);
+            $tabsectionbackground = 'background: ' . $tabsectionbackground . ';';
+        }
+
         $data = (object)[
             'uniqid' => $format->uniqid,
             'baseurl' => $CFG->wwwroot,
-            'title' => $this->format->page_title(), // This method should be in the course_format class.
-            'format' => $this->format->get_format(),
+            'title' => $format->page_title(), // This method should be in the course_format class.
+            'format' => $format->get_format(),
             'templatetopic' => $course->templatetopic,
             'withicons' => $course->templatetopic_icons,
             'hastopictabs' => $hastopictabs,
@@ -131,6 +139,7 @@ class header implements \renderable, \templatable {
             'sectionclasses' => '',
             'courseindex' => $courseindex,
             'cssstyles' => $tabscssstyles,
+            'tabsectionbackground' => $tabsectionbackground,
         ];
 
         $initialsection = null;
@@ -139,10 +148,10 @@ class header implements \renderable, \templatable {
         if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
 
             // Load the section 0 and export data for template.
-            $modinfo = $this->format->get_modinfo();
+            $modinfo = $format->get_modinfo();
             $section0 = $modinfo->get_section_info(0);
-            $sectionclass = $this->format->get_output_classname('content\\section');
-            $section = new $sectionclass($this->format, $section0);
+            $sectionclass = $format->get_output_classname('content\\section');
+            $section = new $sectionclass($format, $section0);
 
             $sectionoutput = new \format_onetopic\output\renderer($PAGE, null);
             $initialsection = $section->export_for_template($sectionoutput);

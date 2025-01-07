@@ -18,6 +18,8 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ### 2024050905:
 * New tab styles editor when editing each section.
+* Select icon by tab and tab state.
+* New background option by section.
 
 ### 2024050904:
 * New "sectionname" parameter to navigate to a tab directly using its name.

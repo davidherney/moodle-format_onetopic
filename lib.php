@@ -726,14 +726,26 @@ class format_onetopic extends core_courseformat\base {
         if ($forsection) {
             $onetopicconfig = get_config('format_onetopic');
 
-            if ($onetopicconfig->enablecustomstyles && empty($onetopicconfig->useoldstylescontrol)) {
-                $mform->removeElement('tabstyles');
-                MoodleQuickForm::registerElementType('tabstyles',
-                                            $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_tabstyles.php',
-                                            'format_onetopic_tabstyles_form_element');
-                $element = $mform->addElement('tabstyles', 'tabstyles', get_string('tabstyles', 'format_onetopic'));
+            if ($onetopicconfig->enablecustomstyles) {
+
+                $mform->removeElement('tabsectionbackground');
+                MoodleQuickForm::registerElementType('tabsectionbackground',
+                                            $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_background.php',
+                                            'format_onetopic_background_form_element');
+                $element = $mform->addElement('tabsectionbackground', 'tabsectionbackground',
+                                                get_string('tabsectionbackground', 'format_onetopic'));
 
                 $elements[] = $element;
+
+                if (empty($onetopicconfig->useoldstylescontrol)) {
+                    $mform->removeElement('tabstyles');
+                    MoodleQuickForm::registerElementType('tabstyles',
+                                                $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_tabstyles.php',
+                                                'format_onetopic_tabstyles_form_element');
+                    $element = $mform->addElement('tabstyles', 'tabstyles', get_string('tabstyles', 'format_onetopic'));
+
+                    $elements[] = $element;
+                }
             }
         }
 
@@ -827,6 +839,11 @@ class format_onetopic extends core_courseformat\base {
             ];
 
             if ($onetopicconfig->enablecustomstyles) {
+                $sectionformatoptions['tabsectionbackground'] = [
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                ];
+
                 if ($onetopicconfig->useoldstylescontrol) {
                     $sectionformatoptions['fontcolor'] = [
                         'default' => '',
@@ -877,6 +894,16 @@ class format_onetopic extends core_courseformat\base {
             ];
 
             if ($onetopicconfig->enablecustomstyles) {
+
+                $sectionformatoptionsedit['tabsectionbackground'] = [
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                    'label' => new lang_string('tabsectionbackground', 'format_onetopic'),
+                    'element_type' => 'text',
+                    'help' => 'tabsectionbackground',
+                    'help_component' => 'format_onetopic',
+                ];
+
                 if ($onetopicconfig->useoldstylescontrol) {
                     $sectionformatoptionsedit['fontcolor'] = [
                         'default' => '',

@@ -35,6 +35,11 @@
     margin: 0;
 }
 
+.format-onetopic .onetopic-tab-body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 /* Its a subtabs bar */
 .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
     padding-left: 20px;
