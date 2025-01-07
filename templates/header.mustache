@@ -92,7 +92,6 @@
         {{/cssstyles}}
 
         {{#hastopictabs}}
-
             <div class="tabs-wrapper">
 
                 {{{courseindex}}}
@@ -106,21 +105,19 @@
         <div class="onetopic-tab-body" {{#activetab}}data-tabid="{{id}}"{{/activetab}}
             {{#tabsectionbackground}}style="{{tabsectionbackground}}"{{/tabsectionbackground}}>
 
-        {{#hassecondrow}}
-            {{#secondrow}}
-                {{>format_onetopic/courseformat/tabtree}}
-            {{/secondrow}}
-        {{/hassecondrow}}
+            {{#hassecondrow}}
+                {{#secondrow}}
+                    {{>format_onetopic/courseformat/tabtree}}
+                {{/secondrow}}
+            {{/hassecondrow}}
 
 
-        <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
+            <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
 
 {{#testing}}
-        </div>
-        {{#hastopictabs}}
-            {{! End of onetopic-tab-body box. }}
             </div>
-        {{/hastopictabs}}
+        {{! End of onetopic-tab-body box. }}
+        </div>
     </div>
 </div>
 {{/testing}}
