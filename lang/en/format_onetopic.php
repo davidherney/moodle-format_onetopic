@@ -27,6 +27,7 @@ $string['aboutresource'] = 'About the resource';
 $string['asbrother'] = 'Same level that the previous tab';
 $string['aschild'] = 'Child of previous tab';
 $string['asprincipal'] = 'Normal, as a first level tab';
+$string['backgroundpickerinvalid'] = 'Invalid background value';
 $string['bgcolor'] = 'Background color';
 $string['bgcolor_help'] = 'Used to change the tab background color. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>';
 $string['cantcreatesection'] = 'Error creating a new topic';
@@ -114,6 +115,7 @@ $string['sectionsnavigation_sitelevel'] = 'Use the default site value';
 $string['sectionsnavigation_slides'] = 'Like slides';
 $string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
 $string['selectcolor'] = 'Select color';
+$string['setcolor'] = 'Set color';
 $string['settingsheaderdefault'] = 'Default course settings';
 $string['settingsheaderstyles'] = 'Default tabs styles';
 $string['showfromothers'] = 'Show topic';
@@ -167,9 +169,6 @@ $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
-
-$string['setcolor'] = 'Set color';
-$string['backgroundpickerinvalid'] = 'Invalid background value';
 
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';

@@ -78,14 +78,20 @@
     </div>
     {{/initialsection}}
 
-    <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hastopictabs}}hastopictabs{{/hastopictabs}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
-        {{#hastopictabs}}
+    {{#hidetabsbar}}
+    <div class="alert alert-warning">
+        {{#str}} hiddentabsbar, format_onetopic {{/str}}
+    </div>
+    {{/hidetabsbar}}
 
-            {{#cssstyles}}
+    <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hastopictabs}}hastopictabs{{/hastopictabs}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
+        {{#cssstyles}}
             <style type="text/css">
                 {{{cssstyles}}}
             </style>
-            {{/cssstyles}}
+        {{/cssstyles}}
+
+        {{#hastopictabs}}
 
             <div class="tabs-wrapper">
 
@@ -95,17 +101,17 @@
                     {{>format_onetopic/courseformat/tabtree}}
                 {{/courseindex}}
             </div>
-
-            <div class="onetopic-tab-body" {{#activetab}}data-tabid="{{id}}"{{/activetab}}
-                {{#tabsectionbackground}}style="{{tabsectionbackground}}"{{/tabsectionbackground}}>
-
-            {{#hassecondrow}}
-                {{#secondrow}}
-                    {{>format_onetopic/courseformat/tabtree}}
-                {{/secondrow}}
-            {{/hassecondrow}}
-
         {{/hastopictabs}}
+
+        <div class="onetopic-tab-body" {{#activetab}}data-tabid="{{id}}"{{/activetab}}
+            {{#tabsectionbackground}}style="{{tabsectionbackground}}"{{/tabsectionbackground}}>
+
+        {{#hassecondrow}}
+            {{#secondrow}}
+                {{>format_onetopic/courseformat/tabtree}}
+            {{/secondrow}}
+        {{/hassecondrow}}
+
 
         <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
 

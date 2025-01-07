@@ -33,11 +33,6 @@
         }]
     }
 }}
-{{#hidetabsbar}}
-  <div class="alert alert-warning">
-    {{#str}} hiddentabsbar, format_onetopic {{/str}}
-  </div>
-{{/hidetabsbar}}
 <ul class="nav nav-tabs format_onetopic-tabs {{#hidetabsbar}}hiddentabsbar{{/hidetabsbar}}">
   {{#tabs}}
     <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}" {{#id}}id="onetabid-{{.}}"{{/id}}>

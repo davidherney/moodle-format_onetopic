@@ -72,12 +72,14 @@ class header implements \renderable, \templatable {
         $tabslist = [];
         $secondtabslist = null;
         $tabscssstyles = '';
+        $activetab = null;
         if ($course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
                 ($format->show_editor() || !$course->hidetabsbar)) {
             $tabs = $this->get_tabs($format->get_modinfo(), $output);
             $tabslist = $tabs->get_list();
             $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
             $tabscssstyles = $tabs->get_allcssstyles();
+            $activetab = $tabs->get_active();
         }
 
         switch ($course->tabsview) {
@@ -129,7 +131,7 @@ class header implements \renderable, \templatable {
             'withicons' => $course->templatetopic_icons,
             'hastopictabs' => $hastopictabs,
             'tabs' => $tabslist,
-            'activetab' => $tabs->get_active(),
+            'activetab' => $activetab,
             'hassecondrow' => $hassecondrow,
             'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,

@@ -42,7 +42,7 @@ export const init = (controlid) => {
     // Initialize the modal window.
     var title = $controlwindow.attr('title');
     var buttons = [];
-    buttons['save'] = $controlwindow.data('savelabel');
+    buttons.save = $controlwindow.data('savelabel');
 
     var setEvents = function(modal) {
         modal.getRoot().on(ModalEvents.cancel, () => {
