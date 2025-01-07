@@ -23,6 +23,8 @@
  */
 namespace format_onetopic;
 
+use core_reportbuilder\local\aggregation\count;
+
 /**
  * Class containing the tabs information.
  *
@@ -70,6 +72,7 @@ class tabs {
      * @return array of object.
      */
     public function get_list(bool $assubtabs = false): array {
+        global $OUTPUT;
 
         $tabstree = [];
 
@@ -93,6 +96,93 @@ class tabs {
             $newtab->availablemessage = $tab->availablemessage;
             $newtab->uniqueid = 'tab-' . time() . '-' . rand(0, 1000);
             $newtab->id = !empty($tab->id) ? $tab->id : null;
+
+            if ($assubtabs && empty($tab->icons)) {
+                $tab->icons = $tab->parenttab->icons;
+            }
+
+            if (!empty($tab->icons)) {
+
+                foreach ($tab->icons as $state => $icon) {
+                    $tokens = explode(':', $icon);
+
+                    if (count($tokens) !== 2) {
+                        continue;
+                    }
+
+                    $visible = true;
+                    switch ($state) {
+                        case 'active':
+                            if (!$tab->selected) {
+                                continue 2;
+                            }
+                            break;
+                        case 'parent':
+                            if (!$tab->has_childs()) {
+                                continue 2;
+                            }
+                            break;
+                        case 'highlighted':
+                            if (strpos($tab->specialclass, 'marker') === false) {
+                                continue 2;
+                            }
+                            break;
+                        case 'disabled':
+                            if (strpos($tab->specialclass, 'disabled') === false) {
+                                continue 2;
+                            }
+                            break;
+                        case 'childs':
+                            if (!$assubtabs) {
+                                continue 2;
+                            }
+                            break;
+                        case 'childindex':
+                            if (!$assubtabs) {
+                                continue 2;
+                            }
+                            $visible = $assubtabs && strpos($tab->specialclass, 'tab_initial') !== false;
+                            break;
+                        case 'hover':
+                            $visible = false;
+                            break;
+                    }
+
+                    $newtab->icons[$state] = (object)[
+                        'state' => $state,
+                        'icon' => $OUTPUT->pix_icon($tokens[1], $tab->title, $tokens[0]),
+                        'visible' => $visible,
+                    ];
+                }
+
+                // Remove default icon if the active or disabled exist.
+                if (isset($newtab->icons['default']) && isset($newtab->icons['active'])) {
+                    unset($newtab->icons['default']);
+                }
+
+                if (!isset($newtab->icons['hover'])) {
+                    // If hover icon not exist, use the active or default icon.
+                    // To avoid a jump when placing the mouse hover.
+                    if (isset($newtab->icons['active'])) {
+                        $newtab->icons['hover'] = clone $newtab->icons['active'];
+                        $newtab->icons['hover']->state = 'hover';
+                    } else if (isset($newtab->icons['default'])) {
+                        $newtab->icons['hover'] = clone $newtab->icons['default'];
+                        $newtab->icons['hover']->state = 'hover';
+                    }
+                }
+
+                $iconorder = ['parent', 'highlighted', 'disabled', 'childs', 'childindex', 'active', 'default', 'hover'];
+
+                $orderedicons = [];
+                foreach ($iconorder as $state) {
+                    if (isset($newtab->icons[$state])) {
+                        $orderedicons[] = $newtab->icons[$state];
+                    }
+                }
+
+                $newtab->icons = $orderedicons;
+            }
 
             if (!$assubtabs && $tab->has_childs()) {
                 $newtab->secondrow = $tab->get_childs()->get_list(true);

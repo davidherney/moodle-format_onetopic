@@ -821,7 +821,7 @@ class format_onetopic extends core_courseformat\base {
                     'type' => PARAM_INT,
                 ],
                 'firsttabtext' => [
-                    'default' => new lang_string('index', 'format_onetopic'),
+                    'default' => (string)(new lang_string('index', 'format_onetopic')),
                     'type' => PARAM_TEXT,
                 ],
             ];
@@ -868,7 +868,7 @@ class format_onetopic extends core_courseformat\base {
                     'help_component' => 'format_onetopic',
                 ],
                 'firsttabtext' => [
-                    'default' => new lang_string('index', 'format_onetopic'),
+                    'default' => (string)(new lang_string('index', 'format_onetopic')),
                     'type' => PARAM_TEXT,
                     'label' => new lang_string('firsttabtext', 'format_onetopic'),
                     'help' => 'firsttabtext',

@@ -162,6 +162,12 @@ $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
 
+$string['tabicon'] = 'Icon';
+$string['tabiconselect'] = 'Select icon';
+$string['tabsectionbackground'] = 'Section content background';
+$string['tabsectionbackground_help'] = 'Used to change the background of the section content. The value can be a color in a CSS valid representation, for example: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Name: green</li></ul>
+It can also be a URL attribute and other CSS background options.';
+
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';
 $string['disableajax'] = 'Asynchronous edit actions';

@@ -42,7 +42,11 @@
   {{#tabs}}
     <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}" {{#id}}id="onetabid-{{.}}"{{/id}}>
       <a class="nav-link{{#active}} active{{/active}}{{#inactive}} disabled{{/inactive}}" {{#link}}href="{{{link}}}"{{/link}} title="{{title}}" style="{{styles}}">
-        {{#haschilds}}{{#pix}} t/expandedchevron {{/pix}}{{/haschilds}}{{{text}}}
+        {{#haschilds}}{{#pix}} t/expandedchevron {{/pix}}{{/haschilds}}<span class="tabicon {{^icons}}hidden{{/icons}}">
+          {{#icons}}
+            <span class="tabicon-{{state}}{{^visible}} hidden{{/visible}}">{{{icon}}}</span>
+          {{/icons}}
+        </span>{{{text}}}
 
         {{#availablemessage}}
           <span class="iconhelp" data-infoid="format_onetopic_winfo_{{uniqueid}}">

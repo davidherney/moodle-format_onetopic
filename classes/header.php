@@ -227,6 +227,7 @@ class header implements \renderable, \templatable {
                     $title .= ': '. get_string('hiddenfromstudents');
                 }
 
+                $tabicons = [];
                 $customstyles = '';
                 $level = 0;
                 if (is_array($formatoptions)) {
@@ -308,6 +309,9 @@ class header implements \renderable, \templatable {
                                         $ownerkey = str_replace('unit-', '', $key);
                                         $units[$ownerkey] = $value;
                                         unset($styles->$key);
+                                    } else if ($key == 'tabicon') {
+                                        $tabicons[$type] = $value;
+                                        unset($styles->$key);
                                     }
                                 }
 
@@ -378,6 +382,7 @@ class header implements \renderable, \templatable {
                 $newtab->active = !$inactivetab;
                 $newtab->id = $thissection->id;
                 $newtab->cssstyles = $csstabstyles;
+                $newtab->icons = $tabicons;
 
                 if ($displaysection == $localsection) {
                     $newtab->selected = true;

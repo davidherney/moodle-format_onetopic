@@ -40,6 +40,58 @@ export const init = () => {
     $inputtosave = $tabstyles.find('textarea.savecontrol');
     $styleswindow = $('#onetopic-styleswindow');
 
+    // Define the tab icons.
+    $('#onetopic-tabstyles .tpl-tabdefault .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-default hidden"></span>');
+        $tabicon.append('<span class="tabicon-hover hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tpl-tabactive .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-active hidden"></span>');
+        $tabicon.append('<span class="tabicon-hover hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tpl-tabparent .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-parent hidden"></span>');
+        $tabicon.append('<span class="tabicon-default hidden"></span>');
+        $tabicon.append('<span class="tabicon-hover hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tpl-tabchildindex .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-childs hidden"></span>');
+        $tabicon.append('<span class="tabicon-childindex hidden"></span>');
+        $tabicon.append('<span class="tabicon-default hidden"></span>');
+        $tabicon.append('<span class="tabicon-hover hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tpl-tabchild .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-childs hidden"></span>');
+        $tabicon.append('<span class="tabicon-default hidden"></span>');
+        $tabicon.append('<span class="tabicon-hover hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tpl-tabhighlighted .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-highlighted hidden"></span>');
+        $tabicon.append('<span class="tabicon-default hidden"></span>');
+        $tabicon.append('<span class="tabicon-hover hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tpl-tabdisabled .tabicon').each(function() {
+        var $tabicon = $(this);
+        $tabicon.append('<span class="tabicon-disabled hidden"></span>');
+    });
+
+    $('#onetopic-tabstyles .tabicon').each(function() {
+        $(this).removeClass('hidden');
+    });
+    // End of Define the tab icons.
+
     if ($inputtosave.val().trim() !== '') {
 
         try {
@@ -142,9 +194,38 @@ export const init = () => {
 
     $('#tabstylesdisplay').on('click', function(e) {
         e.preventDefault();
-
         $tabstyles.toggleClass('hidden');
+    });
 
+    $('#onetopic-styleswindow .onetopic-selecticon').each(function() {
+        var $selecticon = $(this);
+        $selecticon.find('button').on('click', function(e) {
+            e.preventDefault();
+            $selecticon.find('.listicons').removeClass('hidden');
+        });
+
+        $selecticon.find('.listicons span').on('click', function(e) {
+            e.preventDefault();
+            var $icon = $(this);
+            $selecticon.find('.iconselected').html($icon.html());
+            $selecticon.find('[data-style="tabicon"]').val($icon.data('value'));
+            $selecticon.find('.listicons').addClass('hidden');
+        });
+
+        $selecticon.find('[data-style="tabicon"]').on('change', function() {
+            var $node = $(this);
+
+            if ($node.val() === '') {
+                $selecticon.find('.iconselected').html('');
+                return;
+            }
+
+            var $icon = $selecticon.find('.listicons span[data-value="' + $node.val() + '"]');
+
+            if ($icon.length > 0) {
+                $selecticon.find('.iconselected').html($icon.html());
+            }
+        });
     });
 
 };
@@ -160,7 +241,7 @@ var showStylesWindow = function(type) {
     $styleswindow.find('[data-style]').each(function() {
         var $node = $(this);
 
-        if ($node.is('input[type="text"]')) {
+        if ($node.is('input[type="text"]') || $node.is('input[type="hidden"]')) {
             $node.val('');
             $node.trigger('change');
         } else if ($node.is('select')) {
@@ -176,6 +257,9 @@ var showStylesWindow = function(type) {
 
             // Apply the color.
             $styleswindow.find('[data-control="colorpicker"]').trigger('change');
+
+            // Change the icon.
+            $styleswindow.find('[data-style="tabicon"]').trigger('change');
         });
     }
 
@@ -245,13 +329,22 @@ var applyStyles = function() {
                 // Remove the prefix.
                 key = key.replace('unit-', '');
                 units[key] = value;
+            } else if (key == 'tabicon') {
+                if (value !== '') {
+                    console.log(value);
+                    var icon = $('#onetopic-styleswindow .listicons span[data-value="' + value + '"]').html();
+                    console.log(icon);
+                    $('#onetopic-tabstyles .tabicon-' + type).html(icon).removeClass('hidden');
+                }
             }
         });
 
         stylesarray.forEach(([key, value]) => {
 
-            // Exclude the units rules.
+            // Exclude the tab icons and units rules.
             if (key.indexOf('unit-') === 0) {
+                return;
+            } else if (key == 'tabicon') {
                 return;
             }
 
