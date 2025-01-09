@@ -2,6 +2,7 @@
 
 .format-onetopic ul.onetopic {
     padding: 0;
+    margin-bottom: 0;
 }
 
 .format-onetopic .format_onetopic-tabs .nav-link {
@@ -38,6 +39,20 @@
 .format-onetopic .onetopic-tab-body {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.format-onetopic .onetopic-withsectionbg .course-section {
+    margin-top: 0;
+    background: #fffb;
+    padding: 0 0.75rem;
+    border-radius: 5px;
+}
+
+.format-onetopic .onetopic-withsectionbg ul.section .activity-item,
+.format-onetopic .onetopic-withsectionbg .content .summarytext {
+    background-color: transparent;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 /* Its a subtabs bar */
