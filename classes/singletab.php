@@ -32,6 +32,11 @@ namespace format_onetopic;
 class singletab {
 
     /**
+     * @var int Tab id.
+     */
+    public $id;
+
+    /**
      * @var int Tab index.
      */
     public $index;
@@ -82,6 +87,21 @@ class singletab {
     public $active = true;
 
     /**
+     * @var string Custom CSS styles.
+     */
+    public $cssstyles = '';
+
+    /**
+     * @var array Icons list.
+     */
+    public $icons = [];
+
+    /**
+     * @var \format_onetopic\singletab Parent tab.
+     */
+    public $parenttab = null;
+
+    /**
      * @var \format_onetopic\tabs Tabs childs list.
      */
     private $childs;
@@ -118,6 +138,7 @@ class singletab {
      * @param \format_onetopic\singletab $child A subtab of current tab.
      */
     public function add_child(singletab $child) {
+        $child->parenttab = $this;
         $this->childs->add($child);
     }
 

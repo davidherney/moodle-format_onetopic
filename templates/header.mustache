@@ -78,7 +78,19 @@
     </div>
     {{/initialsection}}
 
+    {{#hidetabsbar}}
+    <div class="alert alert-warning">
+        {{#str}} hiddentabsbar, format_onetopic {{/str}}
+    </div>
+    {{/hidetabsbar}}
+
     <div id="tabs-tree-start" class="{{tabsviewclass}} {{#hastopictabs}}hastopictabs{{/hastopictabs}} {{#hassecondrow}}hassecondrow{{/hassecondrow}}">
+        {{#cssstyles}}
+            <style type="text/css">
+                {{{cssstyles}}}
+            </style>
+        {{/cssstyles}}
+
         {{#hastopictabs}}
             <div class="tabs-wrapper">
 
@@ -88,24 +100,31 @@
                     {{>format_onetopic/courseformat/tabtree}}
                 {{/courseindex}}
             </div>
+        {{/hastopictabs}}
 
-            <div class="onetopic-tab-body">
+        <div class="onetopic-tab-body{{#tabsectionbackground}} onetopic-withsectionbg{{/tabsectionbackground}}"
+            {{#activetab}}data-tabid="{{id}}"{{/activetab}}
+            {{#tabsectionbackground}}style="{{tabsectionbackground}}"{{/tabsectionbackground}}>
 
             {{#hassecondrow}}
                 {{#secondrow}}
                     {{>format_onetopic/courseformat/tabtree}}
                 {{/secondrow}}
+                <div class="onetopic-tab-body-secondrow{{#subtabsectionbackground}} onetopic-withsubsectionbg{{/subtabsectionbackground}}"
+                    {{#subtabsectionbackground}}style="{{subtabsectionbackground}}"{{/subtabsectionbackground}}>
             {{/hassecondrow}}
 
-        {{/hastopictabs}}
-        <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
+
+            <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
 
 {{#testing}}
-        </div>
-        {{#hastopictabs}}
-            {{! End of onetopic-tab-body box. }}
+            {{#hassecondrow}}
+                </div>
+            {{/hassecondrow}}
             </div>
-        {{/hastopictabs}}
+        {{! End of onetopic-tab-body box. }}
+        </div>
     </div>
 </div>
 {{/testing}}
+

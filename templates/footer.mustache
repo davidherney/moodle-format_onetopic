@@ -29,18 +29,20 @@
 {{#testing}}
 <div>
     <div>
-        {{#hastopictabs}}
-            <div>
-        {{/hastopictabs}}
         <div>
+            <div>
+            {{#hassecondrow}}
+                <div>
+            {{/hassecondrow}}
 {{/testing}}
+            {{#hassecondrow}}
+                </div>
+            {{/hassecondrow}}
 
-        </div>{{! Used in order to break the div wraped in output.course_content_footer }}
+            </div>{{! Used in order to break the div wraped in output.course_content_footer }}
 
-        {{#hastopictabs}}
-            {{! End of onetopic-tab-body box. }}
-            </div>
-        {{/hastopictabs}}
+        {{! End of onetopic-tab-body box. }}
+        </div>
     </div>
 
 </div>

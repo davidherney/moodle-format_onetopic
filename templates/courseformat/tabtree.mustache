@@ -33,16 +33,15 @@
         }]
     }
 }}
-{{#hidetabsbar}}
-  <div class="alert alert-warning">
-    {{#str}} hiddentabsbar, format_onetopic {{/str}}
-  </div>
-{{/hidetabsbar}}
-<ul class="nav nav-tabs mb-3 format_onetopic-tabs {{#hidetabsbar}}hiddentabsbar{{/hidetabsbar}}">
+<ul class="nav nav-tabs format_onetopic-tabs {{#hidetabsbar}}hiddentabsbar{{/hidetabsbar}}">
   {{#tabs}}
-    <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}">
+    <li class="nav-item {{specialclass}} {{#haschilds}}haschilds{{/haschilds}}" {{#id}}id="onetabid-{{.}}"{{/id}}>
       <a class="nav-link{{#active}} active{{/active}}{{#inactive}} disabled{{/inactive}}" {{#link}}href="{{{link}}}"{{/link}} title="{{title}}" style="{{styles}}">
-        {{#haschilds}}{{#pix}} t/expandedchevron {{/pix}}{{/haschilds}}{{{text}}}
+        {{#haschilds}}{{#pix}} t/expandedchevron {{/pix}}{{/haschilds}}<span class="tabicon {{^icons}}hidden{{/icons}}">
+          {{#icons}}
+            <span class="tabicon-{{state}}{{^visible}} hidden{{/visible}}">{{{icon}}}</span>
+          {{/icons}}
+        </span>{{{text}}}
 
         {{#availablemessage}}
           <span class="iconhelp" data-infoid="format_onetopic_winfo_{{uniqueid}}">

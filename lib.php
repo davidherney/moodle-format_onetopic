@@ -705,7 +705,7 @@ class format_onetopic extends core_courseformat\base {
      * @return array array of references to the added form elements.
      */
     public function create_edit_form_elements(&$mform, $forsection = false) {
-        global $COURSE;
+        global $COURSE, $CFG;
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
         if (!$forsection && (empty($COURSE->id) || $COURSE->id == SITEID)) {
@@ -721,6 +721,32 @@ class format_onetopic extends core_courseformat\base {
                 $mform->setDefault('numsections', $courseconfig->numsections);
             }
             array_unshift($elements, $element);
+        }
+
+        if ($forsection) {
+            $onetopicconfig = get_config('format_onetopic');
+
+            if ($onetopicconfig->enablecustomstyles) {
+
+                $mform->removeElement('tabsectionbackground');
+                MoodleQuickForm::registerElementType('tabsectionbackground',
+                                            $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_background.php',
+                                            'format_onetopic_background_form_element');
+                $element = $mform->addElement('tabsectionbackground', 'tabsectionbackground',
+                                                get_string('tabsectionbackground', 'format_onetopic'));
+
+                $elements[] = $element;
+
+                if (empty($onetopicconfig->useoldstylescontrol)) {
+                    $mform->removeElement('tabstyles');
+                    MoodleQuickForm::registerElementType('tabstyles',
+                                                $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_tabstyles.php',
+                                                'format_onetopic_tabstyles_form_element');
+                    $element = $mform->addElement('tabstyles', 'tabstyles', get_string('tabstyles', 'format_onetopic'));
+
+                    $elements[] = $element;
+                }
+            }
         }
 
         return $elements;
@@ -798,7 +824,7 @@ class format_onetopic extends core_courseformat\base {
     public function section_format_options($foreditform = false) {
         static $sectionformatoptions = false;
 
-        $enablecustomstyles = get_config('format_onetopic', 'enablecustomstyles');
+        $onetopicconfig = get_config('format_onetopic');
 
         if ($sectionformatoptions === false) {
             $sectionformatoptions = [
@@ -807,26 +833,38 @@ class format_onetopic extends core_courseformat\base {
                     'type' => PARAM_INT,
                 ],
                 'firsttabtext' => [
-                    'default' => get_string('index', 'format_onetopic'),
+                    'default' => (string)(new lang_string('index', 'format_onetopic')),
                     'type' => PARAM_TEXT,
                 ],
             ];
 
-            if ($enablecustomstyles) {
-                $sectionformatoptions['fontcolor'] = [
+            if ($onetopicconfig->enablecustomstyles) {
+                $sectionformatoptions['tabsectionbackground'] = [
                     'default' => '',
                     'type' => PARAM_RAW,
                 ];
 
-                $sectionformatoptions['bgcolor'] = [
-                    'default' => '',
-                    'type' => PARAM_RAW,
-                ];
+                if ($onetopicconfig->useoldstylescontrol) {
+                    $sectionformatoptions['fontcolor'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                    ];
 
-                $sectionformatoptions['cssstyles'] = [
-                    'default' => '',
-                    'type' => PARAM_RAW,
-                ];
+                    $sectionformatoptions['bgcolor'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                    ];
+
+                    $sectionformatoptions['cssstyles'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                    ];
+                } else {
+                    $sectionformatoptions['tabstyles'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                    ];
+                }
             }
         }
 
@@ -835,50 +873,72 @@ class format_onetopic extends core_courseformat\base {
                 'level' => [
                     'default' => 0,
                     'type' => PARAM_INT,
-                    'label' => get_string('level', 'format_onetopic'),
+                    'label' => new lang_string('level', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            0 => get_string('asprincipal', 'format_onetopic'),
-                            1 => get_string('aschild', 'format_onetopic'),
+                            0 => new lang_string('asprincipal', 'format_onetopic'),
+                            1 => new lang_string('aschild', 'format_onetopic'),
                         ],
                         ],
                     'help' => 'level',
                     'help_component' => 'format_onetopic',
                 ],
                 'firsttabtext' => [
-                    'default' => get_string('index', 'format_onetopic'),
+                    'default' => (string)(new lang_string('index', 'format_onetopic')),
                     'type' => PARAM_TEXT,
-                    'label' => get_string('firsttabtext', 'format_onetopic'),
+                    'label' => new lang_string('firsttabtext', 'format_onetopic'),
                     'help' => 'firsttabtext',
                     'help_component' => 'format_onetopic',
                 ],
             ];
 
-            if ($enablecustomstyles) {
-                $sectionformatoptionsedit['fontcolor'] = [
+            if ($onetopicconfig->enablecustomstyles) {
+
+                $sectionformatoptionsedit['tabsectionbackground'] = [
                     'default' => '',
                     'type' => PARAM_RAW,
-                    'label' => get_string('fontcolor', 'format_onetopic'),
-                    'help' => 'fontcolor',
+                    'label' => new lang_string('tabsectionbackground', 'format_onetopic'),
+                    'element_type' => 'text',
+                    'help' => 'tabsectionbackground',
                     'help_component' => 'format_onetopic',
                 ];
 
-                $sectionformatoptionsedit['bgcolor'] = [
-                    'default' => '',
-                    'type' => PARAM_RAW,
-                    'label' => get_string('bgcolor', 'format_onetopic'),
-                    'help' => 'bgcolor',
-                    'help_component' => 'format_onetopic',
-                ];
+                if ($onetopicconfig->useoldstylescontrol) {
+                    $sectionformatoptionsedit['fontcolor'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                        'label' => new lang_string('fontcolor', 'format_onetopic'),
+                        'help' => 'fontcolor',
+                        'help_component' => 'format_onetopic',
+                    ];
 
-                $sectionformatoptionsedit['cssstyles'] = [
-                    'default' => '',
-                    'type' => PARAM_RAW,
-                    'label' => get_string('cssstyles', 'format_onetopic'),
-                    'help' => 'cssstyles',
-                    'help_component' => 'format_onetopic',
-                ];
+                    $sectionformatoptionsedit['bgcolor'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                        'label' => new lang_string('bgcolor', 'format_onetopic'),
+                        'help' => 'bgcolor',
+                        'help_component' => 'format_onetopic',
+                    ];
+
+                    $sectionformatoptionsedit['cssstyles'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                        'label' => new lang_string('cssstyles', 'format_onetopic'),
+                        'help' => 'cssstyles',
+                        'help_component' => 'format_onetopic',
+                    ];
+                } else {
+                    $sectionformatoptionsedit['tabstyles'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                        'label' => new lang_string('cssstyles', 'format_onetopic'),
+                        'element_type' => 'textarea',
+                        'help' => 'tabstyles',
+                        'help_component' => 'format_onetopic',
+                    ];
+                }
+
             }
 
             $sectionformatoptions = $sectionformatoptionsedit;

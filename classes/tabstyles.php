@@ -126,7 +126,6 @@ class tabstyles extends \admin_setting_configtextarea {
         ];
         $element = $OUTPUT->render_from_template('format_onetopic/setting_tabstyles', $context);
 
-        $styles = new \stdClass();
         $PAGE->requires->js_call_amd('format_onetopic/tabstyles', 'init');
 
         return format_admin_setting($this, $this->visiblename, $element, $this->description, true, '', $default, $query);
