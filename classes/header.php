@@ -114,8 +114,20 @@ class header implements \renderable, \templatable {
             $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
         }
 
-        $formatoptions = course_get_format($course)->get_format_options($currentsection);
+        $formatoptions = course_get_format($course)->get_format_options($activetab->section);
         $tabsectionbackground = $formatoptions['tabsectionbackground'] ?? '';
+        $subtabsectionbackground = '';
+
+        // If the tabsectionbackground is not defined in the section check the parent section.
+        if ($currentsection != $activetab->section) {
+            $formatoptionssub = course_get_format($course)->get_format_options($currentsection);
+            $subtabsectionbackground = $formatoptionssub['tabsectionbackground'] ?? '';
+
+            if (!empty($subtabsectionbackground)) {
+                $subtabsectionbackground = clean_param($subtabsectionbackground, PARAM_NOTAGS);
+                $subtabsectionbackground = 'background: ' . $subtabsectionbackground . ';';
+            }
+        }
 
         if (!empty($tabsectionbackground)) {
             $tabsectionbackground = clean_param($tabsectionbackground, PARAM_NOTAGS);
@@ -142,6 +154,7 @@ class header implements \renderable, \templatable {
             'courseindex' => $courseindex,
             'cssstyles' => $tabscssstyles,
             'tabsectionbackground' => $tabsectionbackground,
+            'subtabsectionbackground' => $subtabsectionbackground,
         ];
 
         $initialsection = null;

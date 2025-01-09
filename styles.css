@@ -55,6 +55,11 @@
     padding-right: 0;
 }
 
+.format-onetopic .onetopic-withsubsectionbg {
+    margin: 0 10px;
+    padding: 10px 0;
+}
+
 /* Its a subtabs bar */
 .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
     padding-left: 20px;
@@ -113,9 +118,13 @@
     position: relative;
     max-width: 100%;
     height: 40px;
-    margin: 0 auto 20px;
+    margin: 0 auto;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+.format-onetopic .onelinetabs .onetopic-tab-body {
+    padding-top: 20px;
 }
 
 .format-onetopic .onelinetabs .tabs-wrapper.hasscroll {

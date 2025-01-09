@@ -102,19 +102,25 @@
             </div>
         {{/hastopictabs}}
 
-        <div class="onetopic-tab-body{{#tabsectionbackground}} onetopic-withsectionbg{{/tabsectionbackground}}" {{#activetab}}data-tabid="{{id}}"{{/activetab}}
+        <div class="onetopic-tab-body{{#tabsectionbackground}} onetopic-withsectionbg{{/tabsectionbackground}}"
+            {{#activetab}}data-tabid="{{id}}"{{/activetab}}
             {{#tabsectionbackground}}style="{{tabsectionbackground}}"{{/tabsectionbackground}}>
 
             {{#hassecondrow}}
                 {{#secondrow}}
                     {{>format_onetopic/courseformat/tabtree}}
                 {{/secondrow}}
+                <div class="onetopic-tab-body-secondrow{{#subtabsectionbackground}} onetopic-withsubsectionbg{{/subtabsectionbackground}}"
+                    {{#subtabsectionbackground}}style="{{subtabsectionbackground}}"{{/subtabsectionbackground}}>
             {{/hassecondrow}}
 
 
             <div class="hack-element-not-used">{{! Used in order to break the div wraped in output.course_content_header }}
 
 {{#testing}}
+            {{#hassecondrow}}
+                </div>
+            {{/hassecondrow}}
             </div>
         {{! End of onetopic-tab-body box. }}
         </div>
