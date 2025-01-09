@@ -60,6 +60,10 @@
     padding: 10px 0;
 }
 
+.format-onetopic .onetopic-tab-body-secondrow {
+    padding-top: 10px;
+}
+
 /* Its a subtabs bar */
 .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
     padding-left: 20px;
