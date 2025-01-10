@@ -1,6 +1,6 @@
 # COURSE FORMAT Onetopic
 
-Package tested in: moodle 4.4+.
+Package tested in: moodle 4.4+ and 4.5+.
 
 ## QUICK INSTALL
 Download zip package, extract the onetopic folder and upload this folder into course/format/.
@@ -20,6 +20,8 @@ Download zip package, extract the onetopic folder and upload this folder into co
 * New tab styles editor when editing each section.
 * Select icon by tab and tab state.
 * New background option by section.
+* Compatibility with moodle 4.5
+* Do not show new subsections in tabs (Moodle 4.5). In the future these subsections become second-level tabs.
 
 ### 2024050904:
 * New "sectionname" parameter to navigate to a tab directly using its name.
