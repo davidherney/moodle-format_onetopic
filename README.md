@@ -18,8 +18,10 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ### 2024050905:
 * New tab styles editor when editing each section.
+  * ![Tabs styles editor](https://boa.nuestroscursos.net/api/c/web/resources/NDU1MEVCNjAtODQ4Qy00RTk3LUI2NzUtOUJBN0E5ODk0QTkyQGJvYS51ZGVhLmVkdS5jbw==/!/onetopic/3.1.tab_settings.png)
 * Select icon by tab and tab state.
 * New background option by section.
+  * ![Tabs background color](https://boa.nuestroscursos.net/api/c/web/resources/NDU1MEVCNjAtODQ4Qy00RTk3LUI2NzUtOUJBN0E5ODk0QTkyQGJvYS51ZGVhLmVkdS5jbw==/!/onetopic/1.ejemplo_simple.png)
 * Compatibility with moodle 4.5
 * Do not show new subsections in tabs (Moodle 4.5). In the future these subsections become second-level tabs.
 
