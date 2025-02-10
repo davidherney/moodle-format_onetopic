@@ -295,7 +295,7 @@ class header implements \renderable, \templatable {
                             $important = false;
                             switch ($type) {
                                 case 'active':
-                                    $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link.active,';
+                                    $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link.active';
                                     $important = true;
                                 break;
                                 case 'parent':
