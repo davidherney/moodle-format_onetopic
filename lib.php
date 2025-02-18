@@ -1080,9 +1080,9 @@ function format_onetopic_before_http_headers() {
  * @param string $itemtype
  * @param int $itemid
  * @param mixed $newvalue
- * @return \core\output\inplace_editable
+ * @return ?\core\output\inplace_editable
  */
-function format_onetopics_inplace_editable($itemtype, $itemid, $newvalue) {
+function format_onetopic_inplace_editable($itemtype, $itemid, $newvalue) {
     global $DB, $CFG;
     require_once($CFG->dirroot . '/course/lib.php');
     if ($itemtype === 'sectionname' || $itemtype === 'sectionnamenl') {
