@@ -122,6 +122,7 @@ $string['showfromothers'] = 'Show topic';
 $string['subtopictoright'] = 'Move to right as subtopic';
 $string['tabicon'] = 'Icon';
 $string['tabiconselect'] = 'Select icon';
+$string['tabiconremove'] = 'Remove icon';
 $string['tablabelactive'] = 'Active tab';
 $string['tablabeldefault'] = 'Default tab {$a}';
 $string['tablabeldisabled'] = 'Disabled';

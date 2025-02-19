@@ -105,8 +105,10 @@
                         <div class="tabiconbox" title="{{#str}} tabicon, format_onetopic {{/str}}">
                             <span class="iconselected">{{{currenticon}}}</span>
                             <input type="hidden" data-style="tabicon">
-                            <button class="btn btn-secondary">{{#str}} tabiconselect, format_onetopic {{/str}}</button>
+                            <button class="btn btn-secondary iconselect">{{#str}} tabiconselect, format_onetopic {{/str}}</button>
+                            <button class="btn btn-danger iconremove">{{#str}} tabiconremove, format_onetopic {{/str}}</button>
                             <div class="listicons hidden">
+                                <div class="windowheader">{{#pix}} t/dockclose {{/pix}}</div>
                                 {{#tabiconoptions}}
                                 <span data-value="{{identifier}}">{{{icon}}}</span>
                                 {{/tabiconoptions}}

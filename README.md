@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2024050906:
+* Option to remove icon in tab style editor.
+
 ### 2024050905:
 * New tab styles editor when editing each section.
   * ![Tabs styles editor](https://boa.nuestroscursos.net/api/c/web/resources/NDU1MEVCNjAtODQ4Qy00RTk3LUI2NzUtOUJBN0E5ODk0QTkyQGJvYS51ZGVhLmVkdS5jbw==/!/onetopic/3.1.tab_settings.png)

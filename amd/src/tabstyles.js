@@ -189,6 +189,7 @@ export const init = () => {
         e.preventDefault();
         globalstyles = {};
         $inputtosave.val('');
+        $('#onetopic-tabstyles .tabicon span').html('').addClass('hidden');
         applyStyles();
     });
 
@@ -199,9 +200,20 @@ export const init = () => {
 
     $('#onetopic-styleswindow .onetopic-selecticon').each(function() {
         var $selecticon = $(this);
-        $selecticon.find('button').on('click', function(e) {
+
+        $selecticon.find('button.iconselect').on('click', function(e) {
             e.preventDefault();
             $selecticon.find('.listicons').removeClass('hidden');
+        });
+
+        $selecticon.find('button.iconremove').on('click', function(e) {
+            e.preventDefault();
+            $selecticon.find('.iconselected').html('');
+            $selecticon.find('[data-style="tabicon"]').val('');
+        });
+
+        $selecticon.find('.listicons .windowheader').on('click', function() {
+            $selecticon.find('.listicons').addClass('hidden');
         });
 
         $selecticon.find('.listicons span').on('click', function(e) {
@@ -320,6 +332,7 @@ var applyStyles = function() {
         csscontent += '{';
         var units = [];
         var stylesarray = Object.entries(styles);
+        var hasicon = false;
 
         // Check if exist units for some rules.
         stylesarray.forEach(([key, value]) => {
@@ -333,9 +346,14 @@ var applyStyles = function() {
                 if (value !== '') {
                     var icon = $('#onetopic-styleswindow .listicons span[data-value="' + value + '"]').html();
                     $('#onetopic-tabstyles .tabicon-' + type).html(icon).removeClass('hidden');
+                    hasicon = true;
                 }
             }
         });
+
+        if (!hasicon) {
+            $('#onetopic-tabstyles .tabicon-' + type).html('').addClass('hidden');
+        }
 
         stylesarray.forEach(([key, value]) => {
 

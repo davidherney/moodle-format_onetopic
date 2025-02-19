@@ -98,7 +98,7 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
                 ];
         $html .= html_writer::tag('div', $cp->output_html(''), $attrs);
 
-        $attrs = ['class' => 'backgroundpicker'];
+        $attrs = ['class' => 'backgroundpicker d-flex'];
         $html = html_writer::tag('div', $html, $attrs);
 
         $PAGE->requires->js_call_amd('format_onetopic/onetopicbackground', 'init', [$this->getAttribute('id')]);
@@ -117,6 +117,11 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
         $context = $this->export_for_template_base($output);
 
         $context['html'] = $this->to_html();
+
+        $original = 'name="' . $this->getName() . '"';
+        $new = $original . ' class="form-control "';
+        $context['html'] = str_replace($original, $new, $context['html']);
+
         return $context;
     }
 

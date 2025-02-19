@@ -122,6 +122,7 @@ $string['showfromothers'] = 'Mostrar tema';
 $string['subtopictoright'] = 'Mover a la derecha como pestaña hija';
 $string['tabicon'] = 'Icono';
 $string['tabiconselect'] = 'Seleccionar icono';
+$string['tabiconremove'] = 'Quitar icono';
 $string['tablabelactive'] = 'Pestaña activa';
 $string['tablabeldefault'] = 'Pestaña predeterminada {$a}';
 $string['tablabeldisabled'] = 'Deshabilitada';

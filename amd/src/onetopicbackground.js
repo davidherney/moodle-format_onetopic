@@ -39,6 +39,16 @@ export const init = (controlid) => {
     var $controlbutton = $control.find('.backgroundpickerselector');
     var $colorpickerinput = $controlwindow.find('input.form-control[type="text"]');
 
+    $controlinput.on('change', function() {
+        var $color = $controlinput.val();
+        if ($color) {
+            $controlinput.css('background', $color);
+        } else {
+            $controlinput.css('background', '');
+        }
+    });
+    $controlinput.trigger('change');
+
     // Initialize the modal window.
     var title = $controlwindow.attr('title');
     var buttons = [];
@@ -61,6 +71,7 @@ export const init = (controlid) => {
                 val += ' ' + newcolor;
             }
             $controlinput.val(val);
+            $controlinput.css('background', val);
             modal.hide();
         });
     };

@@ -321,6 +321,10 @@
     display: flex;
 }
 
+#onetopic-styleswindow fieldset > div > div button {
+    margin-right: 5px;
+}
+
 #onetopic-styleswindow fieldset > div.whithlabel {
     flex-direction: column;
 }
@@ -366,11 +370,21 @@
     left: 5px;
     right: 5px;
     bottom: 10px;
-    top: 10px;
+    top: 0;
     border-radius: 5px;
     background-color: #fff;
     display: flex;
     flex-wrap: wrap;
+}
+
+#onetopic-styleswindow .onetopic-selecticon .listicons .windowheader {
+    width: 100%;
+    background: #999;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
 }
 
 #onetopic-styleswindow .onetopic-selecticon .listicons span {
@@ -379,6 +393,8 @@
     border: 1px solid #dee2e6;
     display: inline-block;
     margin: 1px;
+    width: 30px;
+    text-align: center;
 }
 
 #onetopic-styleswindow .onetopic-selecticon .listicons span:hover {
@@ -391,6 +407,8 @@
 #onetopic-styleswindow .onetopic-selecticon .listicons span i {
     font-size: 15px;
     margin: 0;
+    width: auto;
+    height: auto;
 }
 
 #onetopic-styleswindow .onetopic-selecticon .iconselected {
@@ -408,6 +426,8 @@
 #onetopic-styleswindow .onetopic-selecticon .iconselected i {
     font-size: 20px;
     margin: 0;
+    height: auto;
+    width: auto;
 }
 
 .format-onetopic .format_onetopic-tabs .nav-link span.tabicon span i {
