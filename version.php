@@ -21,10 +21,10 @@
  * Un recorderis de las Veredas de mi pueblo, en homenaje a los campesinos de mi tierra.
  *
  * Old releases: Guarango, Pantalio, Chalarca, Mazorcal, Chuscalito, Las Teresas, La Madera, Las Brisas, Buenavista,
- * San Juan, La Almería, Piedras Teherán, El Cardal.
+ * San Juan, La Almería, Piedras Teherán, El Cardal, La Divisa, Las Acacias.
  *
- * Next releases: Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Acacias, Las Colmenas, Minitas,
- * Quebrada Negra, San Francisco, San Miguel Abajo, San Miguel, La Concha, La Divisa
+ * Next releases: Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Colmenas, Minitas,
+ * Quebrada Negra, San Francisco, San Miguel Abajo, San Miguel, La Concha.
  *
  * @package format_onetopic
  * @copyright 2015 David Herney - cirano. https://bambuco.co
@@ -33,10 +33,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024050905.02; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2024041600; // Requires this Moodle version.
+$plugin->version = 2025021900; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2025021400; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.4.05(LasAcacias)';
-$plugin->dependencies = ['format_topics' => 2024042200];
-$plugin->supported = [404, 405];
+$plugin->maturity = MATURITY_BETA;
+$plugin->release = '5.0.0(LaDivisa)';
+$plugin->dependencies = ['format_topics' => 2024121800];
+$plugin->supported = [500, 500];

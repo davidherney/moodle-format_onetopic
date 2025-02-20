@@ -25,6 +25,9 @@
 namespace format_onetopic\output\courseformat\content\section;
 
 use context_course;
+use core\output\action_menu\link_secondary;
+use core\output\pix_icon;
+use core\url;
 use format_topics\output\courseformat\content\section\controlmenu as controlmenu_format_topics;
 
 /**
@@ -76,13 +79,12 @@ class controlmenu extends controlmenu_format_topics {
                 $url->param('section', $section->section);
                 $url->param('move', -1);
                 $strmoveup = $horizontal ? get_string('moveleft') : get_string('moveup');
-                $movecontrols['moveup'] = [
-                    'url' => $url,
-                    'icon' => $horizontal ? ($rtl ? 't/right' : 't/left') : 'i/up',
-                    'name' => $strmoveup,
-                    'pixattr' => ['class' => ''],
-                    'attr' => ['class' => 'icon' . ($horizontal ? '' : ' moveup')],
-                ];
+                $movecontrols['moveup'] = new link_secondary(
+                    url: $url,
+                    icon: new pix_icon($horizontal ? ($rtl ? 't/right' : 't/left') : 'i/up', ''),
+                    text: $strmoveup,
+                    attributes: ['class' => 'icon' . ($horizontal ? '' : ' moveup')],
+                );
             }
 
             $url = clone($baseurl);
@@ -90,35 +92,51 @@ class controlmenu extends controlmenu_format_topics {
                 $url->param('section', $section->section);
                 $url->param('move', 1);
                 $strmovedown = $horizontal ? get_string('moveright') : get_string('movedown');
-                $movecontrols['movedown'] = [
-                    'url' => $url,
-                    'icon' => $horizontal ? ($rtl ? 't/left' : 't/right') : 'i/down',
-                    'name' => $strmovedown,
-                    'pixattr' => ['class' => ''],
-                    'attr' => ['class' => 'icon' . ($horizontal ? '' : ' movedown')],
-                ];
+                $movecontrols['movedown'] = new link_secondary(
+                    url: $url,
+                    icon: new pix_icon($horizontal ? ($rtl ? 't/left' : 't/right') : 'i/down', ''),
+                    text: $strmovedown,
+                    attributes: ['class' => 'icon' . ($horizontal ? '' : ' movedown')],
+                );
             }
         }
 
         // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
         if (array_key_exists("delete", $parentcontrols)) {
-            $url = new \moodle_url('/course/editsection.php', [
+            $url = new url('/course/editsection.php', [
                 'id' => $section->id,
                 'sr' => $section->section - 1,
                 'delete' => 1,
-                'sesskey' => sesskey(), ]);
-            $parentcontrols['delete']['url'] = $url;
-            unset($parentcontrols['delete']['attr']['data-action']);
+                'sesskey' => sesskey(),
+            ]);
+
+            $parentcontrols['delete'] = new link_secondary(
+                url: $url,
+                icon: new pix_icon('i/delete', ''),
+                text: get_string('delete'),
+                attributes: ['class' => 'editing_delete text-danger'],
+            );
         }
 
         // Create the permalink according to the Onetopic format.
         if (array_key_exists("permalink", $parentcontrols)) {
-            $sectionlink = new \moodle_url(
-                '/course/view.php',
-                ['id' => $course->id, 'sectionid' => $section->id],
-                'tabs-tree-start');
+            $sectionlink = new url('/course/view.php',
+                [
+                    'id' => $course->id,
+                    'sectionid' => $section->id,
+                ],
+                'tabs-tree-start'
+            );
 
-            $parentcontrols['permalink']['url'] = $sectionlink;
+            $parentcontrols['permalink'] = new link_secondary(
+                url: $sectionlink,
+                icon: new pix_icon('i/link', ''),
+                text: get_string('sectionlink', 'course'),
+                attributes: [
+                    'class' => 'icon',
+                    'data-action' => 'permalink',
+                ],
+            );
         }
 
         // If the delete key exists, we are going to insert our controls before it.

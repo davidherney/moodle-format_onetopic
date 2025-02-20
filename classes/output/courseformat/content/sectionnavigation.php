@@ -42,7 +42,7 @@ use stdClass;
 class sectionnavigation extends sectionnavigation_base {
 
     /** @var stdClass the calculated data to prevent calculations when rendered several times */
-    private $data = null;
+    protected $data = null;
 
     /**
      * Export this data so it can be used as the context for a mustache template.

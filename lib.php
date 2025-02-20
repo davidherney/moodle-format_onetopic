@@ -127,7 +127,8 @@ class format_onetopic extends core_courseformat\base {
     protected function __construct($format, $courseid) {
         parent::__construct($format, $courseid);
 
-        $this->uniqid = uniqid();
+        // Unique id require a prefix to avoid conflicts with querySelector in JS.
+        $this->uniqid = 'dhbg' . uniqid();
 
         // Hack for section number, when not is like a param in the url or section is not available.
         global $section, $sectionid, $PAGE, $USER, $urlparams, $DB, $context;

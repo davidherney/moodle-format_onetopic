@@ -70,11 +70,13 @@
 
     {{#initialsection}}
     <div class="single-section general-section">
-        <ul class="{{format}}">
-            {{$ format_onetopic/local/content/section }}
-                {{> format_onetopic/local/content/section }}
-            {{/ format_onetopic/local/content/section }}
-        </ul>
+        <div class="course-content">
+            <ul class="{{format}}">
+                {{$ format_onetopic/local/content/section }}
+                    {{> format_onetopic/local/content/section }}
+                {{/ format_onetopic/local/content/section }}
+            </ul>
+        </div>
     </div>
     {{/initialsection}}
 
