@@ -899,7 +899,7 @@ class format_onetopic extends core_courseformat\base {
             } else {
                 $parent = $level0section;
             }
-            $parentsections[$section->section] = $parent;
+            $parentsections[$section->id] = $parent ? $parent->id : null;
         }
         $this->parentsections = $parentsections;
         $this->parentsectionsmodinfo = $modinfo;
@@ -922,8 +922,9 @@ class format_onetopic extends core_courseformat\base {
 
         // The tab visibility depend of parent visibility.
         $parentsections = $this->fot_get_sections_extra();
-        $parent = $parentsections[$section->section];
-        if ($parent) {
+        $parentid = $parentsections[$section->id];
+        if ($parentid) {
+            $parent = $section->modinfo->get_section_info_by_id($parentid);
             if (!($parent->visible && $parent->available)) {
                 $available = false;
                 if (!$parent->uservisible) {
