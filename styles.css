@@ -446,6 +446,10 @@
     display: inline-block;
 }
 
+#page-course-format-onetopic-migratestyles .migrate-btnbox {
+    padding: 20px 0;
+}
+
 /* The slide navigation is only available to wide screens */
 @media (min-width: 600px) {
 
