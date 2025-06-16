@@ -32,8 +32,9 @@ if ($ADMIN->fulltree) {
                                                     get_string('enablecustomstyles_help', 'format_onetopic'), 1)
     );
 
+    $url = new moodle_url('/course/format/onetopic/migratestyles.php');
     $help = get_string('useoldstylescontrol_help', 'format_onetopic') .
-            '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic') . '</strong> ';
+            '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic', $url) . '</strong> ';
     $settings->add(new admin_setting_configcheckbox('format_onetopic/useoldstylescontrol',
                                                     get_string('useoldstylescontrol', 'format_onetopic'),
                                                     $help, 0)
