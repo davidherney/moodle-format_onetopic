@@ -53,7 +53,7 @@ class clilib {
 
         if (!$rs->valid()) {
             echo get_string('migratestylesnothing', 'format_onetopic') . "\n";
-            $rs->close(); // Not going to iterate (but exit), close rs
+            $rs->close(); // Not going to iterate (but exit), close rs.
             return;
         }
 
@@ -105,7 +105,7 @@ class clilib {
         $rs = $DB->get_recordset_sql($sql, $params, 0, $limit);
         if (!$rs->valid()) {
             echo get_string('migratestylesnothing', 'format_onetopic') . "\n";
-            $rs->close(); // Not going to iterate (but exit), close rs
+            $rs->close(); // Not going to iterate (but exit), close rs.
             return;
         }
 
