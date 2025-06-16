@@ -450,6 +450,10 @@
     padding: 20px 0;
 }
 
+#page-course-format-onetopic-migratestyles .migrate-btnbox a {
+    margin-right: 10px;
+}
+
 /* The slide navigation is only available to wide screens */
 @media (min-width: 600px) {
 
