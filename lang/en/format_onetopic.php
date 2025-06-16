@@ -170,6 +170,34 @@ $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
+$string['cli_help'] = 'Execute cli actions.
+Options:
+-h,  --help             Print out this help
+-ms, --mstyles=X        Executes a migration action. X can be: list, migrate, or all.
+                        If X is not specified, the "list" option is used.
+                        If X is "migrate", it will migrate the styles that can be migrated.
+                        If X is "list", it will list the sections with styles to be migrated.
+-msl, --mslimit=100     Limit the number of records to be displayed on screen or migrated. Default is 100.
+                        Be careful with the limit. If you set a value that includes some styles but excludes others from a section,
+                        only the included styles will be migrated.
+Example:
+\$sudo -u www-data /usr/bin/php cli.php -ms=list -msl=50
+';
+$string['cli_migratestylesend'] = 'Styles migration completed successfully.';
+$string['cli_migratestylesstart'] = 'Starting styles migration...';
+$string['cli_migratestylesstarttitle'] = 'Styles migration...';
+$string['migratecssstyles'] = 'Styles';
+$string['migratestyles'] = 'Migrate styles';
+$string['migratestylesaction'] = 'Migrate styles';
+$string['migratestylesall'] = 'Show all sections';
+$string['migratestylesconfirm'] = 'Are you sure you want to migrate the styles? This action will migrate the styles from the old format to the new one, and it cannot be undone. Old styles will also be kept for compatibility.';
+$string['migratestylesdone'] = 'Styles migration completed successfully.';
+$string['migratestyleslimit'] = 'The number of records to be displayed on screen has been exceeded. Only the first {$a} records are displayed.';
+$string['migratestylesnothing'] = 'There are no styles to migrate.';
+$string['migratestylesonlytochange'] = 'Show only the sections that are pending migration';
+$string['migratewillbemigrated'] = 'Will be migrated';
+$string['migrationpagehelp'] = 'You can use the following page to review which styles exist in the old control: <a href="{$a}" target="_blank">Migration</a>. You can also use the automatic migration feature if there are styles that can be migrated. Styles cannot be migrated if the new property already exists in the database.';
+$string['nomigratestyles'] = 'There are no styles to migrate.';
 
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';
