@@ -32,9 +32,11 @@ if ($ADMIN->fulltree) {
                                                     get_string('enablecustomstyles_help', 'format_onetopic'), 1)
     );
 
+    $help = get_string('useoldstylescontrol_help', 'format_onetopic') .
+            '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic') . '</strong> ';
     $settings->add(new admin_setting_configcheckbox('format_onetopic/useoldstylescontrol',
                                                     get_string('useoldstylescontrol', 'format_onetopic'),
-                                                    get_string('useoldstylescontrol_help', 'format_onetopic'), 0)
+                                                    $help, 0)
     );
 
     $settings->add(new admin_setting_configcheckbox('format_onetopic/anchortotabstree',

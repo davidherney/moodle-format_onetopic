@@ -34,17 +34,17 @@ jobs:
         include:
           # Moodle 5.0, PHP 8.2, MariaDB
           - php: '8.2'
-            moodle-branch: 'main'
+            moodle-branch: 'MOODLE_500_STABLE'
             database: mariadb
             plugin-ci: ^4
           # Moodle 5.0, PHP 8.3, MariaDB
           - php: '8.3'
-            moodle-branch: 'main'
+            moodle-branch: 'MOODLE_500_STABLE'
             database: mariadb
             plugin-ci: ^4
           # Moodle 5.0, PHP 8.2, PostgreSQL
           - php: '8.3'
-            moodle-branch: 'main'
+            moodle-branch: 'MOODLE_500_STABLE'
             database: pgsql
             plugin-ci: ^4
     steps:

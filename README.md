@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2025021901:
+* Tool for migrating styles from old controls.
+
 ### 2025021900:
 * Compatibility with moodle 5.0
 
