@@ -18,6 +18,7 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ### 2024050906:
 * Option to remove icon in tab style editor.
+* Tool for migrating styles from old controls.
 
 ### 2024050905:
 * New tab styles editor when editing each section.
