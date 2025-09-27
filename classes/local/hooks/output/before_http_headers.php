@@ -24,7 +24,6 @@ namespace format_onetopic\local\hooks\output;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class before_http_headers {
-
     /**
      * Moodle native lib/navigationlib.php calls this hook allowing us to override UI.
      *

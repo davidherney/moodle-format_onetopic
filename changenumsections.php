@@ -87,14 +87,13 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
     if (!$returnurl) {
         $returnurl = course_get_url($course);
     }
-
 } else if (course_get_format($course)->uses_sections() && $insertsection !== null) {
     if ($insertsection) {
         // Inserting sections at any position except in the very end requires capability to move sections.
         require_capability('moodle/course:movesections', context_course::instance($course->id));
     }
     $sections = [];
-    for ($i = 0; $i < max($numsections, 1); $i ++) {
+    for ($i = 0; $i < max($numsections, 1); $i++) {
         $section = course_create_section($course, $insertsection);
         $sections[] = $section;
 
@@ -104,8 +103,11 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
         }
     }
     if (!$returnurl) {
-        $returnurl = course_get_url($course, $sections[0]->section,
-            ($sectionreturn !== null) ? ['sr' => $sectionreturn] : []);
+        $returnurl = course_get_url(
+            $course,
+            $sections[0]->section,
+            ($sectionreturn !== null) ? ['sr' => $sectionreturn] : []
+        );
     }
 }
 

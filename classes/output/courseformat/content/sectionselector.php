@@ -40,7 +40,6 @@ use url_select;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class sectionselector extends sectionselector_base {
-
     /**
      * Export this data so it can be used as the context for a mustache template.
      *

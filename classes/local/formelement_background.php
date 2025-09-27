@@ -80,10 +80,11 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
         $loadedcounter++;
 
         $colorpickerid = 'colorpicker' . $loadedcounter;
-        $cp = new \admin_setting_configcolourpicker($colorpickerid,
-                                                    get_string('colorpicker', 'format_onetopic'),
-                                                    get_string('colorpicker_help', 'format_onetopic'),
-                                                    '',
+        $cp = new \admin_setting_configcolourpicker(
+            $colorpickerid,
+            get_string('colorpicker', 'format_onetopic'),
+            get_string('colorpicker_help', 'format_onetopic'),
+            '',
         );
 
         $html = parent::toHtml();
@@ -104,7 +105,6 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
         $PAGE->requires->js_call_amd('format_onetopic/onetopicbackground', 'init', [$this->getAttribute('id')]);
 
         return $html;
-
     }
 
     /**
@@ -148,5 +148,4 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
 
         return;
     }
-
 }

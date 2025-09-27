@@ -41,7 +41,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cmlist extends cmlist_base {
-
     /**
      * Export this data so it can be used as the context for a mustache template.
      *
@@ -83,10 +82,11 @@ class cmlist extends cmlist_base {
         }
 
         foreach ($modinfo->sections[$section->section] as $modnumber) {
-
-            if (!$format->show_editor() &&
-                    $course->templatetopic == \format_onetopic::TEMPLATETOPIC_LIST &&
-                    in_array($modnumber, $format->tplcmsused)) {
+            if (
+                !$format->show_editor() &&
+                $course->templatetopic == \format_onetopic::TEMPLATETOPIC_LIST &&
+                in_array($modnumber, $format->tplcmsused)
+            ) {
                 continue;
             }
 

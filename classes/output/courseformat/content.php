@@ -38,7 +38,6 @@ use renderable;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content extends content_base {
-
     /**
      * @var bool Topic format has add section after each topic.
      *
@@ -82,16 +81,16 @@ class content extends content_base {
 
         // The current section format has extra navigation.
         if ($currentsection || $currentsection === 0) {
-
             $usessectionsnavigation = isset($course->usessectionsnavigation) ? $course->usessectionsnavigation : null;
             if (empty($usessectionsnavigation)) {
                 $usessectionsnavigation = get_config('format_onetopic', 'defaultsectionsnavigation');
             }
 
             if ($usessectionsnavigation != \format_onetopic::SECTIONSNAVIGATION_NOT) {
-                if ($usessectionsnavigation != \format_onetopic::SECTIONSNAVIGATION_SUPPORT ||
-                        !$PAGE->theme->usescourseindex) {
-
+                if (
+                    $usessectionsnavigation != \format_onetopic::SECTIONSNAVIGATION_SUPPORT ||
+                    !$PAGE->theme->usescourseindex
+                ) {
                     $sectionnavigation = new $this->sectionnavigationclass($format, $currentsection);
 
                     // Not show navigation in top section if is not both.
@@ -107,7 +106,6 @@ class content extends content_base {
                     }
                 }
             }
-
         }
 
         $data->singlesection = array_shift($data->sections);
@@ -194,5 +192,4 @@ class content extends content_base {
 
         return $sections;
     }
-
 }

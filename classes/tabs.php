@@ -32,7 +32,6 @@ use core_reportbuilder\local\aggregation\count;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tabs {
-
     /**
      * @var array Tabs list.
      */
@@ -79,7 +78,6 @@ class tabs {
         $anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
 
         foreach ($this->tabslist as $tab) {
-
             if ($assubtabs && strpos($tab->specialclass, ' subtopic ') === false) {
                 $tab->specialclass .= ' subtopic ';
             }
@@ -102,7 +100,6 @@ class tabs {
             }
 
             if (!empty($tab->icons)) {
-
                 foreach ($tab->icons as $state => $icon) {
                     $tokens = explode(':', $icon);
 
@@ -262,5 +259,4 @@ class tabs {
         }
         return null;
     }
-
 }
