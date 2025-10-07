@@ -62,16 +62,27 @@ if ($ADMIN->fulltree) {
     $settings->add($setting);
 
     // Default hidden sections visibility.
-    $options = [
-        \format_onetopic::HIDDENSENTIONS_COLLAPSED => new lang_string('hiddensectionscollapsed'),
-        \format_onetopic::HIDDENSENTIONS_INVISIBLE => new lang_string('hiddensectionsinvisible'),
-        \format_onetopic::HIDDENSENTIONS_HELP => new lang_string('hiddensectionshelp', 'format_onetopic'),
-    ];
-    $settings->add(new admin_setting_configselect('format_onetopic/defaulthiddensections',
-                                                    get_string('hiddensections'),
-                                                    get_string('hiddensections_help'),
-                                                    \format_onetopic::HIDDENSENTIONS_HELP,
-                                                    $options)
+    if ($CFG->version < 2025082900) {
+        $options = [
+            \format_onetopic::HIDDENSENTIONS_COLLAPSED => new lang_string('hiddensectionscollapsed'),
+            \format_onetopic::HIDDENSENTIONS_INVISIBLE => new lang_string('hiddensectionsinvisible'),
+            \format_onetopic::HIDDENSENTIONS_HELP => new lang_string('hiddensectionshelp', 'format_onetopic'),
+        ];
+    } else {
+        $options = [
+            \format_onetopic::HIDDENSENTIONS_INVISIBLE => new lang_string('hiddensectionsinvisible'),
+            \format_onetopic::HIDDENSENTIONS_COLLAPSED => new lang_string('hiddensectionscollapsed'),
+            \format_onetopic::HIDDENSENTIONS_HELP => new lang_string('hiddensectionshelp', 'format_onetopic'),
+        ];
+    }
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaulthiddensections',
+            get_string('hiddensections'),
+            ($CFG->version < 2025082900) ? get_string('hiddensections_help') : null,
+            \format_onetopic::HIDDENSENTIONS_HELP,
+            $options
+        )
     );
 
     // Default course display.

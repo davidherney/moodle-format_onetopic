@@ -544,6 +544,7 @@ class format_onetopic extends core_courseformat\base {
      * @return array of options
      */
     public function course_format_options($foreditform = false) {
+        global $CFG;
         static $courseformatoptions = false;
         if ($courseformatoptions === false) {
             $courseconfig = get_config('format_onetopic');
@@ -584,8 +585,32 @@ class format_onetopic extends core_courseformat\base {
         }
 
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
+            if ($CFG->version >= 2025082900) {
+                $hiddensectionslist = new core\output\choicelist();
+                $hiddensectionslist->set_allow_empty(false);
+                $hiddensectionslist->add_option(
+                    self::HIDDENSENTIONS_INVISIBLE,
+                    new lang_string('hiddensectionsinvisible'),
+                    [
+                        'description' => new lang_string('hiddensectionsinvisible_description'),
+                    ],
+                );
+                $hiddensectionslist->add_option(
+                    self::HIDDENSENTIONS_COLLAPSED,
+                    new lang_string('hiddensectionscollapsed'),
+                    [
+                        'description' => new lang_string('hiddensectionscollapsed_description'),
+                    ],
+                );
+                $hiddensectionslist->add_option(
+                    self::HIDDENSENTIONS_HELP,
+                    new lang_string('hiddensectionshelp', 'format_onetopic'),
+                    [],
+                );
+            }
+
             $courseformatoptionsedit = [
-                'hiddensections' => [
+                'hiddensections' => ($CFG->version < 2025082900) ? [
                     'label' => new lang_string('hiddensections'),
                     'help' => 'hiddensections',
                     'help_component' => 'moodle',
@@ -596,6 +621,12 @@ class format_onetopic extends core_courseformat\base {
                             self::HIDDENSENTIONS_INVISIBLE => new lang_string('hiddensectionsinvisible'),
                             self::HIDDENSENTIONS_HELP => new lang_string('hiddensectionshelp', 'format_onetopic'),
                         ],
+                    ],
+                ] : [
+                    'label' => new lang_string('hiddensections'),
+                    'element_type' => 'choicedropdown',
+                    'element_attributes' => [
+                        $hiddensectionslist,
                     ],
                 ],
                 'hidetabsbar' => [
