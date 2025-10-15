@@ -266,6 +266,16 @@ class format_onetopic extends core_courseformat\base {
     }
 
     /**
+     * Method used to get the maximum number of sections for this course format.
+     *
+     * @return int
+     */
+    public function get_max_sections(): int {
+        global $CFG;
+        return ($CFG->version >= 2025060500) ? PHP_INT_MAX : parent::get_max_sections();
+    }
+
+    /**
      * Returns true if this course format uses sections.
      *
      * @return bool
