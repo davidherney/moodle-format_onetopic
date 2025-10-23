@@ -156,7 +156,10 @@ class format_onetopic extends core_courseformat\base {
                     $this->printable = preg_match($patternavailable, $PAGE->pagetype);
 
                     if (!$this->printable) {
-                        if (in_array(self::SCOPE_SCORM, $scope) && $PAGE->pagetype == 'mod-scorm-player') {
+                        if (in_array($PAGE->pagetype, ['mod-lti-coursetools'])) {
+                            // Other mod pages not named like mod-*-view: grrrrr.
+                            $this->printable = true;
+                        } else if (in_array(self::SCOPE_SCORM, $scope) && $PAGE->pagetype == 'mod-scorm-player') {
                             $this->printable = true;
                         }
                     }
