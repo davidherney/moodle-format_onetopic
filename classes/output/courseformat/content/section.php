@@ -37,6 +37,11 @@ use stdClass;
  */
 class section extends section_base {
 
+    /**
+     * @var bool Whether we are rendering a delegated section within other section or not.
+     */
+    public $insection = false;
+
     /** @var course_format the course format */
     protected $format;
 
@@ -52,6 +57,10 @@ class section extends section_base {
         $format = $this->format;
         $course = $format->get_course();
         $section = $this->section;
+
+        if ($section->is_delegated()) {
+            $format->subsectionmode = true;
+        }
 
         $summary = new $this->summaryclass($format, $section);
 
@@ -74,6 +83,12 @@ class section extends section_base {
         $haspartials['header'] = $this->add_header_data($data, $output);
         $haspartials['cm'] = $this->add_cm_data($data, $output);
         $this->add_format_data($data, $haspartials, $output);
+
+        if (!$this->insection) {
+            $data->contentcollapsed = false;
+        }
+
+        $format->subsectionmode = false;
 
         return $data;
     }
