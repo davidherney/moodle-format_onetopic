@@ -841,7 +841,7 @@ class format_onetopic extends core_courseformat\base {
             $sectionformatoptions = [];
 
             $sectionformatoptions['displaymode'] = [
-                'default' => (string)(new lang_string('displaymode', 'format_onetopic')),
+                'default' => 'list',
                 'type' => PARAM_TEXT,
             ];
 
