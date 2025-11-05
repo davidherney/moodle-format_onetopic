@@ -134,6 +134,7 @@ $string['page-course-view-topics'] = 'Any course main page in onetopic format';
 $string['page-course-view-topics-x'] = 'Any course page in onetopic format';
 $string['plugin_description'] = 'Course sections are displayed separately in tabs.';
 $string['pluginname'] = 'Onetopic format';
+$string['preview'] = 'Preview - ';
 $string['privacy:metadata'] = 'The Onetopic format plugin does not store any personal data.';
 $string['scope_mod'] = 'Modules';
 $string['scope_scorm'] = 'SCORM Player';
