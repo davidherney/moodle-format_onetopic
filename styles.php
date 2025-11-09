@@ -108,6 +108,8 @@ if (!empty($tabstyles)) {
                 }
             }
 
+            // Store background-color for active tabs to use in border CSS.
+            $activebackgroundcolor = null;
             foreach ($styles as $key => $value) {
                 // If exist a unit for the rule, apply it.
                 if (isset($units[$key])) {
@@ -115,6 +117,11 @@ if (!empty($tabstyles)) {
                 } else if (in_array($key, $withunits)) {
                     // If the rule need units, apply px by default.
                     $value = $value . 'px';
+                }
+
+                // Capture background-color for active tabs.
+                if ($type === 'active' && $key === 'background-color') {
+                    $activebackgroundcolor = $value;
                 }
 
                 if ($key == 'others') {
@@ -125,6 +132,14 @@ if (!empty($tabstyles)) {
             }
 
             $csscontent .= '} ';
+
+            // Add border CSS for .format_onetopic-tabs when processing active tab with background-color.
+            if ($type === 'active' && !empty($activebackgroundcolor)) {
+                $csscontent .= '#tabs-tree-start .format_onetopic-tabs { ';
+                $csscontent .= 'border-bottom: 2px solid ' . $activebackgroundcolor . ' !important; ';
+                $csscontent .= 'padding-bottom: 1px; ';
+                $csscontent .= '} ';
+            }
         }
 
         // Clean the CSS for html tags.

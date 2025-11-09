@@ -362,6 +362,8 @@ class header implements \renderable, \templatable {
                                 }
                             }
 
+                            // Store background-color for active tabs to use in border CSS.
+                            $activebackgroundcolor = null;
                             foreach ($styles as $key => $value) {
                                 // If exist a unit for the rule, apply it.
                                 if (isset($units[$key])) {
@@ -369,6 +371,11 @@ class header implements \renderable, \templatable {
                                 } else if (in_array($key, $withunits)) {
                                     // If the rule need units, apply px by default.
                                     $value = $value . 'px';
+                                }
+
+                                // Capture background-color from any type that has it.
+                                if ($key === 'background-color') {
+                                    $activebackgroundcolor = $value;
                                 }
 
                                 if ($key == 'others') {
@@ -379,6 +386,23 @@ class header implements \renderable, \templatable {
                             }
 
                             $onecss .= '} ';
+
+                            // Add border CSS for .format_onetopic-tabs when this tab is active.
+                            // Apply the border to the tabs container when this specific tab is active.
+                            // Only generate CSS if a background color is defined.
+                            if (!empty($activebackgroundcolor) && ($type === 'active' || $type === 'default')) {
+                                $onecss .= '#tabs-tree-start:has(#onetabid-' . $thissection->id . ' a.nav-link.active) ';
+                                $onecss .= '.format_onetopic-tabs { ';
+                                $onecss .= 'border-bottom: 2px solid ' . $activebackgroundcolor . ' !important; ';
+                                $onecss .= 'padding-bottom: 1px; ';
+                                $onecss .= '} ';
+                                $onecss .= '#onetabid-' . $thissection->id . ' .nav-link.active { border-color: ' . $activebackgroundcolor . '; }';
+                                $onecss .= '#tabs-tree-start.verticaltabs .tabs-wrapper';
+                                $onecss .= ':has(#onetabid-' . $thissection->id . ' a.nav-link.active) ';
+                                $onecss .= '.format_onetopic-tabs { ';
+                                $onecss .= 'border-bottom: none !important; ';
+                                $onecss .= '}';
+                            }
                         }
 
                         // Clean the CSS for html tags.
