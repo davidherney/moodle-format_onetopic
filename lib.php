@@ -207,8 +207,6 @@ class format_onetopic extends core_courseformat\base {
 
                 $course = $this->get_course();
 
-                // Onetopic format is always multipage.
-                $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
                 $numsections = (int)$DB->get_field('course_sections', 'MAX(section)', ['course' => $courseid], MUST_EXIST);
 
                 if ($section >= 0 && $numsections >= $section) {
@@ -378,6 +376,21 @@ class format_onetopic extends core_courseformat\base {
      */
     public function get_sectionid(): ?int {
         return null;
+    }
+
+    /**
+     * Returns a record from course database table plus additional fields (realcoursedisplay)
+     * Initialization of realcoursedisplay prevents the error if this field was not set before use.
+     *
+     * @return ?stdClass
+     */
+    public function get_course(): ?stdClass {
+        $course = parent::get_course();
+        if (!is_null($course)) {
+            // Onetopic format is always multipage.
+            $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
+        }
+        return $course;
     }
 
     /**

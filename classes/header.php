@@ -62,9 +62,6 @@ class header implements \renderable, \templatable {
         $format = $this->format;
         $course = $format->get_course();
 
-        // Onetopic format is always multipage.
-        $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
-
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
         $currentsection = $format->get_sectionnum();
 
