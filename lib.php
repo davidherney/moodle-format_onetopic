@@ -386,7 +386,7 @@ class format_onetopic extends core_courseformat\base {
      */
     public function get_course(): ?stdClass {
         $course = parent::get_course();
-        if (!is_null($course)) {
+        if (!is_null($course) && !property_exists($course, 'realcoursedisplay')) {
             // Onetopic format is always multipage.
             $course->realcoursedisplay = property_exists($course, 'coursedisplay') ? $course->coursedisplay : false;
         }
