@@ -46,7 +46,10 @@
     }
 }}
 <button id="tabstylesdisplay" class="btn btn-secondary">{{#str}} tabstylesdisplay, format_onetopic {{/str}} {{#pix}} t/expanded {{/pix}}</button>
-<p>{{#str}} tabstylesdisplay_help, format_onetopic {{/str}}</p>
+<div class="alert alert-info alert-block fade in">
+    {{#str}} tabstylesdisplay_help, format_onetopic {{/str}}
+</div>
+
 <div id="onetopic-tabstyles" class="form-text defaultsnext format-onetopic hidden">
     <div id="tabs-tree-start">
     {{!
@@ -69,7 +72,7 @@
             <p>{{#str}} tabstylebuttons_help, format_onetopic {{/str}}</p>
         {{/readonly}}
 
-        <h3>{{#str}} tabsview_default, format_onetopic {{/str}}</h3>
+        <h3>{{#str}}tabsview, format_onetopic{{/str}} <em>{{#str}} tabsview_default, format_onetopic {{/str}}</em></h3>
         <div id="tabs-example" class="hastopictabs">
             <div class="tabs-wrapper">
                 {{>format_onetopic/courseformat/tabtree}}
@@ -83,7 +86,7 @@
 
         </div>
 
-        <h3>{{#str}} tabsview_vertical, format_onetopic {{/str}}</h3>
+        <h3>{{#str}}tabsview, format_onetopic{{/str}} <em>{{#str}} tabsview_vertical, format_onetopic {{/str}}</em></h3>
         <div id="tabs-example-vertical" class="verticaltabs hastopictabs">
             <div class="tabs-wrapper">
                 {{>format_onetopic/courseformat/tabtree}}
