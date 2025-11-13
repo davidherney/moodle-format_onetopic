@@ -36,7 +36,6 @@ require_once($CFG->libdir . '/adminlib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
-
     /**
      * Constructor
      *
@@ -134,9 +133,12 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
         $tabslist = $tabs->get_list();
         $secondtabslist = $tabs->get_secondlist();
 
-        $cp = new \admin_setting_configcolourpicker('colorpicker',
-                                                    get_string('colorpicker', 'format_onetopic'),
-                                                    get_string('colorpicker_help', 'format_onetopic'), '');
+        $cp = new \admin_setting_configcolourpicker(
+            'colorpicker',
+            get_string('colorpicker', 'format_onetopic'),
+            get_string('colorpicker_help', 'format_onetopic'),
+            ''
+        );
 
         $csssizeoptions = range(0, 100);
         $csssizeoptions[0] = '';
@@ -184,7 +186,6 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
         $PAGE->requires->js_call_amd('format_onetopic/tabstyles', 'init');
 
         return $element;
-
     }
 
     /**
@@ -223,5 +224,4 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
 
         return;
     }
-
 }

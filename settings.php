@@ -24,36 +24,52 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot. '/course/format/onetopic/lib.php');
+require_once($CFG->dirroot . '/course/format/onetopic/lib.php');
 
 if ($ADMIN->fulltree) {
-    $settings->add(new admin_setting_configcheckbox('format_onetopic/enablecustomstyles',
-                                                    get_string('enablecustomstyles', 'format_onetopic'),
-                                                    get_string('enablecustomstyles_help', 'format_onetopic'), 1)
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'format_onetopic/enablecustomstyles',
+            get_string('enablecustomstyles', 'format_onetopic'),
+            get_string('enablecustomstyles_help', 'format_onetopic'),
+            1
+        )
     );
 
     $url = new moodle_url('/course/format/onetopic/migratestyles.php');
     $help = get_string('useoldstylescontrol_help', 'format_onetopic') .
             '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic', $url) . '</strong> ';
-    $settings->add(new admin_setting_configcheckbox('format_onetopic/useoldstylescontrol',
-                                                    get_string('useoldstylescontrol', 'format_onetopic'),
-                                                    $help, 0)
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'format_onetopic/useoldstylescontrol',
+            get_string('useoldstylescontrol', 'format_onetopic'),
+            $help,
+            0
+        )
     );
 
-    $settings->add(new admin_setting_configcheckbox('format_onetopic/anchortotabstree',
-                                                    get_string('enableanchorposition', 'format_onetopic'),
-                                                    get_string('enableanchorposition_help', 'format_onetopic'), 1)
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'format_onetopic/anchortotabstree',
+            get_string('enableanchorposition', 'format_onetopic'),
+            get_string('enableanchorposition_help', 'format_onetopic'),
+            1
+        )
     );
 
     $options = [
         \format_onetopic::SCOPE_MOD => new lang_string('scope_mod', 'format_onetopic'),
         \format_onetopic::SCOPE_SCORM => new lang_string('scope_scorm', 'format_onetopic'),
     ];
-    $settings->add(new admin_setting_configmulticheckbox('format_onetopic/defaultscope',
-                                                    get_string('defaultscope', 'format_onetopic'),
-                                                    get_string('defaultscope_help', 'format_onetopic'),
-                                                    [\format_onetopic::SCOPE_MOD => 1],
-                                                    $options));
+    $settings->add(
+        new admin_setting_configmulticheckbox(
+            'format_onetopic/defaultscope',
+            get_string('defaultscope', 'format_onetopic'),
+            get_string('defaultscope_help', 'format_onetopic'),
+            [\format_onetopic::SCOPE_MOD => 1],
+            $options
+        )
+    );
 
     // Default settings.
     $name = 'format_onetopic/settingsheaderdefault';
@@ -67,11 +83,14 @@ if ($ADMIN->fulltree) {
         \format_onetopic::HIDDENSENTIONS_INVISIBLE => new lang_string('hiddensectionsinvisible'),
         \format_onetopic::HIDDENSENTIONS_HELP => new lang_string('hiddensectionshelp', 'format_onetopic'),
     ];
-    $settings->add(new admin_setting_configselect('format_onetopic/defaulthiddensections',
-                                                    get_string('hiddensections'),
-                                                    get_string('hiddensections_help'),
-                                                    \format_onetopic::HIDDENSENTIONS_HELP,
-                                                    $options)
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaulthiddensections',
+            get_string('hiddensections'),
+            get_string('hiddensections_help'),
+            \format_onetopic::HIDDENSENTIONS_HELP,
+            $options
+        )
     );
 
     // Default course display.
@@ -79,11 +98,14 @@ if ($ADMIN->fulltree) {
         COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single', 'format_onetopic'),
         COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi', 'format_onetopic'),
     ];
-    $settings->add(new admin_setting_configselect('format_onetopic/defaultcoursedisplay',
-                                                    get_string('coursedisplay', 'format_onetopic'),
-                                                    get_string('coursedisplay_help', 'format_onetopic'),
-                                                    COURSE_DISPLAY_MULTIPAGE,
-                                                    $options)
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaultcoursedisplay',
+            get_string('coursedisplay', 'format_onetopic'),
+            get_string('coursedisplay_help', 'format_onetopic'),
+            COURSE_DISPLAY_MULTIPAGE,
+            $options
+        )
     );
 
     // Default tabs view.
@@ -92,11 +114,14 @@ if ($ADMIN->fulltree) {
         \format_onetopic::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
         \format_onetopic::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
     ];
-    $settings->add(new admin_setting_configselect('format_onetopic/defaulttabsview',
-                                                    get_string('tabsview', 'format_onetopic'),
-                                                    get_string('tabsview_help', 'format_onetopic'),
-                                                    \format_onetopic::TABSVIEW_DEFAULT,
-                                                    $options)
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaulttabsview',
+            get_string('tabsview', 'format_onetopic'),
+            get_string('tabsview_help', 'format_onetopic'),
+            \format_onetopic::TABSVIEW_DEFAULT,
+            $options
+        )
     );
 
     // Default sections navigation.
@@ -107,18 +132,27 @@ if ($ADMIN->fulltree) {
         \format_onetopic::SECTIONSNAVIGATION_BOTH => new lang_string('sectionsnavigation_both', 'format_onetopic'),
         \format_onetopic::SECTIONSNAVIGATION_SLIDES => new lang_string('sectionsnavigation_slides', 'format_onetopic'),
     ];
-    $settings->add(new admin_setting_configselect('format_onetopic/defaultsectionsnavigation',
-                                                    get_string('defaultsectionsnavigation', 'format_onetopic'),
-                                                    get_string('defaultsectionsnavigation_help', 'format_onetopic'),
-                                                    \format_onetopic::SECTIONSNAVIGATION_SUPPORT,
-                                                    $options)
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaultsectionsnavigation',
+            get_string('defaultsectionsnavigation', 'format_onetopic'),
+            get_string('defaultsectionsnavigation_help', 'format_onetopic'),
+            \format_onetopic::SECTIONSNAVIGATION_SUPPORT,
+            $options
+        )
     );
 
     // Course index.
     $options = ['0' => get_string('disable'), '1' => get_string('enable')];
-    $settings->add(new admin_setting_configselect('format_onetopic/courseindex',
-                                                    get_string('courseindex', 'format_onetopic'),
-                                                    get_string('courseindex_help', 'format_onetopic'), 1, $options));
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/courseindex',
+            get_string('courseindex', 'format_onetopic'),
+            get_string('courseindex_help', 'format_onetopic'),
+            1,
+            $options
+        )
+    );
 
     // Styles settings.
     $name = 'format_onetopic/settingsheaderstyles';
@@ -131,5 +165,4 @@ if ($ADMIN->fulltree) {
     $description = get_string('tabstyles_help', 'format_onetopic');
     $setting = new \format_onetopic\tabstyles($name, $title, $description, '');
     $settings->add($setting);
-
 }

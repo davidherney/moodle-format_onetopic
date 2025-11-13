@@ -39,7 +39,6 @@ if (!empty($tabstyles)) {
     $tabstyles = @json_decode($tabstyles);
 
     if (is_object($tabstyles)) {
-
         $precedence = ['default', 'childs', 'childindex', 'active', 'parent', 'highlighted', 'disabled', 'hover'];
 
         $orderedtabs = new \stdClass();
@@ -50,7 +49,6 @@ if (!empty($tabstyles)) {
         }
 
         foreach ($orderedtabs as $type => $styles) {
-
             $important = false;
             switch ($type) {
                 case 'active':
@@ -59,38 +57,38 @@ if (!empty($tabstyles)) {
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs a.nav-link.active, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link.active';
                     $important = true;
-                break;
+                    break;
                 case 'parent':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.haschilds a.nav-link';
-                break;
+                    break;
                 case 'highlighted':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.marker a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.marker a.nav-link';
                     $important = true;
-                break;
+                    break;
                 case 'disabled':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.disabled a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.disabled a.nav-link';
                     $important = true;
-                break;
+                    break;
                 case 'hover':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
                     $csscontent .= '#tabs-tree-start .format_onetopic-tabs.nav-tabs .nav-item a.nav-link:hover, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .format_onetopic-tabs.nav-tabs' .
                                     ' .nav-item a.nav-link:hover';
-                break;
+                    break;
                 case 'childs':
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
-                break;
+                    break;
                 case 'childindex':
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs' .
                                     ' .nav-item.subtopic.tab_initial a.nav-link';
-                break;
+                    break;
                 default:
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs a.nav-link';
@@ -101,10 +99,8 @@ if (!empty($tabstyles)) {
 
             // Check if exist units for some rules.
             foreach ($styles as $key => $value) {
-
                 // Check if the key start with the units prefix.
                 if (strpos($key, 'unit-') === 0) {
-
                     // Remove the prefix.
                     $ownerkey = str_replace('unit-', '', $key);
                     $units[$ownerkey] = $value;
@@ -113,7 +109,6 @@ if (!empty($tabstyles)) {
             }
 
             foreach ($styles as $key => $value) {
-
                 // If exist a unit for the rule, apply it.
                 if (isset($units[$key])) {
                     $value = $value . $units[$key];

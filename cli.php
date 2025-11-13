@@ -32,13 +32,14 @@ require_once(__DIR__ . '/classes/local/clilib.php'); // Local cli functions.
 $hr = "----------------------------------------\n";
 
 // Get cli options.
-list($options, $unrecognized) = cli_get_params(
+[$options, $unrecognized] = cli_get_params(
     [
         'help' => false,
         'mstyles' => false,
         'mslimit' => false,
         'verbose' => false,
-    ], [
+    ],
+    [
         'h'  => 'help',
         'ms' => 'mstyles',
         'msl' => 'mslimit',

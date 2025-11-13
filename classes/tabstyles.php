@@ -30,7 +30,6 @@ namespace format_onetopic;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tabstyles extends \admin_setting_configtextarea {
-
     /**
      * Return an XHTML string for the setting
      *
@@ -95,9 +94,12 @@ class tabstyles extends \admin_setting_configtextarea {
 
         $tabslist = $tabs->get_list();
 
-        $cp = new \admin_setting_configcolourpicker('colorpicker',
-                                                    get_string('colorpicker', 'format_onetopic'),
-                                                    get_string('colorpicker_help', 'format_onetopic'), '');
+        $cp = new \admin_setting_configcolourpicker(
+            'colorpicker',
+            get_string('colorpicker', 'format_onetopic'),
+            get_string('colorpicker_help', 'format_onetopic'),
+            ''
+        );
 
         $csssizeoptions = range(0, 100);
         $csssizeoptions[0] = '';
