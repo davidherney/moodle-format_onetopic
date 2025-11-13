@@ -48,7 +48,7 @@ class cmlist extends cmlist_base {
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
-        global $USER;
+        global $CFG, $USER;
 
         $format = $this->format;
         $section = $this->section;
@@ -95,7 +95,7 @@ class cmlist extends cmlist_base {
             if ($showmovehere && $USER->activitycopy == $mod->id) {
                 continue;
             }
-            if ($mod->is_visible_on_course_page()) {
+            if ($mod->is_visible_on_course_page() && ($CFG->branch < 500 || $mod->is_of_type_that_can_display())) {
                 $item = new $this->itemclass($format, $section, $mod, $this->displayoptions);
                 $data->cms[] = (object)[
                     'cmitem' => $item->export_for_template($output),
