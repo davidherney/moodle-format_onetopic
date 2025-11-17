@@ -67,6 +67,7 @@ class footer implements \renderable, \templatable {
             'uniqid' => $format->uniqid,
             'sectionreturn' => $currentsection ?? 0,
             'hastopictabs' => $format->hastopictabs,
+            'hassecondrow' => $format->hassecondrow,
         ];
 
         return $data;

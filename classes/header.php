@@ -111,6 +111,7 @@ class header implements \renderable, \templatable {
             $hastopictabs = $format->hastopictabs;
             $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
         }
+        $format->hassecondrow = $hassecondrow;
 
         $tabsectionbackground = '';
         $subtabsectionbackground = '';

@@ -115,6 +115,9 @@ class format_onetopic extends core_courseformat\base {
     /** @var string Current format scope */
     public $currentscope = null;
 
+    /** @var bool If the course has a second row of tabs */
+    public $hassecondrow = false;
+
     /**
      * Creates a new instance of class
      *
