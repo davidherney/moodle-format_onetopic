@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2025021903:
+* New feature: Subsection display mode
+
 ### 2025021902:
 * Compatibility with changes in 5.0
 

@@ -118,6 +118,9 @@ class format_onetopic extends core_courseformat\base {
     /** @var bool If the course has a second row of tabs */
     public $hassecondrow = false;
 
+    /** @var bool If the course is in subsection mode */
+    public $subsectionmode = false;
+
     /**
      * Creates a new instance of class
      *
@@ -157,7 +160,10 @@ class format_onetopic extends core_courseformat\base {
                     $this->printable = preg_match($patternavailable, $PAGE->pagetype);
 
                     if (!$this->printable) {
-                        if (in_array(self::SCOPE_SCORM, $scope) && $PAGE->pagetype == 'mod-scorm-player') {
+                        if (in_array($PAGE->pagetype, ['mod-lti-coursetools'])) {
+                            // Other mod pages not named like mod-*-view: grrrrr.
+                            $this->printable = true;
+                        } else if (in_array(self::SCOPE_SCORM, $scope) && $PAGE->pagetype == 'mod-scorm-player') {
                             $this->printable = true;
                         }
                     }
@@ -752,8 +758,9 @@ class format_onetopic extends core_courseformat\base {
 
         if ($forsection) {
             $onetopicconfig = get_config('format_onetopic');
+            $existtabsectionbackground = $mform->elementExists('tabsectionbackground');
 
-            if ($onetopicconfig->enablecustomstyles) {
+            if ($onetopicconfig->enablecustomstyles && $existtabsectionbackground) {
                 $mform->removeElement('tabsectionbackground');
                 MoodleQuickForm::registerElementType(
                     'tabsectionbackground',
@@ -855,20 +862,30 @@ class format_onetopic extends core_courseformat\base {
      * @return array
      */
     public function section_format_options($foreditform = false) {
+        global $section;
+
         static $sectionformatoptions = false;
+
+        // Diferent format options for subsection activity modules.
+        $subsection = !empty($section->component);
 
         $onetopicconfig = get_config('format_onetopic');
 
         if ($sectionformatoptions === false) {
-            $sectionformatoptions = [
-                'level' => [
-                    'default' => 0,
-                    'type' => PARAM_INT,
-                ],
-                'firsttabtext' => [
-                    'default' => (string)(new lang_string('index', 'format_onetopic')),
-                    'type' => PARAM_TEXT,
-                ],
+            $sectionformatoptions = [];
+
+            $sectionformatoptions['displaymode'] = [
+                'default' => 'list',
+                'type' => PARAM_TEXT,
+            ];
+
+            $sectionformatoptions['level'] = [
+                'default' => 0,
+                'type' => PARAM_INT,
+            ];
+            $sectionformatoptions['firsttabtext'] = [
+                'default' => (string)(new lang_string('index', 'format_onetopic')),
+                'type' => PARAM_TEXT,
             ];
 
             if ($onetopicconfig->enablecustomstyles) {
@@ -902,8 +919,26 @@ class format_onetopic extends core_courseformat\base {
         }
 
         if ($foreditform) {
-            $sectionformatoptionsedit = [
-                'level' => [
+            $sectionformatoptionsedit = [];
+
+            if ($subsection) {
+                $sectionformatoptionsedit['displaymode'] = [
+                    'default' => 'list',
+                    'type' => PARAM_TEXT,
+                    'label' => new lang_string('displaymode', 'format_onetopic'),
+                    'element_type' => 'select',
+                    'element_attributes' => [
+                        [
+                            'list' => new lang_string('displaymode_list', 'format_onetopic'),
+                            'summary' => new lang_string('displaymode_summary', 'format_onetopic'),
+                            'collapsible' => new lang_string('displaymode_collapsible', 'format_onetopic'),
+                        ],
+                    ],
+                    'help' => 'displaymode',
+                    'help_component' => 'format_onetopic',
+                ];
+            } else {
+                $sectionformatoptionsedit['level'] = [
                     'default' => 0,
                     'type' => PARAM_INT,
                     'label' => new lang_string('level', 'format_onetopic'),
@@ -916,64 +951,68 @@ class format_onetopic extends core_courseformat\base {
                         ],
                     'help' => 'level',
                     'help_component' => 'format_onetopic',
-                ],
-                'firsttabtext' => [
+                ];
+
+                $sectionformatoptionsedit['firsttabtext'] = [
                     'default' => (string)(new lang_string('index', 'format_onetopic')),
                     'type' => PARAM_TEXT,
                     'label' => new lang_string('firsttabtext', 'format_onetopic'),
                     'help' => 'firsttabtext',
                     'help_component' => 'format_onetopic',
-                ],
-            ];
-
-            if ($onetopicconfig->enablecustomstyles) {
-                $sectionformatoptionsedit['tabsectionbackground'] = [
-                    'default' => '',
-                    'type' => PARAM_RAW,
-                    'label' => new lang_string('tabsectionbackground', 'format_onetopic'),
-                    'element_type' => 'text',
-                    'help' => 'tabsectionbackground',
-                    'help_component' => 'format_onetopic',
                 ];
 
-                if ($onetopicconfig->useoldstylescontrol) {
-                    $sectionformatoptionsedit['fontcolor'] = [
+                if ($onetopicconfig->enablecustomstyles) {
+
+                    $sectionformatoptionsedit['tabsectionbackground'] = [
                         'default' => '',
                         'type' => PARAM_RAW,
-                        'label' => new lang_string('fontcolor', 'format_onetopic'),
-                        'help' => 'fontcolor',
+                        'label' => new lang_string('tabsectionbackground', 'format_onetopic'),
+                        'element_type' => 'text',
+                        'help' => 'tabsectionbackground',
                         'help_component' => 'format_onetopic',
                     ];
 
-                    $sectionformatoptionsedit['bgcolor'] = [
-                        'default' => '',
-                        'type' => PARAM_RAW,
-                        'label' => new lang_string('bgcolor', 'format_onetopic'),
-                        'help' => 'bgcolor',
-                        'help_component' => 'format_onetopic',
-                    ];
+                    if ($onetopicconfig->useoldstylescontrol) {
+                        $sectionformatoptionsedit['fontcolor'] = [
+                            'default' => '',
+                            'type' => PARAM_RAW,
+                            'label' => new lang_string('fontcolor', 'format_onetopic'),
+                            'help' => 'fontcolor',
+                            'help_component' => 'format_onetopic',
+                        ];
 
-                    $sectionformatoptionsedit['cssstyles'] = [
-                        'default' => '',
-                        'type' => PARAM_RAW,
-                        'label' => new lang_string('cssstyles', 'format_onetopic'),
-                        'help' => 'cssstyles',
-                        'help_component' => 'format_onetopic',
-                    ];
-                } else {
-                    $sectionformatoptionsedit['tabstyles'] = [
-                        'default' => '',
-                        'type' => PARAM_RAW,
-                        'label' => new lang_string('cssstyles', 'format_onetopic'),
-                        'element_type' => 'textarea',
-                        'help' => 'tabstyles',
-                        'help_component' => 'format_onetopic',
-                    ];
+                        $sectionformatoptionsedit['bgcolor'] = [
+                            'default' => '',
+                            'type' => PARAM_RAW,
+                            'label' => new lang_string('bgcolor', 'format_onetopic'),
+                            'help' => 'bgcolor',
+                            'help_component' => 'format_onetopic',
+                        ];
+
+                        $sectionformatoptionsedit['cssstyles'] = [
+                            'default' => '',
+                            'type' => PARAM_RAW,
+                            'label' => new lang_string('cssstyles', 'format_onetopic'),
+                            'help' => 'cssstyles',
+                            'help_component' => 'format_onetopic',
+                        ];
+                    } else {
+                        $sectionformatoptionsedit['tabstyles'] = [
+                            'default' => '',
+                            'type' => PARAM_RAW,
+                            'label' => new lang_string('cssstyles', 'format_onetopic'),
+                            'element_type' => 'textarea',
+                            'help' => 'tabstyles',
+                            'help_component' => 'format_onetopic',
+                        ];
+                    }
+
                 }
             }
 
             $sectionformatoptions = $sectionformatoptionsedit;
         }
+
         return $sectionformatoptions;
     }
 
@@ -1168,7 +1207,7 @@ class format_onetopic extends core_courseformat\base {
     public function section_get_available_hook(section_info $section, &$available, &$availableinfo) {
 
         // Only check childs tabs visibility.
-        if ($section->level == 0) {
+        if (!property_exists($section, 'level') || $section->level == 0) {
             return;
         }
 
@@ -1215,7 +1254,7 @@ class format_onetopic extends core_courseformat\base {
         global $destsection, $move;
 
         // The display is SINGLEPAGE when we move a section, in other case we use the MULTIPAGE.
-        return $destsection && $move ? COURSE_DISPLAY_SINGLEPAGE : COURSE_DISPLAY_MULTIPAGE;
+        return ($destsection && $move) || $this->subsectionmode ? COURSE_DISPLAY_SINGLEPAGE : COURSE_DISPLAY_MULTIPAGE;
     }
 }
 
