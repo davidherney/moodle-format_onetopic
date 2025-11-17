@@ -86,8 +86,8 @@ if ($ADMIN->fulltree) {
     $settings->add(
         new admin_setting_configselect(
             'format_onetopic/defaulthiddensections',
-            get_string('hiddensections'),
-            get_string('hiddensections_help'),
+            get_string('hiddensections', 'format_onetopic'),
+            get_string('hiddensections_help', 'format_onetopic'),
             \format_onetopic::HIDDENSENTIONS_HELP,
             $options
         )

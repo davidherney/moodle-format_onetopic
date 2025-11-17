@@ -614,7 +614,7 @@ class format_onetopic extends core_courseformat\base {
                 'hiddensections' => [
                     'label' => new lang_string('hiddensections'),
                     'help' => 'hiddensections',
-                    'help_component' => 'moodle',
+                    'help_component' => 'format_onetopic',
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
