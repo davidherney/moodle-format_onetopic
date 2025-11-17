@@ -391,12 +391,19 @@ class header implements \renderable, \templatable {
                             // Apply the border to the tabs container when this specific tab is active.
                             // Only generate CSS if a background color is defined.
                             if (!empty($activebackgroundcolor) && ($type === 'active' || $type === 'default')) {
+                                // Add border bottom for horizontal tabs.
                                 $onecss .= '#tabs-tree-start:has(#onetabid-' . $thissection->id . ' a.nav-link.active) ';
                                 $onecss .= '.format_onetopic-tabs { ';
                                 $onecss .= 'border-bottom: 2px solid ' . $activebackgroundcolor . ' !important; ';
                                 $onecss .= 'padding-bottom: 1px; ';
                                 $onecss .= '} ';
-                                $onecss .= '#onetabid-' . $thissection->id . ' .nav-link.active { border-color: ' . $activebackgroundcolor . '; }';
+                                $onecss .= '#onetabid-' . $thissection->id . ' .nav-link.active { border-color: ' . $activebackgroundcolor . '; } ';
+                                // Deny border for parent tab.
+                                $onecss .= '#tabs-tree-start .tabs-wrapper .format_onetopic-tabs:has(#onetabid-' . $thissection->id . '.haschilds a.nav-link.active) ';
+                                $onecss .= '{ ';
+                                $onecss .= 'border-bottom: 2px solid lightgray !important; ';
+                                $onecss .= '} ';
+                                // Add border left for vertical tabs.
                                 $onecss .= '#tabs-tree-start.verticaltabs .tabs-wrapper';
                                 $onecss .= ':has(#onetabid-' . $thissection->id . ' a.nav-link.active) ';
                                 $onecss .= '.format_onetopic-tabs { ';
