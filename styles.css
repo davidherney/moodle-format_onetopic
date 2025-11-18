@@ -41,12 +41,17 @@
     padding-bottom: 10px;
 }
 
+.format-onetopic #page.drawers .onetopic-withsectionbg div[role="main"],
 .format-onetopic .onetopic-withsectionbg .course-section,
 .format-onetopic .onetopic-withsubsectionbg .course-section {
     margin-top: 0;
     background: #fffb;
     padding: 0 0.75rem;
     border-radius: 5px;
+}
+
+.format-onetopic #page.drawers .onetopic-withsectionbg div[role="main"] {
+    margin: 0 10px;
 }
 
 .format-onetopic .onetopic-withsectionbg ul.section .activity-item,

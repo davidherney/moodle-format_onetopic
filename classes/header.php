@@ -123,7 +123,14 @@ class header implements \renderable, \templatable {
 
             // If the tabsectionbackground is not defined in the section check the parent section.
             if ($currentsection != $activetab->section) {
-                $formatoptionssub = course_get_format($course)->get_format_options($currentsection);
+                $activesubtab = $activetab->get_childs()->get_active();
+
+                if ($activesubtab) {
+                    $formatoptionssub = course_get_format($course)->get_format_options($activesubtab->section);
+                } else {
+                    $formatoptionssub = course_get_format($course)->get_format_options($currentsection);
+                }
+
                 $subtabsectionbackground = $formatoptionssub['tabsectionbackground'] ?? '';
 
                 if (!empty($subtabsectionbackground)) {
@@ -246,6 +253,23 @@ class header implements \renderable, \templatable {
             // Can we view the section in question?
             if ((!$thissection->uservisible && $course->hiddensections == 1) || !empty($thissection->component)) {
                 $localsection++;
+
+                if (!empty($thissection->component) && $thissection->section == $displaysection) {
+                    $subsectioncm = \mod_subsection\manager::create_from_id($course->id, $thissection->itemid);
+                    $cm = $subsectioncm->get_coursemodule();
+
+                    // Find the tab.
+                    $childtab = $tabs->get_childbysection($cm->sectionnum);
+                    if ($childtab) {
+                        $childtab->selected = true;
+                        $childtab->cssstyles = 'color: red;';
+
+                        if ($childtab->parenttab) {
+                            $childtab->parenttab->selected = true;
+                        }
+                    }
+                }
+
                 continue;
             }
 
@@ -488,11 +512,11 @@ class header implements \renderable, \templatable {
                 $insertposition = $displaysection + 1;
 
                 $paramstotabs = [
-                                    'courseid' => $course->id,
-                                    'increase' => true,
-                                    'sesskey' => sesskey(),
-                                    'insertsection' => $insertposition,
-                                ];
+                    'courseid' => $course->id,
+                    'increase' => true,
+                    'sesskey' => sesskey(),
+                    'insertsection' => $insertposition,
+                ];
 
                 // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
                 $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
