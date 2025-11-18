@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/subsectionmodes/list
+    @template format_onetopic/local/subsectionmodes/collapsible
 
     List template for subsection mode.
 
@@ -30,14 +30,14 @@
             data-id="{{id}}"
             data-number="{{num}}"
         >
-            {{#header}}
-                <h3 id="sectionid-{{id}}-title" class="h4 sectionname">
-                    {{{title}}}
-                </h3>
+           {{#header}}
+                {{$ core_courseformat/local/content/section/header }}
+                    {{> core_courseformat/local/content/section/header }}
+                {{/ core_courseformat/local/content/section/header }}
             {{/header}}
         </div>
         <div id="coursecontentcollapseid{{id}}"
-            class="content course-content-item-content show">
+            class="content course-content-item-content collapse {{^contentcollapsed}}show{{/contentcollapsed}}">
             <div class="{{#hasavailability}}description{{/hasavailability}} my-3" data-for="sectioninfo">
                 {{#isstealth}}
                 <div class="alert alert-warning">

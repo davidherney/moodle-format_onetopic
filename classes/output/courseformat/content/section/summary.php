@@ -186,7 +186,13 @@ class summary extends summary_base {
 
                 $cmdata->hascompletion = isset($cmdata->completion) && $cmdata->completion;
 
-                $hasavailability = isset($cmdata->modavailability) ? $cmdata->modavailability->hasmodavailability : false;
+                $hasavailability = false;
+
+                if (isset($cmdata->modavailability) && $cmdata->modavailability) {
+                    if (property_exists($cmdata->modavailability, 'hasmodavailability')) {
+                        $hasavailability = $cmdata->modavailability->hasmodavailability;
+                    }
+                }
 
                 $cmdata->showinlinehelp = false;
                 if ($cmdata->hascompletion

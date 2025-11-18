@@ -51,9 +51,9 @@
 require(['core_courseformat/local/content'], function(component) {
     component.init('{{uniqid}}-course-format',
         {
-            SECTION: `.onetopic-tab-body [data-for='section']`,
-            SECTION_CMLIST: `.onetopic-tab-body [data-for='cmlist']`,
-            CM: `.onetopic-tab-body [data-for='cmitem']`,
+            SECTION: `ul.onetopic [data-for='section']`,
+            SECTION_CMLIST: `ul.onetopic [data-for='cmlist']`,
+            CM: `ul.onetopic [data-for='cmitem']`,
         },
         {{sectionreturn}});
 });

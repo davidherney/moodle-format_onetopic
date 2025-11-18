@@ -114,7 +114,7 @@ class renderer extends section_renderer {
     public function render_delegatedsection($widget) {
 
         $displaymode = $widget->get_displaymode();
-        $template = 'format_onetopic/subsectionmodes/';
+        $template = 'format_onetopic/local/subsectionmodes/';
 
         if ($this->page->user_is_editing() || empty($displaymode) || $displaymode === 'summary') {
             // When editing, always use the default summary mode to avoid confusion.

@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2024050907:
+* New feature: Subsection display mode.
+
 ### 2024050906:
 * Option to remove icon in tab style editor.
 * Tool for migrating styles from old controls.
