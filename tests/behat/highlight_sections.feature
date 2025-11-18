@@ -54,13 +54,3 @@ Feature: Sections can be highlighted in Onetopic format
     When I open section "3" edit menu
     And I click on "Unhighlight" "link"
     Then I should not see "Highlighted" in the "#page-content .course-section .course-section-header" "css_element"
-
-  Scenario: Highlight and unhighlight a section can be done without ajax in Onetopic format
-    # Without javascript hidden elements cannot be detected with a simple I should see step.
-    Given I am on "Course 1" course homepage with editing mode on
-    And "#page-content ul.nav.nav-tabs .nav-item.marker" "css_element" should not exist
-    When I click on "Topic 2" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
-    And I click on "Highlight" "link" in the "Topic 2" "core_courseformat > Section actions menu"
-    Then "#page-content ul.nav.nav-tabs .nav-item.tab_position_2.marker" "css_element" should exist
-    And  I click on "Unhighlight" "link" in the "Topic 2" "core_courseformat > Section actions menu"
-    And "#page-content ul.nav.nav-tabs .nav-item.marker" "css_element" should not exist

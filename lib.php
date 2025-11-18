@@ -962,7 +962,6 @@ class format_onetopic extends core_courseformat\base {
                 ];
 
                 if ($onetopicconfig->enablecustomstyles) {
-
                     $sectionformatoptionsedit['tabsectionbackground'] = [
                         'default' => '',
                         'type' => PARAM_RAW,
@@ -1006,7 +1005,6 @@ class format_onetopic extends core_courseformat\base {
                             'help_component' => 'format_onetopic',
                         ];
                     }
-
                 }
             }
 
