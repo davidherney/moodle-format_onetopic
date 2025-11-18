@@ -49,8 +49,9 @@ class tabs {
      * To get a specific tab by index.
      *
      * @param int $index The tabs position or index. Null: if not found the index.
+     * @return \format_onetopic\singletab|null The tab object.
      */
-    public function get_tab($index) {
+    public function get_tab($index): ?singletab {
         return isset($this->tabslist[$index]) ? $this->tabslist[$index] : null;
     }
 
@@ -190,6 +191,24 @@ class tabs {
         }
 
         return $tabstree;
+    }
+
+    /**
+     * To get a child tab by section number.
+     *
+     * @param int $sectionnumber The section number.
+     * @return \format_onetopic\singletab|null The tab object.
+     */
+    public function get_childbysection(int $sectionnumber): ?singletab {
+        foreach ($this->tabslist as $tab) {
+            if ($tab->section == $sectionnumber) {
+                return $tab;
+            } else  if ($found = $tab->get_childs()->get_childbysection($sectionnumber)) {
+                return $found;
+            }
+        }
+
+        return null;
     }
 
     /**
