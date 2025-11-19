@@ -309,6 +309,7 @@ class header implements \renderable, \templatable {
                         $cssparentid = '[data-tabid="' . $thissection->id . '"]';
                         $cssid = '#onetabid-' . $thissection->id . '';
                         $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
+                        $childsbackgroundcolor = null;
                         foreach ($orderedtabs as $type => $styles) {
                             $important = false;
                             switch ($type) {
@@ -376,6 +377,10 @@ class header implements \renderable, \templatable {
                                 // Capture background-color from any type that has it.
                                 if ($key === 'background-color') {
                                     $activebackgroundcolor = $value;
+                                    // Also capture child background color for parent tab border rules.
+                                    if ($type === 'childs') {
+                                        $childsbackgroundcolor = $value;
+                                    }
                                 }
 
                                 if ($key == 'others') {
@@ -409,7 +414,32 @@ class header implements \renderable, \templatable {
                                 $onecss .= '.format_onetopic-tabs { ';
                                 $onecss .= 'border-bottom: none !important; ';
                                 $onecss .= '}';
+
+                                // If this is a child tab (level 1) with its own background, override parent's child color.
+                                if (isset($formatoptions['level']) && $formatoptions['level'] == 1) {
+                                    // Override parent's child background color rule with this child's specific color.
+                                    $onecss .= '#tabs-tree-start#tabs-tree-start#tabs-tree-start:has(#onetabid-' . $thissection->id . ' a.nav-link.active) ';
+                                    $onecss .= '.onetopic-tab-body > ul.format_onetopic-tabs { ';
+                                    $onecss .= 'border-bottom: 2px solid ' . $activebackgroundcolor . ' !important; ';
+                                    $onecss .= 'padding-bottom: 1px !important; ';
+                                    $onecss .= '} ';
+                                }
                             }
+                        }
+
+                        // Add border for child tabs if parent defines childs background color.
+                        // Generate this CSS after processing all style types for this section.
+                        if (!empty($childsbackgroundcolor)) {
+                            // Target the second row tabs when a child is active.
+                            // Use multiple IDs and very specific path to maximize specificity beyond parent rule.
+                            $childrule = '#tabs-tree-start#tabs-tree-start:has(.onetopic-tab-body' . $cssparentid;
+                            $childrule .= ' .nav-item.subtopic a.nav-link.active) ';
+                            $childrule .= '.onetopic-tab-body' . $cssparentid . ' > ul.format_onetopic-tabs { ';
+                            $childrule .= 'border-bottom: 2px solid ' . $childsbackgroundcolor . ' !important; ';
+                            $childrule .= 'padding-bottom: 1px !important; ';
+                            $childrule .= '} ';
+
+                            $onecss .= $childrule;
                         }
 
                         // Clean the CSS for html tags.
