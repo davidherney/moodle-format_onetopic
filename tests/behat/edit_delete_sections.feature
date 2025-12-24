@@ -6,8 +6,9 @@ Feature: Sections can be edited and deleted in Onetopic format
 
   Background:
     Given the following "users" exist:
-      | username | firstname | lastname | email            |
+      | username | firstname | lastname | email                |
       | teacher1 | Teacher   | 1        | teacher1@example.com |
+      | student1 | Student   | 1        | student1@example.com |
     And the following "courses" exist:
       | fullname | shortname | format   | coursedisplay | numsections |
       | Course 1 | C1        | onetopic | 0             | 5           |
@@ -20,6 +21,7 @@ Feature: Sections can be edited and deleted in Onetopic format
     And the following "course enrolments" exist:
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
+      | student1 | C1     | student        |
     And I log in as "teacher1"
 
   Scenario: View the default name of the general section in Onetopic format
@@ -55,6 +57,22 @@ Feature: Sections can be edited and deleted in Onetopic format
       | Section name      | This is the second topic |
     Then I should see "This is the second topic" in the ".format_onetopic-tabs .tab_position_2 .nav-link.active" "css_element"
     And I should not see "Topic 2" in the ".format_onetopic-tabs .tab_position_2 .nav-link.active" "css_element"
+
+  @javascript
+  Scenario: Subtopics of hidden parent sections are not visible to students
+    Given I am on "Course 1" course homepage with editing mode on
+    And I edit the section "2" and I fill the form with:
+      | Level | Child of previous tab |
+    And I edit the section "4" and I fill the form with:
+      | Level | Child of previous tab |
+    And I edit the section "3" and I fill the form with:
+      | Visible | Hide on course page |
+    And I log out
+    And I log in as "student1"
+    And I am on "Course 1" course homepage
+    And I click on "Topic 1" "link" in the "#page-content ul.nav.nav-tabs" "css_element"
+    Then I should see "Topic 2" in the "#page-content .onetopic-tab-body" "css_element"
+    And I should not see "Topic 4" in the "#page-content .onetopic-tab-body" "css_element"
 
   Scenario: Deleting the last section in Onetopic format
     Given I am on "Course 1" course homepage with editing mode on
