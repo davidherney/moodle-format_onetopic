@@ -1205,20 +1205,20 @@ class format_onetopic extends core_courseformat\base {
     public function section_get_available_hook(section_info $section, &$available, &$availableinfo) {
 
         // Only check childs tabs visibility.
-        if (!isset($section->level) || (int)$section->level === 0) {
+        if (!isset($section->level) || $section->level == 0) {
             return;
         }
 
-        // The tab visibility depends on parent user visibility.
+        // The tab visibility depend of parent visibility.
         $parentsections = $this->fot_get_sections_extra();
-        $parent = $parentsections[$section->section] ?? null;
-        if (!$parent) {
-            return;
-        }
-
-        if (!$parent->uservisible) {
-            $available = false;
-            $availableinfo = '';
+        $parent = $parentsections[$section->section];
+        if ($parent) {
+            if (!($parent->visible && $parent->available)) {
+                $available = false;
+                if (!$parent->uservisible) {
+                    $availableinfo = '';
+                }
+            }
         }
     }
 
