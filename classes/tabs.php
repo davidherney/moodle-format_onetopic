@@ -203,7 +203,7 @@ class tabs {
         foreach ($this->tabslist as $tab) {
             if ($tab->section == $sectionnumber) {
                 return $tab;
-            } else  if ($found = $tab->get_childs()->get_childbysection($sectionnumber)) {
+            } else if ($found = $tab->get_childs()->get_childbysection($sectionnumber)) {
                 return $found;
             }
         }
