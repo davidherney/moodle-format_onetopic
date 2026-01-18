@@ -136,7 +136,7 @@ $string['tablabeldisabled'] = 'Deshabilitada';
 $string['tablabelhighlighted'] = 'Resaltada';
 $string['tablabelparent'] = 'Padre';
 $string['tabsectionbackground'] = 'Fondo del contenido de la sección';
-$string['tabsectionbackground_help'] = 'Se utiliza para cambiar el fondo del contenido de la sección. El valor puede ser un color en una representación válida de CSS, por ejemplo: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Nombre: verde</li></ul>
+$string['tabsectionbackground_help'] = 'Se utiliza para cambiar el fondo del contenido de la sección. El valor puede ser un color en una representación válida de CSS, por ejemplo: <ul><li>Hexadecimal: #ffffff</li><li>RGB: rgb(0,255,0)</li><li>Nombre: green</li></ul>
 También puede ser un atributo de URL y otras opciones de fondo de CSS.';
 $string['tabstylebuttons_help'] = 'Haga clic en cada botón para configurar la apariencia de la pestaña en cada uno de sus posibles estados.';
 $string['tabstyleclear'] = 'Borrar estilos';
