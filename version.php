@@ -26,17 +26,17 @@
  * Next releases: Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Colmenas, Minitas,
  * Quebrada Negra, San Francisco, San Miguel Abajo, San Miguel, La Concha.
  *
- * @package format_onetopic
+ * @package   format_onetopic
  * @copyright 2015 David Herney - cirano. https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2025021903.02; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version = 2025021904; // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2025021400; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '5.0.3(LaDivisa)';
+$plugin->release = '5.0.4(LaDivisa)';
 $plugin->dependencies = ['format_topics' => 2025041400];
 $plugin->supported = [500, 500];

@@ -862,12 +862,7 @@ class format_onetopic extends core_courseformat\base {
      * @return array
      */
     public function section_format_options($foreditform = false) {
-        global $section;
-
         static $sectionformatoptions = false;
-
-        // Diferent format options for subsection activity modules.
-        $subsection = !empty($section->component);
 
         $onetopicconfig = get_config('format_onetopic');
 
@@ -919,6 +914,10 @@ class format_onetopic extends core_courseformat\base {
         }
 
         if ($foreditform) {
+            global $section;
+            // Diferent format options for subsection activity modules.
+            $subsection = !empty($section->component);
+
             $sectionformatoptionsedit = [];
 
             if ($subsection) {
@@ -1008,7 +1007,7 @@ class format_onetopic extends core_courseformat\base {
                 }
             }
 
-            $sectionformatoptions = $sectionformatoptionsedit;
+            return $sectionformatoptionsedit;
         }
 
         return $sectionformatoptions;
