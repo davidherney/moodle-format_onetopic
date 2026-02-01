@@ -34,7 +34,6 @@ class before_http_headers {
 
         // Don't require styles script if the course format isn't 'onetopic'.
         if ($PAGE->course && isset($COURSE->id) && $COURSE->format == 'onetopic') {
-
             // Check if site-wide tab styles are configured, if not, do nothing.
             if (!get_config('format_onetopic', 'tabstyles')) {
                 return;

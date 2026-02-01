@@ -135,7 +135,7 @@ $csstabstyles = trim($csstabstyles);
 $etag = md5($csstabstyles . $revision);
 
 // ETag validation: Return 304 if client has the current version. This will
-// preserve the existing cache for $cache_lifetime.
+// preserve the existing cache for $cachelifetime.
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
     $clientetag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
     if ($clientetag === $etag) {
@@ -153,9 +153,9 @@ if (empty($csstabstyles)) {
 }
 
 // Cache for 1 year, this is safe due to cache busting via revision param.
-$cache_lifetime = 31536000;
-header('Cache-Control: public, max-age=' . $cache_lifetime . ', immutable');
-header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache_lifetime) . ' GMT');
+$cachelifetime = 31536000;
+header('Cache-Control: public, max-age=' . $cachelifetime . ', immutable');
+header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cachelifetime) . ' GMT');
 header('ETag: "' . $etag . '"');
 
 // Content headers.
