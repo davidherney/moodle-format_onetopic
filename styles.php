@@ -28,8 +28,7 @@ define('NO_MOODLE_COOKIES', true);
 // phpcs:disable moodle.Files.RequireLogin.Missing
 require_once('../../../config.php');
 
-@header('Content-Disposition: inline; filename="styles.php"');
-@header('Content-Type: text/css; charset=utf-8');
+$revision = optional_param('revision', 0, PARAM_ALPHANUM);
 
 $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
 $csscontent = '';
@@ -136,5 +135,38 @@ if (!empty($tabstyles)) {
         $csstabstyles = preg_replace('/<[^>]*>/', '', $csscontent);
     }
 }
+
+$csstabstyles = trim($csstabstyles);
+$etag = md5($csstabstyles . $revision);
+
+// ETag validation: Return 304 if client has the current version. This will
+// preserve the existing cache for $cache_lifetime.
+if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+    $clientetag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
+    if ($clientetag === $etag) {
+        header('HTTP/1.1 304 Not Modified');
+        header('ETag: "' . $etag . '"');
+        exit;
+    }
+}
+
+// Return empty response for edge cases (no styles configured & direct URL access).
+if (empty($csstabstyles)) {
+    header('HTTP/1.1 304 Not Modified');
+    header('Content-Length: 0');
+    exit;
+}
+
+// Cache for 1 year, this is safe due to cache busting via revision param.
+$cache_lifetime = 31536000;
+header('Cache-Control: public, max-age=' . $cache_lifetime . ', immutable');
+header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache_lifetime) . ' GMT');
+header('ETag: "' . $etag . '"');
+
+// Content headers.
+header('Content-Length: ' . strlen($csstabstyles));
+header('Content-Disposition: inline; filename="styles.php"');
+header('Content-Type: text/css; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
 
 echo $csstabstyles;
