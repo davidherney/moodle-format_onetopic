@@ -1070,8 +1070,39 @@ class format_onetopic extends core_courseformat\base {
  * Moodle native lib/navigationlib.php calls this hook allowing us to override UI.
  */
 function format_onetopic_before_http_headers() {
-    global $PAGE;
-    $PAGE->requires->css('/course/format/onetopic/styles.php');
+    global $PAGE, $COURSE;
+
+    // Don't require styles script if the course format isn't 'onetopic'.
+    if ($PAGE->course && isset($COURSE->id) && $COURSE->format == 'onetopic') {
+
+        // Check if site-wide tab styles are configured, if not, do nothing.
+        if (!get_config('format_onetopic', 'tabstyles')) {
+            return;
+        }
+
+        $revision = format_onetopic_get_tabstyles_revision();
+        $PAGE->requires->css(new \moodle_url('/course/format/onetopic/styles.php', [
+            'revision' => $revision,
+        ]));
+    }
+}
+
+/**
+ * Generates an 8-character hash from the tab styles configuration.
+ * When styles change, the hash changes, creating a new URL that
+ * busts the cache.
+ *
+ * @return string
+ */
+function format_onetopic_get_tabstyles_revision(): string {
+    $tabstyles = get_config('format_onetopic', 'tabstyles');
+
+    if (empty($tabstyles)) {
+        return '0';
+    }
+
+    // Use first 8 chars of md5 hash as revision.
+    return substr(md5($tabstyles), 0, 8);
 }
 
 /**
