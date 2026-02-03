@@ -104,7 +104,8 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
     }
     if (!$returnurl) {
         $returnurl = course_get_url(
-            $course, $sections[0]->section,
+            $course,
+            $sections[0]->section,
             ($sectionreturn !== null) ? ['sr' => $sectionreturn] : []
         );
     }

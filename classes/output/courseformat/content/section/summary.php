@@ -199,7 +199,8 @@ class summary extends summary_base {
                 }
 
                 $cmdata->showinlinehelp = false;
-                if ($cmdata->hascompletion
+                if (
+                    $cmdata->hascompletion
                     || (isset($cmdata->hasdates) && $cmdata->hasdates)
                     || $hasavailability
                 ) {
