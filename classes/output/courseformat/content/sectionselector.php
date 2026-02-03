@@ -40,7 +40,6 @@ use url_select;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class sectionselector extends sectionselector_base {
-
     /**
      * Export this data so it can be used as the context for a mustache template.
      *
@@ -48,7 +47,6 @@ class sectionselector extends sectionselector_base {
      * @return stdClass data context for a mustache template
      */
     public function export_for_template(\renderer_base $output): stdClass {
-
         $format = $this->format;
         $course = $format->get_course();
 

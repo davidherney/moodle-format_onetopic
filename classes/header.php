@@ -36,7 +36,6 @@ use course_modinfo;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class header implements \renderable, \templatable {
-
     /**
      * @var \format_onetopic
      */
@@ -73,8 +72,11 @@ class header implements \renderable, \templatable {
         $secondtabslist = null;
         $tabscssstyles = '';
         $activetab = null;
-        if ($course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
-                ($format->show_editor() || !$course->hidetabsbar)) {
+
+        if (
+            $course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
+            ($format->show_editor() || !$course->hidetabsbar)
+        ) {
             $tabs = $this->get_tabs($format->get_modinfo(), $output);
             $tabslist = $tabs->get_list();
             $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
@@ -172,7 +174,6 @@ class header implements \renderable, \templatable {
 
         // General section if non-empty and course_display is multiple.
         if ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-
             // Load the section 0 and export data for template.
             $modinfo = $format->get_modinfo();
             $section0 = $modinfo->get_section_info(0);
@@ -181,7 +182,6 @@ class header implements \renderable, \templatable {
 
             $sectionoutput = new \format_onetopic\output\renderer($PAGE, null);
             $initialsection = $section->export_for_template($sectionoutput);
-
         }
 
         $data->initialsection = $initialsection;
@@ -279,14 +279,13 @@ class header implements \renderable, \templatable {
             $title = $sectionname;
 
             if (!$thissection->visible || !$thissection->available) {
-                $title .= ': '. get_string('hiddenfromstudents');
+                $title .= ': ' . get_string('hiddenfromstudents');
             }
 
             $tabicons = [];
             $customstyles = '';
             $level = 0;
             if (is_array($formatoptions)) {
-
                 if ($enablecustomstyles) {
                     if (!empty($formatoptions['fontcolor'])) {
                         $customstyles .= 'color: ' . $formatoptions['fontcolor'] . '; ';
@@ -302,7 +301,6 @@ class header implements \renderable, \templatable {
 
                     $tabstyles = !empty($formatoptions['tabstyles']) ? @json_decode($formatoptions['tabstyles']) : null;
                     if (is_object($tabstyles)) {
-
                         $orderedtabs = new \stdClass();
                         foreach ($precedence as $type) {
                             if (property_exists($tabstyles, $type)) {
@@ -314,38 +312,39 @@ class header implements \renderable, \templatable {
                         $cssparentid = '[data-tabid="' . $thissection->id . '"]';
                         $cssid = '#onetabid-' . $thissection->id . '';
                         $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
-                        foreach ($orderedtabs as $type => $styles) {
 
+                        foreach ($orderedtabs as $type => $styles) {
                             $important = false;
+
                             switch ($type) {
                                 case 'active':
                                     $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link.active';
                                     $important = true;
-                                break;
+                                    break;
                                 case 'parent':
                                     $onecss .= '#tabs-tree-start .nav-item.haschilds' . $cssid . ' a.nav-link';
-                                break;
+                                    break;
                                 case 'highlighted':
                                     $onecss .= '#tabs-tree-start .nav-item.marker' . $cssid . ' a.nav-link';
                                     $important = true;
-                                break;
+                                    break;
                                 case 'disabled':
                                     $onecss .= '#tabs-tree-start .nav-item.disabled' . $cssid . ' a.nav-link';
                                     $important = true;
-                                break;
+                                    break;
                                 case 'hover':
                                     $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link:hover,';
                                     $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid
                                                 . ' .nav-item.subtopic a.nav-link:hover';
-                                break;
+                                    break;
                                 case 'childs':
                                     $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid
                                                 . ' .nav-item.subtopic a.nav-link';
-                                break;
+                                    break;
                                 case 'childindex':
                                     $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid . ' .nav-tabs' .
                                                     ' .nav-item.subtopic.tab_initial a.nav-link';
-                                break;
+                                    break;
                                 default:
                                     $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link,';
                                     $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid . ' a.nav-link';
@@ -356,10 +355,8 @@ class header implements \renderable, \templatable {
 
                             // Check if exist units for some rules.
                             foreach ($styles as $key => $value) {
-
                                 // Check if the key start with the units prefix.
                                 if (strpos($key, 'unit-') === 0) {
-
                                     // Remove the prefix.
                                     $ownerkey = str_replace('unit-', '', $key);
                                     $units[$ownerkey] = $value;
@@ -371,7 +368,6 @@ class header implements \renderable, \templatable {
                             }
 
                             foreach ($styles as $key => $value) {
-
                                 // If exist a unit for the rule, apply it.
                                 if (isset($units[$key])) {
                                     $value = $value . $units[$key];
@@ -393,7 +389,6 @@ class header implements \renderable, \templatable {
                         // Clean the CSS for html tags.
                         $csstabstyles .= preg_replace('/<[^>]*>/', '', $onecss);
                     }
-
                 }
 
                 if (isset($formatoptions['level']) && $localsection > $firstsection) {
@@ -432,8 +427,15 @@ class header implements \renderable, \templatable {
                 }
             }
 
-            $newtab = new \format_onetopic\singletab($localsection, $sectionname, $url, $title,
-                                    $availablemessage, $customstyles, $specialclass);
+            $newtab = new \format_onetopic\singletab(
+                $localsection,
+                $sectionname,
+                $url,
+                $title,
+                $availablemessage,
+                $customstyles,
+                $specialclass
+            );
             $newtab->active = !$inactivetab;
             $newtab->id = $thissection->id;
             $newtab->cssstyles = $csstabstyles;
@@ -444,21 +446,21 @@ class header implements \renderable, \templatable {
             }
 
             if (is_array($formatoptions) && isset($formatoptions['level'])) {
-
                 if ($formatoptions['level'] == 0 || $parenttab == null) {
                     $tabs->add($newtab);
                     $parenttab = $newtab;
                 } else {
-
                     if (!$parenttab->has_childs()) {
                         $specialclasstmp = str_replace('tab_level_0', 'tab_level_1', $parenttab->specialclass);
-                        $indextab = new \format_onetopic\singletab($parenttab->section,
-                                                $parenttab->content,
-                                                $parenttab->link,
-                                                $parenttab->title,
-                                                $parenttab->availablemessage,
-                                                (empty($parenttab->cssstyles) ? $parenttab->customstyles : ''),
-                                                $specialclasstmp);
+                        $indextab = new \format_onetopic\singletab(
+                            $parenttab->section,
+                            $parenttab->content,
+                            $parenttab->link,
+                            $parenttab->title,
+                            $parenttab->availablemessage,
+                            (empty($parenttab->cssstyles) ? $parenttab->customstyles : ''),
+                            $specialclasstmp
+                        );
 
                         $prevsectionindex = $localsection - 1;
                         do {
@@ -501,12 +503,10 @@ class header implements \renderable, \templatable {
         }
 
         if ($this->format->show_editor()) {
-
             $maxsections = $this->format->get_max_sections();
 
             // Only can add sections if it does not exceed the maximum amount.
             if (count($sections) < $maxsections) {
-
                 $straddsection = get_string('increasesections', 'format_onetopic');
                 $icon = $output->pix_icon('t/switch_plus', s($straddsection));
                 $insertposition = $displaysection + 1;
@@ -540,11 +540,9 @@ class header implements \renderable, \templatable {
                 $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                 $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
                 $tabs->add($newtab);
-
             }
         }
 
         return $tabs;
     }
-
 }

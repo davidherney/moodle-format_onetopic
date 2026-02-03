@@ -24,7 +24,6 @@ namespace format_onetopic\local\hooks\output;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class before_http_headers {
-
     /**
      * Moodle native lib/navigationlib.php calls this hook allowing us to override UI.
      *
@@ -35,7 +34,6 @@ class before_http_headers {
 
         // Don't require styles script if the course format isn't 'onetopic'.
         if ($PAGE->course && isset($COURSE->id) && $COURSE->format == 'onetopic') {
-
             // Check if site-wide tab styles are configured, if not, do nothing.
             if (!get_config('format_onetopic', 'tabstyles')) {
                 return;

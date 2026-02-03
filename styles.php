@@ -38,7 +38,6 @@ if (!empty($tabstyles)) {
     $tabstyles = @json_decode($tabstyles);
 
     if (is_object($tabstyles)) {
-
         $precedence = ['default', 'childs', 'childindex', 'active', 'parent', 'highlighted', 'disabled', 'hover'];
 
         $orderedtabs = new \stdClass();
@@ -49,8 +48,8 @@ if (!empty($tabstyles)) {
         }
 
         foreach ($orderedtabs as $type => $styles) {
-
             $important = false;
+
             switch ($type) {
                 case 'active':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link.active, ';
@@ -58,38 +57,38 @@ if (!empty($tabstyles)) {
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs a.nav-link.active, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link.active';
                     $important = true;
-                break;
+                    break;
                 case 'parent':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.haschilds a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.haschilds a.nav-link';
-                break;
+                    break;
                 case 'highlighted':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.marker a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.marker a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.marker a.nav-link';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.marker a.nav-link';
                     $important = true;
-                break;
+                    break;
                 case 'disabled':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item.disabled a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs .nav-item.disabled a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.disabled a.nav-link';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic.disabled a.nav-link';
                     $important = true;
-                break;
+                    break;
                 case 'hover':
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link:hover, ';
                     $csscontent .= '#tabs-tree-start .format_onetopic-tabs.nav-tabs .nav-item a.nav-link:hover, ';
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .format_onetopic-tabs.nav-tabs' .
                                     ' .nav-item a.nav-link:hover';
-                break;
+                    break;
                 case 'childs':
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs .nav-item.subtopic a.nav-link';
-                break;
+                    break;
                 case 'childindex':
                     $csscontent .= '#tabs-tree-start .onetopic-tab-body .nav-tabs' .
                                     ' .nav-item.subtopic.tab_initial a.nav-link';
-                break;
+                    break;
                 default:
                     $csscontent .= '#tabs-tree-start .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';
                     $csscontent .= '#tabs-tree-start .nav-tabs a.nav-link';
@@ -100,10 +99,8 @@ if (!empty($tabstyles)) {
 
             // Check if exist units for some rules.
             foreach ($styles as $key => $value) {
-
                 // Check if the key start with the units prefix.
                 if (strpos($key, 'unit-') === 0) {
-
                     // Remove the prefix.
                     $ownerkey = str_replace('unit-', '', $key);
                     $units[$ownerkey] = $value;
@@ -112,7 +109,6 @@ if (!empty($tabstyles)) {
             }
 
             foreach ($styles as $key => $value) {
-
                 // If exist a unit for the rule, apply it.
                 if (isset($units[$key])) {
                     $value = $value . $units[$key];
@@ -140,7 +136,7 @@ $csstabstyles = trim($csstabstyles);
 $etag = md5($csstabstyles . $revision);
 
 // ETag validation: Return 304 if client has the current version. This will
-// preserve the existing cache for $cache_lifetime.
+// preserve the existing cache for $cachelifetime.
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
     $clientetag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
     if ($clientetag === $etag) {
@@ -158,9 +154,9 @@ if (empty($csstabstyles)) {
 }
 
 // Cache for 1 year, this is safe due to cache busting via revision param.
-$cache_lifetime = 31536000;
-header('Cache-Control: public, max-age=' . $cache_lifetime . ', immutable');
-header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache_lifetime) . ' GMT');
+$cachelifetime = 31536000;
+header('Cache-Control: public, max-age=' . $cachelifetime . ', immutable');
+header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cachelifetime) . ' GMT');
 header('ETag: "' . $etag . '"');
 
 // Content headers.

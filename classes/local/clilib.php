@@ -24,7 +24,6 @@ namespace format_onetopic\local;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class clilib {
-
     /**
      * List styles that need to be migrated.
      *
@@ -65,7 +64,6 @@ class clilib {
 
         $k = 0;
         foreach ($rs as $record) {
-
             if (isset($stylesnew[$record->sectionid])) {
                 // This section already has new styles, skip it.
                 continue;
@@ -76,7 +74,6 @@ class clilib {
                     "Style: {$record->stylename}, Value: {$record->stylevalue}\n";
         }
         $rs->close();
-
     }
 
     /**
@@ -138,7 +135,6 @@ class clilib {
 
         $k = 0;
         foreach ($sections as $sectionid => $section) {
-
             if (CLI_VERBOSE) {
                 echo "Migrating style for Course ID: {$section->courseid}, Section ID: {$sectionid}\n";
             }

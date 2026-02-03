@@ -27,7 +27,6 @@ use moodle_page;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends section_renderer {
-
     /**
      * Constructor method, calls the parent constructor.
      *
@@ -69,8 +68,10 @@ class renderer extends section_renderer {
             $specialrenderers = '/^(?<componentpath>' . $corepath . '|' . $pluginpath . ')\/(?<template>.+)$/';
             $matches = null;
 
-            if (preg_match($specialrenderers, $fullpath, $matches)
-                && file_exists($CFG->dirroot . '/course/format/onetopic/templates/local/' . $matches['template'])) {
+            if (
+                preg_match($specialrenderers, $fullpath, $matches) &&
+                file_exists($CFG->dirroot . '/course/format/onetopic/templates/local/' . $matches['template'])
+            ) {
                 $data = $widget->export_for_template($this);
                 return $this->render_from_template('format_onetopic/local/' . $matches['template'], $data);
             }

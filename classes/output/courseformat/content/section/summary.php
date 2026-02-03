@@ -40,7 +40,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class summary extends summary_base {
-
     use courseformat_named_templatable;
 
     /** @var course_format the course format class */
@@ -106,8 +105,14 @@ class summary extends summary_base {
             $summarytext = $this->replace_resources($section);
         }
 
-        $summarytext = file_rewrite_pluginfile_urls($summarytext, 'pluginfile.php',
-            $context->id, 'course', 'section', $section->id);
+        $summarytext = file_rewrite_pluginfile_urls(
+            $summarytext,
+            'pluginfile.php',
+            $context->id,
+            'course',
+            'section',
+            $section->id
+        );
 
         $options = new stdClass();
         $options->noclean = true;
@@ -161,7 +166,6 @@ class summary extends summary_base {
             $completioninfo = new \completion_info($course);
 
             foreach ($sectionmods as $modnumber) {
-
                 if (empty($modinfo->cms[$modnumber])) {
                     continue;
                 }
@@ -196,8 +200,9 @@ class summary extends summary_base {
 
                 $cmdata->showinlinehelp = false;
                 if ($cmdata->hascompletion
-                        || (isset($cmdata->hasdates) && $cmdata->hasdates)
-                        || $hasavailability) {
+                    || (isset($cmdata->hasdates) && $cmdata->hasdates)
+                    || $hasavailability
+                ) {
                     $cmdata->showinlinehelp = true;
                 }
 
@@ -210,8 +215,10 @@ class summary extends summary_base {
                 $template = 'format_onetopic/courseformat/content/cminline';
 
                 if ($completioninfo->is_enabled($mod) !== COMPLETION_TRACKING_NONE) {
-                    $completion = $DB->get_record('course_modules_completion',
-                                                ['coursemoduleid' => $mod->id, 'userid' => $USER->id, 'completionstate' => 1]);
+                    $completion = $DB->get_record(
+                        'course_modules_completion',
+                        ['coursemoduleid' => $mod->id, 'userid' => $USER->id, 'completionstate' => 1]
+                    );
 
                     $template = 'format_onetopic/courseformat/content/cminlinecompletion';
 
@@ -229,7 +236,6 @@ class summary extends summary_base {
 
                     $cmdata->completedclass = $completedclass;
                     $cmdata->showcompletionconditions = $showcompletionconditions;
-
                 }
 
                 $renderer = $this->format->get_renderer($PAGE);
@@ -239,8 +245,11 @@ class summary extends summary_base {
                 $this->tplstringreplace = $htmlresource;
                 $this->tplstringsearch = $instancename;
 
-                $newsummary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tplstringsearch, '/') .
-                    ")(:?))([^\]]*)\]\]/i", [$this, "replace_tag_in_expresion"], $summary);
+                $newsummary = preg_replace_callback(
+                    "/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tplstringsearch, '/') . ")(:?))([^\]]*)\]\]/i",
+                    [$this, "replace_tag_in_expresion"],
+                    $summary
+                );
 
                 if ($newsummary != $summary) {
                     $this->format->tplcmsused[] = $modnumber;
@@ -251,12 +260,10 @@ class summary extends summary_base {
                 }
 
                 $summary = $newsummary;
-
             }
         }
 
         return $summary;
-
     }
 
     /**
@@ -266,7 +273,6 @@ class summary extends summary_base {
      * @return array
      */
     public function replace_tag_in_expresion($match) {
-
         $term = $match[0];
         $term = str_replace("[[", '', $term);
         $term = str_replace("]]", '', $term);
@@ -274,7 +280,6 @@ class summary extends summary_base {
         $text = strip_tags($term);
 
         if (strpos($text, ':') > -1) {
-
             $pattern = '/([^:])+:/i';
             $text = preg_replace($pattern, '', $text);
 

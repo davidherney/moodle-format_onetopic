@@ -27,8 +27,7 @@ use format_onetopic\local\hooks\output\before_http_headers;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers    \format_onetopic\local\hooks\output\before_http_headers::get_tabstyles_revision
  */
-class styles_caching_test extends \advanced_testcase {
-
+final class styles_caching_test extends \advanced_testcase {
     /**
      * Test revision is '0' when no tab styles configured.
      */
@@ -103,5 +102,4 @@ class styles_caching_test extends \advanced_testcase {
 
         $this->assertEquals($expected, $actual);
     }
-
 }
