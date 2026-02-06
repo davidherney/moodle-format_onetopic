@@ -94,9 +94,9 @@
     width: 250px;
     border-right: 1px solid #dee2e6;
     border-bottom: none;
-    position: sticky !important;
-    top: calc(var(--navbar-height, 60px) + 2px) !important;
-    z-index: 1001 !important;
+    position: sticky;
+    top: calc(var(--navbar-height, 60px) + 2px);
+    z-index: 1001;
 }
 
 .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs {
@@ -537,9 +537,9 @@
 
 @media (max-width: 600px) {
     .format-onetopic .tabs-wrapper {
-        position: sticky !important;
-        top: calc(var(--navbar-height, 60px) + 2px) !important;
-        z-index: 1001 !important;
+        position: sticky;
+        top: calc(var(--navbar-height, 60px) + 2px);
+        z-index: 1001;
         display: flex;
         flex-wrap: wrap;
     }
@@ -607,14 +607,14 @@
     }
 
     .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
-        position: sticky !important;
-        top: calc(var(--navbar-height, 60px) + 51px) !important;
-        z-index: 1000 !important;
+        position: sticky;
+        top: calc(var(--navbar-height, 60px) + 51px);
+        z-index: 1000;
         background-color: var(--white, #fff);
     }
 
     .format-onetopic .verticaltabs {
-            display: block;
+        display: block;
     }
 
     .format-onetopic .verticaltabs.hastopictabs {
@@ -641,7 +641,7 @@
     }
 
     .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
-        background-color: var(--bglight, #e9ecef) !important;
+        background-color: var(--bglight, #e9ecef);
         padding: 5px;
         max-height: 100px;
         overflow: auto;
@@ -654,7 +654,7 @@
 
     .format-onetopic .tabs-wrapper .nav-link {
         text-align: left;
-        border-radius: 5px !important;
+        border-radius: 5px;
     }
 
     .format-onetopic .onetopic-tab-body .format_onetopic-tabs .nav-link {
@@ -669,6 +669,6 @@
     }
 
     .format-onetopic .format_onetopic-tabs {
-            background-color: transparent !important;
+        background-color: transparent;
     }
 }
