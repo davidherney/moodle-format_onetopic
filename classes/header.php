@@ -109,6 +109,7 @@ class header implements \renderable, \templatable {
         $format->hastopictabs = count($tabslist) > 0;
 
         $courseindex = '';
+        $hassubtabs = false;
         if ($course->tabsview == \format_onetopic::TABSVIEW_COURSEINDEX) {
             $renderer = $format->get_renderer($PAGE);
             $courseindex = $renderer->render_from_template('core_courseformat/local/courseindex/drawer', []);
@@ -117,6 +118,7 @@ class header implements \renderable, \templatable {
         } else if ($course->tabsview == \format_onetopic::TABSVIEW_VERTICALALL) {
             $hastopictabs = $format->hastopictabs;
             $hassecondrow = false;
+            $hassubtabs = true;
 
             foreach ($tabslist as $tab) {
                 if (isset($tab->secondrow) && is_array($tab->secondrow)) {
@@ -177,6 +179,7 @@ class header implements \renderable, \templatable {
             'tabs' => $tabslist,
             'activetab' => $activetab,
             'hassecondrow' => $hassecondrow,
+            'hassubtabs' => $hassubtabs,
             'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
