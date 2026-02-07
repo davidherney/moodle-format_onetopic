@@ -89,6 +89,9 @@ class header implements \renderable, \templatable {
             case \format_onetopic::TABSVIEW_COURSEINDEX:
                 $tabsview = 'verticaltabs';
                 break;
+            case \format_onetopic::TABSVIEW_VERTICALALL:
+                $tabsview = 'verticaltabs verticalalltabs';
+                break;
             case \format_onetopic::TABSVIEW_ONELINE:
                 $tabsview = 'onelinetabs';
                 break;
@@ -111,6 +114,22 @@ class header implements \renderable, \templatable {
             $courseindex = $renderer->render_from_template('core_courseformat/local/courseindex/drawer', []);
             $hassecondrow = false;
             $hastopictabs = true;
+        } else if ($course->tabsview == \format_onetopic::TABSVIEW_VERTICALALL) {
+            $hastopictabs = $format->hastopictabs;
+            $hassecondrow = false;
+
+            foreach ($tabslist as $tab) {
+                if (isset($tab->secondrow) && is_array($tab->secondrow)) {
+                    foreach ($tab->secondrow as $skey => $secondtab) {
+                        if (!$secondtab->id) {
+                            // Remove the index to avoid conflicts with the main tabs.
+                            unset($tab->secondrow[$skey]);
+                        }
+                    }
+
+                    $tab->secondrow = array_values($tab->secondrow);
+                }
+            }
         } else {
             $hastopictabs = $format->hastopictabs;
             $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
