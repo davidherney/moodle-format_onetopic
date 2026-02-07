@@ -95,15 +95,14 @@
             <div class="tabs-wrapper">
                 <input type="checkbox" id="tabs-menu-toggle-{{uniqid}}" class="tabs-menu-toggle" aria-label="{{#str}}togglemenu, format_onetopic{{/str}}">
                 <label class="tabs-menu-overlay" for="tabs-menu-toggle-{{uniqid}}">
-                    <span class="tabs-menu-hamburger">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <span class="tabs-menu-expand">
+                        {{#pix}} t/expanded {{/pix}}
                     </span>
-                    <span class="tabs-menu-hamburger-title">
+                    <span class="tabs-menu-expand-title">
                         {{#str}}topicslabel, format_onetopic{{/str}}
                     </span>
                 </label>
+
                 {{{courseindex}}}
 
                 {{^courseindex}}

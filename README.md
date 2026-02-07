@@ -18,6 +18,7 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ### 2024050909:
 * New responsive tab display: switch to collapsed menu
+* The icon in the tabs with children was hidden. It may be removed in the future.
 
 ### 2024050907:
 * New feature: Subsection display mode.
