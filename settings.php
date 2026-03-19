@@ -112,6 +112,7 @@ if ($ADMIN->fulltree) {
     $options = [
         \format_onetopic::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
         \format_onetopic::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
+        \format_onetopic::TABSVIEW_VERTICALALL => new lang_string('tabsview_verticalall', 'format_onetopic'),
         \format_onetopic::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
     ];
     $settings->add(

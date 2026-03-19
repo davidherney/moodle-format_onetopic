@@ -15,11 +15,11 @@
     padding-right: 1.3rem;
 }
 
-.format-onetopic ul.nav-tabs.format_onetopic-tabs li.marker a {
+.format-onetopic ul.nav-tabs.format_onetopic-tabs li.marker > a {
     font-weight: bold;
 }
 
-.format-onetopic ul.nav-tabs.format_onetopic-tabs li.dimmed a {
+.format-onetopic ul.nav-tabs.format_onetopic-tabs li.dimmed > a {
     color: #999;
     opacity: 0.5;
 }
@@ -113,7 +113,7 @@
     border-right: 1px solid #dee2e6;
 }
 
-.format-onetopic .tabs-wrapper .format_onetopic-tabs .nav-link > i.icon {
+.format-onetopic .tabs-wrapper .format_onetopic-tabs .nav-link > i.icon:not(.fa-plus) {
     display: none;
 }
 
@@ -131,6 +131,33 @@
 .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-item.show .nav-link {
     border-color: #dee2e6 #fff #dee2e6 #dee2e6;
     margin-right: -1px;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link {
+    background-color: var(--primary);
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link.active,
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link:active,
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link:hover {
+    border: 1px solid transparent;
+    opacity: 0.9;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-subtabs {
+    margin-left: 10px;
+    margin-right: 3px;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-subtabs .subtopic {
+    font-size: 100%;
+}
+
+.format-onetopic .verticalalltabs .course-section {
+    margin-top: 0;
 }
 
 .format-onetopic .onetopic-subtabs_body {
@@ -614,7 +641,9 @@
         top: 45px;
         left: 0;
         right: 0;
-        background-color: var(--secondary, #6c757d)
+        background-color: var(--secondary, #6c757d);
+        box-shadow: 5px 5px 5px #aaa;
+        padding: 0;
     }
 
     .format-onetopic .tabs-menu-toggle:checked ~ .tabs-menu-overlay .tabs-menu-expand {
@@ -627,6 +656,10 @@
         border-radius: 0.5rem;
         margin-right: 0;
         margin-left: 0;
+    }
+
+    .format-onetopic .tabs-menu-toggle:checked ~ .nav-tabs .format_onetopic-subtabs {
+        display: block;
     }
 
     .format-onetopic .verticaltabs {
@@ -656,6 +689,10 @@
 
     .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-link {
         max-width: unset;
+    }
+
+    .format-onetopic .verticalalltabs .format_onetopic-subtabs {
+        margin: 0;
     }
 
     .format-onetopic .course-content .section-navigation {

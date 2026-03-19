@@ -67,6 +67,9 @@ class format_onetopic extends core_courseformat\base {
     /** @var int Embedded course index */
     const TABSVIEW_COURSEINDEX = 3;
 
+    /** @var int Vertical all view */
+    const TABSVIEW_VERTICALALL = 4;
+
     /** @var int Only if theme not support "usescourseindex" */
     const SECTIONSNAVIGATION_SUPPORT = 1;
 
@@ -286,8 +289,11 @@ class format_onetopic extends core_courseformat\base {
 
         $course = $this->get_course();
 
-        if ($course->tabsview == self::TABSVIEW_COURSEINDEX) {
-            return false;
+        if (in_array($course->tabsview, [self::TABSVIEW_COURSEINDEX, self::TABSVIEW_VERTICALALL])) {
+            global $PAGE;
+            if ($PAGE->pagetype == 'course-view-onetopic') {
+                return false;
+            }
         }
 
         if ($this->show_editor()) {
@@ -657,6 +663,7 @@ class format_onetopic extends core_courseformat\base {
                         [
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
                             self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
+                            self::TABSVIEW_VERTICALALL => new lang_string('tabsview_verticalall', 'format_onetopic'),
                             self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
                         ],
                     ],
