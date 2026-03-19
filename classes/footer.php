@@ -35,7 +35,7 @@ use course_modinfo;
  * @copyright 2016 David Herney - https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class footer implements \renderable, \templatable {
+class footer implements \core\output\renderable, \core\output\templatable {
     /**
      * @var \format_onetopic
      */

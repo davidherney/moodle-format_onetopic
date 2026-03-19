@@ -35,7 +35,7 @@ use course_modinfo;
  * @copyright 2016 David Herney - https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class header implements \renderable, \templatable {
+class header implements \core\output\renderable, \core\output\templatable {
     /**
      * @var \format_onetopic
      */
@@ -53,10 +53,10 @@ class header implements \renderable, \templatable {
     /**
      * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
      *
-     * @param \renderer_base $output typically, the renderer that's calling this function
+     * @param \core\output\renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output) {
+    public function export_for_template(\core\output\renderer_base $output) {
         global $PAGE, $CFG, $OUTPUT;
 
         $format = $this->format;
@@ -231,10 +231,10 @@ class header implements \renderable, \templatable {
      * Return an array of tabs to display.
      *
      * @param course_modinfo $modinfo the current course modinfo object
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \core\output\renderer_base $output typically, the renderer that's calling this function
      * @return \format_onetopic\tabs an object with tabs information
      */
-    private function get_tabs(course_modinfo $modinfo, \renderer_base $output): \format_onetopic\tabs {
+    private function get_tabs(course_modinfo $modinfo, \core\output\renderer_base $output): \format_onetopic\tabs {
         global $section;
 
         if ($section && $section > 0) {
@@ -419,7 +419,7 @@ class header implements \renderable, \templatable {
             }
 
             if ($localsection == 0) {
-                $url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => 0]);
+                $url = new \core\url('/course/view.php', ['id' => $course->id, 'section' => 0]);
             } else {
                 $url = course_get_url($course, $localsection);
             }
@@ -547,7 +547,7 @@ class header implements \renderable, \templatable {
                 if ($showsubtabs && $selectedparent) {
                     // Increase number of sections in child tabs.
                     $paramstotabs['aschild'] = 1;
-                    $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                    $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                     $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
                     $selectedsubtabs->add_child($newtab);
 
@@ -559,7 +559,7 @@ class header implements \renderable, \templatable {
 
                 $paramstotabs['aschild'] = 0;
                 $paramstotabs['insertsection'] = $insertposition;
-                $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                 $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
                 $tabs->add($newtab);
             }

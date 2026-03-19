@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use \core\lang_string;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/course/format/onetopic/lib.php');
@@ -36,7 +38,7 @@ if ($ADMIN->fulltree) {
         )
     );
 
-    $url = new moodle_url('/course/format/onetopic/migratestyles.php');
+    $url = new \core\url('/course/format/onetopic/migratestyles.php');
     $help = get_string('useoldstylescontrol_help', 'format_onetopic') .
             '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic', $url) . '</strong> ';
     $settings->add(

@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/course/format/lib.php');
 
 use core\output\inplace_editable;
+use \core\lang_string;
 
 /**
  * Main class for the Onetopic course format
@@ -396,12 +397,12 @@ class format_onetopic extends core_courseformat\base {
      * @param array $options options for view URL. At the moment core uses:
      *     'navigation' (bool) if true and section has no separate page, the function returns null
      *     'sr' (int) used by multipage formats to specify to which section to return
-     * @return null|moodle_url
+     * @return null|\core\url
      */
     public function get_view_url($section, $options = []) {
 
         $course = $this->get_course();
-        $url = new moodle_url('/course/view.php', ['id' => $course->id]);
+        $url = new \core\url('/course/view.php', ['id' => $course->id]);
 
         $sr = null;
         if (array_key_exists('sr', $options)) {
@@ -481,7 +482,7 @@ class format_onetopic extends core_courseformat\base {
             $selectedsection = optional_param('section', null, PARAM_INT);
             if (
                 (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
-                $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)
+                $PAGE->url->compare(new \core\url('/course/view.php'), URL_MATCH_BASE)
             ) {
                 if ($selectedsection !== null) {
                     $navigation->includesectionnum = $selectedsection;
