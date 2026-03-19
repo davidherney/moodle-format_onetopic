@@ -66,7 +66,10 @@ class controlmenu extends controlmenu_format_topics {
 
         $movecontrols = [];
         if ($section->section && !$isstealth && has_capability('moodle/course:movesections', $coursecontext, $USER)) {
-            $horizontal = !$course->hidetabsbar && $course->tabsview != \format_onetopic::TABSVIEW_VERTICAL;
+            $horizontal = !$course->hidetabsbar && (
+                $course->tabsview != \format_onetopic::TABSVIEW_VERTICAL &&
+                $course->tabsview != \format_onetopic::TABSVIEW_VERTICALALL
+            );
             $rtl = right_to_left();
 
             // Legacy move up and down links.
