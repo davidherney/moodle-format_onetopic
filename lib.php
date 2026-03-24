@@ -420,35 +420,49 @@ class format_onetopic extends core_courseformat\base {
     /**
      * The URL to use for the specified course (with section).
      *
-     * @param int|stdClass $section Section object from database or just field course_sections.section
+     * @param section_info|stdClass|int|null $section Section object from database or just field course_sections.section
      *     if omitted the course view page is returned
-     * @param array $options options for view URL. At the moment core uses:
-     *     'navigation' (bool) if true and section has no separate page, the function returns null
+     * @param array $options options for view URL. At the moment we use:
      *     'sr' (int) used by multipage formats to specify to which section to return
+     *     'permalink' (bool) if true, URL uses section IDs instead of section numbers
+     *     'anchortotabstree' (bool) if true, URL contains anchor for the tabs
      * @return null|\core\url
      */
-    public function get_view_url($section, $options = []) {
+    public function get_view_url($section, $options = []): \core\url {
 
         $course = $this->get_course();
-        $url = new \core\url('/course/view.php', ['id' => $course->id]);
+        $section = (is_null($section) || $section instanceof section_info) ?
+                    $section
+                    : $this->get_section($section, IGNORE_MISSING);
+        $permalink = $options['permalink'] ?? false;
 
-        $sr = null;
         if (array_key_exists('sr', $options)) {
-            $sr = $options['sr'];
-        }
-        if (is_object($section)) {
-            $sectionno = $section->section;
+            $pagesection = $this->get_section($options['sr'], IGNORE_MISSING);
         } else {
-            $sectionno = $section;
-        }
-        if ($sectionno !== null) {
-            if ($sr !== null) {
-                if ($sr) {
-                    $sectionno = $sr;
-                }
+            $pagesection = $section;
+            if ($pagesection && $pagesection->get_component_instance() && $pagesection->displaymode != 'summary') {
+                $pagesection = $pagesection->get_component_instance()->get_parent_section();
             }
-            $url->param('section', $sectionno);
         }
+
+        $url = new \core\url('/course/view.php', ['id' => $course->id]);
+        if ($pagesection) {
+            if ($permalink) {
+                $url->param('sectionid', $pagesection->id);
+            } else {
+                $url->param('section', $pagesection->section);
+            }
+        }
+        if ($section && $pagesection?->id != $section->id) {
+            if ($permalink) {
+                $url->set_anchor("sectionid-{$section->id}-title");
+            } else {
+                $url->set_anchor("section-{$section->section}");
+            }
+        } else if ($options['anchortotabstree'] ?? false) {
+            $url->set_anchor('tabs-tree-start');
+        }
+
         return $url;
     }
 
