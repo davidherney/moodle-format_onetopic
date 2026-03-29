@@ -57,8 +57,6 @@ class sectionselector extends sectionselector_base {
 
         $anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
 
-        $anchor = $anchortotabstree ? '#tabs-tree-start' : '';
-
         // Add the section selector.
         $sectionmenu = [];
         $section = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
@@ -68,9 +66,9 @@ class sectionselector extends sectionselector_base {
             $formatoptions = course_get_format($course)->get_format_options($thissection);
             $prefix = is_array($formatoptions) && $formatoptions['level'] > 0 ? '&nbsp;&nbsp;&nbsp;&nbsp;' : '';
 
-            $url = course_get_url($course, $section);
+            $url = course_get_url($course, $section, ['anchortotabstree' => $anchortotabstree]);
             if ($thissection->uservisible && $url) {
-                $sectionmenu[$url->out(false) . $anchor] = $prefix . get_section_name($course, $section);
+                $sectionmenu[$url->out(false)] = $prefix . get_section_name($course, $section);
             }
             $section++;
         }

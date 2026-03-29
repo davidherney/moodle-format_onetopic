@@ -37,6 +37,7 @@ $aschild = optional_param('aschild', 0, PARAM_BOOL);               // It is crea
 
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $courseformatoptions = course_get_format($course)->get_format_options();
+$anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
 
 $PAGE->set_url('/course/format/onetopic/changenumsections.php', ['courseid' => $courseid]);
 // Authorisation checks.
@@ -64,7 +65,7 @@ if ($desirednumsections > $maxsections) {
     $numsections = 0;
 
     if (!$returnurl) {
-        $returnurl = course_get_url($course);
+        $returnurl = course_get_url($course, null, ['anchortotabstree' => $anchortotabstree]);
     }
 }
 
@@ -85,7 +86,7 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
             'numsections' => $courseformatoptions['numsections'], ]);
     }
     if (!$returnurl) {
-        $returnurl = course_get_url($course);
+        $returnurl = course_get_url($course, null, ['anchortotabstree' => $anchortotabstree]);
     }
 } else if (course_get_format($course)->uses_sections() && $insertsection !== null) {
     if ($insertsection) {
@@ -105,16 +106,13 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
     if (!$returnurl) {
         $returnurl = course_get_url(
             $course,
-            $sections[0]->section,
-            ($sectionreturn !== null) ? ['sr' => $sectionreturn] : []
+            $sections[0],
+            array_merge(
+                ($sectionreturn !== null) ? ['sr' => $sectionreturn] : [],
+                ['anchortotabstree' => $anchortotabstree]
+            )
         );
     }
-}
-
-$anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
-
-if ($anchortotabstree) {
-    $returnurl->set_anchor('tabs-tree-start');
 }
 
 // Redirect to where we were..
