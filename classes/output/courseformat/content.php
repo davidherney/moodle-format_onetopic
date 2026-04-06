@@ -26,7 +26,7 @@ namespace format_onetopic\output\courseformat;
 
 use core_courseformat\output\local\content as content_base;
 use course_modinfo;
-use \core\output\renderer_base;
+use core\output\renderer_base;
 
 /**
  * Base class to render a course content.

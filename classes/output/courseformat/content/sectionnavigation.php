@@ -26,7 +26,7 @@ namespace format_onetopic\output\courseformat\content;
 
 use context_course;
 use core_courseformat\output\local\content\sectionnavigation as sectionnavigation_base;
-use \core\output\renderer_base;
+use core\output\renderer_base;
 use stdClass;
 
 /**

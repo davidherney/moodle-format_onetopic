@@ -25,7 +25,7 @@
  namespace format_onetopic\output\courseformat\content;
 
 use core_courseformat\output\local\content\sectionselector as sectionselector_base;
-use \core\output\renderer_base;
+use core\output\renderer_base;
 use stdClass;
 use url_select;
 

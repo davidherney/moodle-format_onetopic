@@ -25,7 +25,7 @@
 namespace format_onetopic\output\courseformat\content\section;
 
 use core_courseformat\output\local\content\section\cmlist as cmlist_base;
-use \core\output\renderer_base;
+use core\output\renderer_base;
 use stdClass;
 
 /**

@@ -25,8 +25,8 @@ use format_onetopic\local\hooks\output\before_http_headers;
  * @author    Jonathan Archer <jonathanarcher@catalyst-au.net>
  * @copyright Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers    \format_onetopic\local\hooks\output\before_http_headers::get_tabstyles_revision
  */
+#[\PHPUnit\Framework\Attributes\CoversMethod(before_http_headers::class, 'get_tabstyles_revision')]
 final class styles_caching_test extends \advanced_testcase {
     /**
      * Test revision is '0' when no tab styles configured.
