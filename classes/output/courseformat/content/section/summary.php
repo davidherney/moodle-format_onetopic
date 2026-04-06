@@ -25,6 +25,7 @@
 namespace format_onetopic\output\courseformat\content\section;
 
 use context_course;
+use core\output\renderer_base;
 use core_courseformat\base as course_format;
 use core_courseformat\output\local\courseformat_named_templatable;
 use core_courseformat\output\local\content\cm as cm_base;
@@ -48,7 +49,7 @@ class summary extends summary_base {
     /** @var section_info the course section class */
     protected $section;
 
-    /** @var \renderer_base the renderer output class */
+    /** @var renderer_base the renderer output class */
     private $output;
 
     /** @var string Text to search */
@@ -77,7 +78,7 @@ class summary extends summary_base {
      * @param renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output): stdClass {
+    public function export_for_template(renderer_base $output): stdClass {
 
         $section = $this->section;
         $this->output = $output;

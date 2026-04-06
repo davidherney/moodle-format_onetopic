@@ -24,6 +24,7 @@
 
 namespace format_onetopic\output\courseformat\content;
 
+use core\output\renderer_base;
 use core_courseformat\base as course_format;
 use core_courseformat\output\local\content\section as section_base;
 use stdClass;
@@ -47,10 +48,10 @@ class section extends section_base {
     /**
      * Export this data so it can be used as the context for a mustache template.
      *
-     * @param \renderer_base $output typically, the renderer that's calling this function
+     * @param renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output): stdClass {
+    public function export_for_template(renderer_base $output): stdClass {
         global $PAGE;
 
         $format = $this->format;

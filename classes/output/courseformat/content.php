@@ -124,11 +124,10 @@ class content extends content_base {
     /**
      * Export sections array data.
      *
-     * @param \renderer_base $output typically, the renderer that's calling this function
+     * @param renderer_base $output typically, the renderer that's calling this function
      * @return array data context for a mustache template
      */
-    protected function export_sections(\renderer_base $output): array {
-
+    protected function export_sections(renderer_base $output): array {
         $format = $this->format;
         $course = $format->get_course();
         $modinfo = $this->format->get_modinfo();

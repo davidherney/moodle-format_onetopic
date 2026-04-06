@@ -1048,7 +1048,7 @@ class format_onetopic extends core_courseformat\base {
      *
      * See {@see core_courseformat\base::course_header()} for usage
      *
-     * @return null|renderable null for no output or object with data for plugin renderer
+     * @return null|\core\output\renderable null for no output or object with data for plugin renderer
      */
     public function course_content_header() {
         if ($this->printable) {
@@ -1063,7 +1063,7 @@ class format_onetopic extends core_courseformat\base {
      *
      * See course_format::course_header() for usage
      *
-     * @return null|renderable null for no output or object with data for plugin renderer
+     * @return null|\core\output\renderable null for no output or object with data for plugin renderer
      */
     public function course_content_footer() {
         if ($this->printable) {
