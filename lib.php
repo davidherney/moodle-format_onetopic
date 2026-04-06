@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/course/format/lib.php');
 
 use core\output\inplace_editable;
+use \core\lang_string;
 
 /**
  * Main class for the Onetopic course format
@@ -66,6 +67,9 @@ class format_onetopic extends core_courseformat\base {
 
     /** @var int Embedded course index */
     public const TABSVIEW_COURSEINDEX = 3;
+
+    /** @var int Vertical all view */
+    public const TABSVIEW_VERTICALALL = 4;
 
     /** @var int Only if theme not support "usescourseindex" */
     public const SECTIONSNAVIGATION_SUPPORT = 1;
@@ -293,15 +297,17 @@ class format_onetopic extends core_courseformat\base {
      * @return bool
      */
     public function uses_course_index() {
+        if ($this->show_editor()) {
+            return true;
+        }
 
         $course = $this->get_course();
 
-        if ($course->tabsview == self::TABSVIEW_COURSEINDEX) {
-            return false;
-        }
-
-        if ($this->show_editor()) {
-            return true;
+        if (in_array($course->tabsview, [self::TABSVIEW_COURSEINDEX, self::TABSVIEW_VERTICALALL])) {
+            global $PAGE;
+            if ($PAGE->pagetype == 'course-view-onetopic') {
+                return false;
+            }
         }
 
         // The 2 value is Use the site configuration.
@@ -419,12 +425,12 @@ class format_onetopic extends core_courseformat\base {
      * @param array $options options for view URL. At the moment core uses:
      *     'navigation' (bool) if true and section has no separate page, the function returns null
      *     'sr' (int) used by multipage formats to specify to which section to return
-     * @return null|moodle_url
+     * @return null|\core\url
      */
     public function get_view_url($section, $options = []) {
 
         $course = $this->get_course();
-        $url = new moodle_url('/course/view.php', ['id' => $course->id]);
+        $url = new \core\url('/course/view.php', ['id' => $course->id]);
 
         $sr = null;
         if (array_key_exists('sr', $options)) {
@@ -504,7 +510,7 @@ class format_onetopic extends core_courseformat\base {
             $selectedsection = optional_param('section', null, PARAM_INT);
             if (
                 (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
-                $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)
+                $PAGE->url->compare(new \core\url('/course/view.php'), URL_MATCH_BASE)
             ) {
                 if ($selectedsection !== null) {
                     $navigation->includesectionnum = $selectedsection;
@@ -686,6 +692,7 @@ class format_onetopic extends core_courseformat\base {
                         [
                             self::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
                             self::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
+                            self::TABSVIEW_VERTICALALL => new lang_string('tabsview_verticalall', 'format_onetopic'),
                             self::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
                         ],
                     ],

@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use \core\lang_string;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/course/format/onetopic/lib.php');
@@ -36,7 +38,7 @@ if ($ADMIN->fulltree) {
         )
     );
 
-    $url = new moodle_url('/course/format/onetopic/migratestyles.php');
+    $url = new \core\url('/course/format/onetopic/migratestyles.php');
     $help = get_string('useoldstylescontrol_help', 'format_onetopic') .
             '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic', $url) . '</strong> ';
     $settings->add(
@@ -112,6 +114,7 @@ if ($ADMIN->fulltree) {
     $options = [
         \format_onetopic::TABSVIEW_DEFAULT => new lang_string('tabsview_default', 'format_onetopic'),
         \format_onetopic::TABSVIEW_VERTICAL => new lang_string('tabsview_vertical', 'format_onetopic'),
+        \format_onetopic::TABSVIEW_VERTICALALL => new lang_string('tabsview_verticalall', 'format_onetopic'),
         \format_onetopic::TABSVIEW_ONELINE => new lang_string('tabsview_oneline', 'format_onetopic'),
     ];
     $settings->add(

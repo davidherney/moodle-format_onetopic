@@ -1,6 +1,6 @@
 # COURSE FORMAT Onetopic
 
-Package tested in: moodle 5.0+.
+Package tested in: moodle 5.1+.
 
 ## QUICK INSTALL
 Download zip package, extract the onetopic folder and upload this folder into course/format/.
@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2026040500:
+* Compatibility with moodle 5.1
+
 ### 2025021903:
 * New feature: Subsection display mode.
 
@@ -27,6 +30,11 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ### 2025021900:
 * Compatibility with moodle 5.0
+
+### 2024050909:
+* New responsive tab display: switch to collapsed menu
+* The icon in the tabs with children was hidden. It may be removed in the future.
+* New tabs view: Vertically including childs
 
 ### 2024050906:
 * Option to remove icon in tab style editor.

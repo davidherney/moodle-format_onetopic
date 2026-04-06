@@ -52,6 +52,11 @@
           </div>
         {{/availablemessage}}
       </a>
+      {{#hassubtabs}}
+        {{#haschilds}}
+          {{>format_onetopic/courseformat/tabsubtree}}
+        {{/haschilds}}
+      {{/hassubtabs}}
     </li>
   {{/tabs}}
 </ul>

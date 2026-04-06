@@ -190,9 +190,11 @@ $string['tabsview_courseindex'] = 'Embedded course index';
 $string['tabsview_default'] = 'By default';
 $string['tabsview_help'] = 'By default: is the traditional view.<br />
 Vertically: show tabs in vertical direction. Tabs on the left and content on the right.<br />
+Vertically including childs: show tabs in vertical direction, including the child tabs. Tabs on the left and content on the right.<br />
 One single line: all tabs are displayed in a single line with horizontal scroll. Useful if too many tabs are used.';
 $string['tabsview_oneline'] = 'Only one line';
 $string['tabsview_vertical'] = 'Vertically';
+$string['tabsview_verticalall'] = 'Vertically including childs';
 $string['templatetopic'] = 'Use topic summary as template';
 $string['templatetopic_help'] = 'This option is used in order to use the summary topic as a template. If it is used as template, you can include the resources in the content, not only as tradicional moodle\'s lists. <br />In order to include a resource, write the resource name between double brackets, for example: [[News forum]]. This functionality is similar to activity name filter, however, it is different because the user can chose if included the resource icon and decide than activities are be included.';
 $string['templatetopic_icons'] = 'Show icon in resource links in summary';
@@ -200,6 +202,8 @@ $string['templatetopic_icons_help'] = 'This option defines if the icons are disp
 $string['templetetopic_list'] = 'Yes, use the summary as template, list the resources that are not referenced';
 $string['templetetopic_not'] = 'No, display as default';
 $string['templetetopic_single'] = 'Yes, use the summary as template';
+$string['togglemenu'] = 'Toggle menu';
+$string['topicslabel'] = 'Topics';
 $string['usecourseindexsite'] = 'Use the default site value';
 $string['useoldstylescontrol'] = 'Use legacy styles control';
 $string['useoldstylescontrol_help'] = 'Use legacy style controls. This option is only available for compatibility with older versions of the plugin and will be removed in the future in favor of using only the new style editor.';

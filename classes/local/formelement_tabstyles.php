@@ -44,7 +44,6 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
      * @param mixed $attributes Either a typical HTML attribute string or an associative array.
      */
     public function __construct($name = null, $label = null, $attributes = null) {
-
         parent::__construct($name, $label, $attributes);
 
         // The type is used to determine the template to use.
@@ -211,7 +210,6 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
      */
     // @codingStandardsIgnoreLine moodle.NamingConventions.ValidFunctionName.LowercaseMethod
     public function validateSubmitValue($value) {
-
         if (empty($value)) {
             return;
         }

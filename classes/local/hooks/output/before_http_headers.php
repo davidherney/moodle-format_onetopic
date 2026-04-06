@@ -40,7 +40,7 @@ class before_http_headers {
             }
 
             $revision = self::get_tabstyles_revision();
-            $PAGE->requires->css(new \moodle_url('/course/format/onetopic/styles.php', [
+            $PAGE->requires->css(new \core\url('/course/format/onetopic/styles.php', [
                 'revision' => $revision,
             ]));
         }

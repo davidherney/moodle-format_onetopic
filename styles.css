@@ -1,4 +1,9 @@
 /** Styles included in topics course format */
+.format-onetopic {
+    --primary: var(--bs-primary, #007bff);
+    --secondary: var(--bs-secondary, #6c757d);
+    --white: var(--bs-white, #fff);
+}
 
 .format-onetopic ul.onetopic {
     padding: 0;
@@ -15,11 +20,11 @@
     padding-right: 1.3rem;
 }
 
-.format-onetopic ul.nav-tabs.format_onetopic-tabs li.marker a {
+.format-onetopic ul.nav-tabs.format_onetopic-tabs li.marker > a {
     font-weight: bold;
 }
 
-.format-onetopic ul.nav-tabs.format_onetopic-tabs li.dimmed a {
+.format-onetopic ul.nav-tabs.format_onetopic-tabs li.dimmed > a {
     color: #999;
     opacity: 0.5;
 }
@@ -37,7 +42,6 @@
 }
 
 .format-onetopic .onetopic-tab-body {
-    padding-top: 10px;
     padding-bottom: 10px;
 }
 
@@ -72,8 +76,10 @@
 
 /* Its a subtabs bar */
 .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
+    padding-top: 10px;
     padding-left: 20px;
 }
+
 /* End Its a subtabs bar */
 
 .format-onetopic .content .summarytext .iconwithhelp {
@@ -86,12 +92,15 @@
 
 .format-onetopic .verticaltabs.hastopictabs {
     display: flex;
+    align-items: flex-start;
 }
 
 .format-onetopic .verticaltabs > .tabs-wrapper {
     width: 250px;
-    border-right: 1px solid #dee2e6;
     border-bottom: none;
+    position: sticky;
+    top: calc(var(--navbar-height, 60px) + 1px);
+    z-index: 3;
 }
 
 .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs {
@@ -106,10 +115,19 @@
 
 .format-onetopic .verticaltabs > .tabs-wrapper .nav-item .nav-link {
     border-radius: 0.5rem 0 0 0.5rem;
+    border-right: 1px solid #dee2e6;
+}
+
+.format-onetopic .tabs-wrapper .format_onetopic-tabs .nav-link > i.icon:not(.fa-plus) {
+    display: none;
 }
 
 .format-onetopic .verticaltabs .onetopic-tab-body {
     width: calc(100% - 250px);
+}
+
+.format-onetopic .verticaltabs .onetopic-tab-body .format_onetopic-tabs {
+    border-top: 1px solid #dee2e6;
 }
 
 .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-link:hover,
@@ -118,6 +136,33 @@
 .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-item.show .nav-link {
     border-color: #dee2e6 #fff #dee2e6 #dee2e6;
     margin-right: -1px;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link {
+    background-color: var(--primary);
+    color: var(--white, #fff);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link.active,
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link:active,
+.format-onetopic .verticalalltabs .format_onetopic-tabs > .nav-item > .nav-link:hover {
+    border: 1px solid transparent;
+    opacity: 0.9;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-subtabs {
+    margin-left: 10px;
+    margin-right: 3px;
+}
+
+.format-onetopic .verticalalltabs .format_onetopic-subtabs .subtopic {
+    font-size: 100%;
+}
+
+.format-onetopic .verticalalltabs .course-section {
+    margin-top: 0;
 }
 
 .format-onetopic .onetopic-subtabs_body {
@@ -524,20 +569,174 @@
     }
 }
 
+@media (min-width: 601px) {
+    .format-onetopic .verticaltabs .onetopic-tab-body .format_onetopic-tabs {
+        position: sticky;
+        top: calc(var(--navbar-height, 60px) + 1px);
+        z-index: 2;
+        background-color: var(--white, #fff);
+        outline: 5px solid var(--white, #fff);
+    }
+}
+
+/* Responsive menu using "Radio Hack" */
+.format-onetopic .tabs-menu-toggle,
+.format-onetopic .tabs-menu-overlay {
+    display: none;
+}
+
 @media (max-width: 600px) {
+    .format-onetopic .tabs-wrapper {
+        position: sticky;
+        top: calc(var(--navbar-height, 60px) + 2px);
+        z-index: 3;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -0.4rem;
+        margin-right: -0.4rem;
+    }
+
+    .format-onetopic .tabs-menu-overlay {
+        display: flex;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .format-onetopic .tabs-menu-expand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        border: 1px solid #dee2e6;
+        border-radius: 50% 0;
+        margin-bottom: 2px;
+        background-color: #f8f9fa;
+        font-size: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .format-onetopic .tabs-menu-expand i {
+        margin: 0;
+    }
+
+    .format-onetopic .tabs-menu-expand-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.1em;
+        padding: 5px;
+        margin: 0;
+    }
+
+    .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs,
+    .format-onetopic .tabs-wrapper .nav-tabs {
+        display: none;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .format-onetopic .tabs-menu-toggle:checked ~ .nav-tabs {
+        display: flex;
+        flex-direction: column;
+        white-space: normal;
+        overflow: auto;
+        position: absolute;
+        top: 45px;
+        left: 0;
+        right: 0;
+        background-color: var(--secondary, #6c757d);
+        box-shadow: 5px 5px 5px #aaa;
+        padding: 0;
+    }
+
+    .format-onetopic .tabs-menu-toggle:checked ~ .tabs-menu-overlay .tabs-menu-expand {
+        transform: rotate(180deg);
+    }
+
+    .format-onetopic .tabs-menu-toggle:checked ~ .nav-tabs .nav-link {
+        width: 100%;
+        max-width: none;
+        border-radius: 0.5rem;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .format-onetopic .tabs-menu-toggle:checked ~ .nav-tabs .format_onetopic-subtabs {
+        display: block;
+    }
+
+    .format-onetopic .verticaltabs {
+        display: block;
+    }
+
     .format-onetopic .verticaltabs.hastopictabs {
         display: block;
     }
 
+    .format-onetopic .onetopic-tab-body {
+        padding-top: 0;
+    }
+
     .format-onetopic .verticaltabs .onetopic-tab-body {
         width: auto;
+        padding-right: 0;
+        border-top: none;
     }
 
     .format-onetopic .verticaltabs > .tabs-wrapper {
         width: auto;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .format-onetopic .verticaltabs > .tabs-wrapper .nav-tabs .nav-link {
+        border: 1px solid;
+        max-width: unset;
+    }
+
+    .format-onetopic .verticalalltabs .format_onetopic-subtabs {
+        margin: 0;
     }
 
     .format-onetopic .course-content .section-navigation {
         flex-direction: column;
+    }
+
+    .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
+        position: sticky;
+        top: calc(var(--navbar-height, 60px) + 51px);
+        z-index: 2;
+        background-color: var(--bglight, #e9ecef);
+        padding: 5px;
+        max-height: 150px;
+        overflow: auto;
+        margin-left: -0.4rem;
+        margin-right: -0.4rem;
+    }
+
+    .format-onetopic .onetopic-tab-body .format_onetopic-tabs .nav-tabs:not(.more-nav) .nav-item {
+        flex: unset;
+        margin-right: 2px;
+    }
+
+    .format-onetopic .tabs-wrapper .nav-link {
+        text-align: left;
+        border-radius: 5px;
+    }
+
+    .format-onetopic .onetopic-tab-body .format_onetopic-tabs .nav-link {
+        border: 1px solid var(--secondary, #6c757d);
+        padding: 5px 10px;
+        max-width: 100%;
+    }
+
+    .format-onetopic .verticaltabs > .tabs-wrapper,
+    .format-onetopic .tabs-wrapper {
+        padding: 5px;
+        border-radius: 10px;
+        background-color: var(--secondary, #6c757d);
     }
 }

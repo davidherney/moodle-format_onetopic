@@ -25,10 +25,8 @@
 namespace format_onetopic\output\courseformat;
 
 use core_courseformat\output\local\content as content_base;
-use core\output\named_templatable;
-use core_courseformat\base as course_format;
 use course_modinfo;
-use renderable;
+use \core\output\renderer_base;
 
 /**
  * Base class to render a course content.
@@ -53,17 +51,17 @@ class content extends content_base {
      * @param renderer_base $renderer typically, the renderer that's calling this function
      * @return string format template name
      */
-    public function get_template_name(\renderer_base $renderer): string {
+    public function get_template_name(renderer_base $renderer): string {
         return 'format_onetopic/local/content';
     }
 
     /**
      * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
      *
-     * @param \renderer_base $output typically, the renderer that's calling this function
+     * @param renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output) {
+    public function export_for_template(renderer_base $output) {
         global $PAGE;
         $format = $this->format;
         $course = $format->get_course();
@@ -146,7 +144,12 @@ class content extends content_base {
             // The course/view.php check the section existence but the output can be called
             // from other parts so we need to check it.
             if (!$thissection) {
-                throw new \moodle_exception('unknowncoursesection', 'error', course_get_url($course), s($course->fullname));
+                throw new \core\exception\moodle_exception(
+                    'unknowncoursesection',
+                    'error',
+                    course_get_url($course),
+                    s($course->fullname)
+                );
             }
 
             $section = new $this->sectionclass($format, $thissection);

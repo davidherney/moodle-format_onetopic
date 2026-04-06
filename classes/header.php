@@ -35,7 +35,7 @@ use course_modinfo;
  * @copyright 2016 David Herney - https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class header implements \renderable, \templatable {
+class header implements \core\output\renderable, \core\output\templatable {
     /**
      * @var \format_onetopic
      */
@@ -53,10 +53,10 @@ class header implements \renderable, \templatable {
     /**
      * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
      *
-     * @param \renderer_base $output typically, the renderer that's calling this function
+     * @param \core\output\renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output) {
+    public function export_for_template(\core\output\renderer_base $output) {
         global $PAGE, $CFG, $OUTPUT;
 
         $format = $this->format;
@@ -69,6 +69,7 @@ class header implements \renderable, \templatable {
         $secondtabslist = null;
         $tabscssstyles = '';
         $activetab = null;
+
         if (
             $course->tabsview != \format_onetopic::TABSVIEW_COURSEINDEX &&
             ($format->show_editor() || !$course->hidetabsbar)
@@ -84,6 +85,9 @@ class header implements \renderable, \templatable {
             case \format_onetopic::TABSVIEW_VERTICAL:
             case \format_onetopic::TABSVIEW_COURSEINDEX:
                 $tabsview = 'verticaltabs';
+                break;
+            case \format_onetopic::TABSVIEW_VERTICALALL:
+                $tabsview = 'verticaltabs verticalalltabs';
                 break;
             case \format_onetopic::TABSVIEW_ONELINE:
                 $tabsview = 'onelinetabs';
@@ -102,11 +106,29 @@ class header implements \renderable, \templatable {
         $format->hastopictabs = count($tabslist) > 0;
 
         $courseindex = '';
+        $hassubtabs = false;
         if ($course->tabsview == \format_onetopic::TABSVIEW_COURSEINDEX) {
             $renderer = $format->get_renderer($PAGE);
             $courseindex = $renderer->render_from_template('core_courseformat/local/courseindex/drawer', []);
             $hassecondrow = false;
             $hastopictabs = true;
+        } else if ($course->tabsview == \format_onetopic::TABSVIEW_VERTICALALL) {
+            $hastopictabs = $format->hastopictabs;
+            $hassecondrow = false;
+            $hassubtabs = true;
+
+            foreach ($tabslist as $tab) {
+                if (isset($tab->secondrow) && is_array($tab->secondrow)) {
+                    foreach ($tab->secondrow as $skey => $secondtab) {
+                        if (!$secondtab->id) {
+                            // Remove the index to avoid conflicts with the main tabs.
+                            unset($tab->secondrow[$skey]);
+                        }
+                    }
+
+                    $tab->secondrow = array_values($tab->secondrow);
+                }
+            }
         } else {
             $hastopictabs = $format->hastopictabs;
             $hassecondrow = is_object($secondtabslist) && count($secondtabslist->tabs) > 0;
@@ -155,6 +177,7 @@ class header implements \renderable, \templatable {
             'tabs' => $tabslist,
             'activetab' => $activetab,
             'hassecondrow' => $hassecondrow,
+            'hassubtabs' => $hassubtabs,
             'secondrow' => $secondtabslist,
             'tabsviewclass' => $tabsview,
             'hasformatmsgs' => count(\format_onetopic::$formatmsgs) > 0,
@@ -206,10 +229,10 @@ class header implements \renderable, \templatable {
      * Return an array of tabs to display.
      *
      * @param course_modinfo $modinfo the current course modinfo object
-     * @param renderer_base $output typically, the renderer that's calling this function
+     * @param \core\output\renderer_base $output typically, the renderer that's calling this function
      * @return \format_onetopic\tabs an object with tabs information
      */
-    private function get_tabs(course_modinfo $modinfo, \renderer_base $output): \format_onetopic\tabs {
+    private function get_tabs(course_modinfo $modinfo, \core\output\renderer_base $output): \format_onetopic\tabs {
         global $section;
 
         if ($section && $section > 0) {
@@ -309,8 +332,10 @@ class header implements \renderable, \templatable {
                         $cssparentid = '[data-tabid="' . $thissection->id . '"]';
                         $cssid = '#onetabid-' . $thissection->id . '';
                         $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
+
                         foreach ($orderedtabs as $type => $styles) {
                             $important = false;
+
                             switch ($type) {
                                 case 'active':
                                     $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link.active';
@@ -392,7 +417,7 @@ class header implements \renderable, \templatable {
             }
 
             if ($localsection == 0) {
-                $url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => 0]);
+                $url = new \core\url('/course/view.php', ['id' => $course->id, 'section' => 0]);
             } else {
                 $url = course_get_url($course, $localsection);
             }
@@ -520,7 +545,7 @@ class header implements \renderable, \templatable {
                 if ($showsubtabs && $selectedparent) {
                     // Increase number of sections in child tabs.
                     $paramstotabs['aschild'] = 1;
-                    $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                    $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                     $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
                     $selectedsubtabs->add_child($newtab);
 
@@ -532,7 +557,7 @@ class header implements \renderable, \templatable {
 
                 $paramstotabs['aschild'] = 0;
                 $paramstotabs['insertsection'] = $insertposition;
-                $url = new \moodle_url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+                $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                 $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
                 $tabs->add($newtab);
             }

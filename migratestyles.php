@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use \core\output\html_writer;
+
 require('../../../config.php');
 
 $tomigrate = optional_param('migrate', 0, PARAM_BOOL);
@@ -33,7 +35,7 @@ require_login();
 $context = context_system::instance();
 require_capability('moodle/site:config', $context);
 
-$url = new moodle_url('/course/format/onetopic/migratestyles.php', []);
+$url = new \core\url('/course/format/onetopic/migratestyles.php', []);
 $PAGE->set_url($url);
 $PAGE->set_context($context);
 
@@ -65,11 +67,11 @@ if ($tomigrate) {
     require_sesskey();
     if (optional_param('confirm', 0, PARAM_BOOL) != 1) {
         $params = ['migrate' => 1, 'confirm' => 1, 'sesskey' => sesskey()];
-        $confirmurl = new moodle_url('/course/format/onetopic/migratestyles.php', $params);
+        $confirmurl = new \core\url('/course/format/onetopic/migratestyles.php', $params);
         echo $OUTPUT->confirm(
             get_string('migratestylesconfirm', 'format_onetopic'),
             $confirmurl,
-            new moodle_url('/course/format/onetopic/migratestyles.php')
+            new \core\url('/course/format/onetopic/migratestyles.php')
         );
         echo $OUTPUT->footer();
         exit;
@@ -136,7 +138,7 @@ if ($tomigrate) {
     }
 
     echo $OUTPUT->notification(get_string('migratestylesdone', 'format_onetopic'), 'success');
-    echo $OUTPUT->continue_button(new moodle_url('/course/format/onetopic/migratestyles.php'));
+    echo $OUTPUT->continue_button(new \core\url('/course/format/onetopic/migratestyles.php'));
     echo $OUTPUT->footer();
 }
 
@@ -147,7 +149,7 @@ if (empty($customstyles)) {
 } else {
     $tomigrate = false;
 
-    $table = new html_table();
+    $table = new \core_table\output\html_table();
     $table->head = [
         get_string('course'),
         get_string('section'),
@@ -175,7 +177,7 @@ if (empty($customstyles)) {
 
     $k = 0;
     foreach ($sections as $sectionid => $section) {
-        $sectionlink = new moodle_url('/course/view.php', ['id' => $section->courseid, 'sectionid' => $sectionid]);
+        $sectionlink = new \core\url('/course/view.php', ['id' => $section->courseid, 'sectionid' => $sectionid]);
         $sectionlink = html_writer::link($sectionlink, format_string($section->sectioname), ['target' => '_blank']);
 
         $cssstyles = [];
@@ -211,7 +213,7 @@ if (empty($customstyles)) {
     echo html_writer::start_div('migrate-btnbox');
     if ($tomigrate) {
         $sesskey = sesskey();
-        $migrateurl = new moodle_url('/course/format/onetopic/migratestyles.php', ['migrate' => 1, 'sesskey' => $sesskey]);
+        $migrateurl = new \core\url('/course/format/onetopic/migratestyles.php', ['migrate' => 1, 'sesskey' => $sesskey]);
         echo html_writer::link(
             $migrateurl,
             get_string('migratestylesaction', 'format_onetopic'),
@@ -222,14 +224,14 @@ if (empty($customstyles)) {
     }
 
     if ($onlytochange) {
-        $allstyleslink = new moodle_url('/course/format/onetopic/migratestyles.php', ['limit' => $limit]);
+        $allstyleslink = new \core\url('/course/format/onetopic/migratestyles.php', ['limit' => $limit]);
         echo html_writer::link(
             $allstyleslink,
             get_string('migratestylesall', 'format_onetopic'),
             ['class' => 'btn btn-secondary']
         );
     } else {
-        $onlytochangelink = new moodle_url('/course/format/onetopic/migratestyles.php', ['tochange' => 1, 'limit' => $limit]);
+        $onlytochangelink = new \core\url('/course/format/onetopic/migratestyles.php', ['tochange' => 1, 'limit' => $limit]);
         echo html_writer::link(
             $onlytochangelink,
             get_string('migratestylesonlytochange', 'format_onetopic'),

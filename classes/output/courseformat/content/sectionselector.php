@@ -24,11 +24,8 @@
 
  namespace format_onetopic\output\courseformat\content;
 
-use core\output\named_templatable;
-use core_courseformat\base as course_format;
-use core_courseformat\output\local\courseformat_named_templatable;
 use core_courseformat\output\local\content\sectionselector as sectionselector_base;
-use renderable;
+use \core\output\renderer_base;
 use stdClass;
 use url_select;
 
@@ -46,7 +43,7 @@ class sectionselector extends sectionselector_base {
      * @param renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output): stdClass {
+    public function export_for_template(renderer_base $output): stdClass {
 
         $format = $this->format;
         $course = $format->get_course();

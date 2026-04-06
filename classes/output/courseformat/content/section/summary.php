@@ -242,8 +242,11 @@ class summary extends summary_base {
                 $this->tplstringreplace = $htmlresource;
                 $this->tplstringsearch = $instancename;
 
-                $newsummary = preg_replace_callback("/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tplstringsearch, '/') .
-                    ")(:?))([^\]]*)\]\]/i", [$this, "replace_tag_in_expresion"], $summary);
+                $newsummary = preg_replace_callback(
+                    "/(\[\[)(([<][^>]*>)*)((" . preg_quote($this->tplstringsearch, '/') . ")(:?))([^\]]*)\]\]/i",
+                    [$this, "replace_tag_in_expresion"],
+                    $summary
+                );
 
                 if ($newsummary != $summary) {
                     $this->format->tplcmsused[] = $modnumber;
@@ -267,7 +270,6 @@ class summary extends summary_base {
      * @return array
      */
     public function replace_tag_in_expresion($match) {
-
         $term = $match[0];
         $term = str_replace("[[", '', $term);
         $term = str_replace("]]", '', $term);

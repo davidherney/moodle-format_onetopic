@@ -25,11 +25,8 @@
 namespace format_onetopic\output\courseformat\content;
 
 use context_course;
-use core\output\named_templatable;
-use core_courseformat\base as course_format;
-use core_courseformat\output\local\courseformat_named_templatable;
 use core_courseformat\output\local\content\sectionnavigation as sectionnavigation_base;
-use renderable;
+use \core\output\renderer_base;
 use stdClass;
 
 /**
@@ -49,9 +46,7 @@ class sectionnavigation extends sectionnavigation_base {
      * @param renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output): stdClass {
-        global $USER;
-
+    public function export_for_template(renderer_base $output): stdClass {
         if ($this->data !== null) {
             return $this->data;
         }

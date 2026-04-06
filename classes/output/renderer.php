@@ -110,7 +110,7 @@ class renderer extends section_renderer {
      * @return bool|string
      * @throws \coding_exception
      * @throws \dml_exception
-     * @throws \moodle_exception
+     * @throws \core\exception\moodle_exception
      */
     public function render_delegatedsection($widget) {
         $displaymode = $widget->get_displaymode();
