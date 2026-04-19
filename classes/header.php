@@ -249,6 +249,7 @@ class header implements \core\output\renderable, \core\output\templatable {
         $sections = $modinfo->get_section_info_all();
         $numsections = count($sections);
         $enablecustomstyles = get_config('format_onetopic', 'enablecustomstyles');
+        $anchortotabstree = get_config('format_onetopic', 'anchortotabstree');
 
         // Init custom tabs.
         $localsection = 0;
@@ -416,11 +417,7 @@ class header implements \core\output\renderable, \core\output\templatable {
                 }
             }
 
-            if ($localsection == 0) {
-                $url = new \core\url('/course/view.php', ['id' => $course->id, 'section' => 0]);
-            } else {
-                $url = course_get_url($course, $localsection);
-            }
+            $url = course_get_url($course, $localsection, ['anchortotabstree' => $anchortotabstree]);
 
             $specialclass = 'tab_position_' . $localsection . ' tab_level_' . $level;
             if ($course->marker == $localsection) {
