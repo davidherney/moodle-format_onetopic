@@ -122,13 +122,9 @@ class controlmenu extends controlmenu_format_topics {
 
         // Create the permalink according to the Onetopic format.
         if (array_key_exists("permalink", $parentcontrols)) {
-            $sectionlink = new url(
-                '/course/view.php',
-                [
-                    'id' => $course->id,
-                    'sectionid' => $section->id,
-                ],
-                'tabs-tree-start'
+            $sectionlink = $format->get_view_url(
+                $section,
+                ['permalink' => true, 'anchortotabstree' => true]
             );
 
             $parentcontrols['permalink'] = new link_secondary(

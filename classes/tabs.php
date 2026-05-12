@@ -84,7 +84,7 @@ class tabs {
             }
 
             $newtab = new \stdClass();
-            $newtab->link = $tab->link . ($anchortotabstree ? '#tabs-tree-start' : '');
+            $newtab->link = $tab->link;
             $newtab->title = $tab->title;
             $newtab->text = $tab->content;
             $newtab->active = $tab->selected;
