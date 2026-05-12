@@ -24,13 +24,7 @@
 
 namespace format_onetopic\output\courseformat\content\section;
 
-use core\output\named_templatable;
-use core_courseformat\base as course_format;
-use core_courseformat\output\local\courseformat_named_templatable;
 use core_courseformat\output\local\content\section\cmlist as cmlist_base;
-use moodle_url;
-use renderable;
-use section_info;
 use stdClass;
 
 /**
@@ -68,9 +62,9 @@ class cmlist extends cmlist_base {
             $data->hascms = true;
             $data->showmovehere = true;
             $data->strmovefull = strip_tags(get_string("movefull", "", "'$user->activitycopyname'"));
-            $data->movetosectionurl = new moodle_url('/course/mod.php', ['movetosection' => $section->id, 'sesskey' => sesskey()]);
+            $data->movetosectionurl = new \core\url('/course/mod.php', ['movetosection' => $section->id, 'sesskey' => sesskey()]);
             $data->movingstr = strip_tags(get_string('activityclipboard', '', $user->activitycopyname));
-            $data->cancelcopyurl = new moodle_url('/course/mod.php', ['cancelcopy' => 'true', 'sesskey' => sesskey()]);
+            $data->cancelcopyurl = new \core\url('/course/mod.php', ['cancelcopy' => 'true', 'sesskey' => sesskey()]);
         }
 
         if (empty($modinfo->sections[$section->section])) {
@@ -99,7 +93,7 @@ class cmlist extends cmlist_base {
                 $item = new $this->itemclass($format, $section, $mod, $this->displayoptions);
                 $data->cms[] = (object)[
                     'cmitem' => $item->export_for_template($output),
-                    'moveurl' => new moodle_url('/course/mod.php', ['moveto' => $modnumber, 'sesskey' => sesskey()]),
+                    'moveurl' => new \core\url('/course/mod.php', ['moveto' => $modnumber, 'sesskey' => sesskey()]),
                 ];
             }
         }

@@ -24,11 +24,7 @@
 
  namespace format_onetopic\output\courseformat\content;
 
-use core\output\named_templatable;
-use core_courseformat\base as course_format;
-use core_courseformat\output\local\courseformat_named_templatable;
 use core_courseformat\output\local\content\sectionselector as sectionselector_base;
-use renderable;
 use stdClass;
 use url_select;
 

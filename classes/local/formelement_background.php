@@ -22,6 +22,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\html_writer;
+use core\output\renderer_base;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -48,7 +51,6 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
      * @param mixed $attributes Either a typical HTML attribute string or an associative array.
      */
     public function __construct($name = null, $label = null, $attributes = null) {
-
         parent::__construct($name, $label, $attributes);
 
         // The type is used to determine the template to use.

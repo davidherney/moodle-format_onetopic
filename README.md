@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2025051100:
+* Separate version for compatibility changes from 4.5
+
 ### 2024050909:
 * New responsive tab display: switch to collapsed menu
 * The icon in the tabs with children was hidden. It may be removed in the future.

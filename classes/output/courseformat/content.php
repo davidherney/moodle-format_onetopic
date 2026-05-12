@@ -25,10 +25,7 @@
 namespace format_onetopic\output\courseformat;
 
 use core_courseformat\output\local\content as content_base;
-use core\output\named_templatable;
-use core_courseformat\base as course_format;
 use course_modinfo;
-use renderable;
 
 /**
  * Base class to render a course content.
@@ -146,7 +143,12 @@ class content extends content_base {
             // The course/view.php check the section existence but the output can be called
             // from other parts so we need to check it.
             if (!$thissection) {
-                throw new \moodle_exception('unknowncoursesection', 'error', course_get_url($course), s($course->fullname));
+                throw new \core\exception\moodle_exception(
+                    'unknowncoursesection',
+                    'error',
+                    course_get_url($course),
+                    s($course->fullname)
+                );
             }
 
             $section = new $this->sectionclass($format, $thissection);

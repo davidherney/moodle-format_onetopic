@@ -104,7 +104,7 @@ class controlmenu extends controlmenu_format_topics {
 
         // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
         if (array_key_exists("delete", $parentcontrols)) {
-            $url = new \moodle_url('/course/editsection.php', [
+            $url = new \core\url('/course/editsection.php', [
                 'id' => $section->id,
                 'sr' => $section->section - 1,
                 'delete' => 1,
@@ -115,7 +115,7 @@ class controlmenu extends controlmenu_format_topics {
 
         // Create the permalink according to the Onetopic format.
         if (array_key_exists("permalink", $parentcontrols)) {
-            $sectionlink = new \moodle_url(
+            $sectionlink = new \core\url(
                 '/course/view.php',
                 ['id' => $course->id, 'sectionid' => $section->id],
                 'tabs-tree-start'

@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\lang_string;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/course/format/onetopic/lib.php');
@@ -36,7 +38,7 @@ if ($ADMIN->fulltree) {
         )
     );
 
-    $url = new moodle_url('/course/format/onetopic/migratestyles.php');
+    $url = new \core\url('/course/format/onetopic/migratestyles.php');
     $help = get_string('useoldstylescontrol_help', 'format_onetopic') .
             '<br /><strong>' . get_string('migrationpagehelp', 'format_onetopic', $url) . '</strong> ';
     $settings->add(
@@ -151,6 +153,22 @@ if ($ADMIN->fulltree) {
             get_string('courseindex', 'format_onetopic'),
             get_string('courseindex_help', 'format_onetopic'),
             1,
+            $options
+        )
+    );
+
+    // Subsection default display mode.
+    $options = [
+        \format_onetopic::SUBSECTIONSDISPLAY_LIST => new lang_string('displaymode_list', 'format_onetopic'),
+        \format_onetopic::SUBSECTIONSDISPLAY_SUMMARY => new lang_string('displaymode_summary', 'format_onetopic'),
+        \format_onetopic::SUBSECTIONSDISPLAY_COLLAPSIBLE => new lang_string('displaymode_collapsible', 'format_onetopic'),
+    ];
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaultsubsectionsdisplay',
+            get_string('displaymode', 'format_onetopic'),
+            get_string('displaymode_help', 'format_onetopic'),
+            \format_onetopic::SUBSECTIONSDISPLAY_LIST,
             $options
         )
     );
