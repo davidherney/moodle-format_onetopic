@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2026040501:
+* New defaultsubsectionsdisplay setting in site level.
+
 ### 2026040500:
 * Compatibility with moodle 5.1
 

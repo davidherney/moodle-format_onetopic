@@ -95,6 +95,15 @@ class format_onetopic extends core_courseformat\base {
     /** @var string Scorm modules scope */
     public const SCOPE_SCORM = 'scorm';
 
+    /** @var string Subsection display mode: list */
+    const SUBSECTIONSDISPLAY_LIST = 'list';
+
+    /** @var string Subsection display mode: summary */
+    const SUBSECTIONSDISPLAY_SUMMARY = 'summary';
+
+    /** @var string Subsection display mode: collapsible */
+    const SUBSECTIONSDISPLAY_COLLAPSIBLE = 'collapsible';
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -876,8 +885,9 @@ class format_onetopic extends core_courseformat\base {
         if ($sectionformatoptions === false) {
             $sectionformatoptions = [];
 
+            $mode = get_config('format_onetopic', 'defaultsubsectionsdisplay');
             $sectionformatoptions['displaymode'] = [
-                'default' => 'list',
+                'default' => $mode ?? self::SUBSECTIONSDISPLAY_LIST,
                 'type' => PARAM_TEXT,
             ];
 
@@ -928,16 +938,17 @@ class format_onetopic extends core_courseformat\base {
             $sectionformatoptionsedit = [];
 
             if ($subsection) {
+                $mode = get_config('format_onetopic', 'defaultsubsectionsdisplay');
                 $sectionformatoptionsedit['displaymode'] = [
-                    'default' => 'list',
+                    'default' => $mode ?? self::SUBSECTIONSDISPLAY_LIST,
                     'type' => PARAM_TEXT,
                     'label' => new lang_string('displaymode', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            'list' => new lang_string('displaymode_list', 'format_onetopic'),
-                            'summary' => new lang_string('displaymode_summary', 'format_onetopic'),
-                            'collapsible' => new lang_string('displaymode_collapsible', 'format_onetopic'),
+                            self::SUBSECTIONSDISPLAY_LIST => new lang_string('displaymode_list', 'format_onetopic'),
+                            self::SUBSECTIONSDISPLAY_SUMMARY => new lang_string('displaymode_summary', 'format_onetopic'),
+                            self::SUBSECTIONSDISPLAY_COLLAPSIBLE => new lang_string('displaymode_collapsible', 'format_onetopic'),
                         ],
                     ],
                     'help' => 'displaymode',

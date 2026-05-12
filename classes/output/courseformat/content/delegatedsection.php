@@ -56,6 +56,12 @@ class delegatedsection extends delegatedsection_base {
     public function get_displaymode(): string {
         $options = $this->format->get_format_options($this->section);
 
-        return $options['displaymode'] ?? 'list';
+        if (empty($options['displaymode'])) {
+            $mode = get_config('format_onetopic', 'defaultsubsectionsdisplay');
+        } else {
+            $mode = $options['displaymode'];
+        }
+
+        return $mode ?? \format_onetopic::SUBSECTIONSDISPLAY_LIST;
     }
 }
