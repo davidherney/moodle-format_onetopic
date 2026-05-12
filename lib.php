@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/course/format/lib.php');
 
 use core\output\inplace_editable;
-use \core\lang_string;
+use core\lang_string;
 
 /**
  * Main class for the Onetopic course format
@@ -95,6 +95,15 @@ class format_onetopic extends core_courseformat\base {
     /** @var string Scorm modules scope */
     const SCOPE_SCORM = 'scorm';
 
+    /** @var string Subsection display mode: list */
+    const SUBSECTIONSDISPLAY_LIST = 'list';
+
+    /** @var string Subsection display mode: summary */
+    const SUBSECTIONSDISPLAY_SUMMARY = 'summary';
+
+    /** @var string Subsection display mode: collapsible */
+    const SUBSECTIONSDISPLAY_COLLAPSIBLE = 'collapsible';
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -118,6 +127,9 @@ class format_onetopic extends core_courseformat\base {
 
     /** @var string Current format scope */
     public $currentscope = null;
+
+    /** @var bool If the course has a second row of tabs */
+    public $hassecondrow = false;
 
     /**
      * @var bool If the format is in subsection mode
@@ -290,15 +302,15 @@ class format_onetopic extends core_courseformat\base {
 
         $course = $this->get_course();
 
+        if ($this->show_editor()) {
+            return true;
+        }
+
         if (in_array($course->tabsview, [self::TABSVIEW_COURSEINDEX, self::TABSVIEW_VERTICALALL])) {
             global $PAGE;
             if ($PAGE->pagetype == 'course-view-onetopic') {
                 return false;
             }
-        }
-
-        if ($this->show_editor()) {
-            return true;
         }
 
         // The 2 value is Use the site configuration.
@@ -842,20 +854,16 @@ class format_onetopic extends core_courseformat\base {
      * @return array
      */
     public function section_format_options($foreditform = false) {
-        global $section;
-
         static $sectionformatoptions = false;
-
-        // Diferent format options for subsection activity modules.
-        $subsection = !empty($section->component);
 
         $onetopicconfig = get_config('format_onetopic');
 
         if ($sectionformatoptions === false) {
             $sectionformatoptions = [];
 
+            $mode = get_config('format_onetopic', 'defaultsubsectionsdisplay');
             $sectionformatoptions['displaymode'] = [
-                'default' => 'list',
+                'default' => $mode ?? self::SUBSECTIONSDISPLAY_LIST,
                 'type' => PARAM_TEXT,
             ];
 
@@ -899,19 +907,24 @@ class format_onetopic extends core_courseformat\base {
         }
 
         if ($foreditform) {
+            global $section;
+            // Diferent format options for subsection activity modules.
+            $subsection = !empty($section->component);
+
             $sectionformatoptionsedit = [];
 
             if ($subsection) {
+                $mode = get_config('format_onetopic', 'defaultsubsectionsdisplay');
                 $sectionformatoptionsedit['displaymode'] = [
-                    'default' => 'list',
+                    'default' => $mode ?? self::SUBSECTIONSDISPLAY_LIST,
                     'type' => PARAM_TEXT,
                     'label' => new lang_string('displaymode', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            'list' => new lang_string('displaymode_list', 'format_onetopic'),
-                            'summary' => new lang_string('displaymode_summary', 'format_onetopic'),
-                            'collapsible' => new lang_string('displaymode_collapsible', 'format_onetopic'),
+                            self::SUBSECTIONSDISPLAY_LIST => new lang_string('displaymode_list', 'format_onetopic'),
+                            self::SUBSECTIONSDISPLAY_SUMMARY => new lang_string('displaymode_summary', 'format_onetopic'),
+                            self::SUBSECTIONSDISPLAY_COLLAPSIBLE => new lang_string('displaymode_collapsible', 'format_onetopic'),
                         ],
                     ],
                     'help' => 'displaymode',
@@ -988,7 +1001,7 @@ class format_onetopic extends core_courseformat\base {
                 }
             }
 
-            $sectionformatoptions = $sectionformatoptionsedit;
+            return $sectionformatoptionsedit;
         }
 
         return $sectionformatoptions;

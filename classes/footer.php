@@ -24,8 +24,7 @@
 
 namespace format_onetopic;
 
-use core_courseformat\output\local\content as content_base;
-use course_modinfo;
+use \core\output\renderer_base;
 
 /**
  * Class used to render the footer content in each course page.
@@ -47,8 +46,6 @@ class footer implements \core\output\renderable, \core\output\templatable {
      * @param \format_onetopic $format Course format instance.
      */
     public function __construct(\format_onetopic $format) {
-        global $COURSE;
-
         $this->format = $format;
     }
 
@@ -58,7 +55,7 @@ class footer implements \core\output\renderable, \core\output\templatable {
      * @param renderer_base $output typically, the renderer that's calling this function
      * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output) {
+    public function export_for_template(renderer_base $output) {
 
         $format = $this->format;
         $currentsection = $this->format->get_sectionnum();
@@ -67,6 +64,7 @@ class footer implements \core\output\renderable, \core\output\templatable {
             'uniqid' => $format->uniqid,
             'sectionreturn' => $currentsection ?? 0,
             'hastopictabs' => $format->hastopictabs,
+            'hassecondrow' => $format->hassecondrow,
         ];
 
         return $data;

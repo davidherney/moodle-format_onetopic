@@ -157,6 +157,22 @@ if ($ADMIN->fulltree) {
         )
     );
 
+    // Subsection default display mode.
+    $options = [
+        \format_onetopic::SUBSECTIONSDISPLAY_LIST => new lang_string('displaymode_list', 'format_onetopic'),
+        \format_onetopic::SUBSECTIONSDISPLAY_SUMMARY => new lang_string('displaymode_summary', 'format_onetopic'),
+        \format_onetopic::SUBSECTIONSDISPLAY_COLLAPSIBLE => new lang_string('displaymode_collapsible', 'format_onetopic'),
+    ];
+    $settings->add(
+        new admin_setting_configselect(
+            'format_onetopic/defaultsubsectionsdisplay',
+            get_string('displaymode', 'format_onetopic'),
+            get_string('displaymode_help', 'format_onetopic'),
+            \format_onetopic::SUBSECTIONSDISPLAY_LIST,
+            $options
+        )
+    );
+
     // Styles settings.
     $name = 'format_onetopic/settingsheaderstyles';
     $heading = get_string('settingsheaderstyles', 'format_onetopic');

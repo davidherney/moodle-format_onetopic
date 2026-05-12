@@ -113,7 +113,6 @@ class renderer extends section_renderer {
      * @throws \core\exception\moodle_exception
      */
     public function render_delegatedsection($widget) {
-
         $displaymode = $widget->get_displaymode();
         $template = 'format_onetopic/local/subsectionmodes/';
 
