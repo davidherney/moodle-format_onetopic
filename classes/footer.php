@@ -24,7 +24,7 @@
 
 namespace format_onetopic;
 
-use \core\output\renderer_base;
+use core\output\renderer_base;
 
 /**
  * Class used to render the footer content in each course page.

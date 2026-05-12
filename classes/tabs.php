@@ -23,8 +23,6 @@
  */
 namespace format_onetopic;
 
-use core_reportbuilder\local\aggregation\count;
-
 /**
  * Class containing the tabs information.
  *

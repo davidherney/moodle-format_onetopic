@@ -24,7 +24,6 @@
 
 namespace format_onetopic;
 
-use core_courseformat\output\local\content as content_base;
 use course_modinfo;
 
 /**
