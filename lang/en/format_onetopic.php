@@ -24,6 +24,7 @@
  */
 
 $string['aboutresource'] = 'About the resource';
+$string['appearances'] = 'Custom appearances';
 $string['asbrother'] = 'Same level that the previous tab';
 $string['aschild'] = 'Child of previous tab';
 $string['asprincipal'] = 'Normal, as a first level tab';
@@ -207,6 +208,20 @@ $string['usescourseindex'] = 'Uses course index';
 $string['usescourseindex_help'] = 'Use the <em>course index</em> bar to navigate through the sections and resources';
 $string['usessectionsnavigation'] = 'Uses sections navigation';
 $string['usessectionsnavigation_help'] = 'Show buttons for navigate to next or previous section.';
+$string['customappearance'] = 'Custom appearance';
+$string['customappearance_help'] = 'Custom appearance settings for the section.';
+$string['customappearancebysections'] = 'Custom appearance by sections';
+$string['customappearancebysections_help'] = 'Custom appearance settings for the sections. This is a section level setting, so it will overwrite the default custom appearance settings for the sections that have it configured.';
+$string['customappearancebysubsections'] = 'Custom appearance by subsections';
+$string['customappearancebysubsections_help'] = 'Custom appearance settings for the subsections. This is a subsection level setting, so it will overwrite the default custom appearance settings for the subsections that have it configured.';
+$string['defaultappearance'] = 'None: use the current theme styles';
+$string['defaultsectionsappearance'] = 'Default appearance';
+$string['defaultsectionsappearance_help'] = 'Default appearance settings for the sections. This is a section level setting, so it will be used for the sections that do not have a custom appearance configured.';
+$string['defaultsubsectionsappearance'] = 'Default appearance for subsections';
+$string['defaultsubsectionsappearance_help'] = 'Default appearance settings for the subsections. This is a subsection level setting, so it will be used for the subsections that do not have a custom appearance configured.';
+$string['nocustomappearances'] = 'There are no custom appearances configured yet.';
+$string['customizeappearances'] = 'Customized appearances';
+$string['customizeappearances_help'] = 'You can create new appearances and edit or delete the existing ones. When you create or edit an appearance, you can choose the styles to apply and the scope of the appearance, that is, if it can be applied to sections, subsections, or both.';
 
 // Deprecated since Moodle 4.0.
 $string['disable'] = 'Disable';

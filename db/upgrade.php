@@ -31,5 +31,35 @@
 function xmldb_format_onetopic_upgrade($oldversion) {
     global $CFG, $DB;
 
+    if ($oldversion < 2025051102) {
+        // Define new table format_onetopic_appearances to be created.
+        $table = new xmldb_table('format_onetopic_appearances');
+        // Adding fields to table format_onetopic_appearances.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('uniquecode', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('configdata', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table format_onetopic_appearances.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+        $table->add_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
+
+        // Adding indexes to table format_onetopic_appearances.
+        $table->add_index('uniquecode_appearances', XMLDB_INDEX_UNIQUE, ['uniquecode']);
+
+        // Conditionally launch create table for format_onetopic_appearances.
+        if (!$DB->get_manager()->table_exists($table)) {
+            $DB->get_manager()->create_table($table);
+        }
+
+        // Format savepoint reached.
+        upgrade_plugin_savepoint(true, 2025051102, 'format', 'onetopic');
+    }
+
     return true;
 }

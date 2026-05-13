@@ -24,6 +24,7 @@
  */
 
 $string['aboutresource'] = 'Acerca del recurso';
+$string['appearances'] = 'Apariencias personalizadas';
 $string['asbrother'] = 'El mismo nivel que la pestaña anterior';
 $string['aschild'] = 'Hijo de la pestaña anterior';
 $string['asprincipal'] = 'Normal, como una pestaña de primer nivel';

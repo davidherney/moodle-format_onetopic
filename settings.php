@@ -179,9 +179,60 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_heading($name, $heading, '');
     $settings->add($setting);
 
-    $name = 'format_onetopic/tabstyles';
-    $title = get_string('tabstyles', 'format_onetopic');
-    $description = get_string('tabstyles_help', 'format_onetopic');
-    $setting = new \format_onetopic\tabstyles($name, $title, $description, '');
-    $settings->add($setting);
+    // Sections and Subsection default appearance.
+    $customappearancesections = \format_onetopic\local\appearances::get_availables_appearances(null);
+    $customappearancesubsections = \format_onetopic\local\appearances::get_availables_appearances(null, true);
+
+    $hascustomappearances = false;
+    if (count($customappearancesections) > 0) {
+        $options = ['' => get_string('defaultappearance', 'format_onetopic')] + $customappearancesections;
+        $settings->add(
+            new admin_setting_configselect(
+                'format_onetopic/defaultsectionsappearance',
+                get_string('defaultsectionsappearance', 'format_onetopic'),
+                get_string('defaultsectionsappearance_help', 'format_onetopic'),
+                '',
+                $options
+            )
+        );
+        $hascustomappearances = true;
+    }
+
+    if (count($customappearancesubsections) > 0) {
+        $options = ['' => get_string('defaultappearance', 'format_onetopic')] + $customappearancesubsections;
+        $settings->add(
+            new admin_setting_configselect(
+                'format_onetopic/defaultsubsectionsappearance',
+                get_string('defaultsubsectionsappearance', 'format_onetopic'),
+                get_string('defaultsubsectionsappearance_help', 'format_onetopic'),
+                '',
+                $options
+            )
+        );
+        $hascustomappearances = true;
+    }
+
+    if (!$hascustomappearances) {
+        $settings->add(
+            new admin_setting_description(
+                'format_onetopic/nocustomappearances',
+                '',
+                get_string('nocustomappearances', 'format_onetopic')
+            )
+        );
+    }
+
+    $gotoappearancesurl = new \core\output\action_link(
+        new \core\url('/course/format/onetopic/appearances.php'),
+        get_string('customizeappearances', 'format_onetopic'),
+        null,
+        ['class' => 'btn btn-secondary']
+    );
+    $settings->add(
+        new admin_setting_description(
+            'format_onetopic/customizeappearances',
+            get_string('customizeappearances', 'format_onetopic'),
+            get_string('customizeappearances_help', 'format_onetopic') . '<br>' . $OUTPUT->render($gotoappearancesurl) . '<hr>'
+        )
+    );
 }
