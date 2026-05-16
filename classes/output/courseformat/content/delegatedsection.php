@@ -64,4 +64,27 @@ class delegatedsection extends delegatedsection_base {
 
         return $mode ?? \format_onetopic::SUBSECTIONSDISPLAY_LIST;
     }
+
+    /**
+     * Get the CSS for a specific subsection based on its appearance configuration.
+     *
+     * @return string The CSS string, or empty if no appearance is configured.
+     */
+    public function get_appearance_css(): string {
+        $options = $this->format->get_format_options($this->section);
+
+        if (empty($options['customappearancebysubsections'])) {
+            return '';
+        }
+
+        $styles = \format_onetopic\local\appearances::get_styles_by_uniquecode(
+            $options['customappearancebysubsections']
+        );
+
+        if (!$styles) {
+            return '';
+        }
+
+        return \format_onetopic\local\appearances::generate_subsection_css($styles, $this->section->id);
+    }
 }

@@ -168,17 +168,52 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
             ];
         }
 
+        $expanded = !empty($this->getAttribute('hidetoggle'));
+
+        $tabviews = [
+            [
+                'key' => 'default',
+                'label' => get_string('tabsview_default', 'format_onetopic'),
+                'cssclass' => '',
+                'active' => true,
+            ],
+            [
+                'key' => 'vertical',
+                'label' => get_string('tabsview_vertical', 'format_onetopic'),
+                'cssclass' => 'verticaltabs',
+                'active' => false,
+            ],
+            [
+                'key' => 'oneline',
+                'label' => get_string('tabsview_oneline', 'format_onetopic'),
+                'cssclass' => 'onelinetabs',
+                'active' => false,
+            ],
+            [
+                'key' => 'verticalall',
+                'label' => get_string('tabsview_verticalall', 'format_onetopic'),
+                'cssclass' => 'verticaltabs verticalalltabs',
+                'active' => false,
+                'hassubtabs' => true,
+            ],
+        ];
+
         $context = (object) [
             'id' => $this->getAttribute('id'),
             'name' => $this->getAttribute('name'),
             'value' => $this->getValue(),
             'tabs' => $tabslist,
             'secondrow' => $secondtabslist,
-            'tabsviewclass' => 'verticaltabs',
+            'tabviews' => $tabviews,
             'colorpicker' => $cp->output_html(''),
             'csssizeoptions' => $csssizeoptions,
             'cssunits' => $cssunits,
             'tabiconoptions' => $tabiconoptions,
+            'expanded' => $expanded,
+            'modalid' => 'onetopic-styleswindow',
+            'modaltitle' => get_string('tabstylestitle', 'format_onetopic'),
+            'showtabicon' => true,
+            'showresourcelayout' => true,
         ];
         $element = $OUTPUT->render_from_template('format_onetopic/formelement_tabstyles', $context);
 

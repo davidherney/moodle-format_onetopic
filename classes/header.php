@@ -79,8 +79,32 @@ class header implements \core\output\renderable, \core\output\templatable {
             $tabs = $this->get_tabs($format->get_modinfo(), $output);
             $tabslist = $tabs->get_list();
             $secondtabslist = $tabs->get_secondlist($firstsection ? $currentsection - 1 : $currentsection);
-            $tabscssstyles = $tabs->get_allcssstyles();
+
+            // Course-level appearance CSS (generic selectors, overrides site-level from styles.php).
+            $courseappearancecss = '';
+            if (!empty($course->customappearancesection)) {
+                $coursestyles = \format_onetopic\local\appearances::get_styles_by_uniquecode(
+                    $course->customappearancesection
+                );
+                if ($coursestyles) {
+                    $courseappearancecss .= \format_onetopic\local\appearances::generate_generic_css($coursestyles);
+                }
+            }
+
+            $tabscssstyles = $courseappearancecss . $tabs->get_allcssstyles();
             $activetab = $tabs->get_active();
+        }
+
+        // Course-level subsection appearance CSS (generic selectors).
+        if (!empty($course->customappearancesubsection)) {
+            $coursesubstyles = \format_onetopic\local\appearances::get_styles_by_uniquecode(
+                $course->customappearancesubsection
+            );
+            if ($coursesubstyles) {
+                $tabscssstyles .= \format_onetopic\local\appearances::generate_subsection_generic_css(
+                    $coursesubstyles
+                );
+            }
         }
 
         switch ($course->tabsview) {
@@ -259,7 +283,6 @@ class header implements \core\output\renderable, \core\output\templatable {
         $selectedparent = null;
         $parenttab = null;
         $firstsection = ($course->realcoursedisplay == COURSE_DISPLAY_MULTIPAGE) ? 1 : 0;
-        $precedence = ['default', 'childs', 'childindex', 'active', 'parent', 'highlighted', 'disabled', 'hover'];
 
         while ($localsection < $numsections) {
             $inactivetab = false;
@@ -321,95 +344,28 @@ class header implements \core\output\renderable, \core\output\templatable {
                         $customstyles .= $formatoptions['cssstyles'] . '; ';
                     }
 
+                    // Section-level appearance CSS (by ID selectors, before tabstyles).
+                    if (!empty($formatoptions['customappearancebysections'])) {
+                        $sectionappearancestyles = \format_onetopic\local\appearances::get_styles_by_uniquecode(
+                            $formatoptions['customappearancebysections']
+                        );
+                        if ($sectionappearancestyles) {
+                            $csstabstyles .= \format_onetopic\local\appearances::generate_section_css(
+                                $sectionappearancestyles,
+                                $thissection->id,
+                                $tabicons
+                            );
+                        }
+                    }
+
+                    // Section tabstyles CSS (by ID selectors, after appearance to allow overrides).
                     $tabstyles = !empty($formatoptions['tabstyles']) ? @json_decode($formatoptions['tabstyles']) : null;
                     if (is_object($tabstyles)) {
-                        $orderedtabs = new \stdClass();
-                        foreach ($precedence as $type) {
-                            if (property_exists($tabstyles, $type)) {
-                                $orderedtabs->$type = $tabstyles->$type;
-                            }
-                        }
-
-                        $onecss = '';
-                        $cssparentid = '[data-tabid="' . $thissection->id . '"]';
-                        $cssid = '#onetabid-' . $thissection->id . '';
-                        $withunits = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
-
-                        foreach ($orderedtabs as $type => $styles) {
-                            $important = false;
-
-                            switch ($type) {
-                                case 'active':
-                                    $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link.active';
-                                    $important = true;
-                                    break;
-                                case 'parent':
-                                    $onecss .= '#tabs-tree-start .nav-item.haschilds' . $cssid . ' a.nav-link';
-                                    break;
-                                case 'highlighted':
-                                    $onecss .= '#tabs-tree-start .nav-item.marker' . $cssid . ' a.nav-link';
-                                    $important = true;
-                                    break;
-                                case 'disabled':
-                                    $onecss .= '#tabs-tree-start .nav-item.disabled' . $cssid . ' a.nav-link';
-                                    $important = true;
-                                    break;
-                                case 'hover':
-                                    $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link:hover,';
-                                    $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid
-                                                . ' .nav-item.subtopic a.nav-link:hover';
-                                    break;
-                                case 'childs':
-                                    $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid
-                                                . ' .nav-item.subtopic a.nav-link';
-                                    break;
-                                case 'childindex':
-                                    $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid . ' .nav-tabs' .
-                                                    ' .nav-item.subtopic.tab_initial a.nav-link';
-                                    break;
-                                default:
-                                    $onecss .= '#tabs-tree-start .nav-item' . $cssid . ' a.nav-link,';
-                                    $onecss .= '#tabs-tree-start .onetopic-tab-body' . $cssparentid . ' a.nav-link';
-                            }
-
-                            $onecss .= '{';
-                            $units = [];
-
-                            // Check if exist units for some rules.
-                            foreach ($styles as $key => $value) {
-                                // Check if the key start with the units prefix.
-                                if (strpos($key, 'unit-') === 0) {
-                                    // Remove the prefix.
-                                    $ownerkey = str_replace('unit-', '', $key);
-                                    $units[$ownerkey] = $value;
-                                    unset($styles->$key);
-                                } else if ($key == 'tabicon') {
-                                    $tabicons[$type] = $value;
-                                    unset($styles->$key);
-                                }
-                            }
-
-                            foreach ($styles as $key => $value) {
-                                // If exist a unit for the rule, apply it.
-                                if (isset($units[$key])) {
-                                    $value = $value . $units[$key];
-                                } else if (in_array($key, $withunits)) {
-                                    // If the rule need units, apply px by default.
-                                    $value = $value . 'px';
-                                }
-
-                                if ($key == 'others') {
-                                    $onecss .= $value . ';';
-                                } else {
-                                    $onecss .= $key . ':' . $value . ($important ? '!important' : '') . ';';
-                                }
-                            }
-
-                            $onecss .= '} ';
-                        }
-
-                        // Clean the CSS for html tags.
-                        $csstabstyles .= preg_replace('/<[^>]*>/', '', $onecss);
+                        $csstabstyles .= \format_onetopic\local\appearances::generate_section_css(
+                            $tabstyles,
+                            $thissection->id,
+                            $tabicons
+                        );
                     }
                 }
 

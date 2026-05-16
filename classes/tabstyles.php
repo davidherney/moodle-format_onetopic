@@ -114,6 +114,24 @@ class tabstyles extends \admin_setting_configtextarea {
 
         $secondtabslist = $tabs->get_secondlist();
 
+        $iconsystem = \core\output\icon_system::instance();
+        $iconslist = $iconsystem->get_icon_name_map();
+        $tabiconoptions = [];
+
+        foreach ($iconslist as $key => $value) {
+            $tokens = explode(':', $key);
+
+            if (count($tokens) !== 2) {
+                continue;
+            }
+
+            $tabiconoptions[] = (object)[
+                'style' => $value,
+                'identifier' => $key,
+                'icon' => $iconsystem->render_pix_icon($OUTPUT, new \pix_icon($tokens[1], $key, $tokens[0])),
+            ];
+        }
+
         $default = $this->get_defaultsetting();
         $context = (object) [
             'id' => $this->get_id(),
@@ -125,8 +143,10 @@ class tabstyles extends \admin_setting_configtextarea {
             'colorpicker' => $cp->output_html(''),
             'csssizeoptions' => $csssizeoptions,
             'cssunits' => $cssunits,
+            'tabiconoptions' => $tabiconoptions,
+            'expanded' => true,
         ];
-        $element = $OUTPUT->render_from_template('format_onetopic/setting_tabstyles', $context);
+        $element = $OUTPUT->render_from_template('format_onetopic/formelement_tabstyles', $context);
 
         $PAGE->requires->js_call_amd('format_onetopic/tabstyles', 'init');
 

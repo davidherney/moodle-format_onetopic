@@ -29,36 +29,55 @@
  * @return bool result
  */
 function xmldb_format_onetopic_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $DB;
 
-    if ($oldversion < 2025051102) {
-        // Define new table format_onetopic_appearances to be created.
+    if ($oldversion < 2025051304) {
+        // Ensure table exists (may not have been created if upgrade skipped).
         $table = new xmldb_table('format_onetopic_appearances');
-        // Adding fields to table format_onetopic_appearances.
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('uniquecode', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('configdata', XMLDB_TYPE_TEXT, null, null, null, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-
-        // Adding keys to table format_onetopic_appearances.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
-        $table->add_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
-
-        // Adding indexes to table format_onetopic_appearances.
-        $table->add_index('uniquecode_appearances', XMLDB_INDEX_UNIQUE, ['uniquecode']);
-
-        // Conditionally launch create table for format_onetopic_appearances.
         if (!$DB->get_manager()->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('uniquecode', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('type', XMLDB_TYPE_CHAR, '15', null, XMLDB_NOTNULL, null, 'section');
+            $table->add_field('configdata', XMLDB_TYPE_TEXT, null, null, null, null, null);
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+            // Adding keys to table format_onetopic_appearances.
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+            $table->add_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
+
+            // Adding indexes to table format_onetopic_appearances.
+            $table->add_index('uniquecode_appearances', XMLDB_INDEX_UNIQUE, ['uniquecode']);
             $DB->get_manager()->create_table($table);
         }
 
-        // Format savepoint reached.
-        upgrade_plugin_savepoint(true, 2025051102, 'format', 'onetopic');
+        // Migrate site-level tabstyles to an appearance record.
+        $tabstyles = get_config('format_onetopic', 'tabstyles');
+        if (!empty($tabstyles)) {
+            $now = time();
+            $record = new \stdClass();
+            $record->userid = get_admin()->id;
+            $record->courseid = SITEID;
+            $record->uniquecode = 'site_tabstyles';
+            $record->name = get_string('tabstyles', 'format_onetopic');
+            $record->type = 'section';
+            $record->configdata = json_encode([
+                'styles' => json_decode($tabstyles),
+            ]);
+            $record->timecreated = $now;
+            $record->timemodified = $now;
+
+            if (!$DB->record_exists('format_onetopic_appearances', ['uniquecode' => 'site_tabstyles'])) {
+                $DB->insert_record('format_onetopic_appearances', $record);
+                set_config('defaultsectionsappearance', 'site_tabstyles', 'format_onetopic');
+            }
+        }
+
+        upgrade_plugin_savepoint(true, 2025051304, 'format', 'onetopic');
     }
 
     return true;

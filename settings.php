@@ -180,8 +180,14 @@ if ($ADMIN->fulltree) {
     $settings->add($setting);
 
     // Sections and Subsection default appearance.
-    $customappearancesections = \format_onetopic\local\appearances::get_availables_appearances(null);
-    $customappearancesubsections = \format_onetopic\local\appearances::get_availables_appearances(null, true);
+    static $customappearancesections = null;
+    static $customappearancesubsections = null;
+    if (is_null($customappearancesections)) {
+        $customappearancesections = \format_onetopic\local\appearances::get_availables_appearances(null);
+    }
+    if (is_null($customappearancesubsections)) {
+        $customappearancesubsections = \format_onetopic\local\appearances::get_availables_appearances(null, true);
+    }
 
     $hascustomappearances = false;
     if (count($customappearancesections) > 0) {

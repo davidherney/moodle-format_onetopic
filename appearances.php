@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * TODO describe file appearances
+ * Appearances management page for format_onetopic.
  *
  * @package    format_onetopic
  * @copyright  2026 David Herney @ BambuCo
@@ -23,17 +23,37 @@
  */
 
 require('../../../config.php');
-require_once($CFG->libdir . '/adminlib.php');
+
+use core_reportbuilder\system_report_factory;
+use format_onetopic\reportbuilder\local\systemreports\appearances;
 
 require_login();
-require_capability('moodle/site:config', context_system::instance());
+
+$context = context_system::instance();
+require_capability('format/onetopic:editallappearances', $context);
 
 $PAGE->set_url(new moodle_url('/course/format/onetopic/appearances.php'));
-$PAGE->set_context(context_system::instance());
+$PAGE->set_context($context);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_heading($SITE->fullname);
+$PAGE->set_title(get_string('appearances', 'format_onetopic'));
+
+$PAGE->requires->js_call_amd('format_onetopic/appearances', 'init');
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('appearances', 'format_onetopic'));
+
+// Buttons to create a new appearance.
+$createsectionurl = new moodle_url('/course/format/onetopic/editappearance.php', ['type' => 'section']);
+$createsubsectionurl = new moodle_url('/course/format/onetopic/editappearance.php', ['type' => 'subsection']);
+echo html_writer::div(
+    $OUTPUT->single_button($createsectionurl, get_string('createnewappearance_section', 'format_onetopic'), 'get')
+    . $OUTPUT->single_button($createsubsectionurl, get_string('createnewappearance_subsection', 'format_onetopic'), 'get'),
+    'mb-3 d-flex gap-2'
+);
+
+// Render the system report.
+$report = system_report_factory::create(appearances::class, $context);
+echo $report->output();
 
 echo $OUTPUT->footer();

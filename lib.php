@@ -618,6 +618,9 @@ class format_onetopic extends core_courseformat\base {
             $customappearancesections = format_onetopic\local\appearances::get_availables_appearances($courseid);
             $customappearancesubsections = format_onetopic\local\appearances::get_availables_appearances($courseid, true);
 
+            $customappearancesections = ['' => new lang_string('none')] + $customappearancesections;
+            $customappearancesubsections = ['' => new lang_string('none')] + $customappearancesubsections;
+
             $courseformatoptionsedit = [
                 'hiddensections' => [
                     'label' => new lang_string('hiddensections'),
@@ -847,10 +850,10 @@ class format_onetopic extends core_courseformat\base {
                         $data['usessectionsnavigation'] = $defaultconfig->defaultsectionsnavigation;
                     } else if ($key === 'usescourseindex') {
                         $data['usescourseindex'] = $defaultconfig->courseindex;
-                    } else if ($key === 'customappearancebysections') {
-                        $data['customappearancebysections'] = '';
-                    } else if ($key === 'customappearancebysubsections') {
-                        $data['customappearancebysubsections'] = '';
+                    } else if ($key === 'customappearancesection') {
+                        $data['customappearancesection'] = '';
+                    } else if ($key === 'customappearancesubsection') {
+                        $data['customappearancesubsection'] = '';
                     }
                 }
             }
@@ -972,13 +975,15 @@ class format_onetopic extends core_courseformat\base {
                     'help_component' => 'format_onetopic',
                 ];
 
+                $availableappearances = format_onetopic\local\appearances::get_availables_appearances($courseid, true);
+                $availableappearances = ['' => new lang_string('none')] + $availableappearances;
                 $sectionformatoptionsedit['customappearancebysubsections'] = [
                     'default' => '',
                     'type' => PARAM_TEXT,
                     'label' => get_string('customappearancebysubsections', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => [
-                        format_onetopic\local\appearances::get_availables_appearances($courseid, true),
+                        $availableappearances,
                     ],
                     'help' => 'customappearancebysubsections',
                     'help_component' => 'format_onetopic',
@@ -1053,13 +1058,16 @@ class format_onetopic extends core_courseformat\base {
                     }
                 }
 
+                $availableappearances = format_onetopic\local\appearances::get_availables_appearances($courseid);
+                $availableappearances = ['' => new lang_string('none')] + $availableappearances;
+
                 $sectionformatoptionsedit['customappearancebysections'] = [
                     'default' => '',
                     'type' => PARAM_TEXT,
                     'label' => get_string('customappearancebysections', 'format_onetopic'),
                     'element_type' => 'select',
                     'element_attributes' => [
-                        format_onetopic\local\appearances::get_availables_appearances($courseid),
+                        $availableappearances,
                     ],
                     'help' => 'customappearancebysections',
                     'help_component' => 'format_onetopic',

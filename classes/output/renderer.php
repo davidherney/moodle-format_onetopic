@@ -129,6 +129,15 @@ class renderer extends section_renderer {
 
         $data = $realwidget->export_for_template($this);
 
-        return $this->render_from_template($template, $data);
+        // Section-level subsection appearance CSS (specific selector by section ID).
+        $subsectioncss = $widget->get_appearance_css();
+
+        $output = $this->render_from_template($template, $data);
+
+        if (!empty($subsectioncss)) {
+            $output = '<style type="text/css">' . $subsectioncss . '</style>' . $output;
+        }
+
+        return $output;
     }
 }

@@ -22,6 +22,7 @@
  */
 import $ from 'jquery';
 import ModalFactory from 'core/modal_factory';
+import * as OneLine from 'format_onetopic/oneline';
 
 var $tabstyles = null;
 var $styleswindow = null;
@@ -41,26 +42,28 @@ export const init = () => {
     $styleswindow = $('#onetopic-styleswindow');
 
     // Define the tab icons.
-    $('#onetopic-tabstyles .tpl-tabdefault .tabicon').each(function() {
+    // Use "> a > .tabicon" to target only the direct tab icon, avoiding nested subtab icons
+    // in the "verticalall" view where child tabs are rendered inside the parent <li>.
+    $('#onetopic-tabstyles .tpl-tabdefault > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-default hidden"></span>');
         $tabicon.append('<span class="tabicon-hover hidden"></span>');
     });
 
-    $('#onetopic-tabstyles .tpl-tabactive .tabicon').each(function() {
+    $('#onetopic-tabstyles .tpl-tabactive > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-active hidden"></span>');
         $tabicon.append('<span class="tabicon-hover hidden"></span>');
     });
 
-    $('#onetopic-tabstyles .tpl-tabparent .tabicon').each(function() {
+    $('#onetopic-tabstyles .tpl-tabparent > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-parent hidden"></span>');
         $tabicon.append('<span class="tabicon-default hidden"></span>');
         $tabicon.append('<span class="tabicon-hover hidden"></span>');
     });
 
-    $('#onetopic-tabstyles .tpl-tabchildindex .tabicon').each(function() {
+    $('#onetopic-tabstyles .tpl-tabchildindex > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-childs hidden"></span>');
         $tabicon.append('<span class="tabicon-childindex hidden"></span>');
@@ -68,21 +71,21 @@ export const init = () => {
         $tabicon.append('<span class="tabicon-hover hidden"></span>');
     });
 
-    $('#onetopic-tabstyles .tpl-tabchild .tabicon').each(function() {
+    $('#onetopic-tabstyles .tpl-tabchild > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-childs hidden"></span>');
         $tabicon.append('<span class="tabicon-default hidden"></span>');
         $tabicon.append('<span class="tabicon-hover hidden"></span>');
     });
 
-    $('#onetopic-tabstyles .tpl-tabhighlighted .tabicon').each(function() {
+    $('#onetopic-tabstyles .tpl-tabhighlighted > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-highlighted hidden"></span>');
         $tabicon.append('<span class="tabicon-default hidden"></span>');
         $tabicon.append('<span class="tabicon-hover hidden"></span>');
     });
 
-    $('#onetopic-tabstyles .tpl-tabdisabled .tabicon').each(function() {
+    $('#onetopic-tabstyles .tpl-tabdisabled > a > .tabicon').each(function() {
         var $tabicon = $(this);
         $tabicon.append('<span class="tabicon-disabled hidden"></span>');
     });
@@ -177,7 +180,7 @@ export const init = () => {
         modal.hide();
     });
 
-    var types = ['default', 'active', 'parent', 'highlighted', 'disabled', 'hover', 'childs', 'childindex'];
+    var types = ['default', 'active', 'parent', 'highlighted', 'disabled', 'hover', 'childs', 'childindex', 'content'];
     types.forEach(type => {
         $('#onetopic-tabstyles #tabstyleset' + type).on('click', function(e) {
             e.preventDefault();
@@ -193,10 +196,40 @@ export const init = () => {
         applyStyles();
     });
 
-    $('#tabstylesdisplay').on('click', function(e) {
+    // Nav pills for switching tab view previews.
+    var onelineInitialized = false;
+    var onelineIcons = {
+        left: $('<div>').append($('#onetopic-tabstyles .pix-oneline-left').clone().removeClass('hidden')).html(),
+        right: $('<div>').append($('#onetopic-tabstyles .pix-oneline-right').clone().removeClass('hidden')).html(),
+    };
+
+    $('#tabstyles-viewpills a[data-toggle="pill"]').on('click', function(e) {
         e.preventDefault();
-        $tabstyles.toggleClass('hidden');
+        var $pill = $(this);
+        var target = $pill.attr('href');
+
+        // Deactivate all pills and panels.
+        $('#tabstyles-viewpills .nav-link').removeClass('active').attr('aria-selected', 'false');
+        $('#tabstyles-viewcontent .tab-pane').removeClass('show active');
+
+        // Activate clicked pill and corresponding panel.
+        $pill.addClass('active').attr('aria-selected', 'true');
+        $(target).addClass('show active');
+
+        // Initialize the oneline view when its tab is shown.
+        if (target === '#tabview-oneline' && !onelineInitialized) {
+            onelineInitialized = true;
+            OneLine.load(onelineIcons);
+        }
     });
+
+    var $toggleBtn = $('#tabstylesdisplay');
+    if ($toggleBtn.length) {
+        $toggleBtn.on('click', function(e) {
+            e.preventDefault();
+            $tabstyles.toggleClass('hidden');
+        });
+    }
 
     $('#onetopic-styleswindow .onetopic-selecticon').each(function() {
         var $selecticon = $(this);
@@ -324,6 +357,9 @@ var applyStyles = function() {
             case 'childindex':
                 csscontent += '#onetopic-tabstyles .onetopic-tab-body .nav-tabs .nav-item.subtopic.tab_initial a.nav-link';
             break;
+            case 'content':
+                csscontent += '#onetopic-tabstyles .onetopic-content-preview';
+            break;
             default:
                 csscontent += '#onetopic-tabstyles .verticaltabs .format_onetopic-tabs .nav-item a.nav-link, ';
                 csscontent += '#onetopic-tabstyles .nav-tabs a.nav-link';
@@ -348,6 +384,12 @@ var applyStyles = function() {
                     $('#onetopic-tabstyles .tabicon-' + type).html(icon).removeClass('hidden');
                     hasicon = true;
                 }
+            } else if (key == 'resourcelayout') {
+                var $contentPreview = $('#onetopic-tabstyles .onetopic-content-preview');
+                $contentPreview.removeClass('layout-buttons layout-cards layout-timeline');
+                if (value !== '') {
+                    $contentPreview.addClass('layout-' + value);
+                }
             }
         });
 
@@ -361,6 +403,8 @@ var applyStyles = function() {
             if (key.indexOf('unit-') === 0) {
                 return;
             } else if (key == 'tabicon') {
+                return;
+            } else if (key == 'resourcelayout') {
                 return;
             }
 

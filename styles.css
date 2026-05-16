@@ -352,38 +352,38 @@
     margin-bottom: 10px;
 }
 
-#onetopic-styleswindow fieldset {
+.onetopic-stylesmodal fieldset {
     display: flex;
     flex-wrap: wrap;
 }
 
-#onetopic-styleswindow fieldset > div {
+.onetopic-stylesmodal fieldset > div {
     display: flex;
     padding: 5px;
 }
 
-#onetopic-styleswindow fieldset > div > div {
+.onetopic-stylesmodal fieldset > div > div {
     display: flex;
 }
 
-#onetopic-styleswindow fieldset > div > div button {
+.onetopic-stylesmodal fieldset > div > div button {
     margin-right: 5px;
 }
 
-#onetopic-styleswindow fieldset > div.whithlabel {
+.onetopic-stylesmodal fieldset > div.whithlabel {
     flex-direction: column;
 }
 
-#onetopic-styleswindow fieldset > div.whithlabel label {
+.onetopic-stylesmodal fieldset > div.whithlabel label {
     color: #888;
     text-align: center;
 }
 
-#onetopic-styleswindow [data-control="colorpicker"] {
+.onetopic-stylesmodal [data-control="colorpicker"] {
     width: 100px;
 }
 
-#onetopic-styleswindow .colorpicker {
+.onetopic-stylesmodal .colorpicker {
     position: absolute;
     top: 0;
     right: 0;
@@ -393,12 +393,12 @@
     padding: 10px;
 }
 
-#onetopic-styleswindow .colorpicker #admin-colorpicker {
+.onetopic-stylesmodal .colorpicker #admin-colorpicker {
     flex-direction: column;
     align-items: center;
 }
 
-#onetopic-styleswindow .buttons-box {
+.onetopic-stylesmodal .buttons-box {
     text-align: center;
 }
 
@@ -408,7 +408,41 @@
     border-radius: 5px;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .listicons:not(.hidden) {
+#onetopic-tabstyles #tabstyles-viewpills {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 5px;
+}
+
+#onetopic-tabstyles .tabs-example-panel {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 120px;
+}
+
+#onetopic-tabstyles .onetopic-content-preview {
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+}
+
+#onetopic-tabstyles .onetopic-content-preview .activity-item {
+    background-color: #fff;
+}
+
+#onetopic-tabstyles .onetopic-content-preview .subsection-preview {
+    background-color: #f8f9fa;
+}
+
+#onetopic-tabstyles .onelinetabs .tabs-wrapper .nav.nav-tabs {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+#onetopic-tabstyles #tabview-oneline {
+    max-width: 700px;
+}
+
+.onetopic-stylesmodal .onetopic-selecticon .listicons:not(.hidden) {
     overflow: auto;
     padding: 10px;
     position: absolute;
@@ -422,7 +456,7 @@
     flex-wrap: wrap;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .listicons .windowheader {
+.onetopic-stylesmodal .onetopic-selecticon .listicons .windowheader {
     width: 100%;
     background: #999;
     padding: 5px;
@@ -432,7 +466,7 @@
     cursor: pointer;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .listicons span {
+.onetopic-stylesmodal .onetopic-selecticon .listicons span {
     cursor: pointer;
     padding: 5px;
     border: 1px solid #dee2e6;
@@ -442,21 +476,21 @@
     text-align: center;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .listicons span:hover {
+.onetopic-stylesmodal .onetopic-selecticon .listicons span:hover {
     transform: scale(2);
     border-radius: 2px;
     box-shadow: 2px 2px 4px 1px #ccc;
     background-color: #fff;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .listicons span i {
+.onetopic-stylesmodal .onetopic-selecticon .listicons span i {
     font-size: 15px;
     margin: 0;
     width: auto;
     height: auto;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .iconselected {
+.onetopic-stylesmodal .onetopic-selecticon .iconselected {
     padding: 5px;
     border: 1px solid #333;
     border-radius: 5px;
@@ -468,7 +502,7 @@
     align-items: center;
 }
 
-#onetopic-styleswindow .onetopic-selecticon .iconselected i {
+.onetopic-stylesmodal .onetopic-selecticon .iconselected i {
     font-size: 20px;
     margin: 0;
     height: auto;

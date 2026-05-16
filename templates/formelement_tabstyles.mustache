@@ -45,9 +45,13 @@
         "testingmode": true
     }
 }}
+{{^expanded}}
 <button id="tabstylesdisplay" class="btn btn-secondary">{{#str}} tabstylesdisplay, format_onetopic {{/str}} {{#pix}} t/expanded {{/pix}}</button>
 <p>{{#str}} tabstylesdisplay_help, format_onetopic {{/str}}</p>
-<div id="onetopic-tabstyles" class="form-text defaultsnext format-onetopic hidden">
+{{/expanded}}
+<div id="onetopic-tabstyles" class="form-text defaultsnext format-onetopic {{^expanded}}hidden{{/expanded}}">
+    <span class="pix-oneline-left hidden">{{#pix}} t/collapsed_rtl {{/pix}}</span>
+    <span class="pix-oneline-right hidden">{{#pix}} t/collapsed {{/pix}}</span>
     <div id="tabs-tree-start">
     {{!
         Input to save the configured styles.
@@ -64,23 +68,74 @@
                 <button id="tabstylesethover" class="btn btn-secondary">{{#str}} tabstylesethover, format_onetopic {{/str}}</button>
                 <button id="tabstylesetchilds" class="btn btn-secondary">{{#str}} tabstylesetchilds, format_onetopic {{/str}}</button>
                 <button id="tabstylesetchildindex" class="btn btn-secondary">{{#str}} tabstylesetchildindex, format_onetopic {{/str}}</button>
+                <button id="tabstylesetcontent" class="btn btn-secondary">{{#str}} tabstylesetcontent, format_onetopic {{/str}}</button>
                 <button id="tabstyleclear" class="btn btn-warning">{{#str}} tabstyleclear, format_onetopic {{/str}}</button>
             </div>
             <p>{{#str}} tabstylebuttons_help, format_onetopic {{/str}}</p>
         {{/readonly}}
 
+        {{#tabviews.0}}
+        <ul class="nav nav-pills mb-3" id="tabstyles-viewpills" role="tablist">
+            {{#tabviews}}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {{#active}}active{{/active}}" id="pill-{{key}}" data-toggle="pill" href="#tabview-{{key}}" role="tab" aria-controls="tabview-{{key}}" aria-selected="{{#active}}true{{/active}}{{^active}}false{{/active}}">{{label}}</a>
+            </li>
+            {{/tabviews}}
+        </ul>
+        <div class="tab-content" id="tabstyles-viewcontent">
+            {{#tabviews}}
+            <div class="tab-pane fade {{#active}}show active{{/active}}" id="tabview-{{key}}" role="tabpanel" aria-labelledby="pill-{{key}}">
+                <div class="tabs-example-panel {{cssclass}} hastopictabs">
+                    <div class="tabs-wrapper">
+                        {{>format_onetopic/courseformat/tabtree}}
+                    </div>
+                    <div class="onetopic-tab-body">
+                        {{^hassubtabs}}
+                        {{#secondrow}}
+                            {{>format_onetopic/courseformat/tabtree}}
+                        {{/secondrow}}
+                        {{/hassubtabs}}
+                        <div class="onetopic-content-preview p-3">
+                            <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
+                                <span class="mr-2">📄</span>
+                                <span>{{#str}} sampleresource, format_onetopic {{/str}}</span>
+                            </div>
+                            <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
+                                <span class="mr-2">📝</span>
+                                <span>{{#str}} sampleactivity, format_onetopic {{/str}}</span>
+                            </div>
+                            <div class="subsection-preview p-2 mb-1 border rounded bg-light">
+                                <div class="d-flex align-items-center">
+                                    <span class="mr-2">📁</span>
+                                    <strong>{{#str}} samplesubsection, format_onetopic {{/str}}</strong>
+                                </div>
+                                <div class="ml-4 mt-1">
+                                    <div class="activity-item d-flex align-items-center p-1">
+                                        <span class="mr-2">📄</span>
+                                        <span>{{#str}} sampleresource, format_onetopic {{/str}} 2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/tabviews}}
+        </div>
+        {{/tabviews.0}}
+
+        {{^tabviews.0}}
+        {{! Fallback: no tabviews provided (admin setting context). Show default + vertical previews. }}
         <h3>{{#str}} tabsview_default, format_onetopic {{/str}}</h3>
         <div id="tabs-example" class="hastopictabs">
             <div class="tabs-wrapper">
                 {{>format_onetopic/courseformat/tabtree}}
             </div>
-
             <div class="onetopic-tab-body">
                 {{#secondrow}}
                     {{>format_onetopic/courseformat/tabtree}}
                 {{/secondrow}}
             </div>
-
         </div>
 
         <h3>{{#str}} tabsview_vertical, format_onetopic {{/str}}</h3>
@@ -88,144 +143,14 @@
             <div class="tabs-wrapper">
                 {{>format_onetopic/courseformat/tabtree}}
             </div>
-
             <div class="onetopic-tab-body">
                 {{#secondrow}}
                     {{>format_onetopic/courseformat/tabtree}}
                 {{/secondrow}}
             </div>
-
         </div>
+        {{/tabviews.0}}
 
-        <div id="onetopic-styleswindow" class="hidden" data-title="{{#str}} tabstylestitle, format_onetopic {{/str}}">
-            <div class="form-group">
-                <fieldset>
-                    <legend>{{#str}} tabicon, format_onetopic {{/str}}</legend>
-                    <div class="onetopic-selecticon">
-                        <div class="tabiconbox" title="{{#str}} tabicon, format_onetopic {{/str}}">
-                            <span class="iconselected">{{{currenticon}}}</span>
-                            <input type="hidden" data-style="tabicon">
-                            <button class="btn btn-secondary iconselect">{{#str}} tabiconselect, format_onetopic {{/str}}</button>
-                            <button class="btn btn-danger iconremove">{{#str}} tabiconremove, format_onetopic {{/str}}</button>
-                            <div class="listicons hidden">
-                                <div class="windowheader">{{#pix}} t/dockclose {{/pix}}</div>
-                                {{#tabiconoptions}}
-                                <span data-value="{{identifier}}">{{{icon}}}</span>
-                                {{/tabiconoptions}}
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="form-group">
-                <fieldset>
-                    <legend>{{#str}} cssbackground, format_onetopic {{/str}}</legend>
-                    <input class="form-control" type="text" data-style="background-color" data-control="colorpicker" placeholder="{{#str}} csscolor, format_onetopic {{/str}}" title="{{#str}} csscolor, format_onetopic {{/str}}">
-                </fieldset>
-            </div>
-            <div class="form-group">
-                <fieldset>
-                    <legend>{{#str}} cssfont, format_onetopic {{/str}}</legend>
-                    <div>
-                        <select class="form-control" data-style="font-size" title="{{#str}} csssize, format_onetopic {{/str}}">
-                            {{#csssizeoptions}}
-                            <option value="{{.}}">{{.}}</option>
-                            {{/csssizeoptions}}
-                        </select>
-                        <select class="form-control" data-style="unit-font-size" title="{{#str}} cssstyle, format_onetopic {{/str}}">
-                            {{#cssunits}}
-                                <option value="{{value}}">{{label}}</option>
-                            {{/cssunits}}
-                        </select>
-                    </div>
-                    <div>
-                        <input class="form-control" type="text" data-style="color" data-control="colorpicker" placeholder="{{#str}} csscolor, format_onetopic {{/str}}" title="{{#str}} csscolor, format_onetopic {{/str}}">
-                    </div>
-                    <div>
-                        <select class="form-control" data-style="font-weight" title="{{#str}} cssweight, format_onetopic {{/str}}">
-                            {{^testingmode}}<option value=""></option>{{/testingmode}}
-                            <option value="normal">{{#str}} cssnormal, format_onetopic {{/str}}</option>
-                            <option value="bold">{{#str}} cssweightbold, format_onetopic {{/str}}</option>
-                            <option value="lighter">{{#str}} cssweightlighter, format_onetopic {{/str}}</option>
-                        </select>
-                    </div>
-                    <div>
-                        <select class="form-control" data-style="font-style" title="{{#str}} cssstyle, format_onetopic {{/str}}">
-                            {{^testingmode}}<option value=""></option>{{/testingmode}}
-                            <option value="normal">{{#str}} cssnormal, format_onetopic {{/str}}</option>
-                            <option value="italic">{{#str}} cssitalic, format_onetopic {{/str}}</option>
-                            <option value="oblique">{{#str}} cssoblique, format_onetopic {{/str}}</option>
-                        </select>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="form-group">
-                <fieldset>
-                    <legend>{{#str}} cssborder, format_onetopic {{/str}}</legend>
-                    <div>
-                        <select class="form-control" data-style="border-width" title="{{#str}} csssize, format_onetopic {{/str}}">
-                            {{#csssizeoptions}}
-                                <option value="{{.}}">{{.}}</option>
-                            {{/csssizeoptions}}
-                        </select>
-                        <select class="form-control" data-style="unit-border-width" title="{{#str}} cssunit, format_onetopic {{/str}}">
-                            {{#cssunits}}
-                                <option value="{{value}}">{{label}}</option>
-                            {{/cssunits}}
-                        </select>
-                    </div>
-                    <div>
-                        <input class="form-control" type="text" data-style="border-color" data-control="colorpicker" placeholder="{{#str}} csscolor, format_onetopic {{/str}}" title="{{#str}} csscolor, format_onetopic {{/str}}">
-                    </div>
-                    <div>
-                        <select class="form-control" data-style="border-style" title="{{#str}} cssstyle, format_onetopic {{/str}}">
-                            {{^testingmode}}<option value=""></option>{{/testingmode}}
-                            <option value="none">{{#str}} cssnone, format_onetopic {{/str}}</option>
-                            <option value="solid">{{#str}} csssolid, format_onetopic {{/str}}</option>
-                            <option value="dashed">{{#str}} cssdashed, format_onetopic {{/str}}</option>
-                            <option value="dotted">{{#str}} cssdotted, format_onetopic {{/str}}</option>
-                            <option value="double">{{#str}} cssdouble, format_onetopic {{/str}}</option>
-                            <option value="groove">{{#str}} cssgroove, format_onetopic {{/str}}</option>
-                            <option value="hidden">{{#str}} csshidden, format_onetopic {{/str}}</option>
-                            <option value="inset">{{#str}} cssinset, format_onetopic {{/str}}</option>
-                            <option value="outset">{{#str}} cssoutset, format_onetopic {{/str}}</option>
-                            <option value="ridge">{{#str}} cssridge, format_onetopic {{/str}}</option>
-                        </select>
-                    </div>
-                    <div class="whithlabel">
-                        <div>
-                            <select class="form-control" data-style="border-radius" title="{{#str}} cssradius, format_onetopic {{/str}}">
-                                {{#csssizeoptions}}
-                                    <option value="{{.}}">{{.}}</option>
-                                {{/csssizeoptions}}
-                            </select>
-                            <select class="form-control" data-style="unit-border-radius" title="{{#str}} cssunit, format_onetopic {{/str}}">
-                                {{#cssunits}}
-                                    <option value="{{value}}">{{label}}</option>
-                                {{/cssunits}}
-                            </select>
-                        </div>
-                        <label>{{#str}} cssradius, format_onetopic {{/str}}</label>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="form-group">
-                <fieldset>
-                    <legend>{{#str}} cssother, format_onetopic {{/str}}</legend>
-                    <input class="form-control" type="text" data-style="others" placeholder="{{#str}} cssother, format_onetopic {{/str}}" title="{{#str}} cssother, format_onetopic {{/str}}">
-                </fieldset>
-            </div>
-            <div class="buttons-box">
-                <button data-action="setstyles" class="btn btn-primary">{{#str}} tabstylesset, format_onetopic {{/str}}</button>
-                <button data-action="cancelstyles" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
-            </div>
-            <div class="colorpicker hidden">
-                {{{colorpicker}}}
-                <div class="buttons-box">
-                    <button data-action="setcolor" class="btn btn-primary">{{#str}} ok {{/str}}</button>
-                    <button data-action="cancel" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
-                </div>
-            </div>
-        </div>
+        {{> format_onetopic/formelement_stylesmodal}}
     </div>
 </div>
