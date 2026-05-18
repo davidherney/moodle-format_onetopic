@@ -23,6 +23,8 @@
     * name - form element name
     * id - element id
     * value - element value
+    * subsectionviews - array of view objects with key, label, active, islist, issummary, iscollapsible
+    * sampleactivities - array of activity objects with modname, iconclass, icon, label
 
     Example context (json):
     {
@@ -33,7 +35,29 @@
             { "value": "px", "label": "px" }
         ],
         "csssizeoptions": [ "8", "10", "12" ],
-        "colorpicker": ""
+        "colorpicker": "",
+        "modalid": "onetopic-styleswindow",
+        "modaltitle": "Configure subsection styles",
+        "showtabicon": false,
+        "showresourcelayout": false,
+        "testingmode": true,
+        "expandedchevron": "<i class=\"icon\"></i>",
+        "collapsedchevron": "<i class=\"icon\"></i>",
+        "collapsedchevronrtl": "<i class=\"icon\"></i>",
+        "gotosectionicon": "<i class=\"icon\"></i>",
+        "gotosectioniconrtl": "<i class=\"icon\"></i>",
+        "activitiesicon": "<i class=\"icon\"></i>",
+        "sampleactivitiescount": 3,
+        "subsectionviews": [
+            { "key": "list", "label": "List", "active": true, "islist": true },
+            { "key": "summary", "label": "Summary", "active": false, "issummary": true },
+            { "key": "collapsible", "label": "Collapsible", "active": false, "iscollapsible": true }
+        ],
+        "sampleactivities": [
+            { "modname": "forum", "iconclass": "collaboration", "icon": "<i class=\"icon\"></i>", "label": "Discussion forum" },
+            { "modname": "page", "iconclass": "content", "icon": "<i class=\"icon\"></i>", "label": "Content page" },
+            { "modname": "quiz", "iconclass": "assessment", "icon": "<i class=\"icon\"></i>", "label": "Assessment quiz" }
+        ]
     }
 }}
 <div id="onetopic-subsectionstyles" class="form-text defaultsnext format-onetopic">
@@ -49,27 +73,88 @@
         </div>
         <p>{{#str}} subsectionstylebuttons_help, format_onetopic {{/str}}</p>
 
-        <div class="subsection-styles-preview p-3 border rounded">
-            <div class="subsection-preview-container">
-                <div class="d-flex align-items-center mb-2">
-                    <span class="mr-2">📁</span>
-                    <strong>{{#str}} samplesubsection, format_onetopic {{/str}}</strong>
-                </div>
-                <div class="ml-4">
-                    <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
-                        <span class="mr-2">📄</span>
-                        <span>{{#str}} sampleresource, format_onetopic {{/str}}</span>
-                    </div>
-                    <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
-                        <span class="mr-2">📝</span>
-                        <span>{{#str}} sampleactivity, format_onetopic {{/str}}</span>
-                    </div>
-                    <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
-                        <span class="mr-2">📄</span>
-                        <span>{{#str}} sampleresource, format_onetopic {{/str}} 2</span>
-                    </div>
+        <ul class="nav nav-pills mb-3" id="subsectionstyles-viewpills" role="tablist">
+            {{#subsectionviews}}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {{#active}}active{{/active}}" id="pill-subsection-{{key}}" data-toggle="pill" href="#subsectionview-{{key}}" role="tab" aria-controls="subsectionview-{{key}}" aria-selected="{{#active}}true{{/active}}{{^active}}false{{/active}}">{{label}}</a>
+            </li>
+            {{/subsectionviews}}
+        </ul>
+        <div class="tab-content" id="subsectionstyles-viewcontent">
+            {{#subsectionviews}}
+            <div class="tab-pane fade {{#active}}show active{{/active}}" id="subsectionview-{{key}}" role="tabpanel" aria-labelledby="pill-subsection-{{key}}">
+                <div class="subsection-styles-preview">
+                    <ul class="p-0">
+                        <li class="section course-section main {{#issummary}}section-summary{{/issummary}} delegated-section clearfix" style="list-style:none;">
+                            <div class="section-item subsection-preview-container">
+                                {{#islist}}
+                                {{! List mode: section title as plain heading with link, content always visible. }}
+                                <div class="course-section-header d-flex">
+                                    <h3 class="h4 sectionname">
+                                        <a href="#" onclick="return false;">{{#str}} samplesubsection, format_onetopic {{/str}}</a>
+                                    </h3>
+                                </div>
+                                <div class="content course-content-item-content show">
+                                    {{> format_onetopic/formelement_sampleactivities}}
+                                </div>
+                                {{/islist}}
+
+                                {{#issummary}}
+                                {{! Summary mode: section title with go-to link and activity count summary. }}
+                                <div class="course-section-header d-flex">
+                                    <h3 class="h4 sectionname">
+                                        <a href="#" onclick="return false;">{{#str}} samplesubsection, format_onetopic {{/str}}</a>
+                                    </h3>
+                                    <div class="section_goto bulk-hidden ms-auto">
+                                        <a href="#" onclick="return false;" class="btn btn-icon d-flex align-items-center justify-content-center icon-no-margin">
+                                            <span class="dir-rtl-hide">{{{gotosectionicon}}}</span>
+                                            <span class="dir-ltr-hide">{{{gotosectioniconrtl}}}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="section-summary-activities d-flex">
+                                        <div class="d-flex align-items-center">
+                                            {{{activitiesicon}}}{{#str}} totalactivities, course, {{sampleactivitiescount}} {{/str}}
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/issummary}}
+
+                                {{#iscollapsible}}
+                                {{! Collapsible mode: toggle button + title, content collapsible. }}
+                                <div class="course-section-header d-flex">
+                                    <div class="d-flex align-items-center position-relative">
+                                        <a role="button"
+                                            href="#"
+                                            onclick="return false;"
+                                            class="btn btn-icon me-3 icons-collapse-expand justify-content-center"
+                                            aria-expanded="true">
+                                            <span class="expanded-icon icon-no-margin p-2" title="{{#str}} collapse, core {{/str}}">
+                                                {{{expandedchevron}}}
+                                                <span class="sr-only">{{#str}} collapse, core {{/str}}</span>
+                                            </span>
+                                            <span class="collapsed-icon icon-no-margin p-2" title="{{#str}} expand, core {{/str}}">
+                                                <span class="dir-rtl-hide">{{{collapsedchevron}}}</span>
+                                                <span class="dir-ltr-hide">{{{collapsedchevronrtl}}}</span>
+                                                <span class="sr-only">{{#str}} expand, core {{/str}}</span>
+                                            </span>
+                                        </a>
+                                        <h3 class="h4 sectionname course-content-item d-flex align-self-stretch align-items-center mb-0">
+                                            <a href="#" onclick="return false;">{{#str}} samplesubsection, format_onetopic {{/str}}</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="content course-content-item-content collapse show">
+                                    {{> format_onetopic/formelement_sampleactivities}}
+                                </div>
+                                {{/iscollapsible}}
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            {{/subsectionviews}}
         </div>
 
         {{> format_onetopic/formelement_stylesmodal}}

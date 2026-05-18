@@ -198,6 +198,8 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
             ],
         ];
 
+        $sampleactivities = \format_onetopic\local\appearances::get_sampleactivities($OUTPUT);
+
         $context = (object) [
             'id' => $this->getAttribute('id'),
             'name' => $this->getAttribute('name'),
@@ -205,6 +207,7 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
             'tabs' => $tabslist,
             'secondrow' => $secondtabslist,
             'tabviews' => $tabviews,
+            'sampleactivities' => $sampleactivities,
             'colorpicker' => $cp->output_html(''),
             'csssizeoptions' => $csssizeoptions,
             'cssunits' => $cssunits,

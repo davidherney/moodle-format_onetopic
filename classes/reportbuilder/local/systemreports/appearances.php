@@ -134,7 +134,7 @@ class appearances extends system_report {
                 'data-appearance-name' => ':name',
             ],
             false,
-            new lang_string('appearanceusagesbutton', 'format_onetopic', )
+            new lang_string('appearanceusagesbutton', 'format_onetopic')
         )));
 
         // Delete action.

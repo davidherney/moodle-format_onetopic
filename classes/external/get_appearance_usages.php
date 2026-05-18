@@ -31,7 +31,6 @@ use core_external\external_warnings;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_appearance_usages extends external_api {
-
     /**
      * Parameters.
      *
@@ -123,10 +122,11 @@ class get_appearance_usages extends external_api {
         foreach ($sectionrecords as $record) {
             $sectionname = !empty($record->sectionname) ? $record->sectionname : get_string('section') . ' ' . $record->sectionnum;
 
+            $params = ['id' => $record->courseid, 'section' => $record->sectionnum];
             $usages[] = [
                 'type' => 'section',
                 'name' => $record->fullname . ': ' . $sectionname,
-                'url' => (new \moodle_url('/course/view.php', ['id' => $record->courseid, 'section' => $record->sectionnum]))->out(false),
+                'url' => (new \moodle_url('/course/view.php', $params))->out(false),
             ];
         }
 

@@ -42,6 +42,10 @@
         ],
         "csssizeoptions": [ "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" ],
         "colorpicker": "",
+        "modalid": "onetopic-styleswindow",
+        "modaltitle": "Configure subsection styles",
+        "showtabicon": false,
+        "showresourcelayout": false,
         "testingmode": true
     }
 }}
@@ -95,27 +99,8 @@
                             {{>format_onetopic/courseformat/tabtree}}
                         {{/secondrow}}
                         {{/hassubtabs}}
-                        <div class="onetopic-content-preview p-3">
-                            <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
-                                <span class="mr-2">📄</span>
-                                <span>{{#str}} sampleresource, format_onetopic {{/str}}</span>
-                            </div>
-                            <div class="activity-item d-flex align-items-center p-2 mb-1 border rounded">
-                                <span class="mr-2">📝</span>
-                                <span>{{#str}} sampleactivity, format_onetopic {{/str}}</span>
-                            </div>
-                            <div class="subsection-preview p-2 mb-1 border rounded bg-light">
-                                <div class="d-flex align-items-center">
-                                    <span class="mr-2">📁</span>
-                                    <strong>{{#str}} samplesubsection, format_onetopic {{/str}}</strong>
-                                </div>
-                                <div class="ml-4 mt-1">
-                                    <div class="activity-item d-flex align-items-center p-1">
-                                        <span class="mr-2">📄</span>
-                                        <span>{{#str}} sampleresource, format_onetopic {{/str}} 2</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="content course-content-item-content p-3">
+                            {{> format_onetopic/formelement_sampleactivities}}
                         </div>
                     </div>
                 </div>

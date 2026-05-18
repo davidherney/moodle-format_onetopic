@@ -24,7 +24,6 @@ namespace format_onetopic\local;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class appearances {
-
     /** @var array CSS properties that require units */
     const PROPERTIES_WITH_UNITS = ['font-size', 'line-height', 'margin', 'padding', 'border-width', 'border-radius'];
 
@@ -35,7 +34,7 @@ class appearances {
      * Get the list of available appearances for a specific section.
      *
      * @param ?int $courseid The course id. Null for site-level only.
-     * @param bool $issubsection Whether the section is a subsection or not.
+     * @param ?bool $issubsection Whether the section is a subsection or not.
      * @return array List of available appearances.
      */
     public static function get_availables_appearances(?int $courseid, ?bool $issubsection = false): array {
@@ -254,7 +253,7 @@ class appearances {
             return '';
         }
 
-        $selector = '.format-onetopic .activity.subsection .section.course-section';
+        $selector = '.format-onetopic .activity.subsection .section.course-section .section-item';
 
         return self::sanitize_css(
             $selector . '{' . self::build_declarations($styles->default) . '} '
@@ -275,7 +274,7 @@ class appearances {
             return '';
         }
 
-        $selector = '.format-onetopic .activity.subsection .section.course-section[data-id="' . $sectionid . '"]';
+        $selector = '.format-onetopic .activity.subsection .section.course-section[data-id="' . $sectionid . '"] .section-item';
 
         return self::sanitize_css(
             $selector . '{' . self::build_declarations($styles->default) . '} '
@@ -334,6 +333,35 @@ class appearances {
         }
 
         return $declarations;
+    }
+
+    /**
+     * Get sample activities data for style preview templates.
+     *
+     * @param \renderer_base $output The renderer to use for generating icons.
+     * @return array The sample activities data.
+     */
+    public static function get_sampleactivities(\renderer_base $output): array {
+        return [
+            [
+                'modname' => 'forum',
+                'iconclass' => 'collaboration',
+                'icon' => $output->pix_icon('monologo', '', 'mod_forum'),
+                'label' => get_string('sampleforum', 'format_onetopic'),
+            ],
+            [
+                'modname' => 'page',
+                'iconclass' => 'content',
+                'icon' => $output->pix_icon('monologo', '', 'mod_page'),
+                'label' => get_string('samplepage', 'format_onetopic'),
+            ],
+            [
+                'modname' => 'quiz',
+                'iconclass' => 'assessment',
+                'icon' => $output->pix_icon('monologo', '', 'mod_quiz'),
+                'label' => get_string('samplequiz', 'format_onetopic'),
+            ],
+        ];
     }
 
     /**

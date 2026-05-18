@@ -88,6 +88,29 @@ class format_onetopic_subsectionstyles_form_element extends MoodleQuickForm_text
             ['value' => 'in', 'label' => get_string('cssunit_in', 'format_onetopic')],
         ];
 
+        $subsectionviews = [
+            [
+                'key' => \format_onetopic::SUBSECTIONSDISPLAY_LIST,
+                'label' => get_string('displaymode_list', 'format_onetopic'),
+                'active' => true,
+                'islist' => true,
+            ],
+            [
+                'key' => \format_onetopic::SUBSECTIONSDISPLAY_SUMMARY,
+                'label' => get_string('displaymode_summary', 'format_onetopic'),
+                'active' => false,
+                'issummary' => true,
+            ],
+            [
+                'key' => \format_onetopic::SUBSECTIONSDISPLAY_COLLAPSIBLE,
+                'label' => get_string('displaymode_collapsible', 'format_onetopic'),
+                'active' => false,
+                'iscollapsible' => true,
+            ],
+        ];
+
+        $sampleactivities = \format_onetopic\local\appearances::get_sampleactivities($OUTPUT);
+
         $context = (object) [
             'id' => $this->getAttribute('id'),
             'name' => $this->getAttribute('name'),
@@ -95,6 +118,15 @@ class format_onetopic_subsectionstyles_form_element extends MoodleQuickForm_text
             'colorpicker' => $cp->output_html(''),
             'csssizeoptions' => $csssizeoptions,
             'cssunits' => $cssunits,
+            'subsectionviews' => $subsectionviews,
+            'sampleactivities' => $sampleactivities,
+            'expandedchevron' => $OUTPUT->pix_icon('t/expandedchevron', get_string('collapse', 'core')),
+            'collapsedchevron' => $OUTPUT->pix_icon('t/collapsedchevron', get_string('expand', 'core')),
+            'collapsedchevronrtl' => $OUTPUT->pix_icon('t/collapsedchevron_rtl', get_string('expand', 'core')),
+            'gotosectionicon' => $OUTPUT->pix_icon('t/right', ''),
+            'gotosectioniconrtl' => $OUTPUT->pix_icon('t/left', ''),
+            'activitiesicon' => $OUTPUT->pix_icon('i/activities', ''),
+            'sampleactivitiescount' => count($sampleactivities),
             'modalid' => 'onetopic-subsectionstyles-window',
             'modaltitle' => get_string('subsectionstylestitle', 'format_onetopic'),
             'showtabicon' => false,

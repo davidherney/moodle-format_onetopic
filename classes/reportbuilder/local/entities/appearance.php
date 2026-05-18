@@ -36,7 +36,6 @@ use core_reportbuilder\local\report\filter;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class appearance extends base {
-
     /**
      * Database tables that this entity uses
      *
@@ -121,7 +120,7 @@ class appearance extends base {
             ->set_type(column::TYPE_TEXT)
             ->add_fields("{$tablealias}.type")
             ->set_is_sortable(true)
-            ->add_callback(static function(string $type): string {
+            ->add_callback(static function (string $type): string {
                 if ($type === 'subsection') {
                     return get_string('subsection', 'format_onetopic');
                 }
@@ -140,7 +139,7 @@ class appearance extends base {
             ->add_join($this->get_course_join())
             ->add_fields("{$coursealias}.fullname")
             ->set_is_sortable(true)
-            ->add_callback(static function($courseid, stdClass $row): string {
+            ->add_callback(static function ($courseid, stdClass $row): string {
                 if ($courseid == SITEID) {
                     return get_string('appearancescope_site', 'format_onetopic');
                 }
@@ -233,13 +232,13 @@ class appearance extends base {
             "{$tablealias}.courseid"
         ))
             ->add_joins($this->get_joins())
-            ->set_options_callback(static function(): array {
+            ->set_options_callback(static function (): array {
                 global $DB;
 
                 $options = [SITEID => get_string('appearancescope_site', 'format_onetopic')];
 
-                $courses = $DB->get_records_sql("
-                    SELECT DISTINCT c.id, c.fullname
+                $courses = $DB->get_records_sql(
+                    "SELECT DISTINCT c.id, c.fullname
                       FROM {course} c
                       JOIN {format_onetopic_appearances} a ON a.courseid = c.id
                      WHERE c.id <> :siteid",

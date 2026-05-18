@@ -30,7 +30,6 @@ require_once($CFG->libdir . '/adminlib.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class editappearance_form extends \moodleform {
-
     /**
      * Form definition.
      */
@@ -78,8 +77,11 @@ class editappearance_form extends \moodleform {
                 $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_subsectionstyles.php',
                 'format_onetopic_subsectionstyles_form_element'
             );
-            $mform->addElement('subsectionstyles', 'configdata',
-                get_string('subsectionstyles', 'format_onetopic'));
+            $mform->addElement(
+                'subsectionstyles',
+                'configdata',
+                get_string('subsectionstyles', 'format_onetopic')
+            );
         } else {
             \MoodleQuickForm::registerElementType(
                 'tabstyles',
