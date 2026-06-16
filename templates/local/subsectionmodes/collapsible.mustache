@@ -37,7 +37,7 @@
             {{/header}}
         </div>
         <div id="coursecontentcollapseid{{id}}"
-            class="content course-content-item-content collapse {{^contentcollapsed}}show{{/contentcollapsed}}">
+            class="content course-content-item-content collapse {{^contentcollapsed}}show{{/contentcollapsed}} {{#resourcelayout}}resourcelayout_{{.}}{{/resourcelayout}}">
             <div class="{{#hasavailability}}description{{/hasavailability}} my-3" data-for="sectioninfo">
                 {{#isstealth}}
                 <div class="alert alert-warning">

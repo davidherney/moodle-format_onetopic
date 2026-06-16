@@ -117,6 +117,14 @@ class content extends content_base {
             $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
 
+        $modinfo = $format->get_modinfo();
+        $sectioninfo = $modinfo->get_section_info($currentsection);
+        $resourcelayout = \format_onetopic\local\appearances::get_resourcelayout($format, $sectioninfo);
+
+        if ($resourcelayout != 'default') {
+            $data->resourcelayout = $resourcelayout;
+        }
+
         return $data;
     }
 

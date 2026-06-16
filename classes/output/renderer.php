@@ -129,6 +129,12 @@ class renderer extends section_renderer {
 
         $data = $realwidget->export_for_template($this);
 
+        // Resolve the resource layout for this subsection.
+        $resourcelayout = $widget->get_resourcelayout();
+        if ($resourcelayout != 'default') {
+            $data->resourcelayout = $resourcelayout;
+        }
+
         // Section-level subsection appearance CSS (specific selector by section ID).
         $subsectioncss = $widget->get_appearance_css();
 

@@ -30,6 +30,9 @@ class appearances {
     /** @var array Precedence order for tab style types */
     const STYLES_PRECEDENCE = ['default', 'childs', 'childindex', 'active', 'parent', 'highlighted', 'disabled', 'hover'];
 
+    /** @var array Static cache for computed resource layouts keyed by section id. */
+    private static $resourcelayoutcache = [];
+
     /**
      * Get the list of available appearances for a specific section.
      *
@@ -362,6 +365,94 @@ class appearances {
                 'label' => get_string('samplequiz', 'format_onetopic'),
             ],
         ];
+    }
+
+    /**
+     * Get the resource layout for a given section, resolving the full precedence chain.
+     *
+     * For sections: site (defaultsectionsappearance) → course (customappearancesection)
+     *   → section (customappearancebysections) → section inline (tabstyles).
+     * For subsections: site (defaultsubsectionsappearance) → course (customappearancesubsection)
+     *   → subsection (customappearancebysubsections) → subsection inline (sectionstyles).
+     *
+     * @param \format_onetopic $format The course format instance.
+     * @param \section_info $section The section to resolve the layout for.
+     * @return string The resolved resource layout key, or 'default'.
+     */
+    public static function get_resourcelayout(\format_onetopic $format, \section_info $section): string {
+        $sectionid = $section->id;
+
+        if (isset(self::$resourcelayoutcache[$sectionid])) {
+            return self::$resourcelayoutcache[$sectionid];
+        }
+
+        $issubsection = !empty($section->component);
+        $course = $format->get_course();
+        $resourcelayout = 'default';
+
+        // 1. Site level.
+        $siteappearancekey = $issubsection ? 'defaultsubsectionsappearance' : 'defaultsectionsappearance';
+        $siteuniquecode = get_config('format_onetopic', $siteappearancekey);
+        if (!empty($siteuniquecode)) {
+            $sitestyles = self::get_styles_by_uniquecode($siteuniquecode);
+            $sitelayout = self::extract_resourcelayout($sitestyles);
+            if ($sitelayout !== null) {
+                $resourcelayout = $sitelayout;
+            }
+        }
+
+        // 2. Course level.
+        $courseappearanceprop = $issubsection ? 'customappearancesubsection' : 'customappearancesection';
+        if (!empty($course->$courseappearanceprop)) {
+            $coursestyles = self::get_styles_by_uniquecode($course->$courseappearanceprop);
+            $courselayout = self::extract_resourcelayout($coursestyles);
+            if ($courselayout !== null) {
+                $resourcelayout = $courselayout;
+            }
+        }
+
+        // 3. Section/subsection level appearance.
+        $formatoptions = $format->get_format_options($section);
+        $sectionappearancekey = $issubsection ? 'customappearancebysubsections' : 'customappearancebysections';
+        if (!empty($formatoptions[$sectionappearancekey])) {
+            $sectionstyles = self::get_styles_by_uniquecode($formatoptions[$sectionappearancekey]);
+            $sectionlayout = self::extract_resourcelayout($sectionstyles);
+            if ($sectionlayout !== null) {
+                $resourcelayout = $sectionlayout;
+            }
+        }
+
+        // 4. Inline styles (tabstyles for sections, sectionstyles for subsections).
+        $inlinekey = $issubsection ? 'sectionstyles' : 'tabstyles';
+        if (!empty($formatoptions[$inlinekey])) {
+            $inlinestyles = @json_decode($formatoptions[$inlinekey]);
+            if (is_object($inlinestyles)) {
+                $inlinelayout = self::extract_resourcelayout($inlinestyles);
+                if ($inlinelayout !== null) {
+                    $resourcelayout = $inlinelayout;
+                }
+            }
+        }
+
+        self::$resourcelayoutcache[$sectionid] = $resourcelayout;
+
+        return $resourcelayout;
+    }
+
+    /**
+     * Extract the resourcelayout value from a styles object.
+     *
+     * @param ?object $styles The styles object.
+     * @return ?string The resource layout value, or null if not found.
+     */
+    private static function extract_resourcelayout(?object $styles): ?string {
+        if ($styles && property_exists($styles, 'default') && is_object($styles->default)
+                && property_exists($styles->default, 'resourcelayout')
+                && $styles->default->resourcelayout !== '') {
+            return $styles->default->resourcelayout;
+        }
+
+        return null;
     }
 
     /**

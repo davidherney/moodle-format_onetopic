@@ -217,6 +217,7 @@ class format_onetopic_tabstyles_form_element extends MoodleQuickForm_textarea {
             'modaltitle' => get_string('tabstylestitle', 'format_onetopic'),
             'showtabicon' => true,
             'showresourcelayout' => true,
+            'resourcelayouts' => \format_onetopic::get_resourcelayouts(),
         ];
         $element = $OUTPUT->render_from_template('format_onetopic/formelement_tabstyles', $context);
 

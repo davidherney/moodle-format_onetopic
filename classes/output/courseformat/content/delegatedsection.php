@@ -66,6 +66,15 @@ class delegatedsection extends delegatedsection_base {
     }
 
     /**
+     * Get the resource layout for this delegated section.
+     *
+     * @return string The resolved resource layout key, or 'default'.
+     */
+    public function get_resourcelayout(): string {
+        return \format_onetopic\local\appearances::get_resourcelayout($this->format, $this->section);
+    }
+
+    /**
      * Get the CSS for a specific subsection based on its appearance configuration.
      *
      * @return string The CSS string, or empty if no appearance is configured.

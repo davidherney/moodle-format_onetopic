@@ -104,6 +104,14 @@ class format_onetopic extends core_courseformat\base {
     /** @var string Subsection display mode: collapsible */
     const SUBSECTIONSDISPLAY_COLLAPSIBLE = 'collapsible';
 
+    /** @var array List of available resource layouts visualizations */
+    const RESOURCESLAYOUTS = [
+        'default',
+        'buttons',
+        'cards',
+        'timeline',
+    ];
+
     /** @var bool If the class was previously instanced, in one execution cycle */
     private static $loaded = false;
 
@@ -797,16 +805,41 @@ class format_onetopic extends core_courseformat\base {
                 $elements[] = $element;
 
                 if (empty($onetopicconfig->useoldstylescontrol)) {
-                    $mform->removeElement('tabstyles');
-                    MoodleQuickForm::registerElementType(
-                        'tabstyles',
-                        $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_tabstyles.php',
-                        'format_onetopic_tabstyles_form_element'
-                    );
-                    $element = $mform->addElement('tabstyles', 'tabstyles', get_string('tabstyles', 'format_onetopic'));
+                    if ($mform->elementExists('tabstyles')) {
+                        $mform->removeElement('tabstyles');
+                        MoodleQuickForm::registerElementType(
+                            'tabstyles',
+                            $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_tabstyles.php',
+                            'format_onetopic_tabstyles_form_element'
+                        );
+                        $element = $mform->addElement(
+                            'tabstyles',
+                            'tabstyles',
+                            get_string('tabstyles', 'format_onetopic')
+                        );
 
-                    $elements[] = $element;
+                        $elements[] = $element;
+                    }
+
                 }
+            }
+
+            if ($onetopicconfig->enablecustomstyles
+                    && empty($onetopicconfig->useoldstylescontrol)
+                    && $mform->elementExists('sectionstyles')) {
+                $mform->removeElement('sectionstyles');
+                MoodleQuickForm::registerElementType(
+                    'sectionstyles',
+                    $CFG->dirroot . '/course/format/onetopic/classes/local/formelement_sectionstyles.php',
+                    'format_onetopic_sectionstyles_form_element'
+                );
+                $element = $mform->addElement(
+                    'sectionstyles',
+                    'sectionstyles',
+                    get_string('sectionstyles', 'format_onetopic')
+                );
+
+                $elements[] = $element;
             }
         }
 
@@ -936,6 +969,11 @@ class format_onetopic extends core_courseformat\base {
                         'type' => PARAM_RAW,
                     ];
                 }
+
+                $sectionformatoptions['sectionstyles'] = [
+                    'default' => '',
+                    'type' => PARAM_RAW,
+                ];
             }
 
             $sectionformatoptions['customappearancebysections'] = [
@@ -988,6 +1026,17 @@ class format_onetopic extends core_courseformat\base {
                     'help' => 'customappearancebysubsections',
                     'help_component' => 'format_onetopic',
                 ];
+
+                if ($onetopicconfig->enablecustomstyles && empty($onetopicconfig->useoldstylescontrol)) {
+                    $sectionformatoptionsedit['sectionstyles'] = [
+                        'default' => '',
+                        'type' => PARAM_RAW,
+                        'label' => new lang_string('sectionstyles', 'format_onetopic'),
+                        'element_type' => 'textarea',
+                        'help' => 'sectionstyles',
+                        'help_component' => 'format_onetopic',
+                    ];
+                }
             } else {
                 $sectionformatoptionsedit['level'] = [
                     'default' => 0,
@@ -1325,6 +1374,22 @@ class format_onetopic extends core_courseformat\base {
 
         // The display is SINGLEPAGE when we move a section, in other case we use the MULTIPAGE.
         return ($destsection && $move) || $this->subsectionmode ? COURSE_DISPLAY_SINGLEPAGE : COURSE_DISPLAY_MULTIPAGE;
+    }
+
+    /**
+     * Returns the list of available resource layouts.
+     *
+     * @return array of arrays with keys 'key' and 'label' for each available resource layout.
+     */
+    public static function get_resourcelayouts(): array {
+        $resourcelayouts = [];
+        foreach (self::RESOURCESLAYOUTS as $layout) {
+            $resourcelayouts[] = [
+                'key' => $layout,
+                'label' => get_string('resourcelayout_' . $layout, 'format_onetopic'),
+            ];
+        }
+        return $resourcelayouts;
     }
 }
 

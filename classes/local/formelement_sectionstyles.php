@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Form element to display subsection styles editor.
+ * Form element to display section content styles editor.
  *
  * @package   format_onetopic
  * @copyright 2026 David Herney - https://bambuco.co
@@ -29,13 +29,16 @@ require_once($CFG->libdir . '/form/textarea.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 /**
- * Display a subsection styles form field.
+ * Display a section content styles form field.
+ *
+ * This form element is used in subsection editing to allow setting
+ * content styles (primarily resource layout) for the section.
  *
  * @package   format_onetopic
  * @copyright 2026 David Herney - https://bambuco.co
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_onetopic_subsectionstyles_form_element extends MoodleQuickForm_textarea {
+class format_onetopic_sectionstyles_form_element extends MoodleQuickForm_textarea {
     /**
      * Constructor
      *
@@ -88,27 +91,6 @@ class format_onetopic_subsectionstyles_form_element extends MoodleQuickForm_text
             ['value' => 'in', 'label' => get_string('cssunit_in', 'format_onetopic')],
         ];
 
-        $subsectionviews = [
-            [
-                'key' => \format_onetopic::SUBSECTIONSDISPLAY_LIST,
-                'label' => get_string('displaymode_list', 'format_onetopic'),
-                'active' => true,
-                'islist' => true,
-            ],
-            [
-                'key' => \format_onetopic::SUBSECTIONSDISPLAY_SUMMARY,
-                'label' => get_string('displaymode_summary', 'format_onetopic'),
-                'active' => false,
-                'issummary' => true,
-            ],
-            [
-                'key' => \format_onetopic::SUBSECTIONSDISPLAY_COLLAPSIBLE,
-                'label' => get_string('displaymode_collapsible', 'format_onetopic'),
-                'active' => false,
-                'iscollapsible' => true,
-            ],
-        ];
-
         $sampleactivities = \format_onetopic\local\appearances::get_sampleactivities($OUTPUT);
 
         $context = (object) [
@@ -118,24 +100,16 @@ class format_onetopic_subsectionstyles_form_element extends MoodleQuickForm_text
             'colorpicker' => $cp->output_html(''),
             'csssizeoptions' => $csssizeoptions,
             'cssunits' => $cssunits,
-            'subsectionviews' => $subsectionviews,
             'sampleactivities' => $sampleactivities,
-            'expandedchevron' => $OUTPUT->pix_icon('t/expandedchevron', get_string('collapse', 'core')),
-            'collapsedchevron' => $OUTPUT->pix_icon('t/collapsedchevron', get_string('expand', 'core')),
-            'collapsedchevronrtl' => $OUTPUT->pix_icon('t/collapsedchevron_rtl', get_string('expand', 'core')),
-            'gotosectionicon' => $OUTPUT->pix_icon('t/right', ''),
-            'gotosectioniconrtl' => $OUTPUT->pix_icon('t/left', ''),
-            'activitiesicon' => $OUTPUT->pix_icon('i/activities', ''),
-            'sampleactivitiescount' => count($sampleactivities),
-            'modalid' => 'onetopic-subsectionstyles-window',
-            'modaltitle' => get_string('subsectionstylestitle', 'format_onetopic'),
+            'modalid' => 'onetopic-sectionstyles-window',
+            'modaltitle' => get_string('sectionstylestitle', 'format_onetopic'),
             'showtabicon' => false,
             'showresourcelayout' => true,
             'resourcelayouts' => \format_onetopic::get_resourcelayouts(),
         ];
-        $element = $OUTPUT->render_from_template('format_onetopic/formelement_subsectionstyles', $context);
+        $element = $OUTPUT->render_from_template('format_onetopic/formelement_sectionstyles', $context);
 
-        $PAGE->requires->js_call_amd('format_onetopic/subsectionstyles', 'init');
+        $PAGE->requires->js_call_amd('format_onetopic/sectionstyles', 'init');
 
         return $element;
     }

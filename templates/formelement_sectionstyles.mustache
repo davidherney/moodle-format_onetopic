@@ -1,0 +1,77 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_onetopic/formelement_sectionstyles
+
+    Form element template for section content styles.
+    Used in subsection editing to set content styles (resource layout).
+
+    Context variables required for this template:
+    * name - form element name
+    * id - element id
+    * value - element value
+    * sampleactivities - array of activity objects with modname, iconclass, icon, label
+
+    Example context (json):
+    {
+        "name": "sectionstyles",
+        "id": "sectionstyles0",
+        "value": "",
+        "cssunits": [
+            { "value": "px", "label": "px" }
+        ],
+        "csssizeoptions": [ "8", "10", "12" ],
+        "colorpicker": "",
+        "modalid": "onetopic-sectionstyles-window",
+        "modaltitle": "Configure content styles",
+        "showtabicon": false,
+        "showresourcelayout": true,
+        "testingmode": true,
+        "sampleactivities": [
+            { "modname": "forum", "iconclass": "collaboration", "icon": "<i class=\"icon\"></i>", "label": "Discussion forum" },
+            { "modname": "page", "iconclass": "content", "icon": "<i class=\"icon\"></i>", "label": "Content page" },
+            { "modname": "quiz", "iconclass": "assessment", "icon": "<i class=\"icon\"></i>", "label": "Assessment quiz" }
+        ]
+    }
+}}
+<div id="onetopic-sectionstyles" class="form-text defaultsnext format-onetopic">
+    <div id="sectionstyles-tree-start">
+    {{!
+        Input to save the configured styles.
+    }}
+        <textarea name="{{name}}" id="{{id}}" class="savecontrol hidden">{{value}}</textarea>
+
+        <div class="sectionstyleset-buttons">
+            <button id="sectionstylesetdefault" class="btn btn-secondary">{{#str}} sectionstylesetdefault, format_onetopic {{/str}}</button>
+            <button id="sectionstyleclear" class="btn btn-warning">{{#str}} tabstyleclear, format_onetopic {{/str}}</button>
+        </div>
+
+        <div class="sectionstyles-content-preview">
+            <ul class="p-0">
+                <li class="section course-section main clearfix" style="list-style:none;">
+                    <div class="section-item sectionstyles-preview-container">
+                        <div class="content course-content-item-content show">
+                            {{> format_onetopic/formelement_sampleactivities}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        {{> format_onetopic/formelement_stylesmodal}}
+    </div>
+</div>

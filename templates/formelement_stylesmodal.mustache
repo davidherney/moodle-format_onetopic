@@ -156,25 +156,25 @@
             </div>
         </fieldset>
     </div>
-    {{#showresourcelayout}}
-    <div class="form-group">
-        <fieldset>
-            <legend>{{#str}} resourcelayout, format_onetopic {{/str}}</legend>
-            <select class="form-control" data-style="resourcelayout" title="{{#str}} resourcelayout, format_onetopic {{/str}}">
-                <option value="">{{#str}} resourcelayout_default, format_onetopic {{/str}}</option>
-                <option value="buttons">{{#str}} resourcelayout_buttons, format_onetopic {{/str}}</option>
-                <option value="cards">{{#str}} resourcelayout_cards, format_onetopic {{/str}}</option>
-                <option value="timeline">{{#str}} resourcelayout_timeline, format_onetopic {{/str}}</option>
-            </select>
-        </fieldset>
-    </div>
-    {{/showresourcelayout}}
     <div class="form-group">
         <fieldset>
             <legend>{{#str}} cssother, format_onetopic {{/str}}</legend>
             <input class="form-control" type="text" data-style="others" placeholder="{{#str}} cssother, format_onetopic {{/str}}" title="{{#str}} cssother, format_onetopic {{/str}}">
         </fieldset>
     </div>
+    {{#showresourcelayout}}
+    <hr>
+    <div class="form-group">
+        <fieldset>
+            <legend>{{#str}} resourcelayout, format_onetopic {{/str}}</legend>
+            <select class="form-control" data-style="resourcelayout" title="{{#str}} resourcelayout, format_onetopic {{/str}}">
+                {{#resourcelayouts}}
+                    <option value="{{key}}">{{label}}</option>
+                {{/resourcelayouts}}
+            </select>
+        </fieldset>
+    </div>
+    {{/showresourcelayout}}
     <div class="buttons-box">
         <button data-action="setstyles" class="btn btn-primary">{{#str}} tabstylesset, format_onetopic {{/str}}</button>
         <button data-action="cancelstyles" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>

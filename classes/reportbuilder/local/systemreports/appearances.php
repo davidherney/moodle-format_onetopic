@@ -34,7 +34,6 @@ use pix_icon;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class appearances extends system_report {
-
     /**
      * Initialise report, we need to set the main table, load our entities and set columns/filters
      */
@@ -49,8 +48,8 @@ class appearances extends system_report {
         // Join user entity for the creator column.
         $userentity = new user();
         $useralias = $userentity->get_table_alias('user');
-        $this->add_entity($userentity
-            ->add_join("LEFT JOIN {user} {$useralias} ON {$useralias}.id = {$entityalias}.userid")
+        $this->add_entity(
+            $userentity->add_join("LEFT JOIN {user} {$useralias} ON {$useralias}.id = {$entityalias}.userid")
         );
 
         // Any columns required by actions should be defined here to ensure they're always available.

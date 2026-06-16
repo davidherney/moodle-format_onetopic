@@ -61,7 +61,12 @@ if (!in_array($type, ['section', 'subsection'])) {
     $type = 'section';
 }
 
-$PAGE->set_url(new moodle_url('/course/format/onetopic/editappearance.php', ['id' => $id, 'courseid' => $courseid, 'type' => $type]));
+$PAGE->set_url(
+    new moodle_url(
+        '/course/format/onetopic/editappearance.php',
+        ['id' => $id, 'courseid' => $courseid, 'type' => $type]
+    )
+);
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_heading($SITE->fullname);
