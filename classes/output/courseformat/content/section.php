@@ -85,6 +85,10 @@ class section extends section_base {
         $this->add_format_data($data, $haspartials, $output);
 
         $data->resourcelayout = appearances::get_resourcelayout($format, $section);
+        $appearancecode = appearances::get_appearance_uniquecode($format, $section);
+        if (!empty($appearancecode)) {
+            $data->appearancecode = $appearancecode;
+        }
         if (isset($data->cmlist) && is_object($data->cmlist)) {
             $template = 'format_onetopic/local/content/section/';
             switch ($data->resourcelayout) {

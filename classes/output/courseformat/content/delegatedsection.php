@@ -75,6 +75,15 @@ class delegatedsection extends delegatedsection_base {
     }
 
     /**
+     * Get the resolved appearance uniquecode for this delegated section.
+     *
+     * @return string The resolved uniquecode, or empty string if none.
+     */
+    public function get_appearance_uniquecode(): string {
+        return \format_onetopic\local\appearances::get_appearance_uniquecode($this->format, $this->section);
+    }
+
+    /**
      * Get the CSS for a specific subsection based on its appearance configuration.
      *
      * @return string The CSS string, or empty if no appearance is configured.

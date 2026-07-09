@@ -135,6 +135,12 @@ class renderer extends section_renderer {
             $data->resourcelayout = $resourcelayout;
         }
 
+        // Add the appearance uniquecode as a CSS class.
+        $appearancecode = $widget->get_appearance_uniquecode();
+        if (!empty($appearancecode)) {
+            $data->appearancecode = $appearancecode;
+        }
+
         // Section-level subsection appearance CSS (specific selector by section ID).
         $subsectioncss = $widget->get_appearance_css();
 

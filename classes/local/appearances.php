@@ -35,6 +35,9 @@ class appearances {
     /** @var array Static cache for computed resource layouts keyed by section id. */
     private static $resourcelayoutcache = [];
 
+    /** @var array Static cache for resolved appearance uniquecodes keyed by section id. */
+    private static $appearancecodecache = [];
+
     /**
      * Get the list of available appearances for a specific section.
      *
@@ -463,6 +466,50 @@ class appearances {
         self::$resourcelayoutcache[$sectionid] = $resourcelayout;
 
         return $resourcelayout;
+    }
+
+    /**
+     * Get the resolved appearance uniquecode for a section, following the cascade:
+     * section > course > site.
+     *
+     * @param \format_onetopic $format The course format instance.
+     * @param \section_info $section The section to resolve the appearance for.
+     * @return string The resolved uniquecode, or empty string if none.
+     */
+    public static function get_appearance_uniquecode(\format_onetopic $format, \section_info $section): string {
+        $sectionid = $section->id;
+
+        if (isset(self::$appearancecodecache[$sectionid])) {
+            return self::$appearancecodecache[$sectionid];
+        }
+
+        $issubsection = !empty($section->component);
+        $course = $format->get_course();
+        $uniquecode = '';
+
+        // 1. Site level.
+        $siteappearancekey = $issubsection ? 'defaultsubsectionsappearance' : 'defaultsectionsappearance';
+        $siteuniquecode = get_config('format_onetopic', $siteappearancekey);
+        if (!empty($siteuniquecode)) {
+            $uniquecode = $siteuniquecode;
+        }
+
+        // 2. Course level.
+        $courseappearanceprop = $issubsection ? 'customappearancesubsection' : 'customappearancesection';
+        if (!empty($course->$courseappearanceprop)) {
+            $uniquecode = $course->$courseappearanceprop;
+        }
+
+        // 3. Section/subsection level appearance.
+        $formatoptions = $format->get_format_options($section);
+        $sectionappearancekey = $issubsection ? 'customappearancebysubsections' : 'customappearancebysections';
+        if (!empty($formatoptions[$sectionappearancekey])) {
+            $uniquecode = $formatoptions[$sectionappearancekey];
+        }
+
+        self::$appearancecodecache[$sectionid] = $uniquecode;
+
+        return $uniquecode;
     }
 
     /**
