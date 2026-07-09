@@ -13,6 +13,7 @@
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
         <FIELD NAME="type" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="section"/>
         <FIELD NAME="configdata" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="resourcelayout" TYPE="char" LENGTH="15" NOTNULL="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
       </FIELDS>

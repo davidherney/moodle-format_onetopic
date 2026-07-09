@@ -104,8 +104,6 @@ class format_onetopic_sectionstyles_form_element extends MoodleQuickForm_textare
             'modalid' => 'onetopic-sectionstyles-window',
             'modaltitle' => get_string('sectionstylestitle', 'format_onetopic'),
             'showtabicon' => false,
-            'showresourcelayout' => true,
-            'resourcelayouts' => \format_onetopic::get_resourcelayouts(),
         ];
         $element = $OUTPUT->render_from_template('format_onetopic/formelement_sectionstyles', $context);
 

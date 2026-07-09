@@ -16,6 +16,8 @@
 
 namespace format_onetopic\local;
 
+use format_onetopic;
+
 /**
  * Class appearances
  *
@@ -109,6 +111,28 @@ class appearances {
         $timemodified = $DB->get_field('format_onetopic_appearances', 'timemodified', ['uniquecode' => $uniquecode]);
 
         return $timemodified ? (int)$timemodified : 0;
+    }
+
+    /**
+     * Get the styles object from an appearance by its uniquecode.
+     *
+     * @param string $uniquecode The appearance unique code.
+     * @return ?string The current resourcelayout or null if not found.
+     */
+    public static function get_resourcelayout_by_uniquecode(string $uniquecode): ?string {
+        global $DB;
+
+        if (empty($uniquecode)) {
+            return null;
+        }
+
+        $resourcelayout = $DB->get_field('format_onetopic_appearances', 'resourcelayout', ['uniquecode' => $uniquecode]);
+
+        if (in_array($resourcelayout, format_onetopic::RESOURCESLAYOUTS)) {
+            return $resourcelayout;
+        }
+
+        return null;
     }
 
     /**
@@ -394,8 +418,7 @@ class appearances {
         $siteappearancekey = $issubsection ? 'defaultsubsectionsappearance' : 'defaultsectionsappearance';
         $siteuniquecode = get_config('format_onetopic', $siteappearancekey);
         if (!empty($siteuniquecode)) {
-            $sitestyles = self::get_styles_by_uniquecode($siteuniquecode);
-            $sitelayout = self::extract_resourcelayout($sitestyles);
+            $sitelayout = self::get_resourcelayout_by_uniquecode($siteuniquecode);
             if ($sitelayout !== null) {
                 $resourcelayout = $sitelayout;
             }
@@ -404,8 +427,7 @@ class appearances {
         // 2. Course level.
         $courseappearanceprop = $issubsection ? 'customappearancesubsection' : 'customappearancesection';
         if (!empty($course->$courseappearanceprop)) {
-            $coursestyles = self::get_styles_by_uniquecode($course->$courseappearanceprop);
-            $courselayout = self::extract_resourcelayout($coursestyles);
+            $courselayout = self::get_resourcelayout_by_uniquecode($course->$courseappearanceprop);
             if ($courselayout !== null) {
                 $resourcelayout = $courselayout;
             }
@@ -415,44 +437,23 @@ class appearances {
         $formatoptions = $format->get_format_options($section);
         $sectionappearancekey = $issubsection ? 'customappearancebysubsections' : 'customappearancebysections';
         if (!empty($formatoptions[$sectionappearancekey])) {
-            $sectionstyles = self::get_styles_by_uniquecode($formatoptions[$sectionappearancekey]);
-            $sectionlayout = self::extract_resourcelayout($sectionstyles);
+            $sectionlayout = self::get_resourcelayout_by_uniquecode($formatoptions[$sectionappearancekey]);
             if ($sectionlayout !== null) {
                 $resourcelayout = $sectionlayout;
             }
         }
 
-        // 4. Inline styles (tabstyles for sections, sectionstyles for subsections).
-        $inlinekey = $issubsection ? 'sectionstyles' : 'tabstyles';
-        if (!empty($formatoptions[$inlinekey])) {
-            $inlinestyles = @json_decode($formatoptions[$inlinekey]);
-            if (is_object($inlinestyles)) {
-                $inlinelayout = self::extract_resourcelayout($inlinestyles);
-                if ($inlinelayout !== null) {
-                    $resourcelayout = $inlinelayout;
-                }
-            }
+        if (!empty($formatoptions[$resourcelayout])) {
+            $resourcelayout = $formatoptions[$resourcelayout];
+        }
+
+        if (!in_array($resourcelayout, format_onetopic::RESOURCESLAYOUTS)) {
+            $resourcelayout = 'default';
         }
 
         self::$resourcelayoutcache[$sectionid] = $resourcelayout;
 
         return $resourcelayout;
-    }
-
-    /**
-     * Extract the resourcelayout value from a styles object.
-     *
-     * @param ?object $styles The styles object.
-     * @return ?string The resource layout value, or null if not found.
-     */
-    private static function extract_resourcelayout(?object $styles): ?string {
-        if ($styles && property_exists($styles, 'default') && is_object($styles->default)
-                && property_exists($styles->default, 'resourcelayout')
-                && $styles->default->resourcelayout !== '') {
-            return $styles->default->resourcelayout;
-        }
-
-        return null;
     }
 
     /**

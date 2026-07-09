@@ -107,9 +107,8 @@ class format_onetopic extends core_courseformat\base {
     /** @var array List of available resource layouts visualizations */
     const RESOURCESLAYOUTS = [
         'default',
-        'buttons',
+        'grid',
         'cards',
-        'timeline',
     ];
 
     /** @var bool If the class was previously instanced, in one execution cycle */
@@ -618,6 +617,10 @@ class format_onetopic extends core_courseformat\base {
                     'default' => '',
                     'type' => PARAM_TEXT,
                 ],
+                'resourcelayout' => [
+                    'default' => 'default',
+                    'type' => PARAM_TEXT,
+                ],
             ];
         }
 
@@ -749,6 +752,13 @@ class format_onetopic extends core_courseformat\base {
                     'element_type' => 'select',
                     'element_attributes' => [$customappearancesubsections],
                 ],
+                'resourcelayout' => [
+                    'label' => get_string('resourcelayout', 'format_onetopic'),
+                    'help' => 'resourcelayout',
+                    'help_component' => 'format_onetopic',
+                    'element_type' => 'select',
+                    'element_attributes' => [self::get_resourcelayouts()],
+                ],
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -824,9 +834,11 @@ class format_onetopic extends core_courseformat\base {
                 }
             }
 
-            if ($onetopicconfig->enablecustomstyles
-                    && empty($onetopicconfig->useoldstylescontrol)
-                    && $mform->elementExists('sectionstyles')) {
+            if (
+                $onetopicconfig->enablecustomstyles
+                && empty($onetopicconfig->useoldstylescontrol)
+                && $mform->elementExists('sectionstyles')
+            ) {
                 $mform->removeElement('sectionstyles');
                 MoodleQuickForm::registerElementType(
                     'sectionstyles',
@@ -887,6 +899,8 @@ class format_onetopic extends core_courseformat\base {
                         $data['customappearancesection'] = '';
                     } else if ($key === 'customappearancesubsection') {
                         $data['customappearancesubsection'] = '';
+                    } else if ($key === 'resourcelayout') {
+                        $data['resourcelayout'] = 'default';
                     }
                 }
             }
@@ -983,6 +997,11 @@ class format_onetopic extends core_courseformat\base {
 
             $sectionformatoptions['customappearancebysubsections'] = [
                 'default' => '',
+                'type' => PARAM_TEXT,
+            ];
+
+            $sectionformatoptions['resourcelayout'] = [
+                'default' => 'default',
                 'type' => PARAM_TEXT,
             ];
         }
@@ -1122,6 +1141,16 @@ class format_onetopic extends core_courseformat\base {
                     'help_component' => 'format_onetopic',
                 ];
             }
+
+            $sectionformatoptionsedit['resourcelayout'] = [
+                'default' => 'default',
+                'type' => PARAM_TEXT,
+                'label' => new lang_string('resourcelayout', 'format_onetopic'),
+                'element_type' => 'select',
+                'element_attributes' => [self::get_resourcelayouts()],
+                'help' => 'resourcelayout',
+                'help_component' => 'format_onetopic',
+            ];
 
             return $sectionformatoptionsedit;
         }
@@ -1379,15 +1408,20 @@ class format_onetopic extends core_courseformat\base {
     /**
      * Returns the list of available resource layouts.
      *
+     * @param bool $singlelist List or key/label object by layout.
      * @return array of arrays with keys 'key' and 'label' for each available resource layout.
      */
-    public static function get_resourcelayouts(): array {
+    public static function get_resourcelayouts($singlelist = true): array {
         $resourcelayouts = [];
         foreach (self::RESOURCESLAYOUTS as $layout) {
-            $resourcelayouts[] = [
-                'key' => $layout,
-                'label' => get_string('resourcelayout_' . $layout, 'format_onetopic'),
-            ];
+            if ($singlelist) {
+                $resourcelayouts[$layout] = get_string('resourcelayout_' . $layout, 'format_onetopic');
+            } else {
+                $resourcelayouts[] = [
+                    'key' => $layout,
+                    'label' => get_string('resourcelayout_' . $layout, 'format_onetopic'),
+                ];
+            }
         }
         return $resourcelayouts;
     }

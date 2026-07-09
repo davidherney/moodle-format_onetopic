@@ -42,6 +42,7 @@ function xmldb_format_onetopic_upgrade($oldversion) {
             $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
             $table->add_field('type', XMLDB_TYPE_CHAR, '15', null, XMLDB_NOTNULL, null, 'section');
             $table->add_field('configdata', XMLDB_TYPE_TEXT, null, null, null, null, null);
+            $table->add_field('resourcelayout', XMLDB_TYPE_CHAR, '15', null, null, null, null);
             $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
             $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
 

@@ -181,7 +181,7 @@ var applyStyles = function() {
 
     // Apply resource layout class to the preview.
     var $contentPreview = $container.find('.sectionstyles-content-preview');
-    $contentPreview.removeClass('layout-buttons layout-cards layout-timeline');
+    $contentPreview.removeClass('layout-grid layout-cards');
 
     if (globalstyles['default'] !== undefined) {
         var styles = globalstyles['default'];
@@ -195,18 +195,12 @@ var applyStyles = function() {
             if (key.indexOf('unit-') === 0) {
                 key = key.replace('unit-', '');
                 units[key] = value;
-            } else if (key == 'resourcelayout') {
-                if (value !== '' && value !== 'default') {
-                    $contentPreview.addClass('layout-' + value);
-                }
             }
         });
 
         stylesarray.forEach(([key, value]) => {
             // Exclude units and special rules.
             if (key.indexOf('unit-') === 0) {
-                return;
-            } else if (key == 'resourcelayout') {
                 return;
             }
 

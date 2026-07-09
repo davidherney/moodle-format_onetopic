@@ -538,7 +538,7 @@
 
 /* Resource layouts*/
 /* Buttons layout */
-.format-onetopic .onetopic .resourcelayout_buttons > ul.section[data-for="cmlist"] {
+.format-onetopic .onetopic .resourcelayout_grid > ul.section[data-for="cmlist"] {
     /* stylelint-disable-next-line declaration-no-important */
     display: flex !important;
     flex-wrap: wrap;
@@ -554,13 +554,11 @@
         border: none;
 
         .activity-item {
-            background-color: var(--primary, #007bff);
             margin: 10px;
+            border: 1px solid #dee2e6;
 
             a,
             .activityname {
-                color: var(--white, #fff);
-
                 &:hover {
                     opacity: 0.9;
                     text-decoration: none;

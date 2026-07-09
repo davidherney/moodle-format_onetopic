@@ -16,11 +16,14 @@
 
 namespace format_onetopic\local\form;
 
+use format_onetopic;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->libdir . '/adminlib.php');
+require_once($CFG->dirroot . '/course/format/onetopic/lib.php');
 
 /**
  * Form for editing an appearance.
@@ -69,6 +72,11 @@ class editappearance_form extends \moodleform {
             $mform->addRule('uniquecode', get_string('required'), 'required');
             $PAGE->requires->js_call_amd('format_onetopic/editappearance', 'init');
         }
+
+        // Resource layouts code field.
+        $options = format_onetopic::get_resourcelayouts();
+        $mform->addElement('select', 'resourcelayout', get_string('resourcelayout', 'format_onetopic'), $options);
+        $mform->addHelpButton('resourcelayout', 'resourcelayout', 'format_onetopic');
 
         // Styles editor based on type.
         if ($data->type === 'subsection') {
@@ -120,6 +128,10 @@ class editappearance_form extends \moodleform {
                     $errors['uniquecode'] = get_string('uniquecodeexists', 'format_onetopic');
                 }
             }
+        }
+
+        if (!in_array($data['resourcelayout'], format_onetopic::RESOURCESLAYOUTS)) {
+            $errors['resourcelayout'] = get_string('resourcelayoutinvalid', 'format_onetopic');
         }
 
         return $errors;

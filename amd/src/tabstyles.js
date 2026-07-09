@@ -384,12 +384,6 @@ var applyStyles = function() {
                     $('#onetopic-tabstyles .tabicon-' + type).html(icon).removeClass('hidden');
                     hasicon = true;
                 }
-            } else if (key == 'resourcelayout') {
-                var $contentPreview = $('#onetopic-tabstyles .onetopic-content-preview');
-                $contentPreview.removeClass('layout-buttons layout-cards layout-timeline');
-                if (value !== '') {
-                    $contentPreview.addClass('layout-' + value);
-                }
             }
         });
 
@@ -403,8 +397,6 @@ var applyStyles = function() {
             if (key.indexOf('unit-') === 0) {
                 return;
             } else if (key == 'tabicon') {
-                return;
-            } else if (key == 'resourcelayout') {
                 return;
             }
 

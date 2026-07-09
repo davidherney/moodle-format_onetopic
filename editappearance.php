@@ -114,6 +114,7 @@ if ($mform->is_cancelled()) {
         $record->name = $data->name;
         // Uniquecode and type are frozen when editing, so keep the existing values.
         $record->configdata = $configdata;
+        $record->resourcelayout = $data->resourcelayout;
         $record->timemodified = $now;
         $DB->update_record('format_onetopic_appearances', $record);
     } else {
@@ -125,6 +126,7 @@ if ($mform->is_cancelled()) {
         $record->uniquecode = $data->uniquecode;
         $record->type = $data->type;
         $record->configdata = $configdata;
+        $record->resourcelayout = $data->resourcelayout;
         $record->timecreated = $now;
         $record->timemodified = $now;
         $DB->insert_record('format_onetopic_appearances', $record);

@@ -130,8 +130,6 @@ class format_onetopic_subsectionstyles_form_element extends MoodleQuickForm_text
             'modalid' => 'onetopic-subsectionstyles-window',
             'modaltitle' => get_string('subsectionstylestitle', 'format_onetopic'),
             'showtabicon' => false,
-            'showresourcelayout' => true,
-            'resourcelayouts' => \format_onetopic::get_resourcelayouts(),
         ];
         $element = $OUTPUT->render_from_template('format_onetopic/formelement_subsectionstyles', $context);
 
