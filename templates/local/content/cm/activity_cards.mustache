@@ -1,0 +1,115 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_onetopic/local/content/cm/activity_cards
+
+    Display the activity content of a cm in card layout.
+}}
+{{#moveicon}} {{{moveicon}}} {{/moveicon}}
+<div class="onetopic-card-activity d-flex flex-column gap-3">
+    <header class="onetopic-card-header flex-column gap-2">
+        {{! Icon + title with core inplace editable behaviour. }}
+        {{#hasname}}
+            {{#cmname}}
+                {{$ core_courseformat/local/content/cm/cmname }}
+                    {{> core_courseformat/local/content/cm/cmname }}
+                {{/ core_courseformat/local/content/cm/cmname }}
+            {{/cmname}}
+        {{/hasname}}
+
+        <div class="onetopic-card-meta d-flex flex-wrap align-items-center gap-2">
+            {{$ core_courseformat/local/content/cm/badges }}
+                {{> core_courseformat/local/content/cm/badges }}
+            {{/ core_courseformat/local/content/cm/badges }}
+
+            {{#groupmodeinfo}}
+                <div class="activity-groupmode-info" data-region="groupmode">
+                    {{$ core_courseformat/local/content/cm/groupmode}}
+                        {{> core_courseformat/local/content/cm/groupmode}}
+                    {{/ core_courseformat/local/content/cm/groupmode}}
+                </div>
+            {{/groupmodeinfo}}
+        </div>
+    </header>
+
+    {{#dates}}
+        {{#hasdates}}
+            <div data-region="activity-dates" class="activity-dates onetopic-card-dates">
+                {{#activitydates}}
+                    {{$core_course/activity_date}}
+                        {{>core_course/activity_date}}
+                    {{/core_course/activity_date}}
+                {{/activitydates}}
+            </div>
+        {{/hasdates}}
+    {{/dates}}
+
+    {{! Description section. }}
+    {{#altcontent}}
+        <section class="onetopic-card-section onetopic-card-description">
+            <div class="onetopic-card-section-label">{{#str}}description{{/str}}</div>
+            <div class="activity-altcontent text-break {{#hasname}}activity-description{{/hasname}}">
+                {{{altcontent}}}
+            </div>
+        </section>
+    {{/altcontent}}
+
+    {{! Restriction section. }}
+    {{#modavailability}}
+        {{#hasmodavailability}}
+            <section class="onetopic-card-section onetopic-card-restrictions">
+                <div class="onetopic-card-section-label">{{#str}}availability, core{{/str}}</div>
+                {{$ core_courseformat/local/content/cm/availability }}
+                    {{> core_courseformat/local/content/cm/availability }}
+                {{/ core_courseformat/local/content/cm/availability }}
+            </section>
+        {{/hasmodavailability}}
+    {{/modavailability}}
+
+    {{! Completion actions section. }}
+    {{#completion}}
+        {{#hascompletion}}
+            {{#uservisible}}
+                <section class="onetopic-card-section onetopic-card-completion">
+                    <div class="onetopic-card-section-label">{{#str}}activitycompletion, completion{{/str}}</div>
+                    <div class="activity-completion">
+                        {{$ core_courseformat/local/content/cm/activity_info}}
+                            {{> core_courseformat/local/content/cm/activity_info}}
+                        {{/ core_courseformat/local/content/cm/activity_info}}
+                    </div>
+                </section>
+            {{/uservisible}}
+        {{/hascompletion}}
+    {{/completion}}
+
+    {{#afterlink}}
+        <div class="activity-afterlink afterlink d-flex align-items-center onetopic-card-afterlink">
+            {{{afterlink}}}
+        </div>
+    {{/afterlink}}
+
+    {{! Editing actions at the end to avoid shrinking header content. }}
+    {{#controlmenu}}
+        <footer class="onetopic-card-footer d-flex justify-content-end">
+            <div class="activity-actions bulk-hidden">
+                {{$ core_courseformat/local/content/cm/controlmenu }}
+                    {{> core_courseformat/local/content/cm/controlmenu }}
+                {{/ core_courseformat/local/content/cm/controlmenu }}
+            </div>
+        </footer>
+    {{/controlmenu}}
+</div>
