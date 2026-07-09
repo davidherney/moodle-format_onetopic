@@ -214,6 +214,12 @@ var applyStyles = function() {
             }
         });
         csscontent += '}';
+
+        if (styles['color'] !== undefined) {
+            csscontent += '#onetopic-subsectionstyles .subsection-preview-container .activityname a,';
+            csscontent += '#onetopic-subsectionstyles .subsection-preview-container .sectionname a';
+            csscontent += '{color:' + styles['color'] + ';}';
+        }
     }
 
     var $stylecontainer = $container.find('style');

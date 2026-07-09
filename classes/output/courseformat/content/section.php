@@ -26,6 +26,7 @@ namespace format_onetopic\output\courseformat\content;
 
 use core_courseformat\base as course_format;
 use core_courseformat\output\local\content\section as section_base;
+use format_onetopic\local\appearances;
 use stdClass;
 
 /**
@@ -82,6 +83,25 @@ class section extends section_base {
         $haspartials['header'] = $this->add_header_data($data, $output);
         $haspartials['cm'] = $this->add_cm_data($data, $output);
         $this->add_format_data($data, $haspartials, $output);
+
+        $data->resourcelayout = appearances::get_resourcelayout($format, $section);
+        if (isset($data->cmlist) && is_object($data->cmlist)) {
+            $template = 'format_onetopic/local/content/section/';
+            switch ($data->resourcelayout) {
+                case 'grid':
+                case 'cards':
+                    $template .= 'cmlist_' . $data->resourcelayout;
+                    break;
+                default:
+                    $template .= 'cmlist_default';
+            }
+            $data->cmlisthtml = $output->render_from_template(
+                $template,
+                $data->cmlist
+            );
+        } else {
+            $data->cmlisthtml = '';
+        }
 
         if (!$this->insection) {
             $data->contentcollapsed = false;

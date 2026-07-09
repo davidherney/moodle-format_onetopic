@@ -25,6 +25,7 @@
 namespace format_onetopic\output\courseformat\content\section;
 
 use core_courseformat\output\local\content\section\cmlist as cmlist_base;
+use format_onetopic\local\appearances;
 use stdClass;
 
 /**
@@ -52,6 +53,8 @@ class cmlist extends cmlist_base {
 
         $data = new stdClass();
         $data->cms = [];
+        $data->resourcelayout = appearances::get_resourcelayout($format, $section);
+        $data->layoutclass = 'resourcelayout_' . $data->resourcelayout;
 
         // By default, non-ajax controls are disabled but in some places like the frontpage
         // it is necessary to display them. This is a temporal solution while JS is still

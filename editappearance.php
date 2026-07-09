@@ -23,6 +23,7 @@
  */
 
 require('../../../config.php');
+require_once($CFG->dirroot . '/course/format/onetopic/lib.php');
 
 require_login();
 
@@ -79,11 +80,15 @@ $formdata = new stdClass();
 $formdata->id = $id;
 $formdata->courseid = $courseid;
 $formdata->type = $type;
+$formdata->resourcelayout = 'default';
 
 if ($appearance) {
     $formdata->name = $appearance->name;
     $formdata->uniquecode = $appearance->uniquecode;
     $formdata->configdata = $appearance->configdata;
+    if (in_array($appearance->resourcelayout, \format_onetopic::RESOURCESLAYOUTS)) {
+        $formdata->resourcelayout = $appearance->resourcelayout;
+    }
 
     $configdata = json_decode($appearance->configdata);
     // Pass only the styles part as the tabstyles value.

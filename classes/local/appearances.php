@@ -466,6 +466,20 @@ class appearances {
     }
 
     /**
+     * Get the mustache template used to render a resource layout list.
+     *
+     * @param string $resourcelayout The resource layout key.
+     * @return string The mustache template name.
+     */
+    public static function get_resourcelayout_template(string $resourcelayout): string {
+        if (!in_array($resourcelayout, format_onetopic::RESOURCESLAYOUTS)) {
+            $resourcelayout = 'default';
+        }
+
+        return 'format_onetopic/local/content/section/cmlist_' . $resourcelayout;
+    }
+
+    /**
      * Sanitize CSS content by removing HTML tags.
      *
      * @param string $css The CSS string to sanitize.
