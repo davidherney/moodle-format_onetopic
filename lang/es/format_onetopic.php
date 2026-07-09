@@ -229,6 +229,6 @@ $string['samplepage'] = 'Página de contenido';
 $string['samplequiz'] = 'Cuestionario de evaluación';
 $string['resourcelayout'] = 'Disposición de recursos';
 $string['resourcelayout_default'] = 'Por defecto';
-$string['resourcelayout_grid'] = 'Matriz';
+$string['resourcelayout_inline'] = 'En línea';
 $string['resourcelayout_cards'] = 'Tarjetas';
 $string['contentstylestitle'] = 'Estilos de contenido';

@@ -247,6 +247,7 @@ class header implements \core\output\renderable, \core\output\templatable {
         $PAGE->requires->js('/course/format/onetopic/format.js');
         $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
         $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);
+        $PAGE->requires->js_call_amd('format_onetopic/inlinetruncate', 'init');
 
         return $data;
     }

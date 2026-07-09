@@ -88,7 +88,7 @@ class section extends section_base {
         if (isset($data->cmlist) && is_object($data->cmlist)) {
             $template = 'format_onetopic/local/content/section/';
             switch ($data->resourcelayout) {
-                case 'grid':
+                case 'inline':
                 case 'cards':
                     $template .= 'cmlist_' . $data->resourcelayout;
                     break;

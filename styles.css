@@ -537,8 +537,18 @@
 }
 
 /* Resource layouts*/
+.format-onetopic .onetopic .subsection.modtype_subsection {
+    .course-section-header {
+        .sectionname {
+            a {
+                pointer-events: none;
+            }
+        }
+    }
+}
+
 /* Buttons layout */
-.format-onetopic .onetopic .resourcelayout_grid > ul.section[data-for="cmlist"] {
+.format-onetopic .onetopic .resourcelayout_inline > ul.section[data-for="cmlist"] {
     /* stylelint-disable-next-line declaration-no-important */
     display: flex !important;
     flex-wrap: wrap;
@@ -556,6 +566,7 @@
         .activity-item {
             margin: 10px;
             border: 1px solid #dee2e6;
+            display: flex;
 
             a,
             .activityname {
@@ -566,6 +577,37 @@
             }
         }
     }
+}
+
+/* Inline layout: hide description and availability (replaced by modal icons via JS) */
+.format-onetopic .onetopic .resourcelayout_inline .activity-altcontent,
+.format-onetopic .onetopic .resourcelayout_inline .activity-availability {
+    display: none;
+}
+
+/* Inline layout: modal icons for description and availability */
+.format-onetopic .onetopic .resourcelayout_inline .onetopic-inline-icons {
+    display: inline-flex;
+    gap: 0.3rem;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.format-onetopic .onetopic .resourcelayout_inline .onetopic-inline-modal-icon {
+    line-height: 1;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+    padding: 0;
+
+    .icon {
+        margin: 0;
+    }
+}
+
+.format-onetopic .onetopic .resourcelayout_inline .onetopic-inline-modal-icon:hover,
+.format-onetopic .onetopic .resourcelayout_inline .onetopic-inline-modal-icon:focus {
+    opacity: 1;
+    text-decoration: none;
 }
 
 .format-onetopic .onetopic .resourcelayout_cards > ul.section[data-for="cmlist"] {

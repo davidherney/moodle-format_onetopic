@@ -284,11 +284,11 @@ $string['samplepage'] = 'Content page';
 $string['samplequiz'] = 'Assessment quiz';
 $string['resourcelayout'] = 'Resource layout';
 $string['resourcelayout_default'] = 'Default';
-$string['resourcelayout_grid'] = 'Grid';
+$string['resourcelayout_inline'] = 'Inline';
 $string['resourcelayout_cards'] = 'Cards';
 $string['contentstylestitle'] = 'Content styles';
 $string['resourcelayout_help'] = 'Resources are displayed:<br>
 <b>Default:</b> as usually<br>
-<b>Grid:</b> horizontally and vertically<br>
+<b>Inline:</b> horizontally and vertically<br>
 <b>Card:</b> single card';
 $string['resourcelayoutinvalid'] = 'The layout is invalid';

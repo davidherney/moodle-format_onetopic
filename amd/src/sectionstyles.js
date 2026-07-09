@@ -181,7 +181,7 @@ var applyStyles = function() {
 
     // Apply resource layout class to the preview.
     var $contentPreview = $container.find('.sectionstyles-content-preview');
-    $contentPreview.removeClass('layout-grid layout-cards');
+    $contentPreview.removeClass('layout-inline layout-cards');
 
     if (globalstyles['default'] !== undefined) {
         var styles = globalstyles['default'];

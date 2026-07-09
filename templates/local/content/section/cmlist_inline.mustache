@@ -15,14 +15,14 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/local/content/section/cmlist_grid
+    @template format_onetopic/local/content/section/cmlist_inline
 
-    Grid resource list layout.
+    Inline resource list layout.
 }}
 {{#showmovehere}}
 <p>{{movingstr}} (<a href="{{{cancelcopyurl}}}">{{#str}} cancel {{/str}}</a>)</p>
 {{/showmovehere}}
-<ul class="section m-0 p-0 img-text onetopic-cmlist-grid {{#hascms}} d-block {{/hascms}}" data-for="cmlist">
+<ul class="section m-0 p-0 img-text onetopic-cmlist-inline {{#hascms}} d-block {{/hascms}}" data-for="cmlist">
 {{#cms}}
     {{#showmovehere}}
     <li class="movehere">
@@ -30,7 +30,7 @@
     </li>
     {{/showmovehere}}
     {{#cmitem}}
-        {{> format_onetopic/local/content/section/cmitem_grid }}
+        {{> format_onetopic/local/content/section/cmitem_inline }}
     {{/cmitem}}
 {{/cms}}
 {{#showmovehere}}

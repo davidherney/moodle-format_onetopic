@@ -107,7 +107,7 @@ class format_onetopic extends core_courseformat\base {
     /** @var array List of available resource layouts visualizations */
     const RESOURCESLAYOUTS = [
         'default',
-        'grid',
+        'inline',
         'cards',
     ];
 
