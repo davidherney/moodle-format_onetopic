@@ -276,15 +276,8 @@ class appearances {
      * @return string The generated CSS string.
      */
     public static function generate_subsection_generic_css(object $styles): string {
-        if (!property_exists($styles, 'default') || !is_object($styles->default)) {
-            return '';
-        }
-
         $selector = '.format-onetopic .activity.subsection .section.course-section .section-item';
-
-        return self::sanitize_css(
-            $selector . '{' . self::build_declarations($styles->default) . '} '
-        );
+        return self::build_subsection_css($styles, $selector);
     }
 
     /**
@@ -297,15 +290,31 @@ class appearances {
      * @return string The generated CSS string.
      */
     public static function generate_subsection_css(object $styles, int $sectionid): string {
+        $selector = '.format-onetopic .activity.subsection .section.course-section[data-id="' . $sectionid . '"] .section-item';
+        return self::build_subsection_css($styles, $selector);
+    }
+
+    /**
+     * Build CSS for a subsection given a base selector.
+     *
+     * @param object $styles The styles object.
+     * @param string $selector The CSS selector to apply styles to.
+     * @return string The generated CSS string.
+     */
+    private static function build_subsection_css(object $styles, string $selector): string {
         if (!property_exists($styles, 'default') || !is_object($styles->default)) {
             return '';
         }
 
-        $selector = '.format-onetopic .activity.subsection .section.course-section[data-id="' . $sectionid . '"] .section-item';
+        $declarations = self::build_declarations($styles->default);
+        $css = $selector . '{' . $declarations . '} ';
 
-        return self::sanitize_css(
-            $selector . '{' . self::build_declarations($styles->default) . '} '
-        );
+        if (property_exists($styles->default, 'color')) {
+            $linkselector = $selector . ' .activityname a, ' . $selector . ' .sectionname a';
+            $css .= $linkselector . '{color:' . $styles->default->color . ';} ';
+        }
+
+        return self::sanitize_css($css);
     }
 
     /**
