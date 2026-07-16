@@ -537,7 +537,7 @@
 }
 
 /* Resource layouts*/
-.format-onetopic .onetopic .subsection.modtype_subsection {
+.format-onetopic:not(.editing) .onetopic .subsection.modtype_subsection {
     .course-section-header {
         .sectionname {
             a {
