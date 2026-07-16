@@ -57,6 +57,7 @@ $string['cli_migratestylesstart'] = 'Starting styles migration...';
 $string['cli_migratestylesstarttitle'] = 'Styles migration...';
 $string['colorpicker'] = 'Color picker';
 $string['colorpicker_help'] = '';
+$string['contentstylestitle'] = 'Content styles';
 $string['coursedisplay'] = 'Visualization mode of section 0';
 $string['coursedisplay_help'] = 'This define as display the section 0: as a first tab or as section before the tabs bar.';
 $string['coursedisplay_multi'] = 'Before the tabs';
@@ -169,6 +170,21 @@ $string['page-course-view-topics-x'] = 'Any course page in onetopic format';
 $string['plugin_description'] = 'Course sections are displayed separately in tabs.';
 $string['pluginname'] = 'Onetopic format';
 $string['privacy:metadata'] = 'The Onetopic format plugin does not store any personal data.';
+$string['resourcelayout'] = 'Resource layout';
+$string['resourcelayout_cards'] = 'Cards';
+$string['resourcelayout_default'] = 'Default';
+$string['resourcelayout_help'] = 'Resources are displayed:<br>
+<b>Default:</b> as usually<br>
+<b>Inline:</b> horizontally and vertically<br>
+<b>Card:</b> single card';
+$string['resourcelayout_inline'] = 'Inline';
+$string['resourcelayoutinvalid'] = 'The layout is invalid';
+$string['sampleactivity'] = 'Sample activity';
+$string['sampleforum'] = 'Discussion forum';
+$string['samplepage'] = 'Content page';
+$string['samplequiz'] = 'Assessment quiz';
+$string['sampleresource'] = 'Sample resource';
+$string['samplesubsection'] = 'Subsection';
 $string['scope'] = 'Scope';
 $string['scope_mod'] = 'Modules';
 $string['scope_scorm'] = 'SCORM Player';
@@ -179,13 +195,13 @@ $string['sectionsnavigation_not'] = 'Not use';
 $string['sectionsnavigation_sitelevel'] = 'Use the default site value';
 $string['sectionsnavigation_slides'] = 'Like slides';
 $string['sectionsnavigation_support'] = 'Only if theme not support the "uses course index" feature';
-$string['selectcolor'] = 'Select color';
-$string['setcolor'] = 'Set color';
-$string['settingsheaderdefault'] = 'Default course settings';
 $string['sectionstyles'] = 'Content styles';
 $string['sectionstyles_help'] = 'Set the content styles for the section, such as the resource layout.';
 $string['sectionstylesetdefault'] = 'Set Content styles';
 $string['sectionstylestitle'] = 'Content styles';
+$string['selectcolor'] = 'Select color';
+$string['setcolor'] = 'Set color';
+$string['settingsheaderdefault'] = 'Default course settings';
 $string['settingsheaderstyles'] = 'Default tabs styles';
 $string['showfromothers'] = 'Show topic';
 $string['subsection'] = 'Subsection';
@@ -276,19 +292,3 @@ $string['duplicating'] = 'Duplicating';
 $string['progress_counter'] = 'Duplicating activities ({$a->current}/{$a->size})';
 $string['progress_full'] = 'Duplicating topic';
 $string['rebuild_course_cache'] = 'Rebuild course cache';
-$string['sampleresource'] = 'Sample resource';
-$string['sampleactivity'] = 'Sample activity';
-$string['samplesubsection'] = 'Subsection';
-$string['sampleforum'] = 'Discussion forum';
-$string['samplepage'] = 'Content page';
-$string['samplequiz'] = 'Assessment quiz';
-$string['resourcelayout'] = 'Resource layout';
-$string['resourcelayout_default'] = 'Default';
-$string['resourcelayout_inline'] = 'Inline';
-$string['resourcelayout_cards'] = 'Cards';
-$string['contentstylestitle'] = 'Content styles';
-$string['resourcelayout_help'] = 'Resources are displayed:<br>
-<b>Default:</b> as usually<br>
-<b>Inline:</b> horizontally and vertically<br>
-<b>Card:</b> single card';
-$string['resourcelayoutinvalid'] = 'The layout is invalid';

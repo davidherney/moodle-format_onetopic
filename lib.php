@@ -830,7 +830,6 @@ class format_onetopic extends core_courseformat\base {
 
                         $elements[] = $element;
                     }
-
                 }
             }
 

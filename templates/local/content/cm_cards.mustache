@@ -18,6 +18,40 @@
     @template format_onetopic/local/content/cm_cards
 
     Cards-specific wrapper for a course module instance.
+
+    Example context (json):
+    {
+        "editing": true,
+        "activitychooserbutton": true,
+        "activityname": "Activity example",
+        "modstealth": false,
+        "modhiddenfromstudents": false,
+        "modinline": false,
+        "cmbulk": true,
+        "moveicon": "<i class=\"icon fa fa-arrows\" aria-hidden=\"true\"></i>",
+        "hasname": true,
+        "cmname": {
+            "displayvalue": "<a class=\"aalink\" href=\"#\"><span class=\"instancename\">Activity example</span></a>"
+        },
+        "groupmodeinfo": true,
+        "dates": true,
+        "hasdates": true,
+        "activitydates": [
+            {
+                "label": "Opens:",
+                "datestring": "6 April 2021, 6:46 PM"
+            }
+        ],
+        "altcontent": "<p>Activity description example.</p>",
+        "modavailability": true,
+        "hasmodavailability": true,
+        "completion": true,
+        "hascompletion": true,
+        "uservisible": true,
+        "afterlink": "<span class=\"badge badge-primary\">30 unread messages</span>",
+        "controlmenu": true
+    }
+
 }}
 {{#editing}}
     {{< core_courseformat/local/content/divider}}
