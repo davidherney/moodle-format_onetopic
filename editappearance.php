@@ -93,7 +93,7 @@ if ($appearance) {
     $configdata = json_decode($appearance->configdata);
     // Pass only the styles part as the tabstyles value.
     if (is_object($configdata) && property_exists($configdata, 'styles')) {
-        $formdata->configdata = json_encode($configdata->styles);
+        $formdata->configdata = is_object($configdata->styles) ? json_encode($configdata->styles) : '';
     }
 }
 
