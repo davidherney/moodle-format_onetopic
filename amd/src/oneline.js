@@ -29,13 +29,16 @@ import $ from 'jquery';
  * @method load
  * @param {object} icons A list of usable icons: left arrow, right arrow.
  */
- export const load = (icons) => {
+export const load = (icons) => {
 
     $('.format-onetopic .onelinetabs .tabs-wrapper').each(function() {
 
         var $container = $(this);
 
         var $menu = $container.find('> ul.nav.nav-tabs');
+
+        // Ensure smooth scroll behavior for touch devices (replaces deprecated -webkit-overflow-scrolling).
+        $menu.css('scroll-behavior', 'smooth');
 
         var itemsLength = $menu.find('> li.nav-item').length;
         var itemSize = $menu.find('> li.nav-item').outerWidth(true);
