@@ -23,7 +23,8 @@
 
 import * as OneLine from 'format_onetopic/oneline';
 import $ from 'jquery';
-import ModalFactory from 'core/modal_factory';
+import Modal from 'core/modal';
+import Notification from 'core/notification';
 import {get_string as getString} from 'core/str';
 
 /**
@@ -59,10 +60,10 @@ export const init = (formattype, icons) => {
             }
 
             // Show the content in a modal window.
-            ModalFactory.create({
+            Modal.create({
                 'title': title,
                 'body': '',
-            }).done(function(modal) {
+            }).then(function(modal) {
 
                 var contenthtml = $content.html();
 
@@ -76,7 +77,8 @@ export const init = (formattype, icons) => {
                 $modalBody.append(contenthtml);
                 modal.show();
                 $content.data('modal', modal);
-            });
+                return modal;
+            }).catch(Notification.exception);
         });
     });
 };
