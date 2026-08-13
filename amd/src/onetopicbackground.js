@@ -21,9 +21,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import $ from 'jquery';
-import ModalFactory from 'core/modal_factory';
 import ModalSaveCancel from 'core/modal_save_cancel';
 import ModalEvents from 'core/modal_events';
+import Notification from 'core/notification';
 
 /**
  * Component initialization.
@@ -76,20 +76,6 @@ export const init = (controlid) => {
         });
     };
 
-    ModalFactory.create({
-        'title': title,
-        'body': $controlwindow,
-        'type': ModalSaveCancel.TYPE,
-        'large': true,
-        'buttons': buttons
-    })
-    .done(function(modal) {
-        var $modalBody = modal.getBody();
-        $modalBody.append($controlwindow);
-        $control.data('modal', modal);
-        setEvents(modal);
-    });
-
     // Color picker control.
     $controlbutton.on('click', function(e) {
         e.preventDefault();
@@ -101,6 +87,20 @@ export const init = (controlid) => {
         $colorpickerinput.val(color);
         $control.data('modal').show();
     });
+
+    return ModalSaveCancel.create({
+        'title': title,
+        'body': $controlwindow,
+        'large': true,
+        'buttons': buttons
+    })
+    .then(function(modal) {
+        const $modalBody = modal.getBody();
+        $modalBody.append($controlwindow);
+        $control.data('modal', modal);
+        setEvents(modal);
+        return modal;
+    }).catch(Notification.exception);
 
 };
 

@@ -21,7 +21,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import $ from 'jquery';
-import ModalFactory from 'core/modal_factory';
+import Modal from 'core/modal';
+import Notification from 'core/notification';
 
 var $tabstyles = null;
 var $styleswindow = null;
@@ -141,15 +142,16 @@ export const init = () => {
     var title = $styleswindow.data('title');
 
     // Initialize the modal window.
-    ModalFactory.create({
+    const modalPromise = Modal.create({
         'title': title,
         'body': ''
-    }).done(function(modal) {
+    }).then(function(modal) {
         var $modalBody = modal.getBody();
         $styleswindow.show();
         $modalBody.append($styleswindow);
         $styleswindow.data('modal', modal);
-    });
+        return modal;
+    }).catch(Notification.exception);
 
     // Save the styles.
     $styleswindow.find('[data-action="cancelstyles"]').on('click', function() {
@@ -239,6 +241,8 @@ export const init = () => {
             }
         });
     });
+
+    return modalPromise;
 
 };
 
