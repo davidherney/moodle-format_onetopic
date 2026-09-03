@@ -98,8 +98,6 @@
 .format-onetopic .verticaltabs > .tabs-wrapper {
     width: 250px;
     border-bottom: none;
-    position: sticky;
-    top: calc(var(--navbar-height, 60px) + 1px);
     z-index: 3;
 }
 
@@ -571,9 +569,6 @@
 
 @media (min-width: 601px) {
     .format-onetopic .verticaltabs .onetopic-tab-body .format_onetopic-tabs {
-        position: sticky;
-        top: calc(var(--navbar-height, 60px) + 1px);
-        z-index: 2;
         background-color: var(--white, #fff);
         outline: 5px solid var(--white, #fff);
     }
@@ -587,8 +582,7 @@
 
 @media (max-width: 600px) {
     .format-onetopic .tabs-wrapper {
-        position: sticky;
-        top: calc(var(--navbar-height, 60px) + 2px);
+        position: relative;
         z-index: 3;
         display: flex;
         flex-wrap: wrap;
@@ -706,8 +700,6 @@
     }
 
     .format-onetopic .onetopic-tab-body .format_onetopic-tabs {
-        position: sticky;
-        top: calc(var(--navbar-height, 60px) + 51px);
         z-index: 2;
         background-color: var(--bglight, #e9ecef);
         padding: 5px;
