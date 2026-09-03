@@ -182,7 +182,7 @@ if (empty($customstyles)) {
 
         $cssstyles = [];
         foreach ($section->styles as $style) {
-            $cssstyles[] = $style->name . ': ' . $style->value;
+            $cssstyles[] = format_string($style->name . ': ' . $style->value);
         }
 
         $newdefined = isset($stylesnew[$sectionid]);
@@ -201,7 +201,7 @@ if (empty($customstyles)) {
         }
 
         $table->data[] = [
-            $section->coursename,
+            format_string($section->coursename),
             $sectionlink,
             implode(', ', $cssstyles),
             $newdefined ? get_string('no') : get_string('yes'),
