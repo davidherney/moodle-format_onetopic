@@ -140,6 +140,7 @@ if ($tomigrate) {
     echo $OUTPUT->notification(get_string('migratestylesdone', 'format_onetopic'), 'success');
     echo $OUTPUT->continue_button(new \core\url('/course/format/onetopic/migratestyles.php'));
     echo $OUTPUT->footer();
+    exit;
 }
 
 echo $OUTPUT->heading(get_string('migratestyles', 'format_onetopic'));
@@ -182,7 +183,7 @@ if (empty($customstyles)) {
 
         $cssstyles = [];
         foreach ($section->styles as $style) {
-            $cssstyles[] = format_string($style->name . ': ' . $style->value);
+            $cssstyles[] = s($style->name . ': ' . $style->value);
         }
 
         $newdefined = isset($stylesnew[$sectionid]);

@@ -16,6 +16,9 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ## IN VERSION
 
+### 2025051101:
+* Improved security when migrating legacy styles.
+
 ### 2025051100:
 * Separate version for compatibility changes from 4.5
 
