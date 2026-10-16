@@ -387,7 +387,13 @@ var applyStyles = function() {
         $stylecontainer.remove();
     }
 
-    $stylecontainer = $('<style type="text/css">' + csscontent + '</style>');
-    $tabstyles.append($stylecontainer);
+    // Clean the CSS for html tags (same approach as styles.php / header.php).
+    // Avoid building the <style> node from an HTML string so payloads in "others"
+    // cannot break out of the element (e.g. </style><img onerror=...>).
+    csscontent = csscontent.replace(/<[^>]*>/g, '');
 
+    var styleel = document.createElement('style');
+    styleel.type = 'text/css';
+    styleel.appendChild(document.createTextNode(csscontent));
+    $tabstyles.append(styleel);
 };
