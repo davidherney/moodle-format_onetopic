@@ -53,15 +53,15 @@
 
     {{^readonly}}
         <div class="tabstyleset-buttons">
-            <button id="tabstylesetdefault" class="btn btn-secondary">{{#str}} tabstylesetdefault, format_onetopic {{/str}}</button>
-            <button id="tabstylesetactive" class="btn btn-secondary">{{#str}} tabstylesetactive, format_onetopic {{/str}}</button>
-            <button id="tabstylesetparent" class="btn btn-secondary">{{#str}} tabstylesetparent, format_onetopic {{/str}}</button>
-            <button id="tabstylesethighlighted" class="btn btn-secondary">{{#str}} tabstylesethighlighted, format_onetopic {{/str}}</button>
-            <button id="tabstylesetdisabled" class="btn btn-secondary">{{#str}} tabstylesetdisabled, format_onetopic {{/str}}</button>
-            <button id="tabstylesethover" class="btn btn-secondary">{{#str}} tabstylesethover, format_onetopic {{/str}}</button>
-            <button id="tabstylesetchilds" class="btn btn-secondary">{{#str}} tabstylesetchilds, format_onetopic {{/str}}</button>
-            <button id="tabstylesetchildindex" class="btn btn-secondary">{{#str}} tabstylesetchildindex, format_onetopic {{/str}}</button>
-            <button id="tabstyleclear" class="btn btn-warning">{{#str}} tabstyleclear, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesetdefault" class="btn btn-secondary">{{#str}} tabstylesetdefault, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesetactive" class="btn btn-secondary">{{#str}} tabstylesetactive, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesetparent" class="btn btn-secondary">{{#str}} tabstylesetparent, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesethighlighted" class="btn btn-secondary">{{#str}} tabstylesethighlighted, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesetdisabled" class="btn btn-secondary">{{#str}} tabstylesetdisabled, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesethover" class="btn btn-secondary">{{#str}} tabstylesethover, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesetchilds" class="btn btn-secondary">{{#str}} tabstylesetchilds, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstylesetchildindex" class="btn btn-secondary">{{#str}} tabstylesetchildindex, format_onetopic {{/str}}</button>
+            <button type="button" id="tabstyleclear" class="btn btn-warning">{{#str}} tabstyleclear, format_onetopic {{/str}}</button>
         </div>
         <p>{{#str}} tabstylebuttons_help, format_onetopic {{/str}}</p>
     {{/readonly}}
@@ -194,14 +194,14 @@
             </fieldset>
         </div>
         <div class="buttons-box">
-            <button data-action="setstyles" class="btn btn-primary">{{#str}} tabstylesset, format_onetopic {{/str}}</button>
-            <button data-action="cancelstyles" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
+            <button type="button" data-action="setstyles" class="btn btn-primary">{{#str}} tabstylesset, format_onetopic {{/str}}</button>
+            <button type="button" data-action="cancelstyles" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
         </div>
         <div class="colorpicker hidden">
             {{{colorpicker}}}
             <div class="buttons-box">
-                <button data-action="setcolor" class="btn btn-primary">{{#str}} ok {{/str}}</button>
-                <button data-action="cancel" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
+                <button type="button" data-action="setcolor" class="btn btn-primary">{{#str}} ok {{/str}}</button>
+                <button type="button" data-action="cancel" class="btn btn-secondary">{{#str}} cancel {{/str}}</button>
             </div>
         </div>
     </div>
