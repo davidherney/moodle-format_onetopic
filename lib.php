@@ -903,6 +903,8 @@ class format_onetopic extends core_courseformat\base {
             $sectionformatoptions['displaymode'] = [
                 'default' => $mode ?? self::SUBSECTIONSDISPLAY_LIST,
                 'type' => PARAM_TEXT,
+                // Used by get_view_url(); omit cachedefault because the site default is not static.
+                'cache' => true,
             ];
 
             $sectionformatoptions['level'] = [
