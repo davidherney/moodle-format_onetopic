@@ -87,7 +87,7 @@
 }}
 {{#collapsemenu}}
     {{^displayonesection}}
-    <div class="flex-fill d-flex justify-content-end mr-2 align-self-start mt-2">
+    <div class="flex-fill d-flex justify-content-end me-2 align-self-start mt-2">
         <a
             id="collapsesections"
             class="section-collapsemenu"
@@ -117,15 +117,17 @@
             {{/ core_courseformat/local/content/section/summary }}
         {{/summary}}
     </div>
-    {{#cmsummary}}
-        {{$ core_courseformat/local/content/section/cmsummary }}
-            {{> core_courseformat/local/content/section/cmsummary }}
-        {{/ core_courseformat/local/content/section/cmsummary }}
-    {{/cmsummary}}
-    {{#cmlist}}
-        {{$ core_courseformat/local/content/section/cmlist }}
-            {{> core_courseformat/local/content/section/cmlist }}
-        {{/ core_courseformat/local/content/section/cmlist }}
-    {{/cmlist}}
-    {{{cmcontrols}}}
+    <div class="section-content-inner">
+        {{#cmsummary}}
+            {{$ core_courseformat/local/content/section/cmsummary }}
+                {{> core_courseformat/local/content/section/cmsummary }}
+            {{/ core_courseformat/local/content/section/cmsummary }}
+        {{/cmsummary}}
+        {{#cmlist}}
+            {{$ core_courseformat/local/content/section/cmlist }}
+                {{> core_courseformat/local/content/section/cmlist }}
+            {{/ core_courseformat/local/content/section/cmlist }}
+        {{/cmlist}}
+        {{{cmcontrols}}}
+    </div>
 </div>

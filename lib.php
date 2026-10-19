@@ -131,9 +131,6 @@ class format_onetopic extends core_courseformat\base {
     /** @var bool If the course has a second row of tabs */
     public $hassecondrow = false;
 
-    /** @var bool If the course is in subsection mode */
-    public $subsectionmode = false;
-
     /**
      * Creates a new instance of class
      *
@@ -399,7 +396,7 @@ class format_onetopic extends core_courseformat\base {
      * @return int|null null for all sections or the sectionid.
      */
     public function get_sectionid(): ?int {
-        return null;
+        return ($this->singlesectionid == null) ? this->get_section(0)->id : $this->singlesectionid;
     }
 
     /**
@@ -449,7 +446,10 @@ class format_onetopic extends core_courseformat\base {
             $pagesection = $this->get_section($options['sr'], IGNORE_MISSING);
         } else {
             $pagesection = $section;
-            if ($pagesection && $pagesection->get_component_instance() && $pagesection->displaymode != 'summary') {
+            if (
+                $pagesection && $pagesection->get_component_instance()
+                && ($this->get_section_display_mode($pagesection) != 'summary')
+            ) {
                 $pagesection = $pagesection->get_component_instance()->get_parent_section();
             }
         }
@@ -1287,10 +1287,28 @@ class format_onetopic extends core_courseformat\base {
      * @return int The current value (COURSE_DISPLAY_MULTIPAGE or COURSE_DISPLAY_SINGLEPAGE)
      */
     public function get_course_display(): int {
-        global $destsection, $move;
+        return COURSE_DISPLAY_MULTIPAGE;
+    }
 
-        // The display is SINGLEPAGE when we move a section, in other case we use the MULTIPAGE.
-        return ($destsection && $move) || $this->subsectionmode ? COURSE_DISPLAY_SINGLEPAGE : COURSE_DISPLAY_MULTIPAGE;
+    /**
+     * Get the display mode of the delegated section.
+     *
+     * @param section_info|stdClass $section
+     * @return string
+     */
+    public function get_section_display_mode(section_info|stdClass $section): string {
+        if (!$section->component) {
+            return '';
+        }
+
+        // Prefer the section_info property.
+        $mode = $section->displaymode;
+
+        if (empty($mode)) {
+            $mode = get_config('format_onetopic', 'defaultsubsectionsdisplay');
+        }
+
+        return $mode ?? self::SUBSECTIONSDISPLAY_LIST;
     }
 }
 

@@ -24,6 +24,7 @@
 
 namespace format_onetopic\output\courseformat\content;
 
+use context_course;
 use core\output\renderer_base;
 use core_courseformat\base as course_format;
 use core_courseformat\output\local\content\section as section_base;
@@ -37,11 +38,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class section extends section_base {
-    /**
-     * @var bool Whether we are rendering a delegated section within other section or not.
-     */
-    public $insection = false;
-
     /** @var course_format the course format */
     protected $format;
 
@@ -57,10 +53,6 @@ class section extends section_base {
         $format = $this->format;
         $course = $format->get_course();
         $section = $this->section;
-
-        if ($section->is_delegated()) {
-            $format->subsectionmode = true;
-        }
 
         $summary = new $this->summaryclass($format, $section);
 
@@ -84,13 +76,45 @@ class section extends section_base {
         $haspartials['cm'] = $this->add_cm_data($data, $output);
         $this->add_format_data($data, $haspartials, $output);
 
-        if (!$this->insection) {
-            $data->contentcollapsed = false;
+        return $data;
+    }
+
+    /**
+     * Add the section editor attributes to the data structure.
+     *
+     * @param stdClass $data the current cm data reference
+     * @param renderer_base $output typically, the renderer that's calling this function
+     * @return bool if the cm has name data
+     */
+    protected function add_editor_data(stdClass &$data, renderer_base $output): bool {
+        $course = $this->format->get_course();
+        $coursecontext = context_course::instance($course->id);
+        $editcaps = [];
+        if (has_capability('moodle/course:sectionvisibility', $coursecontext)) {
+            $editcaps = ['moodle/course:sectionvisibility'];
+        }
+        if (!$this->format->show_editor($editcaps)) {
+            return false;
         }
 
-        $format->subsectionmode = false;
+        // In a single section page the control menu is located in the page header.
+        if (empty($this->hidecontrols)) {
+            $controlmenu = new $this->controlmenuclass($this->format, $this->section);
+            $data->controlmenu = $controlmenu->export_for_template($output);
+        }
+        if (!$this->isstealth) {
+            $data->cmcontrols = $output->section_add_cm_controls($this->format, $this->section);
+        }
+        return true;
+    }
 
-        return $data;
+    /**
+     * Returns true if the current section should be shown collapsed.
+     *
+     * @return bool
+     */
+    protected function is_section_collapsed(): bool {
+        return false;
     }
 
     /**
