@@ -397,6 +397,10 @@ class header implements \core\output\renderable, \core\output\templatable {
                                     $value = $value . 'px';
                                 }
 
+                                // The CSS is printed inside a style element, so no markup delimiters are allowed.
+                                $key = str_replace(['<', '>'], '', $key);
+                                $value = str_replace(['<', '>'], '', $value);
+
                                 if ($key == 'others') {
                                     $onecss .= $value . ';';
                                 } else {
@@ -407,8 +411,7 @@ class header implements \core\output\renderable, \core\output\templatable {
                             $onecss .= '} ';
                         }
 
-                        // Clean the CSS for html tags.
-                        $csstabstyles .= preg_replace('/<[^>]*>/', '', $onecss);
+                        $csstabstyles .= $onecss;
                     }
                 }
 
