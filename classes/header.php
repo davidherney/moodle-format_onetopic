@@ -185,7 +185,9 @@ class header implements \core\output\renderable, \core\output\templatable {
             'hidetabsbar' => ($course->hidetabsbar == 1 && $format->show_editor()),
             'sectionclasses' => '',
             'courseindex' => $courseindex,
-            'cssstyles' => $tabscssstyles,
+            // A raw "<" would end the style element. The CSS escape keeps the character for content.
+            // ">" is valid CSS and is kept.
+            'cssstyles' => str_replace('<', '\\3C ', $tabscssstyles),
             'tabsectionbackground' => $tabsectionbackground,
             'subtabsectionbackground' => $subtabsectionbackground,
         ];
@@ -396,10 +398,6 @@ class header implements \core\output\renderable, \core\output\templatable {
                                     // If the rule need units, apply px by default.
                                     $value = $value . 'px';
                                 }
-
-                                // The CSS is printed inside a style element, so no markup delimiters are allowed.
-                                $key = str_replace(['<', '>'], '', $key);
-                                $value = str_replace(['<', '>'], '', $value);
 
                                 if ($key == 'others') {
                                     $onecss .= $value . ';';

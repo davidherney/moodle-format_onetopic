@@ -28,31 +28,37 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(header::class)]
 final class header_test extends \advanced_testcase {
     /**
-     * Create a course with three sections using the given tabstyles and return the generated CSS.
+     * Create a course with sections using the given tabstyles and return the generated CSS.
      *
-     * @param array $others Value of the "others" rule for each of the three sections.
+     * @param array $others Value of the "others" rule for each section, starting at section 1.
      * @return string The CSS passed to the template.
      */
     private function get_generated_css(array $others): string {
-        global $PAGE;
+        global $DB, $PAGE;
 
         $this->resetAfterTest();
         $this->setAdminUser();
         set_config('enablecustomstyles', 1, 'format_onetopic');
+        set_config('useoldstylescontrol', 0, 'format_onetopic');
 
         $course = $this->getDataGenerator()->create_course(['format' => 'onetopic', 'numsections' => 3]);
-        $format = course_get_format($course);
         foreach ($others as $number => $value) {
             $section = get_fast_modinfo($course)->get_section_info($number + 1);
             $tabstyles = json_encode(['default' => ['others' => $value]]);
-            $format->update_section_format_options(['id' => $section->id, 'tabstyles' => $tabstyles]);
+            // Write directly so the test does not depend on section_format_options() static cache.
+            $DB->insert_record('course_format_options', [
+                'courseid' => $course->id,
+                'format' => 'onetopic',
+                'sectionid' => $section->id,
+                'name' => 'tabstyles',
+                'value' => $tabstyles,
+            ]);
         }
         rebuild_course_cache($course->id, true);
 
         $PAGE->set_url('/course/view.php', ['id' => $course->id]);
         $PAGE->set_course($course);
-        $format = course_get_format($course);
-        $header = new header($format);
+        $header = new header(course_get_format($course));
         $data = $header->export_for_template($PAGE->get_renderer('format_onetopic'));
 
         return $data->cssstyles;
@@ -66,6 +72,8 @@ final class header_test extends \advanced_testcase {
 
         $this->assertStringNotContainsString('<', $css);
         $this->assertStringNotContainsString('</style', $css);
+        $this->assertStringContainsString('>', $css);
+        $this->assertStringContainsString('\\3C ', $css);
     }
 
     /**
@@ -77,5 +85,24 @@ final class header_test extends \advanced_testcase {
         $this->assertStringContainsString('color: red;', $css);
         $this->assertStringContainsString('text-decoration: underline;', $css);
         $this->assertStringContainsString('margin-top: 1px;', $css);
+    }
+
+    /**
+     * Child combinators in others must be kept.
+     */
+    public function test_cssstyles_child_combinator_is_kept(): void {
+        $css = $this->get_generated_css(['.item > .child']);
+
+        $this->assertStringContainsString('.item > .child;', $css);
+    }
+
+    /**
+     * A less-than in content must be CSS-escaped, not left as raw markup.
+     */
+    public function test_cssstyles_content_less_than_is_escaped(): void {
+        $css = $this->get_generated_css(['content: "<"']);
+
+        $this->assertStringNotContainsString('<', $css);
+        $this->assertStringContainsString('content: "\\3C ";', $css);
     }
 }
