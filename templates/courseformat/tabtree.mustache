@@ -47,11 +47,13 @@
           <span class="iconhelp" data-infoid="format_onetopic_winfo_{{uniqueid}}">
             {{#pix}} e/help, core, {{#str}} info {{/str}} {{/pix}}
           </span>
-          <div id="format_onetopic_winfo_{{uniqueid}}" class="availability_info_box" style="display: none;">
-            {{{availablemessage}}}
-          </div>
         {{/availablemessage}}
       </a>
+      {{#availablemessage}}
+        <div id="format_onetopic_winfo_{{uniqueid}}" class="availability_info_box" style="display: none;">
+          {{{availablemessage}}}
+        </div>
+      {{/availablemessage}}
       {{#hassubtabs}}
         {{#haschilds}}
           {{>format_onetopic/courseformat/tabsubtree}}
