@@ -1,6 +1,6 @@
 # COURSE FORMAT Onetopic
 
-Package tested in: moodle 5.1+.
+Package tested in: moodle 5.1+ and 5.2+.
 
 ## QUICK INSTALL
 Download zip package, extract the onetopic folder and upload this folder into course/format/.
@@ -18,6 +18,7 @@ Download zip package, extract the onetopic folder and upload this folder into co
 
 ### 2026040501:
 * New defaultsubsectionsdisplay setting in site level.
+* Compatibility with moodle 5.2
 
 ### 2026040500:
 * Compatibility with moodle 5.1

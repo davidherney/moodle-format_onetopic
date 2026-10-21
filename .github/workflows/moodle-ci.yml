@@ -37,10 +37,15 @@ jobs:
             moodle-branch: 'MOODLE_501_STABLE'
             database: mariadb
             plugin-ci: ^4
-          # Moodle 5.1, PHP 8.2, PostgreSQL
+          # Moodle 5.1, PHP 8.4, PostgreSQL
           - php: '8.4'
             moodle-branch: 'MOODLE_501_STABLE'
             database: pgsql
+            plugin-ci: ^4
+          # Moodle 5.2, PHP 8.4, MariaDB
+          - php: '8.4'
+            moodle-branch: 'MOODLE_502_STABLE'
+            database: mariadb
             plugin-ci: ^4
     steps:
       - name: Check out repository code
