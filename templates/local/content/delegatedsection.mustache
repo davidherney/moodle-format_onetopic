@@ -15,12 +15,16 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_onetopic/local/subsectionmodes/summary
+    @template format_onetopic/local/content/delegatedsection
 
-    Default moodle summary template for subsection mode.
+    Displays a course subsection.
 
     Example context (json):
     {
     }
 }}
-{{> core_courseformat/local/content/delegatedsection }}
+{{< core_courseformat/local/content/delegatedsection }}
+    {{$ core_courseformat/local/content/section/content }}
+        {{> format_onetopic/local/content/section/delegatedcontent}}
+    {{/ core_courseformat/local/content/section/content }}
+{{/ core_courseformat/local/content/delegatedsection}}
