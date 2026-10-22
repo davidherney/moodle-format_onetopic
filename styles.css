@@ -174,8 +174,8 @@
     max-width: 100%;
     height: 40px;
     margin: 0 auto;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden;
+    -webkit-transform: translateZ(0);
 }
 
 .format-onetopic .onelinetabs .onetopic-tab-body {
@@ -193,8 +193,14 @@
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
     flex-wrap: nowrap;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    -webkit-transform: translateZ(0);
+}
+
+.format-onetopic .onelinetabs .tabs-wrapper .nav.nav-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .format-onetopic .onelinetabs .tabs-wrapper .scroll-arrow {
