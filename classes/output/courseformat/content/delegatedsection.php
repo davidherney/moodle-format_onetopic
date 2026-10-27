@@ -24,7 +24,9 @@
 
 namespace format_onetopic\output\courseformat\content;
 
+use core\output\renderer_base;
 use core_courseformat\output\local\content\delegatedsection as delegatedsection_base;
+use stdClass;
 
 /**
  * Class to render a delegated section.
@@ -62,5 +64,49 @@ class delegatedsection extends delegatedsection_base {
         }
 
         return $mode ?? \format_onetopic::SUBSECTIONSDISPLAY_LIST;
+    }
+
+    /**
+     * Export the activity summary or the activity list for a delegated section.
+     *
+     * The summary card is used when the section is not the current one and the page is not being edited or moved.
+     * The activity list is used otherwise. This does not consult get_course_display().
+     *
+     * @param stdClass $data The current section data reference.
+     * @param renderer_base $output The renderer calling this function.
+     * @return bool True when activity data was added.
+     */
+    protected function add_cm_data(stdClass &$data, renderer_base $output): bool {
+        global $destsection, $move;
+
+        $result = false;
+        $section = $this->section;
+        $format = $this->format;
+        $movingsection = !empty($destsection) && !empty($move);
+
+        $showsummary = ($section->section != 0 &&
+            $section->section != $format->get_sectionnum() &&
+            !$movingsection &&
+            !$format->show_editor()
+        );
+
+        $showcmlist = $section->uservisible;
+
+        if ($showsummary) {
+            $cmsummary = new $this->cmsummaryclass($format, $section);
+            $data->cmsummary = $cmsummary->export_for_template($output);
+            $data->onlysummary = true;
+            $result = true;
+
+            if (!$format->is_section_current($section)) {
+                $showcmlist = false;
+            }
+        }
+        if ($showcmlist) {
+            $cmlist = new $this->cmlistclass($format, $section);
+            $data->cmlist = $cmlist->export_for_template($output);
+            $result = true;
+        }
+        return $result;
     }
 }
