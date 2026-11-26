@@ -73,6 +73,17 @@ if ($ADMIN->fulltree) {
         )
     );
 
+    $settings->add(new admin_setting_configselect(
+        'format_onetopic/enablelinearnav',
+        new lang_string('linearnavigationsettings', 'core_courseformat'),
+        new lang_string('linearnavigationsettings_help', 'core_courseformat'),
+        1,
+        [
+            1 => get_string('yes'),
+            0 => get_string('no'),
+        ]
+    ));
+
     // Default settings.
     $name = 'format_onetopic/settingsheaderdefault';
     $heading = get_string('settingsheaderdefault', 'format_onetopic');

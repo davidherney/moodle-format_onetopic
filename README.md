@@ -1,6 +1,6 @@
 # COURSE FORMAT Onetopic
 
-Package tested in: moodle 5.1+ and 5.2+.
+Package tested in: moodle 5.3+.
 
 ## QUICK INSTALL
 Download zip package, extract the onetopic folder and upload this folder into course/format/.
@@ -15,6 +15,11 @@ Download zip package, extract the onetopic folder and upload this folder into co
 * Fix: the topics bar is not refresh when change (move a section in boost sections bar) or delete a section.
 
 ## IN VERSION
+
+### 2026112600:
+* Compatibility with Moodle 5.3.
+* Support course linear navigation (activity previous/next footer) with site setting `enablelinearnav`.
+* Remove unused section collapsemenu markup (not applicable to single-section multipage view).
 
 ### 2026102700:
 * "Summary" subsection type view compatible with Moodle 5.2.

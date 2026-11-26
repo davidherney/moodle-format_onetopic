@@ -1286,6 +1286,19 @@ class format_onetopic extends core_courseformat\base {
         // The display is SINGLEPAGE when we move a section, in other case we use the MULTIPAGE.
         return ($destsection && $move) || $this->subsectionmode ? COURSE_DISPLAY_SINGLEPAGE : COURSE_DISPLAY_MULTIPAGE;
     }
+
+    /**
+     * Onetopic supports the activity previous/next footer.
+     *
+     * The site setting format_onetopic/enablelinearnav turns the footer on or off.
+     * This is separate from the format's own section navigation.
+     *
+     * @return bool
+     */
+    #[\Override]
+    public static function uses_linear_navigation(): bool {
+        return true;
+    }
 }
 
 /**

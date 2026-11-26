@@ -10,7 +10,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:17
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -18,7 +18,7 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
       mariadb:
-        image: mariadb:10.11 # Moodle 5.0: >=10.11
+        image: mariadb:11.4 # Moodle 5.3: >=11.4
         env:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
@@ -32,19 +32,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Moodle 5.2, PHP 8.3, MariaDB
+          # Moodle 5.3, PHP 8.3, MariaDB
           - php: '8.3'
-            moodle-branch: 'MOODLE_502_STABLE'
+            moodle-branch: 'MOODLE_503_STABLE'
             database: mariadb
             plugin-ci: ^4
-          # Moodle 5.2, PHP 8.4, PostgreSQL
+          # Moodle 5.3, PHP 8.4, PostgreSQL
           - php: '8.4'
-            moodle-branch: 'MOODLE_502_STABLE'
+            moodle-branch: 'MOODLE_503_STABLE'
             database: pgsql
             plugin-ci: ^4
-          # Moodle 5.2, PHP 8.4, MariaDB
+          # Moodle 5.3, PHP 8.4, MariaDB
           - php: '8.4'
-            moodle-branch: 'MOODLE_502_STABLE'
+            moodle-branch: 'MOODLE_503_STABLE'
             database: mariadb
             plugin-ci: ^4
     steps:

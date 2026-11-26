@@ -85,24 +85,6 @@
         "highlightedlabel" : "Highlighted"
     }
 }}
-{{#collapsemenu}}
-    {{^displayonesection}}
-    <div class="flex-fill d-flex justify-content-end me-2 align-self-start mt-2">
-        <a
-            id="collapsesections"
-            class="section-collapsemenu"
-            href="#"
-            aria-expanded="true"
-            role="button"
-            data-toggle="toggleall"
-        >
-            <span class="collapseall text-nowrap">{{#str}}collapseall{{/str}}</span>
-            <span class="expandall text-nowrap">{{#str}}expandall{{/str}}</span>
-        </a>
-    </div>
-    {{/displayonesection}}
-{{/collapsemenu}}
-
 <div id="coursecontentcollapseid{{id}}"
     class="content {{^iscoursedisplaymultipage}}{{^sitehome}}{{^displayonesection}}course-content-item-content collapse {{^contentcollapsed}}show{{/contentcollapsed}}{{/displayonesection}}{{/sitehome}}{{/iscoursedisplaymultipage}}">
     <div class="{{#hasavailability}}description{{/hasavailability}} my-3" data-for="sectioninfo">

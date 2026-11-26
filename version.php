@@ -34,10 +34,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026102701; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2026041000; // Requires this Moodle version.
+$plugin->version = 2026112600; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2026100200; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '5.2.0(SanFrancisco)';
-$plugin->dependencies = ['format_topics' => 2026042000];
-$plugin->supported = [502, 502];
+$plugin->release = '5.3.0(SantaCruz)';
+$plugin->dependencies = ['format_topics' => 2026100500];
+$plugin->supported = [503, 503];
