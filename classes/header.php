@@ -220,8 +220,6 @@ class header implements \core\output\renderable, \core\output\templatable {
         // Include course format js module.
         $PAGE->requires->js_call_amd('format_topics/mutations', 'init');
         $PAGE->requires->js_call_amd('format_topics/section', 'init');
-        $PAGE->requires->js('/course/format/onetopic/format.js');
-        $PAGE->requires->yui_module('moodle-core-notification-dialogue', 'M.course.format.dialogueinit');
         $PAGE->requires->js_call_amd('format_onetopic/main', 'init', $params);
 
         return $data;
@@ -521,44 +519,39 @@ class header implements \core\output\renderable, \core\output\templatable {
         }
 
         if ($this->format->show_editor()) {
-            $maxsections = $this->format->get_max_sections();
+            $straddsection = get_string('increasesections', 'format_onetopic');
+            $icon = $output->pix_icon('t/switch_plus', s($straddsection));
+            $insertposition = $displaysection + 1;
 
-            // Only can add sections if it does not exceed the maximum amount.
-            if (count($sections) < $maxsections) {
-                $straddsection = get_string('increasesections', 'format_onetopic');
-                $icon = $output->pix_icon('t/switch_plus', s($straddsection));
-                $insertposition = $displaysection + 1;
+            $paramstotabs = [
+                'courseid' => $course->id,
+                'increase' => true,
+                'sesskey' => sesskey(),
+                'insertsection' => $insertposition,
+            ];
 
-                $paramstotabs = [
-                    'courseid' => $course->id,
-                    'increase' => true,
-                    'sesskey' => sesskey(),
-                    'insertsection' => $insertposition,
-                ];
+            // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
+            $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
+            $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
 
-                // Define if subtabs are displayed (a subtab is selected or the selected tab has subtabs).
-                $selectedsubtabs = $selectedparent ? $tabs->get_tab($selectedparent->index) : null;
-                $showsubtabs = $selectedsubtabs && $selectedsubtabs->has_childs();
-
-                if ($showsubtabs && $selectedparent) {
-                    // Increase number of sections in child tabs.
-                    $paramstotabs['aschild'] = 1;
-                    $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
-                    $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
-                    $selectedsubtabs->add_child($newtab);
-
-                    // The new tab is inserted after the last child because it is a parent tab.
-                    // -2 = add subtab button and index subtab.
-                    // +1 = because the selectedparent section start in 0.
-                    $insertposition = $selectedparent->section + $selectedsubtabs->count_childs() - 2 + 1;
-                }
-
-                $paramstotabs['aschild'] = 0;
-                $paramstotabs['insertsection'] = $insertposition;
+            if ($showsubtabs && $selectedparent) {
+                // Increase number of sections in child tabs.
+                $paramstotabs['aschild'] = 1;
                 $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
                 $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
-                $tabs->add($newtab);
+                $selectedsubtabs->add_child($newtab);
+
+                // The new tab is inserted after the last child because it is a parent tab.
+                // -2 = add subtab button and index subtab.
+                // +1 = because the selectedparent section start in 0.
+                $insertposition = $selectedparent->section + $selectedsubtabs->count_childs() - 2 + 1;
             }
+
+            $paramstotabs['aschild'] = 0;
+            $paramstotabs['insertsection'] = $insertposition;
+            $url = new \core\url('/course/format/onetopic/changenumsections.php', $paramstotabs);
+            $newtab = new \format_onetopic\singletab('add', $icon, $url, s($straddsection));
+            $tabs->add($newtab);
         }
 
         return $tabs;

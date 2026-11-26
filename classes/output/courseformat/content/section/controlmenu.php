@@ -62,9 +62,6 @@ class controlmenu extends controlmenu_format_topics {
         $numsections = $format->get_last_section_number();
         $isstealth = $section->section > $numsections;
 
-        $baseurl = course_get_url($course);
-        $baseurl->param('sesskey', sesskey());
-
         $parentcontrols = parent::section_control_items();
 
         $movecontrols = [];
@@ -74,32 +71,43 @@ class controlmenu extends controlmenu_format_topics {
                 $course->tabsview != \format_onetopic::TABSVIEW_VERTICALALL
             );
             $rtl = right_to_left();
+            $modinfo = $format->get_modinfo();
 
-            // Legacy move up and down links.
-            $url = clone($baseurl);
-            if ($section->section > 1) { // Add a arrow to move section up.
-                $url->param('section', $section->section);
-                $url->param('move', -1);
-                $strmoveup = $horizontal ? get_string('moveleft') : get_string('moveup');
-                $movecontrols['moveup'] = new link_secondary(
-                    url: $url,
-                    icon: new pix_icon($horizontal ? ($rtl ? 't/right' : 't/left') : 'i/up', ''),
-                    text: $strmoveup,
-                    attributes: ['class' => 'icon' . ($horizontal ? '' : ' moveup')],
-                );
+            // Move one position using the course editor action instead of course/view.php?move=.
+            if ($section->section > 1) {
+                $preceding = $modinfo->get_section_info($section->section - 2);
+                if ($preceding) {
+                    $strmoveup = $horizontal ? get_string('moveleft') : get_string('moveup');
+                    $movecontrols['moveup'] = new link_secondary(
+                        url: $format->get_update_url(
+                            'section_move_after',
+                            [$section->id],
+                            $preceding->id,
+                            returnurl: $format->get_view_url($section->section - 1),
+                        ),
+                        icon: new pix_icon($horizontal ? ($rtl ? 't/right' : 't/left') : 'i/up', ''),
+                        text: $strmoveup,
+                        attributes: ['class' => 'icon' . ($horizontal ? '' : ' moveup')],
+                    );
+                }
             }
 
-            $url = clone($baseurl);
-            if ($section->section < $numsections) { // Add a arrow to move section down.
-                $url->param('section', $section->section);
-                $url->param('move', 1);
-                $strmovedown = $horizontal ? get_string('moveright') : get_string('movedown');
-                $movecontrols['movedown'] = new link_secondary(
-                    url: $url,
-                    icon: new pix_icon($horizontal ? ($rtl ? 't/left' : 't/right') : 'i/down', ''),
-                    text: $strmovedown,
-                    attributes: ['class' => 'icon' . ($horizontal ? '' : ' movedown')],
-                );
+            if ($section->section < $numsections) {
+                $following = $modinfo->get_section_info($section->section + 1);
+                if ($following) {
+                    $strmovedown = $horizontal ? get_string('moveright') : get_string('movedown');
+                    $movecontrols['movedown'] = new link_secondary(
+                        url: $format->get_update_url(
+                            'section_move_after',
+                            [$section->id],
+                            $following->id,
+                            returnurl: $format->get_view_url($section->section + 1),
+                        ),
+                        icon: new pix_icon($horizontal ? ($rtl ? 't/left' : 't/right') : 'i/down', ''),
+                        text: $strmovedown,
+                        attributes: ['class' => 'icon' . ($horizontal ? '' : ' movedown')],
+                    );
+                }
             }
         }
 

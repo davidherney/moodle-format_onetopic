@@ -74,6 +74,7 @@ class section extends section_base {
             'sitehome' => $course->id == SITEID,
             'editing' => $PAGE->user_is_editing(),
             'displayonesection' => ($course->id != SITEID && !is_null($format->get_sectionid())),
+            'isdelegated' => $section->is_delegated(),
         ];
 
         $haspartials = [];

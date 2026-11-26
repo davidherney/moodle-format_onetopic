@@ -41,6 +41,32 @@ export const init = (formattype, icons) => {
     }
 
     var infotitle = getString('aboutresource', 'format_onetopic');
+    var availabilitytitle = getString('info', 'moodle');
+
+    // Availability information shown on a restricted tab.
+    $('.format-onetopic [data-infoid]').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var $node = $(this);
+        var $content = $('#' + $node.data('infoid'));
+
+        if ($content.data('modal')) {
+            $content.data('modal').show();
+            return;
+        }
+
+        availabilitytitle.then(function(title) {
+            return Modal.create({
+                'title': title,
+                'body': $content.html(),
+            });
+        }).then(function(modal) {
+            modal.show();
+            $content.data('modal', modal);
+            return modal;
+        }).catch(Notification.exception);
+    });
 
     $('.format-onetopic .onetopic .iconwithhelp[data-helpwindow]').each(function() {
         var $node = $(this);

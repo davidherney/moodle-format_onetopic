@@ -87,7 +87,7 @@
 }}
 {{#collapsemenu}}
     {{^displayonesection}}
-    <div class="flex-fill d-flex justify-content-end mr-2 align-self-start mt-2">
+    <div class="flex-fill d-flex justify-content-end me-2 align-self-start mt-2">
         <a
             id="collapsesections"
             class="section-collapsemenu"
@@ -103,7 +103,7 @@
     {{/displayonesection}}
 {{/collapsemenu}}
 
-<div id="coursecontentcollapse{{num}}"
+<div id="coursecontentcollapseid{{id}}"
     class="content {{^iscoursedisplaymultipage}}{{^sitehome}}{{^displayonesection}}course-content-item-content collapse {{^contentcollapsed}}show{{/contentcollapsed}}{{/displayonesection}}{{/sitehome}}{{/iscoursedisplaymultipage}}">
     <div class="{{#hasavailability}}description{{/hasavailability}} my-3" data-for="sectioninfo">
         {{#availability}}
@@ -112,9 +112,11 @@
             {{/ core_courseformat/local/content/section/availability }}
         {{/availability}}
         {{#summary}}
-            {{$ core_courseformat/local/content/section/summary }}
-                {{> core_courseformat/local/content/section/summary }}
-            {{/ core_courseformat/local/content/section/summary }}
+            {{^isdelegated}}
+                {{$ core_courseformat/local/content/section/summary }}
+                    {{> core_courseformat/local/content/section/summary }}
+                {{/ core_courseformat/local/content/section/summary }}
+            {{/isdelegated}}
         {{/summary}}
     </div>
     {{#cmsummary}}

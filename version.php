@@ -21,10 +21,11 @@
  * Un recorderis de las Veredas de mi pueblo, en homenaje a los campesinos de mi tierra.
  *
  * Old releases: Guarango, Pantalio, Chalarca, Mazorcal, Chuscalito, Las Teresas, La Madera, Las Brisas, Buenavista,
- * San Juan, La Almería, Piedras Teherán, El Cardal, La Divisa, Las Acacias, Minitas.
+ * San Juan, La Almería, Piedras Teherán, El Cardal, La Divisa, Las Acacias, Minitas,
+ * San Francisco.
  *
  * Next releases: Santa Cruz, Vallejuelito, Fátima, La Cabaña, La Palmera, Las Colmenas,
- * Quebrada Negra, San Francisco, San Miguel Abajo, San Miguel, La Concha.
+ * Quebrada Negra, San Miguel Abajo, San Miguel, La Concha.
  *
  * @package   format_onetopic
  * @copyright 2015 David Herney - cirano. https://bambuco.co
@@ -33,10 +34,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026102700; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2025021400; // Requires this Moodle version.
+$plugin->version = 2026102701; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2026041000; // Requires this Moodle version.
 $plugin->component = 'format_onetopic'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '5.1.1(Minitas)';
-$plugin->dependencies = ['format_topics' => 2025100600];
-$plugin->supported = [501, 502];
+$plugin->release = '5.2.0(SanFrancisco)';
+$plugin->dependencies = ['format_topics' => 2026042000];
+$plugin->supported = [502, 502];

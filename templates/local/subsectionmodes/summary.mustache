@@ -90,9 +90,11 @@
                 </div>
                 {{/isstealth}}
                 {{#summary}}
-                    {{$ core_courseformat/local/content/section/summary }}
-                        {{> core_courseformat/local/content/section/summary }}
-                    {{/ core_courseformat/local/content/section/summary }}
+                    {{^isdelegated}}
+                        {{$ core_courseformat/local/content/section/summary }}
+                            {{> core_courseformat/local/content/section/summary }}
+                        {{/ core_courseformat/local/content/section/summary }}
+                    {{/isdelegated}}
                 {{/summary}}
                 {{#availability}}
                     {{$ core_courseformat/local/content/section/availability }}
