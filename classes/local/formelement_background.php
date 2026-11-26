@@ -65,8 +65,7 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
      *
      * @return string
      */
-    // @codingStandardsIgnoreLine moodle.NamingConventions.ValidFunctionName.LowercaseMethod
-    public function toHtml() {
+    public function toHtml() { // phpcs:ignore moodle.NamingConventions.ValidFunctionName.LowercaseMethod
         return $this->to_html();
     }
 
@@ -135,8 +134,7 @@ class format_onetopic_background_form_element extends MoodleQuickForm_text {
      * @param int $value Draft item id with the uploaded files.
      * @return string|null Validation error message or null.
      */
-    // @codingStandardsIgnoreLine moodle.NamingConventions.ValidFunctionName.LowercaseMethod
-    public function validateSubmitValue($value) {
+    public function validateSubmitValue($value) { // phpcs:ignore moodle.NamingConventions.ValidFunctionName.LowercaseMethod
         if (empty($value)) {
             return;
         }

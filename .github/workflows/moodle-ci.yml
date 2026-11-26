@@ -32,14 +32,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Moodle 5.1, PHP 8.2, MariaDB
-          - php: '8.2'
-            moodle-branch: 'MOODLE_501_STABLE'
+          # Moodle 5.2, PHP 8.3, MariaDB
+          - php: '8.3'
+            moodle-branch: 'MOODLE_502_STABLE'
             database: mariadb
             plugin-ci: ^4
-          # Moodle 5.1, PHP 8.4, PostgreSQL
+          # Moodle 5.2, PHP 8.4, PostgreSQL
           - php: '8.4'
-            moodle-branch: 'MOODLE_501_STABLE'
+            moodle-branch: 'MOODLE_502_STABLE'
             database: pgsql
             plugin-ci: ^4
           # Moodle 5.2, PHP 8.4, MariaDB
