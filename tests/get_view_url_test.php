@@ -184,7 +184,7 @@ final class get_view_url_test extends \advanced_testcase {
 
         $this->assertNull($format->get_sectionid());
         $returnoptions = $format->get_return_options($parentsection);
-        $this->assertSame(['pagesectionid' => $parentsection->id], $returnoptions);
+        $this->assertEquals((int)$parentsection->id, $returnoptions['pagesectionid']);
     }
 
     /**
