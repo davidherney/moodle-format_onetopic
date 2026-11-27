@@ -82,14 +82,12 @@ if (isset($courseformatoptions['numsections']) && $increase !== null) {
         }
     }
     if (!$returnurl) {
-        $returnurl = course_get_url(
-            $course,
-            $sections[0],
-            array_merge(
-                ($sectionreturn !== null) ? ['sr' => $sectionreturn] : [],
-                ['anchortotabstree' => $anchortotabstree]
-            )
-        );
+        $returnoptions = ['anchortotabstree' => $anchortotabstree];
+        if ($sectionreturn !== null) {
+            $returnsection = $courseformat->get_section($sectionreturn, IGNORE_MISSING);
+            $returnoptions['pagesectionid'] = $returnsection?->id ?? 0;
+        }
+        $returnurl = course_get_url($course, $sections[0], $returnoptions);
     }
 }
 

@@ -80,7 +80,7 @@
         },
         "cmcontrols": "[Add an activity or resource]",
         "iscoursedisplaymultipage": true,
-        "sectionreturnid": 0,
+        "sectionreturnnum": 0,
         "contentcollapsed": false,
         "insertafter": true,
         "numsections": 42,
@@ -95,7 +95,8 @@
             {{#ishidden}} hidden {{/ishidden}} {{#iscurrent}} current {{/iscurrent}}
             {{#isstealth}} orphaned {{/isstealth}}"
     data-sectionid="{{num}}"
-    data-sectionreturnid="{{sectionreturnid}}"
+    data-sectionreturnnum="{{sectionreturnnum}}"
+    {{#returnoptions}}data-returnoptions='{{.}}'{{/returnoptions}}
     data-for="section"
     data-id="{{id}}"
     data-number="{{num}}"

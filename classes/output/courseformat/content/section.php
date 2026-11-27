@@ -67,7 +67,8 @@ class section extends section_base {
         $data = (object)[
             'num' => $section->section ?? '0',
             'id' => $section->id,
-            'sectionreturnid' => $format->get_sectionnum(),
+            'sectionreturnnum' => $format->get_sectionnum(), // Deprecated since Moodle 5.3 (MDL-86284).
+            'returnoptions' => json_encode((object)($format->get_return_options($section))),
             'insertafter' => false,
             'summary' => $summary->export_for_template($output),
             'highlightedlabel' => $format->get_section_highlighted_name(),

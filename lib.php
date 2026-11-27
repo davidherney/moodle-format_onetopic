@@ -427,12 +427,26 @@ class format_onetopic extends core_courseformat\base {
     }
 
     /**
+     * Returns the get_view_url() options for returning to a section on the page.
+     *
+     * Onetopic overrides get_sectionid() to always return null (for displayonesection UI),
+     * so return options must use the real singlesection id from the parent class.
+     *
+     * @param section_info|stdClass|null $section
+     * @return int[]
+     */
+    public function get_return_options(section_info|stdClass|null $section): array {
+        return ['pagesectionid' => parent::get_sectionid() ?? 0];
+    }
+
+    /**
      * The URL to use for the specified course (with section).
      *
      * @param section_info|stdClass|int|null $section Section object from database or just field course_sections.section
      *     if omitted the course view page is returned
      * @param array $options options for view URL. At the moment we use:
-     *     'sr' (int) used by multipage formats to specify to which section to return
+     *     'pagesectionid' (int) the section ID of the page to display (null or 0 for course main page)
+     *     'sr' (int) the section number of the page to display (deprecated since Moodle 5.3)
      *     'permalink' (bool) if true, URL uses section IDs instead of section numbers
      *     'anchortotabstree' (bool) if true, URL contains anchor for the tabs
      * @return null|\core\url
@@ -445,8 +459,14 @@ class format_onetopic extends core_courseformat\base {
                     : $this->get_section($section, IGNORE_MISSING);
         $permalink = $options['permalink'] ?? false;
 
-        if (array_key_exists('sr', $options)) {
-            $pagesection = $this->get_section($options['sr'], IGNORE_MISSING);
+        if (array_key_exists('pagesectionid', $options)) {
+            $pagesectionid = $options['pagesectionid'] ?? null;
+            $pagesection = $pagesectionid
+                ? $this->get_modinfo()->get_section_info_by_id($pagesectionid, IGNORE_MISSING)
+                : null;
+        } else if (array_key_exists('sr', $options)) {
+            // TODO: Remove this in Moodle 7.0 (MDL-88498).
+            $pagesection = !is_null($options['sr']) ? $this->get_section($options['sr'], IGNORE_MISSING) : null;
         } else {
             $pagesection = $section;
             if ($pagesection && $pagesection->get_component_instance() && $pagesection->displaymode != 'summary') {

@@ -128,9 +128,24 @@ final class get_view_url_test extends \advanced_testcase {
     }
 
     /**
-     * sr = 0 means the general section page, with an anchor to the target section.
+     * pagesectionid of the general section opens that page with an anchor to the target section.
      */
-    public function test_sr_zero_is_general_section(): void {
+    public function test_pagesectionid_general_section(): void {
+        $this->resetAfterTest();
+
+        [, $format, , $subsectioninfo] = $this->create_course_with_subsection();
+        $general = $format->get_section(0, MUST_EXIST);
+
+        $url = $format->get_view_url($subsectioninfo, ['pagesectionid' => $general->id]);
+
+        $this->assertEquals(0, (int)$url->get_param('section'));
+        $this->assertEquals('#section-' . $subsectioninfo->section, $url->get_encoded_anchor());
+    }
+
+    /**
+     * Deprecated sr option still resolves by section number until Moodle 7.0.
+     */
+    public function test_sr_zero_is_general_section_compatibility(): void {
         $this->resetAfterTest();
 
         [, $format, , $subsectioninfo] = $this->create_course_with_subsection();
@@ -139,6 +154,37 @@ final class get_view_url_test extends \advanced_testcase {
 
         $this->assertEquals(0, (int)$url->get_param('section'));
         $this->assertEquals('#section-' . $subsectioninfo->section, $url->get_encoded_anchor());
+    }
+
+    /**
+     * pagesectionid takes precedence over the deprecated sr option.
+     */
+    public function test_pagesectionid_wins_over_sr(): void {
+        $this->resetAfterTest();
+
+        [, $format, $parentsection, $subsectioninfo] = $this->create_course_with_subsection();
+
+        $url = $format->get_view_url($subsectioninfo, [
+            'pagesectionid' => $parentsection->id,
+            'sr' => 0,
+        ]);
+
+        $this->assertEquals($parentsection->section, (int)$url->get_param('section'));
+        $this->assertEquals('#section-' . $subsectioninfo->section, $url->get_encoded_anchor());
+    }
+
+    /**
+     * get_return_options() returns the real page section id, not get_sectionid()'s null.
+     */
+    public function test_get_return_options_uses_current_page_sectionid(): void {
+        $this->resetAfterTest();
+
+        [, $format, $parentsection] = $this->create_course_with_subsection();
+        $format->set_sectionnum($parentsection->section);
+
+        $this->assertNull($format->get_sectionid());
+        $returnoptions = $format->get_return_options($parentsection);
+        $this->assertSame(['pagesectionid' => $parentsection->id], $returnoptions);
     }
 
     /**

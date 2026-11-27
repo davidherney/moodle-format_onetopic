@@ -113,9 +113,10 @@ class controlmenu extends controlmenu_format_topics {
 
         // ToDo: reload the page is a temporal solution. We need control the delete tab action with JS.
         if (array_key_exists("delete", $parentcontrols)) {
+            $returnsection = $format->get_section(max(0, $section->section - 1), MUST_EXIST);
             $url = new url('/course/editsection.php', [
                 'id' => $section->id,
-                'sr' => $section->section - 1,
+                'returnoptions' => ['pagesectionid' => $returnsection->id],
                 'delete' => 1,
                 'sesskey' => sesskey(),
             ]);
